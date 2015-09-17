@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <time.h>       /* time */
 
+#include "Ship.h"
+
 
 double windowWidth;
 double windowHeight;
@@ -19,6 +21,8 @@ int refreshMillis = 100;
 double gridSquareWidth;
 double gridSquareHeight;
 int zoom = 20;
+
+Ship ship;
 
 void Timer(int value) {
    glutPostRedisplay();    // Post a paint request to activate display()
@@ -42,7 +46,8 @@ void mouse(int button, int state, int x, int y) {
 }
 
 void display() {
-    //Map.draw(gridSquareWidth, gridSquareHeight, zoom);   
+    glClear( GL_COLOR_BUFFER_BIT);
+    ship.draw();
     glutSwapBuffers(); 
 }
 
@@ -50,20 +55,21 @@ void setup(){
     windowWidth = glutGet(GLUT_SCREEN_WIDTH);
     windowHeight = glutGet(GLUT_SCREEN_HEIGHT);
     
-    gridSquareWidth = (2.0f / zoom);
-    gridSquareHeight = 2.0f / zoom * (windowWidth/windowHeight);
+   // gridSquareWidth = (2.0f / zoom);
+   // gridSquareHeight = 2.0f / zoom * (windowWidth/windowHeight);
     printf("Window Width: %f\n", windowWidth);
     printf("Window Height: %f\n", windowHeight);
 
-    //Map.setup();
+
 }
 
 int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
     
+    glClearColor(0.0, 0.0, 0.0, 0.0);         // black background
 	glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("Faggot window"); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_BLEND ); 
@@ -74,8 +80,11 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyboard); 
     glutSpecialFunc(specialKeys);
     
+    //Ortho (x1,x2,y1,y2,z1,z2). 
+    glOrtho(0.0, 100.0, 0.0, 100.0, -1.0, 1.0);   // setup a 100x100x2 viewing world
+    //glOrtho(0.0, glutGet(GLUT_SCREEN_WIDTH)/100, 0.0, glutGet(GLUT_SCREEN_HEIGHT)/100, -1.0, 1.0);   // setup a wxhx2 viewing world
   //  glClearColor(0.0, 0.0, 0.0, 1.0);
-    //setup();
+    setup();
     printf("Setup Complete\n");
     glutMainLoop(); 
 
