@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+CC = g++
+CFLAGS  = -Wall
+PROG = Game
+
+SRCS = main.cpp
+
+LIBS =  -framework OpenGL -framework GLUT -Wno-deprecated-declarations
+
+all: $(PROG)
+
+$(PROG):	$(SRCS)
+	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LIBS)
+
+clean:
+	rm -f $(PROG) 
+
