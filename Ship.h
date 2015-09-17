@@ -15,15 +15,15 @@ class Ship
     public:
         Ship();
         int getHealth();
-        int getX();
-        int getY();
+        float getX();
+        float getY();
         void reset();
         void moveLeft();
         void moveRight();
         void draw();
     protected:   
         int width, height;
-        int x, y;  
+        float x, y;  
         int health; 
 };
 

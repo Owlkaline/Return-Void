@@ -13,14 +13,18 @@
 
 #include "Ship.h"
 
+#define BUTTON_UP   0
+#define BUTTON_DOWN 1
 
 double windowWidth;
 double windowHeight;
 
-int refreshMillis = 100;
+int refreshMillis = 20;
 double gridSquareWidth;
 double gridSquareHeight;
 int zoom = 20;
+
+unsigned char keyState[255];
 
 Ship ship;
 
@@ -30,15 +34,18 @@ void Timer(int value) {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    switch (key) {
-        case 27:  // ESC key
-            exit(0);//exit
-            break;
-    }
+        keyState[key] = BUTTON_DOWN;
+}
+
+void keyboard_up(unsigned char key, int x, int y) {
+        keyState[key] = BUTTON_UP;
 }
 
 void specialKeys(int key, int x, int y) {
-    
+     switch (key) { 
+     case GLUT_KEY_LEFT:
+            break; 
+     }
 }
 
 void mouse(int button, int state, int x, int y) {
@@ -48,6 +55,14 @@ void mouse(int button, int state, int x, int y) {
 void display() {
     glClear( GL_COLOR_BUFFER_BIT);
     ship.draw();
+    if(keyState[27] == BUTTON_DOWN)//ESC
+        exit(0);
+    if(keyState[(unsigned char)'a'] == BUTTON_DOWN|| keyState[(unsigned char)'A'] == BUTTON_DOWN)
+        ship.moveLeft();
+    if(keyState[(unsigned char)'d'] == BUTTON_DOWN|| keyState[(unsigned char)'D'] == BUTTON_DOWN)
+        ship.moveRight();
+        
+           
     glutSwapBuffers(); 
 }
 
@@ -73,11 +88,13 @@ int main(int argc, char** argv) {
     glutCreateWindow("Faggot window"); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_BLEND ); 
+    glutIgnoreKeyRepeat(1);
     glutFullScreen();
     
     glutDisplayFunc(display);
     glutTimerFunc(0, Timer, 0);   
     glutKeyboardFunc(keyboard); 
+    glutKeyboardUpFunc(keyboard_up); 
     glutSpecialFunc(specialKeys);
     
     //Ortho (x1,x2,y1,y2,z1,z2). 
