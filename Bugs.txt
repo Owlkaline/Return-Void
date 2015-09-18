@@ -6,15 +6,15 @@
 #-------Current Bugs-------------------------------------------
 #--------------------------------------------------------------
 
-1. When hold shift and moving then releasing shit causes shipp
-   to continuously move in 2 directions or less in the last
-   direction that the user was holding even if the user 
-   released the movement key 
-
+1. SOLVED
 
 
 #--------------------------------------------------------------
 #-------Bugs Resolved------------------------------------------
 #--------------------------------------------------------------
 
+1. When hold shift and moving then releasing shit causes shipp
+   to continuously move in 2 directions or less in the last
+   direction that the user was holding even if the user 
+   released the movement key 
 

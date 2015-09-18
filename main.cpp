@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h> 
 #include <time.h>      /* time */
+#include <ctype.h>
 
 #include "Ship.h"
 
@@ -35,11 +36,11 @@ void Timer(int value) {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-        keyState[key] = BUTTON_DOWN;
+        keyState[putchar (tolower(key))] = BUTTON_DOWN;
 }
 
 void keyboard_up(unsigned char key, int x, int y) {
-        keyState[key] = BUTTON_UP;
+        keyState[putchar (tolower(key))] = BUTTON_UP;        
 }
 
 void specialKeys(int key, int x, int y) {
@@ -58,13 +59,13 @@ void display() {
     ship.draw();
     if(keyState[27] == BUTTON_DOWN)//ESC
         exit(0);
-    if(keyState[(unsigned char)'a'] == BUTTON_DOWN|| keyState[(unsigned char)'A'] == BUTTON_DOWN)
+    if(keyState[(unsigned char)'a'] == BUTTON_DOWN)
         ship.moveLeft();
-    if(keyState[(unsigned char)'d'] == BUTTON_DOWN|| keyState[(unsigned char)'D'] == BUTTON_DOWN)
+    if(keyState[(unsigned char)'d'] == BUTTON_DOWN)
         ship.moveRight();
-    if(keyState[(unsigned char)'w'] == BUTTON_DOWN|| keyState[(unsigned char)'W'] == BUTTON_DOWN)
+    if(keyState[(unsigned char)'w'] == BUTTON_DOWN)
         ship.moveUp();
-    if(keyState[(unsigned char)'s'] == BUTTON_DOWN|| keyState[(unsigned char)'S'] == BUTTON_DOWN)
+    if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
         ship.moveDown();
         
            
