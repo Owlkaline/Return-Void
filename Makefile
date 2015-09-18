@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 CC = g++
-CFLAGS  = -Wall
+CFLAGS  = -Wall -g
 PROG = Game
 
 SRCS = main.cpp Ship.cpp

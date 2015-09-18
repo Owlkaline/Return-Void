@@ -47,6 +47,17 @@ void specialKeys(int key, int x, int y) {
      switch (key) { 
      case GLUT_KEY_LEFT:
             break; 
+   /*  case GLUT_KEY_F1:
+         if (glutGameModeGet (GLUT_GAME_MODE_POSSIBLE)) {
+             glutGameModeString("1920x1080:32");
+             glutEnterGameMode();
+         } 
+         break;
+     case GLUT_KEY_F2:
+         glutLeaveGameMode();
+         glutCreateWindow("Faggot window"); 
+         glutFullScreen();
+         break;*/
      }
 }
 
@@ -55,10 +66,13 @@ void mouse(int button, int state, int x, int y) {
 }
 
 void display() {
-    glClear( GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClear( GL_COLOR_BUFFER_BIT);
     ship.draw();
-    if(keyState[27] == BUTTON_DOWN)//ESC
+    if(keyState[27] == BUTTON_DOWN) {//ESC
+        glutLeaveGameMode();
         exit(0);
+    }
     if(keyState[(unsigned char)'a'] == BUTTON_DOWN)
         ship.moveLeft();
     if(keyState[(unsigned char)'d'] == BUTTON_DOWN)
@@ -68,7 +82,7 @@ void display() {
     if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
         ship.moveDown();
         
-           
+    glFlush();       
     glutSwapBuffers(); 
 }
 
@@ -78,8 +92,7 @@ void setup() {
 
     printf("Screen Resolution: %f\n", screenResX);
     printf("Screen Resolution: %f\n", screenResY);
-
-
+    ship.setup();
 }
 
 int main(int argc, char** argv) {
@@ -88,12 +101,19 @@ int main(int argc, char** argv) {
     
     glClearColor(0.0, 0.0, 0.0, 0.0);         // black background
 	glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-    glutCreateWindow("Faggot window"); 
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
+    if (glutGameModeGet (GLUT_GAME_MODE_POSSIBLE)) {
+        glutGameModeString("1920x1080:32");
+        glutEnterGameMode();
+    } else {
+        glutCreateWindow("Faggot window"); 
+        glutFullScreen();
+    }
+    glAlphaFunc(GL_GREATER, 0.1);
+    glEnable(GL_ALPHA_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_BLEND ); 
     glutIgnoreKeyRepeat(1);
-    glutFullScreen();
     
     glutDisplayFunc(display);
     glutTimerFunc(0, Timer, 0);   

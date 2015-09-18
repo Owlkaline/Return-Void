@@ -10,6 +10,10 @@
 #include <GL/freeglut.h>
 #endif
 
+#include <stdio.h> 
+#include <cstdlib>
+#include <stdlib.h>
+
 class Ship 
 {
     public:
@@ -23,11 +27,14 @@ class Ship
         void moveUp();
         void moveDown();
         void draw();
+        void setup();
     protected:  
         int boundryX, boundryY; 
         int width, height;
         float x, y;  
-        int health; 
+        int health;
+        GLuint texture;
+        GLuint LoadTexture( const char * filename ); 
 };
 
 
