@@ -27,3 +27,6 @@ Game
 *.exe
 *.out
 *.app
+
+# tempry files
+*~
