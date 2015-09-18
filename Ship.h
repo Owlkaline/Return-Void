@@ -20,8 +20,11 @@ class Ship
         void reset();
         void moveLeft();
         void moveRight();
+        void moveUp();
+        void moveDown();
         void draw();
-    protected:   
+    protected:  
+        int boundryX, boundryY; 
         int width, height;
         float x, y;  
         int health; 

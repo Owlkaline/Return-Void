@@ -8,21 +8,22 @@
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>       /* time */
+#include <stdlib.h> 
+#include <time.h>      /* time */
 
 #include "Ship.h"
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
 
-double windowWidth;
-double windowHeight;
+double windowWidth = 100; //veiwing world x
+double windowHeight = 100; // veiwing world y
+
+double screenResX;
+double screenResY;
 
 int refreshMillis = 20;
 double gridSquareWidth;
-double gridSquareHeight;
-int zoom = 20;
 
 unsigned char keyState[255];
 
@@ -61,19 +62,21 @@ void display() {
         ship.moveLeft();
     if(keyState[(unsigned char)'d'] == BUTTON_DOWN|| keyState[(unsigned char)'D'] == BUTTON_DOWN)
         ship.moveRight();
+    if(keyState[(unsigned char)'w'] == BUTTON_DOWN|| keyState[(unsigned char)'W'] == BUTTON_DOWN)
+        ship.moveUp();
+    if(keyState[(unsigned char)'s'] == BUTTON_DOWN|| keyState[(unsigned char)'S'] == BUTTON_DOWN)
+        ship.moveDown();
         
            
     glutSwapBuffers(); 
 }
 
-void setup(){
-    windowWidth = glutGet(GLUT_SCREEN_WIDTH);
-    windowHeight = glutGet(GLUT_SCREEN_HEIGHT);
-    
-   // gridSquareWidth = (2.0f / zoom);
-   // gridSquareHeight = 2.0f / zoom * (windowWidth/windowHeight);
-    printf("Window Width: %f\n", windowWidth);
-    printf("Window Height: %f\n", windowHeight);
+void setup() {
+    screenResX = glutGet(GLUT_SCREEN_WIDTH);
+    screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+
+    printf("Screen Resolution: %f\n", screenResX);
+    printf("Screen Resolution: %f\n", screenResY);
 
 
 }
@@ -98,7 +101,7 @@ int main(int argc, char** argv) {
     glutSpecialFunc(specialKeys);
     
     //Ortho (x1,x2,y1,y2,z1,z2). 
-    glOrtho(0.0, 100.0, 0.0, 100.0, -1.0, 1.0);   // setup a 100x100x2 viewing world
+    glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
     //glOrtho(0.0, glutGet(GLUT_SCREEN_WIDTH)/100, 0.0, glutGet(GLUT_SCREEN_HEIGHT)/100, -1.0, 1.0);   // setup a wxhx2 viewing world
   //  glClearColor(0.0, 0.0, 0.0, 1.0);
     setup();
