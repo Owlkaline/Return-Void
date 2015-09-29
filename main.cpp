@@ -102,11 +102,20 @@ int main(int argc, char** argv) {
     glClearColor(0.0, 0.0, 0.0, 0.0);         // black background
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-    if (glutGameModeGet (GLUT_GAME_MODE_POSSIBLE)) {
-        glutGameModeString("1920x1080:32");
+    char mode_string[24];
+ 
+    sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
+    glutGet(GLUT_SCREEN_HEIGHT));
+    glutGameModeString(mode_string);
+    if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+        printf("GameMode %s is possible\n", mode_string);
+                                 // destroys the current graphics window
+        glutDestroyWindow(0);
         glutEnterGameMode();
+                                 // hide the cursor
+        glutSetCursor(GLUT_CURSOR_NONE);
     } else {
-        glutCreateWindow("Faggot window"); 
+        printf("GameMode %s NOT possible\n", mode_string);
         glutFullScreen();
     }
     glAlphaFunc(GL_GREATER, 0.1);
@@ -128,6 +137,5 @@ int main(int argc, char** argv) {
     setup();
     printf("Setup Complete\n");
     glutMainLoop(); 
-
     return 0;
 }
