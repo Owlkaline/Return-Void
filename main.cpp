@@ -161,26 +161,47 @@ GLuint LoadTexture( const char * filename )
  // printf("file opened\n");
   width = 2048;
   height = 2048;
-  data = (unsigned char *)malloc( width * height * 3 );
+  data = (unsigned char *)malloc( width * height * 4 );
   //int size = fseek(file,);
-  fread( data, width * height * 3, 1, file );
+  fread( data, width * height * 4, 1, file );
   fclose( file );
+ 
+unsigned char t, t1, t2, t3;
+  for(int j = 0; j < height; ++j){
+  for(int i = 0; i < width; ++i) {
+   //A, B, G, R
+      t=data[i];
+      t1=data[i+1];
+      t2=data[i+2];
+      t3=data[i+3];
+ //R, G, B, A
+      data[j]=t2;
+      data[j+1]=t1;
+      data[j+2]=t;
+      data[j+3]=t3;
 
-  for(int i = 0; i < width * height ; ++i) {
-      int index = i*3;
+      i+=4;
+      j+=4;
+      /*int index = i*3;
       unsigned char B,R;
       B = data[index];
       R = data[index+2];
 
       data[index] = R;
-      data[index+2] = B;
+      data[index+2] = B;*/
    }
-   
+   }
    glGenTextures(1, &textures);
    glBindTexture(GL_TEXTURE_2D, textures);
   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+  
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
    free( data );
    return textures;
     /*glGenTextures( 1, &textures );
@@ -221,7 +242,7 @@ int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
     
-    glClearColor(0.0, 0.0, 0.0, 0.0);         // black background
+    glClearColor(255.0, 0.0, 255.0, 0.0);         // black background
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
     char mode_string[24];

@@ -53,6 +53,10 @@ void Ship::draw() {
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_BLEND);
+	glColor4ub(255,255,255,255);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
