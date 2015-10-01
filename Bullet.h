@@ -31,8 +31,7 @@ class Bullet
         int boundryX, boundryY; 
         int width, height;
         float x, y, speed;  
-        GLuint texture;
-        GLuint LoadTexture( const char * filename ); 
+        GLuint texture; 
 };
 
 

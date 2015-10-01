@@ -114,8 +114,8 @@ GLuint LoadTexture( const char * filename )
 
   if ( file == NULL ) return 0;
  // printf("file opened\n");
-  width = 1024;
-  height = 512;
+  width = 2048;
+  height = 2048;
   data = (unsigned char *)malloc( width * height * 3 );
   //int size = fseek(file,);
   fread( data, width * height * 3, 1, file );

@@ -38,7 +38,6 @@ class Ship
         int health;
         Bullet bullets;
         GLuint texture;
-        GLuint LoadTexture( const char * filename ); 
 };
 
 
