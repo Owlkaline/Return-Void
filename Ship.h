@@ -31,6 +31,9 @@ class Ship
         float getBulletY(int i); 
         int getBulletWidth(int i); 
         int getBulletHeight(int i); 
+        void leftImage();
+        void rightImage();
+        void stationaryImage();
         void reset();
         void fire();
         void moveLeft();
@@ -38,7 +41,7 @@ class Ship
         void moveUp();
         void moveDown();
         void draw();
-        void setup(GLuint newText, GLuint bulletText);
+        void setup(GLuint newText, GLuint leftText, GLuint rightText, GLuint bulletText);
     protected:  
         int boundryX, boundryY; 
         int width, height;
@@ -46,6 +49,9 @@ class Ship
         int health;
         Bullet bullets[20];
         GLuint texture;
+        GLuint ShipLeftText;
+        GLuint ShipRightText;
+        GLuint shipText;
 };
 
 

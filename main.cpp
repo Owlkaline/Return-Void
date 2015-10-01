@@ -32,6 +32,8 @@ unsigned char prevKeyState[255];
 
 GLuint Shiptexture;
 GLuint Bullettexture;
+GLuint Lefttexture;
+GLuint Righttexture;
 
 Ship ship;
 Enemy enemy;
@@ -101,10 +103,14 @@ void collisions() {
 }
 
 void inGameKeyPress() {
-    if(keyState[(unsigned char)'a'] == BUTTON_DOWN)
+    if(keyState[(unsigned char)'a'] == BUTTON_DOWN) {
         ship.moveLeft();
-    if(keyState[(unsigned char)'d'] == BUTTON_DOWN)
+        ship.leftImage();
+    }
+    if(keyState[(unsigned char)'d'] == BUTTON_DOWN) {
         ship.moveRight();
+        ship.rightImage();
+    }
     if(keyState[(unsigned char)'w'] == BUTTON_DOWN)
         ship.moveUp();
     if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
@@ -115,6 +121,10 @@ void inGameKeyPress() {
         }
     }
     prevKeyState[32] = keyState[32];
+    
+    if(keyState[(unsigned char)'a'] == BUTTON_UP && keyState[(unsigned char)'d'] == BUTTON_UP) {
+        ship.stationaryImage();
+    }
 }
 
 void display() {
@@ -197,10 +207,12 @@ void setup() {
     printf("Screen Resolution: %f\n", screenResY);
 
     Shiptexture = LoadTexture( "Textures/Ship.bmp" );
+    Lefttexture = LoadTexture( "Textures/ShipTiltLeft.bmp" );
+    Righttexture = LoadTexture( "Textures/ShipTiltRight.bmp" );
     Bullettexture = LoadTexture( "Textures/Bullet.bmp" );
-    ship.setup(Shiptexture, Bullettexture);
+    ship.setup(Shiptexture, Lefttexture, Righttexture, Bullettexture);
     
-    Shiptexture = LoadTexture( "Textures/Enemy.bmp" );
+    Shiptexture = LoadTexture( "Textures/Enemy.bmp" );    
     Bullettexture = LoadTexture( "Textures/Bullet.bmp" );
     enemy.setup(Shiptexture, Bullettexture);
 }

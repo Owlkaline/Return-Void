@@ -16,10 +16,27 @@ Ship::Ship() {
         printf("Ship Constructed\n");
    }
    
-void Ship::setup(GLuint shipText, GLuint bulletText) {
-    texture = shipText;
+void Ship::setup(GLuint shipTexture, GLuint leftTexture, GLuint rightTexture, GLuint bulletTexture) {
+    
+    shipText = shipTexture;
+    ShipLeftText = leftTexture;
+    ShipRightText = rightTexture;
+    texture = shipTexture;
+    
     for(int i = 0; i < NUMBULLETS; ++i) 
-        bullets[i].setup(bulletText);
+        bullets[i].setup(bulletTexture);
+}
+
+void Ship::leftImage() {
+    texture = ShipLeftText;
+}
+
+void Ship::rightImage() {
+    texture = ShipRightText;
+}
+
+void Ship::stationaryImage() {
+    texture = shipText;
 }
 
 void Ship::draw() {
