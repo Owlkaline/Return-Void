@@ -1,5 +1,5 @@
-#ifndef SHIP_H
-#define SHIP_H
+#ifndef BULLET_H
+#define BULLET_H
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
@@ -14,29 +14,23 @@
 #include <cstdlib>
 #include <stdlib.h>
 
-#include "Bullet.h"
-
-class Ship 
+class Bullet
 {
     public:
-        Ship();
-        int getHealth();
+        Bullet();
         float getX();
         float getY();
-        void reset();
-        void fire();
-        void moveLeft();
-        void moveRight();
+        bool getVisible();
+        void fire(float newX, float newY, float mSpeed);
         void moveUp();
         void moveDown();
         void draw();
-        void setup(GLuint newText, GLuint bulletText);
+        void setup(GLuint newText);
     protected:  
+        bool isVisible;
         int boundryX, boundryY; 
         int width, height;
-        float x, y;  
-        int health;
-        Bullet bullets;
+        float x, y, speed;  
         GLuint texture;
         GLuint LoadTexture( const char * filename ); 
 };

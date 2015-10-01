@@ -14,8 +14,9 @@ Ship::Ship() {
         printf("Ship Constructed\n");
    }
    
-void Ship::setup() {
-    texture = LoadTexture( "Textures/Ship.bmp" );
+void Ship::setup(GLuint shipText, GLuint bulletText) {
+    texture = shipText;
+    bullets.setup(bulletText);
 }
 
 void Ship::draw() {
@@ -29,13 +30,12 @@ void Ship::draw() {
     if(y > boundryY)
         y = boundryY;
 
-    
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
+    
     glBegin(GL_POLYGON);
         glTexCoord2f(0.0f, 0.0f); 
         glVertex3f(x, y + height, 0.0);
@@ -47,7 +47,26 @@ void Ship::draw() {
         glVertex3f(x, y, 0.0);
     glEnd();
 
-    glDisable(GL_TEXTURE_2D);
+  
+    //for(int i = 0; i < 5; ++i) {
+        if(bullets.getVisible())
+            bullets.draw();
+    //}
+  glDisable(GL_TEXTURE_2D);
+}
+
+void Ship::fire() {
+  //  bool found = false;
+  //  for(int i = 0; i < 5; ++i) {
+        if(bullets.getVisible() == false) {
+            bullets.fire(x + width/2, y + height, 1);
+      //      printf("%d Bullet fire\n", i);
+       //     found = true;
+       // }
+        //if(found)
+         //   break;
+    }
+
 }  
      
 int Ship::getHealth() { return health; }
@@ -58,57 +77,3 @@ void Ship::moveLeft() { x -= 0.5f; }
 void Ship::moveRight() { x += 0.5f; }
 void Ship::moveUp() { y += 0.25f; }
 void Ship::moveDown() { y -= 0.25f; }
-
-GLuint Ship::LoadTexture( const char * filename )
-{
-  GLuint textures;
- 
-  int width, height;
-
-  unsigned char * data;
-
-  FILE * file;
-
-  file = fopen( filename, "rb" );
-
-  if ( file == NULL ) return 0;
- // printf("file opened\n");
-  width = 1024;
-  height = 512;
-  data = (unsigned char *)malloc( width * height * 3 );
-  //int size = fseek(file,);
-  fread( data, width * height * 3, 1, file );
-  fclose( file );
-
-  for(int i = 0; i < width * height ; ++i) {
-      int index = i*3;
-      unsigned char B,R;
-      B = data[index];
-      R = data[index+2];
-
-      data[index] = R;
-      data[index+2] = B;
-   }
-   
-   glGenTextures(1, &textures);
-   glBindTexture(GL_TEXTURE_2D, textures);
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-   free( data );
-   return textures;
-    /*glGenTextures( 1, &textures );
-    glBindTexture( GL_TEXTURE_2D, textures );
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-
-
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );    
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width,   height, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
-    //gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
-    free( data );
-
-    return textures;*/
-}

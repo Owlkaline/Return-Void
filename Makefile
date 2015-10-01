@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -Wall -g
 PROG = Game
 
-SRCS = main.cpp Ship.cpp
+SRCS = main.cpp Ship.cpp Bullet.cpp
 
 LIBS = -lglut -lGLU -lGL
 
