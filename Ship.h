@@ -21,8 +21,16 @@ class Ship
     public:
         Ship();
         int getHealth();
+        int getWidth();
+        int getHeight();
         float getX();
         float getY();
+        void setBulletVisible(bool visible, int i);
+        bool getBulletVisible(int i);
+        float getBulletX(int i);
+        float getBulletY(int i); 
+        int getBulletWidth(int i); 
+        int getBulletHeight(int i); 
         void reset();
         void fire();
         void moveLeft();

@@ -20,6 +20,9 @@ class Bullet
         Bullet();
         float getX();
         float getY();
+        int getWidth();
+        int getHeight();
+        void setVisible(bool visible);
         bool getVisible();
         void fire(float newX, float newY, float mSpeed);
         void moveUp();

@@ -13,6 +13,7 @@
 #include <ctype.h>
 
 #include "Ship.h"
+#include "Enemy.h"
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
@@ -33,6 +34,7 @@ GLuint Shiptexture;
 GLuint Bullettexture;
 
 Ship ship;
+Enemy enemy;
 
 void Timer(int value) {
    glutPostRedisplay();    // Post a paint request to activate display()
@@ -69,6 +71,35 @@ void mouse(int button, int state, int x, int y) {
     
 }
 
+void collisions() {   
+    if(enemy.getVisible()) {
+        if( (ship.getX() >= enemy.getX() && ship.getX() <= ( enemy.getX() + enemy.getWidth() ) ) || 
+          ((ship.getX() + ship.getWidth()) >= enemy.getX() && ( ship.getX() + enemy.getWidth() ) <= ( enemy.getX() + enemy.getWidth() )) ) {
+               
+           if( (ship.getY() >= enemy.getY() && ship.getY() <= ( enemy.getY() + enemy.getHeight() ) ) || 
+              ((ship.getY() + ship.getHeight()) >= enemy.getY() && ( ship.getY() + enemy.getHeight() ) <= ( enemy.getY() + enemy.getHeight() )) ) {
+                   
+               enemy.looseHealth(10);
+               ship.reset(); 
+           }
+        }
+        for(int i = 0; i < 20; ++i) {
+            if(ship.getBulletVisible(i)) {
+                if( (ship.getBulletX(i) >= enemy.getX() && ship.getBulletX(i) <= ( enemy.getX() + enemy.getWidth() ) ) || 
+                 ((ship.getBulletX(i) + ship.getBulletWidth(i)) >= enemy.getX() && ( ship.getBulletX(i) + enemy.getWidth() ) <= ( enemy.getX() + enemy.getWidth() )) ) {
+               
+                    if( (ship.getBulletY(i) >= enemy.getY() && ship.getBulletY(i) <= ( enemy.getY() + enemy.getHeight() ) ) || 
+                      ((ship.getBulletY(i) + ship.getBulletHeight(i)) >= enemy.getY() && ( ship.getBulletY(i) + enemy.getHeight() ) <= ( enemy.getY() + enemy.getHeight() )) ) {
+                       
+                       ship.setBulletVisible(false, i);
+                       enemy.looseHealth(1);
+                    }
+                } 
+            }
+        }
+    }
+}
+
 void inGameKeyPress() {
     if(keyState[(unsigned char)'a'] == BUTTON_DOWN)
         ship.moveLeft();
@@ -90,11 +121,15 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glClear( GL_COLOR_BUFFER_BIT);
     ship.draw();
+    
+    if(enemy.getVisible())
+        enemy.draw();
     if(keyState[27] == BUTTON_DOWN) {//ESC
         glutLeaveGameMode();
         exit(0);
     }
     inGameKeyPress();
+    collisions();
         
     glFlush();       
     glutSwapBuffers(); 
@@ -164,6 +199,10 @@ void setup() {
     Shiptexture = LoadTexture( "Textures/Ship.bmp" );
     Bullettexture = LoadTexture( "Textures/Bullet.bmp" );
     ship.setup(Shiptexture, Bullettexture);
+    
+    Shiptexture = LoadTexture( "Textures/Enemy.bmp" );
+    Bullettexture = LoadTexture( "Textures/Bullet.bmp" );
+    enemy.setup(Shiptexture, Bullettexture);
 }
 
 int main(int argc, char** argv) {

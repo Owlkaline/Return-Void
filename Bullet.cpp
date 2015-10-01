@@ -65,6 +65,9 @@ void Bullet::fire(float newX, float newY, float mSpeed) {
 
 float Bullet::getX() { return x; }
 float Bullet::getY() { return y; }
+int Bullet::getWidth() { return width; }
+int Bullet::getHeight() { return height; }
+void Bullet::setVisible(bool visible) { isVisible = visible; if(!visible) {x = -1; y = -1;} }
 bool Bullet::getVisible() { return isVisible; }
 void Bullet::moveUp() { y += speed; }
 void Bullet::moveDown() { y -= speed; }

@@ -62,23 +62,26 @@ void Ship::fire() {
     bool found = false;
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible() == false) {
-            bullets[i].fire(x + width/2 - 0.5, y + height, 0.75);
+            bullets[i].fire(x + width/2 - 0.5, y + height, 1.75);
             found = true;
         }
         if(found)
             break;
     }
-      //      printf("%d Bullet fire\n", i);
-       //     found = true;
-       // }
-        //if(found)
-         //   break;
 }  
      
 int Ship::getHealth() { return health; }
 float Ship::getX() { return x; }
 float Ship::getY() { return y; }
-void Ship::reset() { x = 0; y = 0; }
+int Ship::getWidth() { return width; }
+int Ship::getHeight() { return height; }
+void Ship::setBulletVisible(bool visible, int i) { bullets[i].setVisible(visible); }
+bool Ship::getBulletVisible(int i) { return bullets[i].getVisible(); }
+float Ship::getBulletX(int i) { return bullets[i].getX(); }
+float Ship::getBulletY(int i) { return bullets[i].getY(); }
+int Ship::getBulletWidth(int i) { return bullets[i].getWidth(); }
+int Ship::getBulletHeight(int i) { return bullets[i].getHeight(); }
+void Ship::reset() { x = 10; y = 5; health--;}
 void Ship::moveLeft() { x -= 0.5f; }
 void Ship::moveRight() { x += 0.5f; }
 void Ship::moveUp() { y += 0.25f; }
