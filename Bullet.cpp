@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 Bullet::Bullet() {
-        width = 3;
-        height = 4;
+        width = 2;
+        height = 3;
         x = 0.0f;
         y = 0.0f;  
         boundryX = 100 - width;
@@ -55,7 +55,7 @@ void Bullet::draw() {
 }  
 
 void Bullet::fire(float newX, float newY, float mSpeed) {
-    x = newX - width/2;
+    x = newX;
     y = newY;
     speed = mSpeed;
     isVisible = true;

@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+#define NUMBULLETS 20
+
 Ship::Ship() {
         width = 5;
         height = 10;
@@ -16,7 +18,8 @@ Ship::Ship() {
    
 void Ship::setup(GLuint shipText, GLuint bulletText) {
     texture = shipText;
-    bullets.setup(bulletText);
+    for(int i = 0; i < NUMBULLETS; ++i) 
+        bullets[i].setup(bulletText);
 }
 
 void Ship::draw() {
@@ -48,25 +51,28 @@ void Ship::draw() {
     glEnd();
 
   
-    //for(int i = 0; i < 5; ++i) {
-        if(bullets.getVisible())
-            bullets.draw();
-    //}
+    for(int i = 0; i < NUMBULLETS; ++i) {
+        if(bullets[i].getVisible())
+            bullets[i].draw();
+    }
   glDisable(GL_TEXTURE_2D);
 }
 
 void Ship::fire() {
-  //  bool found = false;
-  //  for(int i = 0; i < 5; ++i) {
-        if(bullets.getVisible() == false) {
-            bullets.fire(x + width/2, y + height, 1);
+    bool found = false;
+    for(int i = 0; i < NUMBULLETS; ++i) {
+        if(bullets[i].getVisible() == false) {
+            bullets[i].fire(x + width/2 - 0.5, y + height, 0.75);
+            found = true;
+        }
+        if(found)
+            break;
+    }
       //      printf("%d Bullet fire\n", i);
        //     found = true;
        // }
         //if(found)
          //   break;
-    }
-
 }  
      
 int Ship::getHealth() { return health; }

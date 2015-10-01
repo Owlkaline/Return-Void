@@ -36,7 +36,7 @@ class Ship
         int width, height;
         float x, y;  
         int health;
-        Bullet bullets;
+        Bullet bullets[20];
         GLuint texture;
 };
 
