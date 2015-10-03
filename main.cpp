@@ -13,13 +13,15 @@
 #include <ctype.h>
 
 #include "Game.h"
+#include "Menu.h"
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
 
 enum Screen {
-    Menu,
-    inGame  
+    sMenu = 0,
+    sGame = 1,
+    sOptions = 2  
 };
 
 double windowWidth = 100; //veiwing world x
@@ -35,6 +37,7 @@ unsigned char keyState[255];
 unsigned char prevKeyState[255];
 
 Game game;
+Menu menu;
 Screen screen;
 
 void Timer(int value) {
@@ -61,81 +64,103 @@ void mouse(int button, int state, int x, int y) {
     
 }
 
-void inGameKeyPress() {
-    //Game class
-}
-
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if(keyState[27] == BUTTON_DOWN) {//ESC
-        glutLeaveGameMode();
-        exit(0);
-    }
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
     
     switch(screen) {
-       case inGame:
+       case sGame:
+           if(keyState[27] == BUTTON_DOWN) //ESC
+               screen = sMenu;
+               
            game.keyPress(keyState, prevKeyState);
            game.draw();
            break;
-       case Menu:
+       case sMenu:           
+           int screenNum;
+           screenNum = menu.keyPress(keyState, prevKeyState);
+           if(keyState[27] == BUTTON_DOWN) {//ESC
+               if(prevKeyState[27] != BUTTON_DOWN) {
+                   glutLeaveGameMode();
+                   exit(0);
+               }
+           }
+           
+           switch(screenNum) {
+               case -1:
+                   exit(0);                  
+                   break;
+               case 1: 
+                   screen = sGame;
+                   break;
+               case 2:
+                   screen = sOptions;
+                   break;
+              
+           }
+           menu.draw();
+           break;
+       case sOptions:
+           if(keyState[27] == BUTTON_DOWN) {//ESC
+               screen = sMenu;
+           }
            break;
     }
+    keyState[27] = prevKeyState[27];
     
         
     glFlush();       
     glutSwapBuffers(); 
 }
 
-GLuint LoadTexture( const char * filename )
-{
-  GLuint textures;
+GLuint LoadTexture( const char * filename ) {
+    GLuint textures;
  
-  int width, height;
+    int width, height;
 
-  unsigned char * data;
+    unsigned char * data;
 
-  FILE * file;
+    FILE * file;
 
-  file = fopen( filename, "rb" );
+    file = fopen( filename, "rb" );
   
-  if ( file == NULL ) return 0;
-  // printf("file opened\n");
-  width = 2048;
-  height = 2048;
-  data = (unsigned char *)malloc( width * height * 4 );
-  //int size = fseek(file,);
-  fread( data, width * height * 4, 1, file );
-  fclose( file );
+    if ( file == NULL ) return 0;
+    // printf("file opened\n");
+    width = 2048;
+    height = 2048;
+    data = (unsigned char *)malloc( width * height * 4 );
+    //int size = fseek(file,);
+    fread( data, width * height * 4, 1, file );
+    fclose( file );
  
-  unsigned char t, t1, t2, t3;
-  for(int j = 0; j < height; ++j){
-      for(int i = 0; i < width; ++i) {
-          //A, B, G, R
-          t=data[i]; //A
-          t1=data[i+1];//B
-          t2=data[i+2];//G
-          t3=data[i+3];//R
-          //R, G, B, A
-          data[j]=t2;
-          data[j+1]=t1;
-          data[j+2]=t;
-          data[j+3]=t3;
+    unsigned char t, t1, t2, t3;
+    for(int j = 0; j < height; ++j){
+        for(int i = 0; i < width; ++i) {
+            //A, B, G, R
+            t=data[i]; //A
+            t1=data[i+1];//B
+            t2=data[i+2];//G
+            t3=data[i+3];//R
+            //R, G, B, A
+            data[j]=t2;
+            data[j+1]=t1;
+            data[j+2]=t;
+            data[j+3]=t3;
 
-          i+=4;
-          j+=4;
-      }
-   }
-   glGenTextures(1, &textures);
-   glBindTexture(GL_TEXTURE_2D, textures);
+            i+=4;
+            j+=4;
+        }  
+     }
+     glGenTextures(1, &textures);
+     glBindTexture(GL_TEXTURE_2D, textures);
   
-   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-   free( data );
-   return textures;
+     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
+     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+     free( data );
+     return textures;
 }
 
 void setup() {
@@ -145,15 +170,21 @@ void setup() {
     printf("Screen Resolution: %f\n", screenResX);
     printf("Screen Resolution: %f\n", screenResY);
     
-    screen = inGame;
-    GLuint textures[6];
-    textures[0] = LoadTexture( "Textures/Ship.bmp" );
-    textures[1] = LoadTexture( "Textures/ShipTiltLeft.bmp" );
-    textures[2] = LoadTexture( "Textures/ShipTiltRight.bmp" );
-    textures[3] = LoadTexture( "Textures/Bullet.bmp" );    
-    textures[4] = LoadTexture( "Textures/Enemy.bmp" );    
-    textures[5] = LoadTexture( "Textures/Bullet.bmp" );
-    
+    screen = sMenu;
+    GLuint textures[12];
+    textures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
+    textures[1] = LoadTexture( "Textures/Game/ShipTiltLeft.bmp" );
+    textures[2] = LoadTexture( "Textures/Game/ShipTiltRight.bmp" );
+    textures[3] = LoadTexture( "Textures/Game/Bullet.bmp" );    
+    textures[4] = LoadTexture( "Textures/Game/Enemy.bmp" );    
+    textures[5] = LoadTexture( "Textures/Game/Bullet.bmp" );
+    textures[6] = LoadTexture( "Textures/Menu/Start.bmp" );
+    textures[7] = LoadTexture( "Textures/Menu/Options.bmp" );
+    textures[8] = LoadTexture( "Textures/Menu/Exit.bmp" );
+    textures[9] = LoadTexture( "Textures/Menu/SelectedStart.bmp" );
+    textures[10] = LoadTexture( "Textures/Menu/SelectedOptions.bmp" );
+    textures[11] = LoadTexture( "Textures/Menu/SelectedExit.bmp" );
+    menu.setup(textures);
     game.setup(textures); 
 
 }

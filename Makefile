@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 CC = g++
 CFLAGS  = -Wall -g
-PROG = Game
+PROG = Return-void
 
-SRCS = main.cpp Game.cpp Player.cpp Enemy.cpp Bullet.cpp  
+SRCS = main.cpp Menu.cpp Game.cpp Player.cpp Enemy.cpp Bullet.cpp  
 
 LIBS = -lglut -lGLU -lGL
 

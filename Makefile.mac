@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 CC = g++
 CFLAGS  = -Wall -g
-PROG = Game
+PROG = Return-void
 
-SRCS = main.cpp Ship.cpp Bullet.cpp Enemy.cpp
+SRCS = main.cpp Game.cpp Menu.cpp Ship.cpp Bullet.cpp Enemy.cpp
 
 LIBS =  -framework OpenGL -framework GLUT -Wno-deprecated-declarations
 
