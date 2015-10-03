@@ -12,11 +12,15 @@
 #include <time.h>      /* time */
 #include <ctype.h>
 
-#include "Ship.h"
-#include "Enemy.h"
+#include "Game.h"
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
+
+enum Screen {
+    Menu,
+    inGame  
+};
 
 double windowWidth = 100; //veiwing world x
 double windowHeight = 100; // veiwing world y
@@ -30,13 +34,8 @@ double gridSquareWidth;
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
 
-GLuint Shiptexture;
-GLuint Bullettexture;
-GLuint Lefttexture;
-GLuint Righttexture;
-
-Ship ship;
-Enemy enemy;
+Game game;
+Screen screen;
 
 void Timer(int value) {
    glutPostRedisplay();    // Post a paint request to activate display()
@@ -55,17 +54,6 @@ void specialKeys(int key, int x, int y) {
      switch (key) { 
      case GLUT_KEY_LEFT:
             break; 
-   /*  case GLUT_KEY_F1:
-         if (glutGameModeGet (GLUT_GAME_MODE_POSSIBLE)) {
-             glutGameModeString("1920x1080:32");
-             glutEnterGameMode();
-         } 
-         break;
-     case GLUT_KEY_F2:
-         glutLeaveGameMode();
-         glutCreateWindow("Faggot window"); 
-         glutFullScreen();
-         break;*/
      }
 }
 
@@ -73,73 +61,26 @@ void mouse(int button, int state, int x, int y) {
     
 }
 
-void collisions() {   
-    if(enemy.getVisible()) {
-        if( (ship.getX() >= enemy.getX() && ship.getX() <= ( enemy.getX() + enemy.getWidth() ) ) || 
-          ((ship.getX() + ship.getWidth()) >= enemy.getX() && ( ship.getX() + enemy.getWidth() ) <= ( enemy.getX() + enemy.getWidth() )) ) {
-               
-           if( (ship.getY() >= enemy.getY() && ship.getY() <= ( enemy.getY() + enemy.getHeight() ) ) || 
-              ((ship.getY() + ship.getHeight()) >= enemy.getY() && ( ship.getY() + enemy.getHeight() ) <= ( enemy.getY() + enemy.getHeight() )) ) {
-                   
-               enemy.looseHealth(10);
-               ship.reset(); 
-           }
-        }
-        for(int i = 0; i < 20; ++i) {
-            if(ship.getBulletVisible(i)) {
-                if( (ship.getBulletX(i) >= enemy.getX() && ship.getBulletX(i) <= ( enemy.getX() + enemy.getWidth() ) ) || 
-                 ((ship.getBulletX(i) + ship.getBulletWidth(i)) >= enemy.getX() && ( ship.getBulletX(i) + enemy.getWidth() ) <= ( enemy.getX() + enemy.getWidth() )) ) {
-               
-                    if( (ship.getBulletY(i) >= enemy.getY() && ship.getBulletY(i) <= ( enemy.getY() + enemy.getHeight() ) ) || 
-                      ((ship.getBulletY(i) + ship.getBulletHeight(i)) >= enemy.getY() && ( ship.getBulletY(i) + enemy.getHeight() ) <= ( enemy.getY() + enemy.getHeight() )) ) {
-                       
-                       ship.setBulletVisible(false, i);
-                       enemy.looseHealth(1);
-                    }
-                } 
-            }
-        }
-    }
-}
-
 void inGameKeyPress() {
-    if(keyState[(unsigned char)'a'] == BUTTON_DOWN) {
-        ship.moveLeft();
-        ship.leftImage();
-    }
-    if(keyState[(unsigned char)'d'] == BUTTON_DOWN) {
-        ship.moveRight();
-        ship.rightImage();
-    }
-    if(keyState[(unsigned char)'w'] == BUTTON_DOWN)
-        ship.moveUp();
-    if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
-        ship.moveDown();
-    if(keyState[32] == BUTTON_DOWN) {
-        if(prevKeyState[32] != BUTTON_DOWN) {
-                ship.fire();
-        }
-    }
-    prevKeyState[32] = keyState[32];
-    
-    if(keyState[(unsigned char)'a'] == BUTTON_UP && keyState[(unsigned char)'d'] == BUTTON_UP) {
-        ship.stationaryImage();
-    }
+    //Game class
 }
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClear( GL_COLOR_BUFFER_BIT);
-    ship.draw();
-    
-    if(enemy.getVisible())
-        enemy.draw();
     if(keyState[27] == BUTTON_DOWN) {//ESC
         glutLeaveGameMode();
         exit(0);
     }
-    inGameKeyPress();
-    collisions();
+    
+    switch(screen) {
+       case inGame:
+           game.keyPress(keyState, prevKeyState);
+           game.draw();
+           break;
+       case Menu:
+           break;
+    }
+    
         
     glFlush();       
     glutSwapBuffers(); 
@@ -156,9 +97,9 @@ GLuint LoadTexture( const char * filename )
   FILE * file;
 
   file = fopen( filename, "rb" );
-
+  
   if ( file == NULL ) return 0;
- // printf("file opened\n");
+  // printf("file opened\n");
   width = 2048;
   height = 2048;
   data = (unsigned char *)malloc( width * height * 4 );
@@ -166,35 +107,26 @@ GLuint LoadTexture( const char * filename )
   fread( data, width * height * 4, 1, file );
   fclose( file );
  
-unsigned char t, t1, t2, t3;
+  unsigned char t, t1, t2, t3;
   for(int j = 0; j < height; ++j){
-  for(int i = 0; i < width; ++i) {
-   //A, B, G, R
-      t=data[i];
-      t1=data[i+1];
-      t2=data[i+2];
-      t3=data[i+3];
- //R, G, B, A
-      data[j]=t2;
-      data[j+1]=t1;
-      data[j+2]=t;
-      data[j+3]=t3;
+      for(int i = 0; i < width; ++i) {
+          //A, B, G, R
+          t=data[i]; //A
+          t1=data[i+1];//B
+          t2=data[i+2];//G
+          t3=data[i+3];//R
+          //R, G, B, A
+          data[j]=t2;
+          data[j+1]=t1;
+          data[j+2]=t;
+          data[j+3]=t3;
 
-      i+=4;
-      j+=4;
-      /*int index = i*3;
-      unsigned char B,R;
-      B = data[index];
-      R = data[index+2];
-
-      data[index] = R;
-      data[index+2] = B;*/
-   }
+          i+=4;
+          j+=4;
+      }
    }
    glGenTextures(1, &textures);
    glBindTexture(GL_TEXTURE_2D, textures);
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -204,20 +136,6 @@ unsigned char t, t1, t2, t3;
    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
    free( data );
    return textures;
-    /*glGenTextures( 1, &textures );
-    glBindTexture( GL_TEXTURE_2D, textures );
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-
-
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );    
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width,   height, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
-    //gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
-    free( data );
-
-    return textures;*/
 }
 
 void setup() {
@@ -226,16 +144,18 @@ void setup() {
 
     printf("Screen Resolution: %f\n", screenResX);
     printf("Screen Resolution: %f\n", screenResY);
-
-    Shiptexture = LoadTexture( "Textures/Ship.bmp" );
-    Lefttexture = LoadTexture( "Textures/ShipTiltLeft.bmp" );
-    Righttexture = LoadTexture( "Textures/ShipTiltRight.bmp" );
-    Bullettexture = LoadTexture( "Textures/Bullet.bmp" );
-    ship.setup(Shiptexture, Lefttexture, Righttexture, Bullettexture);
     
-    Shiptexture = LoadTexture( "Textures/Enemy.bmp" );    
-    Bullettexture = LoadTexture( "Textures/Bullet.bmp" );
-    enemy.setup(Shiptexture, Bullettexture);
+    screen = inGame;
+    GLuint textures[6];
+    textures[0] = LoadTexture( "Textures/Ship.bmp" );
+    textures[1] = LoadTexture( "Textures/ShipTiltLeft.bmp" );
+    textures[2] = LoadTexture( "Textures/ShipTiltRight.bmp" );
+    textures[3] = LoadTexture( "Textures/Bullet.bmp" );    
+    textures[4] = LoadTexture( "Textures/Enemy.bmp" );    
+    textures[5] = LoadTexture( "Textures/Bullet.bmp" );
+    
+    game.setup(textures); 
+
 }
 
 int main(int argc, char** argv) {
@@ -274,9 +194,9 @@ int main(int argc, char** argv) {
     glutSpecialFunc(specialKeys);
     
     //Ortho (x1,x2,y1,y2,z1,z2). 
+    //glOrtho(0.0, glutGet(GLUT_SCREEN_WIDTH)/100, 0.0, glutGet(GLUT_SCREEN_HEIGHT)/100, -1.0, 1.0); setup a wxhx2 viewing world
     glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
-    //glOrtho(0.0, glutGet(GLUT_SCREEN_WIDTH)/100, 0.0, glutGet(GLUT_SCREEN_HEIGHT)/100, -1.0, 1.0);   // setup a wxhx2 viewing world
-  //  glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     setup();
     printf("Setup Complete\n");
     glutMainLoop(); 

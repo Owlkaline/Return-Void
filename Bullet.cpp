@@ -3,10 +3,11 @@
 #include <stdlib.h>
 
 Bullet::Bullet() {
-        width = 2;
+        width = 0.5;
         height = 3;
         x = 0.0f;
-        y = 0.0f;  
+        y = 0.0f; 
+         
         boundryX = 100 - width;
         boundryY = 100 - height;
         isVisible = false;
@@ -35,6 +36,9 @@ void Bullet::draw() {
     
     
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+	glColor4ub(255,255,255,255);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

@@ -20,22 +20,27 @@ class Enemy
 {
     public:
         Enemy();
-        int getHealth();
-        void looseHealth(int healthlost);
+        void setup(GLuint newText, GLuint bulletText);
+        void destroy();
+        
         float getX();
         float getY();
         int getWidth();
-        int getHeight();
-        void setVisible(bool visible);
+        int getHeight();        
+        int getHealth();
         bool getVisible();
-        void setBulletVisible(bool visible);
+        
         void fire();
         void moveLeft();
         void moveRight();
         void moveUp();
         void moveDown();
         void draw();
-        void setup(GLuint newText, GLuint bulletText);
+        
+        void looseHealth(int healthlost);
+        
+        void setVisible(bool visible);      
+        void setBulletVisible(bool visible);      
     protected:  
         int boundryX, boundryY; 
         int width, height;

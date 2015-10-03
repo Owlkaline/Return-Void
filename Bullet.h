@@ -32,7 +32,7 @@ class Bullet
     protected:  
         bool isVisible;
         int boundryX, boundryY; 
-        int width, height;
+        float width, height;
         float x, y, speed;  
         GLuint texture; 
 };

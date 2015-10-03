@@ -19,6 +19,10 @@ void Enemy::setup(GLuint EnemyText, GLuint bulletText) {
     bullets.setup(bulletText);
 }
 
+void Enemy::destroy() {
+    //free(texture);
+}
+
 void Enemy::draw() {
     //glColor3f(0.0, 1.0, 0.0);
     moveRight();
@@ -32,7 +36,10 @@ void Enemy::draw() {
         y = -height;
 
     glEnable(GL_TEXTURE_2D);
-    
+    glEnable(GL_BLEND);
+	glColor4ub(255,255,255,255);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
