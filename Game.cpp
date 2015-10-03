@@ -69,9 +69,25 @@ void Game::collisions() {
     }
 }
 
+void Game::drawHub() {
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glBegin(GL_QUADS);
+        //glTexCoord2f(0.0f, 0.0f); 
+        glVertex3f(0, 100, 0.0);
+       // glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(100, 100, 0.0);
+       // glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(100, 90, 0.0);
+      //  glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(0, 90, 0.0);
+    glEnd();
+    
+}
+
 void Game::draw() {
     if(enemy.getVisible())
         enemy.draw();
     player.draw();
+    drawHub();
     collisions();
 }

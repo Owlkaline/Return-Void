@@ -3,7 +3,7 @@
 *.lo
 *.o
 *.obj
-Game
+Return-void
 
 # Precompiled Headers
 *.gch

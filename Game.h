@@ -33,6 +33,7 @@ class Game
     protected:  
         Player player;
         Enemy enemy;
+        void drawHub();
         GLuint LoadTexture( const char * filename );
 };
 
