@@ -7,6 +7,8 @@ Game::Game() {
 void Game::setup(GLuint *textures) {
     player.setup(textures);
     enemy.setup(textures[4], textures[5]);
+    
+    
     printf("Game setup\n");
 }
 
@@ -42,11 +44,11 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
 
 void Game::collisions() {   
     if(enemy.getVisible()) {
-        if( (player.getX() >= enemy.getX() && player.getX() <= ( enemy.getX() + enemy.getWidth() ) ) || 
-          ((player.getX() + player.getWidth()) >= enemy.getX() && ( player.getX() + enemy.getWidth() ) <= ( enemy.getX() + enemy.getWidth() )) ) {
+        if( (player.getX()+1 >= enemy.getX()+1 && player.getX()+1 <= ( enemy.getX()+1 + enemy.getWidth()-1 ) ) || 
+          ((player.getX()+1 + player.getWidth()-1) >= enemy.getX()+1 && ( player.getX()+1 + enemy.getWidth()-1 ) <= ( enemy.getX()+1 + enemy.getWidth()-1 )) ) {
                
-           if( (player.getY() >= enemy.getY() && player.getY() <= ( enemy.getY() + enemy.getHeight() ) ) || 
-              ((player.getY() + player.getHeight()) >= enemy.getY() && ( player.getY() + enemy.getHeight() ) <= ( enemy.getY() + enemy.getHeight() )) ) {
+           if( (player.getY()+1 >= enemy.getY()+1 && player.getY()+1 <= ( enemy.getY()+1 + enemy.getHeight()-1 ) ) || 
+              ((player.getY()+1 + player.getHeight()-1) >= enemy.getY()+1 && ( player.getY()+1 + enemy.getHeight()-1 ) <= ( enemy.getY()+1 + enemy.getHeight()-1 )) ) {
                    
                enemy.looseHealth(10);
                player.reset(); 
@@ -54,11 +56,11 @@ void Game::collisions() {
         }
         for(int i = 0; i < 20; ++i) {
             if(player.getBulletVisible(i)) {
-                if( (player.getBulletX(i) >= enemy.getX() && player.getBulletX(i) <= ( enemy.getX() + enemy.getWidth() ) ) || 
-                 ((player.getBulletX(i) + player.getBulletWidth(i)) >= enemy.getX() && ( player.getBulletX(i) + enemy.getWidth() ) <= ( enemy.getX() + enemy.getWidth() )) ) {
+                if( (player.getBulletX(i) >= enemy.getX()+1 && player.getBulletX(i) <= ( enemy.getX()+1 + enemy.getWidth()-1 ) ) || 
+                 ((player.getBulletX(i) + player.getBulletWidth(i)) >= enemy.getX()+1 && ( player.getBulletX(i) + enemy.getWidth()-1 ) <= ( enemy.getX()+1 + enemy.getWidth()-1 )) ) {
                
-                    if( (player.getBulletY(i) >= enemy.getY() && player.getBulletY(i) <= ( enemy.getY() + enemy.getHeight() ) ) || 
-                      ((player.getBulletY(i) + player.getBulletHeight(i)) >= enemy.getY() && ( player.getBulletY(i) + enemy.getHeight() ) <= ( enemy.getY() + enemy.getHeight() )) ) {
+                    if( (player.getBulletY(i) >= enemy.getY()+1 && player.getBulletY(i) <= ( enemy.getY()+1 + enemy.getHeight()-1 ) ) || 
+                      ((player.getBulletY(i) + player.getBulletHeight(i)) >= enemy.getY()+1 && ( player.getBulletY(i) + enemy.getHeight()-1 ) <= ( enemy.getY()+1 + enemy.getHeight()-1 )) ) {
                        
                        player.setBulletVisible(false, i);
                        enemy.looseHealth(1);
@@ -87,7 +89,9 @@ void Game::drawHub() {
 void Game::draw() {
     if(enemy.getVisible())
         enemy.draw();
-    player.draw();
+        
     drawHub();
+    player.draw();
+    
     collisions();
 }

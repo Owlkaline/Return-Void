@@ -17,7 +17,8 @@ Player::Player() {
    }
    
 void Player::setup(GLuint *newTextures) {
-    
+    x = 10.0f;
+    y = 5.0f; 
     PlayerText = newTextures[0];
     PlayerLeftText = newTextures[1];
     PlayerRightText = newTextures[2];
@@ -60,7 +61,7 @@ void Player::draw() {
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	glColor4ub(255,255,255,255);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	

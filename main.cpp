@@ -91,6 +91,7 @@ void display() {
                    break;
                case 1: 
                    screen = sGame;
+                  // game.setup();
                    break;
                case 2:
                    screen = sOptions;
@@ -215,7 +216,7 @@ int main(int argc, char** argv) {
     glAlphaFunc(GL_GREATER, 0.1);
     glEnable(GL_ALPHA_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable( GL_BLEND ); 
+  //  glEnable( GL_BLEND ); 
     glutIgnoreKeyRepeat(1);
     
     glutDisplayFunc(display);
