@@ -57,7 +57,6 @@ void Menu::drawRectangle(float x, float y, int textnum) {
    glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, textures[textnum]);
-	//glEnable(GL_BLEND);
 	glColor4ub(255,255,255,255);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	

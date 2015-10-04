@@ -13,6 +13,7 @@
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
+#include <string>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -33,6 +34,7 @@ class Game
     protected:  
         Player player;
         Enemy enemy;
+        //void drawString(int PosX, int PosY, float R, float G, float B, std::string str);
         void drawHub();
         GLuint LoadTexture( const char * filename );
 };

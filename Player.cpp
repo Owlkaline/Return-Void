@@ -57,6 +57,8 @@ void Player::draw() {
         x = boundryX;
     if(y > boundryY)
         y = boundryY;
+    if(health < 0)
+        health = 0;
 
     glEnable(GL_TEXTURE_2D);
     
