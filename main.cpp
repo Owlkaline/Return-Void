@@ -158,7 +158,7 @@ void setup() {
     
     screen = sMenu;
     GLuint textures[12];
-    textures[0] = LoadTexture( "Textures/Game/Ship2.bmp" );
+    textures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
     textures[1] = LoadTexture( "Textures/Game/ShipTiltLeft.bmp" );
     textures[2] = LoadTexture( "Textures/Game/ShipTiltRight.bmp" );
     textures[3] = LoadTexture( "Textures/Game/Bullet.bmp" );    
