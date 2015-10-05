@@ -35,8 +35,8 @@ class Game
         Player player;
         Enemy enemy;
         //void drawString(int PosX, int PosY, float R, float G, float B, std::string str);
-        void drawHub();
-        GLuint LoadTexture( const char * filename );
+        void drawHud();
+        GLuint texture[2];
 };
 
 

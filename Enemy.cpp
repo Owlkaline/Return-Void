@@ -7,7 +7,7 @@ Enemy::Enemy() {
         height = 10;         
         health = 10; 
         boundryX = 100;
-        boundryY = 100 - height;
+        boundryY = 92 - height;
         x = 0;
         y = boundryY - height; 
         isVisible = true;

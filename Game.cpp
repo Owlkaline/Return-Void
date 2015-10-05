@@ -7,7 +7,8 @@ Game::Game() {
 void Game::setup(GLuint *textures) {
     player.setup(textures);
     enemy.setup(textures[4], textures[5]);
-    
+    texture[0] = textures[12];
+    texture[1] = textures[13];
     
     printf("Game setup\n");
 }
@@ -87,64 +88,85 @@ void Game::collisions() {
             }
     }
 */
-void Game::drawHub() {
-    glColor3f(0.0f, 1.0f, 0.0f);
+void Game::drawHud() {
+    // glColor3f(0.0f, 1.0f, 0.0f);
+    
+    glEnable(GL_TEXTURE_2D);
+    
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	
+	glColor4ub(255,255,255,255);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	    
+	glBegin(GL_QUADS);
+      glTexCoord2f(0.1f, 0.0f); 
+      glVertex3f(0, 100, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(100, 100, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(100, 92, 0.0);
+      glTexCoord2f(0.1f, 1.0f);
+      glVertex3f(0, 92, 0.0);
+    glEnd();
+    
+	glBindTexture(GL_TEXTURE_2D, texture[1]);
+	
+	glColor4ub(255,255,255,255);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	    
+    //Health Bar  
     glBegin(GL_QUADS);
-        //glTexCoord2f(0.0f, 0.0f); 
-        glVertex3f(0, 100, 0.0);
-       // glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(100, 100, 0.0);
-       // glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(100, 92, 0.0);
-      //  glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(0, 92, 0.0);
+      glVertex3f(79, 97, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(79 + 20 * (player.getHealth()/5.0f), 97, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(79 + 20 * (player.getHealth()/5.0f), 95, 0.0);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(79, 95, 0.0);
+    glEnd();   
+    glDisable(GL_TEXTURE_2D);
+      
+    glBegin(GL_QUADS);  
+      //Health Bar Border
+      glColor3f(0.8f, 0.0f, 1.0f);
         
+      glVertex3f(78.5f, 98.0f, 0.0);
+      glVertex3f(99.5f, 98.0f, 0.0);
+      glVertex3f(99.5f, 97, 0.0);
+      glVertex3f(78.5f, 97, 0.0);
         
-        //Health Bar
-        glColor3f(1.0f, 0.0f, 0.0f);
+      glVertex3f(78.5f, 95.0f, 0.0);
+      glVertex3f(99.5f, 95.0f, 0.0);
+      glVertex3f(99.5f, 94, 0.0);
+      glVertex3f(78.5f, 94, 0.0);
         
-        glVertex3f(79, 97, 0.0);
-       // glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(79 + 20 * (player.getHealth()/5.0f), 97, 0.0);
-       // glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(79 + 20 * (player.getHealth()/5.0f), 95, 0.0);
-      //  glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(79, 95, 0.0);
+      glVertex3f(99.0f, 97.0f, 0.0);
+      glVertex3f(99.5f, 97.0f, 0.0);
+      glVertex3f(99.5f, 95, 0.0);
+      glVertex3f(99.0f, 95, 0.0);
         
-        //Health Bar Border
-        glColor3f(0.8f, 0.0f, 1.0f);
+      glVertex3f(78.5f, 97.0f, 0.0);
+      glVertex3f(79.0f, 97.0f, 0.0);
+      glVertex3f(79.0f, 95, 0.0);
+      glVertex3f(78.5f, 95, 0.0);
         
-        glVertex3f(78.5f, 98.0f, 0.0);
-        glVertex3f(99.5f, 98.0f, 0.0);
-        glVertex3f(99.5f, 97, 0.0);
-        glVertex3f(78.5f, 97, 0.0);
+      //Black bars in health bar
+      glColor3f(0.0f, 0.0f, 0.0f);
+       
+      for(int i = 0; i < 4; ++i) {
+          glVertex3f(78.8f + 20 * ((i+1)/5.0f), 97.0f, 0.0);
+          glVertex3f(79 + 20 * ((i+1)/5.0f), 97.0f, 0.0);
+          glVertex3f(79 + 20 * ((i+1)/5.0f), 95, 0.0);
+          glVertex3f(78.8f + 20 * ((i+1)/5.0f), 95, 0.0);
+      }
         
-        glVertex3f(78.5f, 95.0f, 0.0);
-        glVertex3f(99.5f, 95.0f, 0.0);
-        glVertex3f(99.5f, 94, 0.0);
-        glVertex3f(78.5f, 94, 0.0);
-        
-        glVertex3f(99.0f, 97.0f, 0.0);
-        glVertex3f(99.5f, 97.0f, 0.0);
-        glVertex3f(99.5f, 95, 0.0);
-        glVertex3f(99.0f, 95, 0.0);
-        
-        glVertex3f(78.5f, 97.0f, 0.0);
-        glVertex3f(79.0f, 97.0f, 0.0);
-        glVertex3f(79.0f, 95, 0.0);
-        glVertex3f(78.5f, 95, 0.0);
-        
-        //Black bars in health bar
-        glColor3f(0.0f, 0.0f, 0.0f);
-        
-        for(int i = 0; i < 4; ++i) {
-            glVertex3f(78.8f + 20 * ((i+1)/5.0f), 97.0f, 0.0);
-            glVertex3f(79 + 20 * ((i+1)/5.0f), 97.0f, 0.0);
-            glVertex3f(79 + 20 * ((i+1)/5.0f), 95, 0.0);
-            glVertex3f(78.8f + 20 * ((i+1)/5.0f), 95, 0.0);
-        }
-        
-       // drawString(50, 50, 1.0f, 0, 0, "Score: 5396");
+      // drawString(50, 50, 1.0f, 0, 0, "Score: 5396");
         
     glEnd();
     
@@ -154,9 +176,12 @@ void Game::draw() {
     if(enemy.getVisible())
         enemy.draw();
         
-    drawHub();
+   
     if(player.getHealth() > 0) {
         player.draw();
         collisions();
     }
+    
+    
+    drawHud();
 }

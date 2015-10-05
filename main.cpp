@@ -130,27 +130,12 @@ GLuint LoadTexture( const char * filename ) {
     height = 2048;
     data = (unsigned char *)malloc( width * height * 4 );
     //int size = fseek(file,);
-    fread( data, width * height * 4, 1, file );
+    fseek(file,3,SEEK_CUR); // if we go forward 3 bytes then the BMP color
+                            // order is BGRA.
+                            // Without an fseek, the order is GRAB
+    fread( data, 1, width * height * 4, file );
     fclose( file );
  
-    unsigned char t, t1, t2, t3;
-    for(int j = 0; j < height; ++j){
-        for(int i = 0; i < width; ++i) {
-            //A, B, G, R
-            t=data[i]; //A
-            t1=data[i+1];//B
-            t2=data[i+2];//G
-            t3=data[i+3];//R
-            //R, G, B, A
-            data[j]=t2;
-            data[j+1]=t1;
-            data[j+2]=t;
-            data[j+3]=t3;
-
-            i+=4;
-            j+=4;
-        }  
-     }
      glGenTextures(1, &textures);
      glBindTexture(GL_TEXTURE_2D, textures);
   
@@ -159,7 +144,7 @@ GLuint LoadTexture( const char * filename ) {
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
      glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
-     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
      free( data );
      return textures;
 }
@@ -172,7 +157,7 @@ void setup() {
     printf("Screen Resolution: %f\n", screenResY);
     
     screen = sMenu;
-    GLuint textures[12];
+    GLuint textures[14];
     textures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
     textures[1] = LoadTexture( "Textures/Game/ShipTiltLeft.bmp" );
     textures[2] = LoadTexture( "Textures/Game/ShipTiltRight.bmp" );
@@ -185,6 +170,9 @@ void setup() {
     textures[9] = LoadTexture( "Textures/Menu/SelectedStart.bmp" );
     textures[10] = LoadTexture( "Textures/Menu/SelectedOptions.bmp" );
     textures[11] = LoadTexture( "Textures/Menu/SelectedExit.bmp" );
+    textures[12] = LoadTexture( "Textures/Hud/TopBar.bmp" );
+    textures[13] = LoadTexture( "Textures/Hud/HealthBar.bmp" );
+    printf("Textures Loaded");
     menu.setup(textures);
     game.setup(textures); 
 
@@ -194,7 +182,7 @@ int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
     
-    glClearColor(255.0, 0.0, 255.0, 0.0);         // black background
+    glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
     char mode_string[24];
@@ -228,7 +216,7 @@ int main(int argc, char** argv) {
     //Ortho (x1,x2,y1,y2,z1,z2). 
     //glOrtho(0.0, glutGet(GLUT_SCREEN_WIDTH)/100, 0.0, glutGet(GLUT_SCREEN_HEIGHT)/100, -1.0, 1.0); setup a wxhx2 viewing world
     glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 255.0);
     setup();
     printf("Setup Complete\n");
     glutMainLoop(); 
