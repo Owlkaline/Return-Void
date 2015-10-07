@@ -21,7 +21,7 @@ class Menu
 {
     public:
         Menu();
-        void setup(GLuint *textures);
+        void setup();
         
         int keyPress(unsigned char* keyState, unsigned char* prevKeyState);
         void draw();       
@@ -30,6 +30,7 @@ class Menu
         int height;
         int width;
         void drawRectangle(float x, float y, int textnum);
+        GLuint LoadTexture( const char * filename );
         GLuint texture;
         GLuint textures[6];
 };

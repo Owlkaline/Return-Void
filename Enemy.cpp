@@ -15,6 +15,10 @@ Enemy::Enemy() {
    }
    
 void Enemy::setup(GLuint EnemyText, GLuint bulletText) {
+    health = 10; 
+    x = 0;
+    y = boundryY - height; 
+    isVisible = true;
     texture = EnemyText; 
     bullets.setup(bulletText);
 }

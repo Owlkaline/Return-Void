@@ -17,7 +17,7 @@ Player::Player() {
    }
    
 void Player::setup(GLuint *newTextures) {
-    x = 10.0f;
+    x = 50.0f;
     y = 5.0f; 
     PlayerText = newTextures[0];
     PlayerLeftText = newTextures[1];
@@ -26,6 +26,7 @@ void Player::setup(GLuint *newTextures) {
     
     for(int i = 0; i < NUMBULLETS; ++i) 
         bullets[i].setup(newTextures[3]);
+    
     printf("Player bullets constructed\n");
 }
 

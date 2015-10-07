@@ -25,7 +25,7 @@ class Game
 {
     public:
         Game();
-        void setup(GLuint *textures);
+        void setup();
         void destroy();
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);
@@ -40,6 +40,7 @@ class Game
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);
         //void drawString(int PosX, int PosY, float R, float G, float B, std::string str);
         void drawHud();
+        GLuint LoadTexture( const char * filename );
         GLuint texture[12];
 };
 

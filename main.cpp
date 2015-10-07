@@ -99,7 +99,7 @@ void display() {
                    break;
                case 1: 
                    screen = sGame;
-                  // game.setup();
+                   game.setup();
                    break;
                case 2:
                    screen = sOptions;
@@ -120,42 +120,6 @@ void display() {
     glutSwapBuffers(); 
 }
 
-GLuint LoadTexture( const char * filename ) {
-    GLuint textures;
- 
-    int width, height;
-
-    unsigned char * data;
-
-    FILE * file;
-
-    file = fopen( filename, "rb" );
-  
-    if ( file == NULL ) return 0;
-    // printf("file opened\n");
-    width = 1024;
-    height = 1024;
-    data = (unsigned char *)malloc( width * height * 4 );
-    //int size = fseek(file,);
-    fseek(file,3,SEEK_CUR); // if we go forward 3 bytes then the BMP color
-                            // order is BGRA.
-                            // Without an fseek, the order is GRAB
-    fread( data, 1, width * height * 4, file );
-    fclose( file );
- 
-     glGenTextures(1, &textures);
-     glBindTexture(GL_TEXTURE_2D, textures);
-  
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
-     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
-     free( data );
-     return textures;
-}
-
 void setup() {
     screenResX = glutGet(GLUT_SCREEN_WIDTH);
     screenResY = glutGet(GLUT_SCREEN_HEIGHT);
@@ -163,36 +127,9 @@ void setup() {
     printf("Screen Resolution: %f\n", screenResX);
     printf("Screen Resolution: %f\n", screenResY);
     
-    screen = sMenu;
-    GLuint textures[24];
-    textures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
-    textures[1] = LoadTexture( "Textures/Game/ShipTiltLeft.bmp" );
-    textures[2] = LoadTexture( "Textures/Game/ShipTiltRight.bmp" );
-    textures[3] = LoadTexture( "Textures/Game/Bullet.bmp" );    
-    textures[4] = LoadTexture( "Textures/Game/Enemy.bmp" );    
-    textures[5] = LoadTexture( "Textures/Game/Bullet.bmp" );
-    textures[6] = LoadTexture( "Textures/Menu/Start.bmp" );
-    textures[7] = LoadTexture( "Textures/Menu/Options.bmp" );
-    textures[8] = LoadTexture( "Textures/Menu/Exit.bmp" );
-    textures[9] = LoadTexture( "Textures/Menu/SelectedStart.bmp" );
-    textures[10] = LoadTexture( "Textures/Menu/SelectedOptions.bmp" );
-    textures[11] = LoadTexture( "Textures/Menu/SelectedExit.bmp" );
-    textures[12] = LoadTexture( "Textures/Hud/TopBar.bmp" );
-    textures[13] = LoadTexture( "Textures/Hud/HealthBar.bmp" );
-    textures[14] = LoadTexture( "Textures/Score/Zero.bmp" );
-    textures[15] = LoadTexture( "Textures/Score/One.bmp" );
-    textures[16] = LoadTexture( "Textures/Score/Two.bmp" );
-    textures[17] = LoadTexture( "Textures/Score/Three.bmp" );
-    textures[18] = LoadTexture( "Textures/Score/Four.bmp" );
-    textures[19] = LoadTexture( "Textures/Score/Five.bmp" );
-    textures[20] = LoadTexture( "Textures/Score/Six.bmp" );
-    textures[21] = LoadTexture( "Textures/Score/Seven.bmp" );
-    textures[22] = LoadTexture( "Textures/Score/Eight.bmp" );
-    textures[23] = LoadTexture( "Textures/Score/Nine.bmp" );
-    printf("Textures Loaded");
-    menu.setup(textures);
-    game.setup(textures); 
+    screen = sMenu;    
 
+    menu.setup();
 }
 
 int main(int argc, char** argv) {

@@ -7,13 +7,14 @@ Menu::Menu() {
     printf("Menu Constructed\n");
 }
 
-void Menu::setup(GLuint *newtext) {
-    textures[0] = newtext[6];
-    textures[1] = newtext[7];
-    textures[2] = newtext[8];
-    textures[3] = newtext[9];
-    textures[4] = newtext[10];
-    textures[5] = newtext[11];
+void Menu::setup() {
+    textures[0] = LoadTexture( "Textures/Menu/Start.bmp" );
+    textures[1] = LoadTexture( "Textures/Menu/Options.bmp" );
+    textures[2] = LoadTexture( "Textures/Menu/Exit.bmp" );
+    textures[3] = LoadTexture( "Textures/Menu/SelectedStart.bmp" );
+    textures[4] = LoadTexture( "Textures/Menu/SelectedOptions.bmp" );
+    textures[5] = LoadTexture( "Textures/Menu/SelectedExit.bmp" );
+    
     printf("Menu setup\n");
 }
   
@@ -95,4 +96,40 @@ void Menu::draw() {
             drawRectangle(50 - width/2, 40 - height/2, 5);
             break;
     } 
+}
+
+GLuint Menu::LoadTexture( const char * filename ) {
+    GLuint textures;
+ 
+    int width, height;
+
+    unsigned char * data;
+
+    FILE * file;
+
+    file = fopen( filename, "rb" );
+  
+    if ( file == NULL ) return 0;
+    // printf("file opened\n");
+    width = 1024;
+    height = 1024;
+    data = (unsigned char *)malloc( width * height * 4 );
+    //int size = fseek(file,);
+    fseek(file,3,SEEK_CUR); // if we go forward 3 bytes then the BMP color
+                            // order is BGRA.
+                            // Without an fseek, the order is GRAB
+    fread( data, 1, width * height * 4, file );
+    fclose( file );
+ 
+     glGenTextures(1, &textures);
+     glBindTexture(GL_TEXTURE_2D, textures);
+  
+     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
+     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+     free( data );
+     return textures;
 }

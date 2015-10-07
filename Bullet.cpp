@@ -14,6 +14,9 @@ Bullet::Bullet() {
    }
    
 void Bullet::setup(GLuint newText) {
+    visible = false;
+    x = 1;
+    y = 1;
     texture = newText;
 }
 
