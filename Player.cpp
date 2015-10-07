@@ -26,6 +26,7 @@ void Player::setup(GLuint *newTextures) {
     
     for(int i = 0; i < NUMBULLETS; ++i) 
         bullets[i].setup(newTextures[3]);
+    printf("Player bullets constructed\n");
 }
 
 void Player::destroy() {
@@ -63,37 +64,31 @@ void Player::draw() {
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
-	//glEnable(GL_BLEND);
-	glColor4ub(255,255,255,255);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
     glBegin(GL_POLYGON);
-        glTexCoord2f(0.01f, 1.0f); 
+        glTexCoord2f(0.03f, 1.0f); 
         glVertex3f(x, y + height, 0.0);
-        glTexCoord2f(1.01f, 1.0f);
+        glTexCoord2f(1.03f, 1.0f);
         glVertex3f(x + width, y + height, 0.0);
-        glTexCoord2f(1.01f, 0.0f);
+        glTexCoord2f(1.03f, 0.0f);
         glVertex3f(x + width, y, 0.0);
-        glTexCoord2f(0.01f, 0.0f);
+        glTexCoord2f(0.03f, 0.0f);
         glVertex3f(x, y, 0.0);
     glEnd();
-
+    glDisable(GL_TEXTURE_2D);
   
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible())
+            bullets[i].moveUp();
             bullets[i].draw();
-    }
-  glDisable(GL_TEXTURE_2D);
+    } 
 }
 
 void Player::fire() {
     bool found = false;
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible() == false) {
-            bullets[i].fire(x + width/2 - 0.5, y + height, 1.75);
+            bullets[i].fire(x + width/2, y + height, 1.75);
             found = true;
         }
         if(found)

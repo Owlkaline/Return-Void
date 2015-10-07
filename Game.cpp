@@ -5,6 +5,7 @@ Game::Game() {
 }
 
 void Game::setup(GLuint *textures) {
+    
     player.setup(textures);
     enemy.setup(textures[4], textures[5]);
     texture[0] = textures[12];
@@ -31,7 +32,9 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         player.moveUp();
     if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
         player.moveDown();
-    if(keyState[32] == BUTTON_DOWN) {
+    
+    //Fire player weapon
+    if(keyState[32] == BUTTON_DOWN) { //Space Bar
         if(prevKeyState[32] != BUTTON_DOWN) {
             player.fire();
         }
@@ -89,17 +92,10 @@ void Game::collisions() {
     }
 */
 void Game::drawHud() {
-    // glColor3f(0.0f, 1.0f, 0.0f);
+
     
     glEnable(GL_TEXTURE_2D);
-    
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	
-	glColor4ub(255,255,255,255);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
 	    
 	glBegin(GL_QUADS);
       glTexCoord2f(0.1f, 0.0f); 
@@ -111,26 +107,20 @@ void Game::drawHud() {
       glTexCoord2f(0.1f, 1.0f);
       glVertex3f(0, 92, 0.0);
     glEnd();
-    
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	
-	glColor4ub(255,255,255,255);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	    
+    glDisable(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, texture[1]);
+	glColor3f(1.0f, 0.0f, 0.0f);
     //Health Bar  
     glBegin(GL_QUADS);
       glVertex3f(79, 97, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
+      //glTexCoord2f(1.0f, 0.0f);
       glVertex3f(79 + 20 * (player.getHealth()/5.0f), 97, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
+      //glTexCoord2f(1.0f, 1.0f);
       glVertex3f(79 + 20 * (player.getHealth()/5.0f), 95, 0.0);
-      glTexCoord2f(0.0f, 1.0f);
+     // glTexCoord2f(0.0f, 1.0f);
       glVertex3f(79, 95, 0.0);
     glEnd();   
-    glDisable(GL_TEXTURE_2D);
+    
       
     glBegin(GL_QUADS);  
       //Health Bar Border
@@ -174,8 +164,7 @@ void Game::drawHud() {
 
 void Game::draw() {
     if(enemy.getVisible())
-        enemy.draw();
-        
+        enemy.draw();        
    
     if(player.getHealth() > 0) {
         player.draw();

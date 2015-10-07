@@ -10,9 +10,7 @@ Bullet::Bullet() {
          
         boundryX = 100 - width;
         boundryY = 95 - height;
-        isVisible = false;
-        //setup();
-        printf("Bullet Constructed\n");
+        visible = false;
    }
    
 void Bullet::setup(GLuint newText) {
@@ -21,8 +19,9 @@ void Bullet::setup(GLuint newText) {
 
     
 void Bullet::draw() {
-    moveUp();   
-    //glColor3f(0.0, 1.0, 0.0);
+    if(!visible)
+        return;
+        
     if(x < 0)
         x = 0;
     if(y < 0)
@@ -30,19 +29,13 @@ void Bullet::draw() {
     if(x > boundryX+height)
         x = boundryX;
     if(y > boundryY) {
-      //  y = boundryY;
-        isVisible = false;
+        visible = false;
     }
     
     
     glEnable(GL_TEXTURE_2D);
-    //glEnable(GL_BLEND);
-	glColor4ub(255,255,255,255);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glBegin(GL_POLYGON);
         glTexCoord2f(0.0f, 1.0f); 
@@ -62,16 +55,14 @@ void Bullet::fire(float newX, float newY, float mSpeed) {
     x = newX;
     y = newY;
     speed = mSpeed;
-    isVisible = true;
-    //printf("new bullet fired\n");
-  //  draw();
+    visible = true;
 }
 
 float Bullet::getX() { return x; }
 float Bullet::getY() { return y; }
 int Bullet::getWidth() { return width; }
 int Bullet::getHeight() { return height; }
-void Bullet::setVisible(bool visible) { isVisible = visible; if(!visible) {x = -1; y = -1;} }
-bool Bullet::getVisible() { return isVisible; }
+void Bullet::setVisible(bool Visible) { visible = Visible; if(!visible) {x = 1; y = 1;} }
+bool Bullet::getVisible() { return visible; }
 void Bullet::moveUp() { y += speed; }
 void Bullet::moveDown() { y -= speed; }

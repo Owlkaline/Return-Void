@@ -30,7 +30,7 @@ class Bullet
         void draw();
         void setup(GLuint newText);
     protected:  
-        bool isVisible;
+        bool visible;
         int boundryX, boundryY; 
         float width, height;
         float x, y, speed;  

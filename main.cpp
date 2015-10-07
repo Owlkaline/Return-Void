@@ -66,7 +66,13 @@ void mouse(int button, int state, int x, int y) {
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-    
+	
+	glColor4ub(255,255,255,255);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    int screenNum;
     switch(screen) {
        case sGame:
            if(keyState[27] == BUTTON_DOWN) //ESC
@@ -76,7 +82,7 @@ void display() {
            game.draw();
            break;
        case sMenu:           
-           int screenNum;
+           
            screenNum = menu.keyPress(keyState, prevKeyState);
            if(keyState[27] == BUTTON_DOWN) {//ESC
                if(prevKeyState[27] != BUTTON_DOWN) {
@@ -108,7 +114,6 @@ void display() {
     }
     keyState[27] = prevKeyState[27];
     
-        
     glFlush();       
     glutSwapBuffers(); 
 }
@@ -126,8 +131,8 @@ GLuint LoadTexture( const char * filename ) {
   
     if ( file == NULL ) return 0;
     // printf("file opened\n");
-    width = 2048;
-    height = 2048;
+    width = 1024;
+    height = 1024;
     data = (unsigned char *)malloc( width * height * 4 );
     //int size = fseek(file,);
     fseek(file,3,SEEK_CUR); // if we go forward 3 bytes then the BMP color
@@ -182,7 +187,11 @@ int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
     
+
     glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
+
+    glClearColor(0.0, 0.0, 0.0, 255.0);         // black background
+
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
     char mode_string[24];
@@ -213,8 +222,6 @@ int main(int argc, char** argv) {
     glutKeyboardUpFunc(keyboard_up); 
     glutSpecialFunc(specialKeys);
     
-    //Ortho (x1,x2,y1,y2,z1,z2). 
-    //glOrtho(0.0, glutGet(GLUT_SCREEN_WIDTH)/100, 0.0, glutGet(GLUT_SCREEN_HEIGHT)/100, -1.0, 1.0); setup a wxhx2 viewing world
     glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
     glClearColor(0.0, 0.0, 0.0, 255.0);
     setup();
