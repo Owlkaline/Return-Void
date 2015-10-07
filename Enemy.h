@@ -37,7 +37,7 @@ class Enemy
         void moveDown();
         void draw();
         
-        void looseHealth(int healthlost);
+        int looseHealth(int healthlost);
         
         void setVisible(bool visible);      
         void setBulletVisible(bool visible);      

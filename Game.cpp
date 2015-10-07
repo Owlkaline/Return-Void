@@ -5,11 +5,27 @@ Game::Game() {
 }
 
 void Game::setup(GLuint *textures) {
-    
+    score = 0;
     player.setup(textures);
     enemy.setup(textures[4], textures[5]);
-    texture[0] = textures[12];
-    texture[1] = textures[13];
+    
+    //Score
+    texture[0] = textures[14];
+    texture[1] = textures[15];
+    texture[2] = textures[16];
+    texture[3] = textures[17];
+    texture[4] = textures[18];
+    texture[5] = textures[19];
+    texture[6] = textures[20];
+    texture[7] = textures[21];
+    texture[8] = textures[22];
+    texture[9] = textures[23];
+    
+    //Top Bar
+    texture[10] = textures[12];
+    
+    //Health Bar
+    texture[11] = textures[13];
     
     printf("Game setup\n");
 }
@@ -67,7 +83,7 @@ void Game::collisions() {
                       ((player.getBulletY(i) + player.getBulletHeight(i)) >= enemy.getY()+1 && ( player.getBulletY(i) + enemy.getHeight()-1 ) <= ( enemy.getY()+1 + enemy.getHeight()-1 )) ) {
                        
                        player.setBulletVisible(false, i);
-                       enemy.looseHealth(1);
+                       score += enemy.looseHealth(1);
                     }
                 } 
             }
@@ -76,27 +92,80 @@ void Game::collisions() {
 }
 
 //draw string
-/*void Game::drawString(int PosX, int PosY, float R, float G, float B, std::string str) {
-        glColor3f(R, G, B); // Text Colour
+void Game::drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length) {
+    glColor3f(R, G, B); // Text Colour
+    glRasterPos2i(PosX, PosY); //coordinates of text
+    glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
+    
+    void * font = GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
+       
+     for(int i = 0; i < length; i++) {
+             glutBitmapCharacter(font, str[i]);
+     }  
+     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    
+}
 
-
-        glRasterPos2i(PosX, PosY); //coordinates of text
-        glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
-        static std::string s = str;
-        void * font = GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
-        for (std::string::iterator i = s.begin(); i != s.end(); ++i)//draw to screen
-            {
-                char c = *i;
-                glutBitmapCharacter(font, c);
-            }
+void Game::drawScore() { 
+    glEnable(GL_TEXTURE_2D);
+    
+    for(int i = 0; i < 10; ++i) {
+    int num;
+    switch(i) {
+        case 9:
+            num = score % 10;
+            break;
+        case 8:
+            num = score / 10 % 10;
+            break;
+        case 7:
+            num = score / 100 % 10;
+            break;
+        case 6:
+            num = score / 1000 % 10;
+            break;
+        case 5:
+            num = score / 10000 % 10;
+            break;
+        case 4:
+            num = score / 100000 % 10;
+            break;
+        case 3:
+            num = score / 1000000 % 10;
+            break;
+        case 2:
+            num = score / 10000000 % 10;
+            break;
+        case 1:
+            num = score / 100000000 % 10;
+            break;
+        case 0:
+            num = score / 1000000000 % 10;
+            break;
     }
-*/
+	glBindTexture(GL_TEXTURE_2D, texture[num]);
+	//Score 
+	glBegin(GL_QUADS); 
+        glTexCoord2f(0.0f, 1.0f); 
+        glVertex3f(100/3.0f + (i*3), 99, 0.0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(100/3.0f + 3 + (i*3), 99, 0.0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(100/3.0f + 3 + (i*3), 93, 0.0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(100/3.0f + (i*3), 93, 0.0);
+    glEnd();
+    }
+    glDisable(GL_TEXTURE_2D);
+}
+
 void Game::drawHud() {
 
     
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-	    
+    glBindTexture(GL_TEXTURE_2D, texture[10]);
+	
+	//Top Bar    
 	glBegin(GL_QUADS);
       glTexCoord2f(0.1f, 0.0f); 
       glVertex3f(0, 100, 0.0);
@@ -110,6 +179,7 @@ void Game::drawHud() {
     glDisable(GL_TEXTURE_2D);
 	//glBindTexture(GL_TEXTURE_2D, texture[1]);
 	glColor3f(1.0f, 0.0f, 0.0f);
+    
     //Health Bar  
     glBegin(GL_QUADS);
       glVertex3f(79, 97, 0.0);
@@ -121,9 +191,8 @@ void Game::drawHud() {
       glVertex3f(79, 95, 0.0);
     glEnd();   
     
-      
+    //Health Bar Border      
     glBegin(GL_QUADS);  
-      //Health Bar Border
       glColor3f(0.8f, 0.0f, 1.0f);
         
       glVertex3f(78.5f, 98.0f, 0.0);
@@ -155,14 +224,16 @@ void Game::drawHud() {
           glVertex3f(79 + 20 * ((i+1)/5.0f), 95, 0.0);
           glVertex3f(78.8f + 20 * ((i+1)/5.0f), 95, 0.0);
       }
-        
-      // drawString(50, 50, 1.0f, 0, 0, "Score: 5396");
-        
+      
+      // drawString(50, 50, 1.0f, 0, 0, "Score: 5396");      
     glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glDisable(GL_TEXTURE_2D);
     
 }
 
 void Game::draw() {
+
     if(enemy.getVisible())
         enemy.draw();        
    
@@ -171,6 +242,7 @@ void Game::draw() {
         collisions();
     }
     
-    
     drawHud();
+    drawScore();
+    //drawChar(50 ,98, 0, 1, 0, "Score", 5);
 }

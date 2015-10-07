@@ -61,7 +61,7 @@ void Enemy::fire() {
     bullets.fire(x + width/2 - 0.5, y + height, 0.75);
 }  
 
-void Enemy::looseHealth(int LH) { health -= LH; if(health <= 0) { health = 10; x = 0, y = boundryY - height;} };     
+int Enemy::looseHealth(int LH) { health -= LH; if(health <= 0) { health = 10; x = 0, y = boundryY - height; return 103;} return 0;};     
 int Enemy::getHealth() { return health; }
 float Enemy::getX() { return x; }
 float Enemy::getY() { return y; }

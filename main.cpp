@@ -7,10 +7,10 @@
 #include <GL/freeglut.h>
 #endif
 
-#include <stdio.h>
+#include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h>      /* time */
-#include <ctype.h>
+#include <iostream>
 
 #include "Game.h"
 #include "Menu.h"
@@ -30,11 +30,13 @@ double windowHeight = 100; // veiwing world y
 double screenResX;
 double screenResY;
 
-int refreshMillis = 20;
-double gridSquareWidth;
+int refreshMillis = 20; 
+double gridSquareWidth; 
 
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
+
+//std::string yes;
 
 Game game;
 Menu menu;
@@ -162,7 +164,7 @@ void setup() {
     printf("Screen Resolution: %f\n", screenResY);
     
     screen = sMenu;
-    GLuint textures[14];
+    GLuint textures[24];
     textures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
     textures[1] = LoadTexture( "Textures/Game/ShipTiltLeft.bmp" );
     textures[2] = LoadTexture( "Textures/Game/ShipTiltRight.bmp" );
@@ -177,6 +179,16 @@ void setup() {
     textures[11] = LoadTexture( "Textures/Menu/SelectedExit.bmp" );
     textures[12] = LoadTexture( "Textures/Hud/TopBar.bmp" );
     textures[13] = LoadTexture( "Textures/Hud/HealthBar.bmp" );
+    textures[14] = LoadTexture( "Textures/Score/Zero.bmp" );
+    textures[15] = LoadTexture( "Textures/Score/One.bmp" );
+    textures[16] = LoadTexture( "Textures/Score/Two.bmp" );
+    textures[17] = LoadTexture( "Textures/Score/Three.bmp" );
+    textures[18] = LoadTexture( "Textures/Score/Four.bmp" );
+    textures[19] = LoadTexture( "Textures/Score/Five.bmp" );
+    textures[20] = LoadTexture( "Textures/Score/Six.bmp" );
+    textures[21] = LoadTexture( "Textures/Score/Seven.bmp" );
+    textures[22] = LoadTexture( "Textures/Score/Eight.bmp" );
+    textures[23] = LoadTexture( "Textures/Score/Nine.bmp" );
     printf("Textures Loaded");
     menu.setup(textures);
     game.setup(textures); 
@@ -186,7 +198,6 @@ void setup() {
 int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
-    
 
     glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
 
