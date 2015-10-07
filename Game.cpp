@@ -1,6 +1,7 @@
 #include "Game.h"
 
 Game::Game() {
+    srand (time(NULL));
     printf("Game Constructed\n");
 }
 
@@ -106,6 +107,25 @@ void Game::drawChar(int PosX, int PosY, float R, float G, float B, char str[25],
     
 }
 
+void Game::drawStars() {
+    
+    int x, y;
+    glBegin(GL_POINTS);
+	for(int i = 0; i < 100; i++)
+	{
+	    glColor3f( (rand()%100) / 100.0f, (rand()%100) / 100.0f, (rand()%100) / 100.0f);
+	    x = rand() % 100;
+        y = rand() % 100;
+		glVertex2i(x,y);
+		glVertex2i(x+0.1,y);
+		glVertex2i(x,y+0.1);
+		glVertex2i(x+0.1,y+0.1);
+	}
+	glEnd();
+	glColor3f(1.0f, 1.0f, 1.0f);
+	
+}
+
 void Game::drawScore() { 
     glEnable(GL_TEXTURE_2D);
     
@@ -161,6 +181,7 @@ void Game::drawScore() {
 
 void Game::drawHud() {
 
+    drawStars();
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture[10]);

@@ -13,6 +13,7 @@
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
+#include <time.h>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -35,6 +36,7 @@ class Game
         Enemy enemy;
         int score;
         void drawScore();
+        void drawStars();
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);
         //void drawString(int PosX, int PosY, float R, float G, float B, std::string str);
         void drawHud();
