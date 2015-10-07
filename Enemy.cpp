@@ -36,13 +36,8 @@ void Enemy::draw() {
         y = -height;
 
     glEnable(GL_TEXTURE_2D);
-    //glEnable(GL_BLEND);
-	glColor4ub(255,255,255,255);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
     glBegin(GL_POLYGON);
         glTexCoord2f(0.0f, 0.0f); 
@@ -54,13 +49,12 @@ void Enemy::draw() {
         glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x, y, 0.0);
     glEnd();
-
-  
-
-    if(bullets.getVisible())
-     bullets.draw();
-    
     glDisable(GL_TEXTURE_2D);
+ 
+    if(bullets.getVisible())
+        bullets.draw();
+    
+    
 }
 
 void Enemy::fire() {
