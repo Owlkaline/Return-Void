@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -37,6 +38,7 @@ class Game
         int score;
         void drawScore();
         void drawStars();
+        float atan2(float opposite, float adjacent);
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);
         //void drawString(int PosX, int PosY, float R, float G, float B, std::string str);
         void drawHud();

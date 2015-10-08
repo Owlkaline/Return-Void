@@ -13,11 +13,14 @@
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
+#include <math.h>
 
 class Bullet
 {
     public:
         Bullet();
+        void Tick();
+        void Tick(float X, float Y);
         float getX();
         float getY();
         int getWidth();
@@ -25,15 +28,14 @@ class Bullet
         void setVisible(bool visible);
         bool getVisible();
         void fire(float newX, float newY, float mSpeed);
-        void moveUp();
-        void moveDown();
+        void fire(float newX, float newY, float mSpeed, float X, float Y);
         void draw();
-        void setup(GLuint newText);
+        void setup(GLuint newText, float Width, float Height);
     protected:  
         bool visible;
         int boundryX, boundryY; 
         float width, height;
-        float x, y, speed;  
+        float x, y, speed, startX, startY, endX, endY, distance, directionX, directionY;  
         GLuint texture; 
 };
 

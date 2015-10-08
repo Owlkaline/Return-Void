@@ -3,32 +3,32 @@
 #include <stdlib.h>
 
 Enemy::Enemy() {
-        width = 6;
-        height = 10;         
-        health = 10; 
-        boundryX = 100;
-        boundryY = 92 - height;
-        x = 0;
-        y = boundryY - height; 
-        isVisible = true;
-        printf("Enemy Constructed\n");
-   }
+    srand (time(NULL));
+    width = 6;
+    height = 10;         
+    health = 10; 
+    boundryX = 100;
+    boundryY = 92 - height;
+    x = 0;
+    y = boundryY - height; 
+    isVisible = true;
+    printf("Enemy Constructed\n");
+}
    
-void Enemy::setup(GLuint EnemyText, GLuint bulletText) {
+void Enemy::setup(GLuint *EnemyText) {
     health = 10; 
     x = 0;
     y = boundryY - height; 
     isVisible = true;
-    texture = EnemyText; 
-    bullets.setup(bulletText);
+    texture = EnemyText[0]; 
+    bullets.setup(EnemyText[1], 0.5, 1);
 }
 
 void Enemy::destroy() {
     //free(texture);
 }
 
-void Enemy::draw() {
-    //glColor3f(0.0, 1.0, 0.0);
+void Enemy::draw(int Px, int Py) {
     moveRight();
     if(x < -width)
         x = boundryX;
@@ -55,14 +55,20 @@ void Enemy::draw() {
     glEnd();
     glDisable(GL_TEXTURE_2D);
  
-    if(bullets.getVisible())
+    if(bullets.getVisible()) {
         bullets.draw();
-    
+        bullets.Tick(targetX, targetY);
+    }
+        
+    if(!bullets.getVisible() && (random() % 1000) < 10)
+        fire(Px, Py);
     
 }
 
-void Enemy::fire() {
-    bullets.fire(x + width/2 - 0.5, y + height, 0.75);
+void Enemy::fire(int Px, int Py) {
+    targetX = Px;
+    targetY = Py;
+    bullets.fire(x + width/2, y, -0.75, targetX, targetY);
 }  
 
 int Enemy::looseHealth(int LH) { health -= LH; if(health <= 0) { health = 10; x = 0, y = boundryY - height; return 103;} return 0;};     
@@ -73,6 +79,11 @@ int Enemy::getWidth() { return width; }
 int Enemy::getHeight() { return height; }
 void Enemy::setVisible(bool visible) { isVisible = visible; }
 bool Enemy::getVisible() { return isVisible; }
+bool Enemy::getBulletVisible() { return bullets.getVisible(); }
+float Enemy::getBulletX() { return bullets.getX(); }; 
+float Enemy::getBulletY() { return bullets.getY(); }; 
+float Enemy::getBulletWidth() { return bullets.getWidth(); }; 
+float Enemy::getBulletHeight() { return bullets.getHeight(); }; 
 void Enemy::setBulletVisible(bool visible) { bullets.setVisible(false); }
 void Enemy::moveLeft() { x -= 0.3f; }
 void Enemy::moveRight() { x += 0.3f; }

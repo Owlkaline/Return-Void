@@ -10,14 +10,15 @@ void Game::setup() {
     score = 0;
     GLuint playerTextures[5];
     playerTextures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
-    playerTextures[1] = LoadTexture( "Textures/Game/ShipTiltLeft.bmp" );
-    playerTextures[2] = LoadTexture( "Textures/Game/ShipTiltRight.bmp" );
-    playerTextures[3] = LoadTexture( "Textures/Game/Bullet.bmp" );    
+    playerTextures[1] = LoadTexture( "Textures/Game/ShipLeft.bmp" );
+    playerTextures[2] = LoadTexture( "Textures/Game/ShipRight.bmp" );
+    playerTextures[3] = LoadTexture( "Textures/Game/PlayerBullet.bmp" );    
     player.setup(playerTextures);
     
-    GLuint enemyTexture;
-    enemyTexture = LoadTexture( "Textures/Game/Enemy.bmp" ); 
-    enemy.setup(enemyTexture, playerTextures[3]);
+    GLuint enemyTexture[2];
+    enemyTexture[0] = LoadTexture( "Textures/Game/Enemy.bmp" ); 
+    enemyTexture[1] = LoadTexture( "Textures/Game/EnemyBullet.bmp" ); 
+    enemy.setup(enemyTexture);
     
     //Score
     texture[0] = LoadTexture( "Textures/Score/Zero.bmp" );
@@ -84,6 +85,7 @@ void Game::collisions() {
                player.reset(); 
            }
         }
+        
         for(int i = 0; i < 20; ++i) {
             if(player.getBulletVisible(i)) {
                 if( (player.getBulletX(i) >= enemy.getX()+1 && player.getBulletX(i) <= ( enemy.getX()+1 + enemy.getWidth()-1 ) ) || 
@@ -96,6 +98,19 @@ void Game::collisions() {
                        score += enemy.looseHealth(1);
                     }
                 } 
+            }
+        }
+    }
+    
+    if(player.getVisible() && enemy.getBulletVisible()) {
+        if( (player.getX() >= enemy.getBulletX() && player.getX() <= ( enemy.getBulletX() + enemy.getBulletWidth() ) ) || 
+          ( (player.getX() + player.getWidth()) >= enemy.getBulletX() && ( player.getX() + enemy.getBulletWidth() ) <= ( enemy.getBulletX() + enemy.getBulletWidth() )) ) {
+          
+            if( (player.getY()-1 >= enemy.getBulletY() && player.getY()-1 <= ( enemy.getBulletY() + enemy.getBulletHeight()-1 ) ) || 
+              ( (player.getY() + player.getHeight()-1) >= enemy.getBulletY() && ( player.getY() + enemy.getBulletHeight()-1 ) <= ( enemy.getBulletY() + enemy.getBulletHeight() )) ) {
+                enemy.setBulletVisible(false);
+                player.reset();
+                
             }
         }
     }
@@ -265,7 +280,7 @@ void Game::drawHud() {
 void Game::draw() {
 
     if(enemy.getVisible())
-        enemy.draw();        
+        enemy.draw(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2);        
    
     if(player.getHealth() > 0) {
         player.draw();
@@ -276,6 +291,14 @@ void Game::draw() {
     drawScore();
     //drawChar(50 ,98, 0, 1, 0, "Score", 5);
 }
+
+float Game::atan2(float opposite, float adjacent) {
+    float angle;
+    angle = tan(opposite/adjacent);
+    angle = 180 - angle;
+    return angle;
+}
+
 
 GLuint Game::LoadTexture( const char * filename ) {
     GLuint textures;

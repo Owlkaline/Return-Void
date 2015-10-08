@@ -18,14 +18,15 @@ Player::Player() {
    
 void Player::setup(GLuint *newTextures) {
     x = 50.0f;
-    y = 5.0f; 
+    y = 5.0f;
+    visible = true; 
     PlayerText = newTextures[0];
     PlayerLeftText = newTextures[1];
     PlayerRightText = newTextures[2];
     texture = newTextures[0];
     
     for(int i = 0; i < NUMBULLETS; ++i) 
-        bullets[i].setup(newTextures[3]);
+        bullets[i].setup(newTextures[3], 0.5, 3);
     
     printf("Player bullets constructed\n");
 }
@@ -50,6 +51,9 @@ void Player::stationaryImage() {
 }
 
 void Player::draw() {
+    if(!visible)
+        return;
+        
     //glColor3f(0.0, 1.0, 0.0);
     if(x < 0)
         x = 0;
@@ -80,7 +84,7 @@ void Player::draw() {
   
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible())
-            bullets[i].moveUp();
+            bullets[i].Tick();
             bullets[i].draw();
     } 
 }
@@ -102,13 +106,16 @@ float Player::getX() { return x; }
 float Player::getY() { return y; }
 int Player::getWidth() { return width; }
 int Player::getHeight() { return height; }
+bool Player::getVisible() { return visible; }
+
 void Player::setBulletVisible(bool visible, int i) { bullets[i].setVisible(visible); }
 bool Player::getBulletVisible(int i) { return bullets[i].getVisible(); }
 float Player::getBulletX(int i) { return bullets[i].getX(); }
 float Player::getBulletY(int i) { return bullets[i].getY(); }
 int Player::getBulletWidth(int i) { return bullets[i].getWidth(); }
 int Player::getBulletHeight(int i) { return bullets[i].getHeight(); }
-void Player::reset() { x = 10; y = 5; health--;}
+
+void Player::reset() { x = 50; y = 5; health--;}
 void Player::moveLeft() { x -= 0.5f; }
 void Player::moveRight() { x += 0.5f; }
 void Player::moveUp() { y += 0.25f; }

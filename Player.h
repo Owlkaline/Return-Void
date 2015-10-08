@@ -35,7 +35,9 @@ class Player
         float getY();
         int getHealth();
         int getWidth();
-        int getHeight(); 
+        int getHeight();
+        bool getVisible();
+         
         bool getBulletVisible(int i);
         float getBulletX(int i);
         float getBulletY(int i); 
@@ -51,7 +53,8 @@ class Player
     protected:  
         int boundryX, boundryY; 
         int width, height;
-        float x, y;  
+        float x, y; 
+        bool visible; 
         int health;
         Bullet bullets[20];
         GLuint texture;

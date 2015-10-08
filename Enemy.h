@@ -13,6 +13,7 @@
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
+#include <time.h>
 
 #include "Bullet.h"
 
@@ -20,7 +21,7 @@ class Enemy
 {
     public:
         Enemy();
-        void setup(GLuint newText, GLuint bulletText);
+        void setup(GLuint *Texture);
         void destroy();
         
         float getX();
@@ -29,13 +30,18 @@ class Enemy
         int getHeight();        
         int getHealth();
         bool getVisible();
+        bool getBulletVisible(); 
+        float getBulletX(); 
+        float getBulletY(); 
+        float getBulletWidth(); 
+        float getBulletHeight(); 
         
-        void fire();
+        void fire(int Px, int Py);
         void moveLeft();
         void moveRight();
         void moveUp();
         void moveDown();
-        void draw();
+        void draw(int Px, int Py);
         
         int looseHealth(int healthlost);
         
@@ -44,7 +50,7 @@ class Enemy
     protected:  
         int boundryX, boundryY; 
         int width, height;
-        float x, y;  
+        float x, y, targetX, targetY;  
         int health;
         bool isVisible;
         Bullet bullets;
