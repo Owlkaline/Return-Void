@@ -18,6 +18,7 @@
 
 #include "Player.h"
 #include "Enemy.h"
+#include "Level.h"
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
@@ -33,12 +34,12 @@ class Game
     protected:  
         Player player;
         Enemy enemy[10];
+        Level level;
         int score;
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);
         void draw();
-             
-        
+
         void drawScore();
         void drawStars();
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);

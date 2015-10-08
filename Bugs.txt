@@ -8,12 +8,17 @@
 
 1. SOLVED
 
+2. #Version 1.0 - Uncomfirmed 
+   Floating point Error, while in Game shooting enemies
+   existance Unknown
+
 
 #--------------------------------------------------------------
 #-------Bugs Resolved------------------------------------------
 #--------------------------------------------------------------
 
-1. When hold shift and moving then releasing shit causes shipp
+1. #Before Version 0.1
+   When hold shift and moving then releasing shit causes shipp
    to continuously move in 2 directions or less in the last
    direction that the user was holding even if the user 
    released the movement key 

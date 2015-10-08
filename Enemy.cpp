@@ -1,25 +1,27 @@
 #include "Enemy.h"
 
-#include <stdlib.h>
 
 Enemy::Enemy() {
     srand (time(NULL));
-    width = 6;
-    height = 10;         
-    health = 5; 
+    width = 5;
+    height = 5;  
+    speed = 0.3f;
+    maxHealth = 5;       
+    health = maxHealth; 
     boundryX = 100;
     boundryY = 92 - height;
+    rate = 2500.0f;
     x = 0;
     y = boundryY - height; 
-    isVisible = true;
+    visible = true;
     printf("Enemy Constructed\n");
 }
    
 void Enemy::setup(GLuint *EnemyText) {
-    health = 10; 
+    health = maxHealth; 
     x = 0;
     y = boundryY - height; 
-    isVisible = true;
+    visible = true;
     texture = EnemyText[0]; 
     bullets.setup(EnemyText[1], 0.5, 1);
 }
@@ -28,16 +30,22 @@ void Enemy::destroy() {
     //free(texture);
 }
 
-void Enemy::draw(int Px, int Py) {
-    moveRight();
+void Enemy::Tick(float Px, float Py) {
+    moveDown();
     if(x < -width)
         x = boundryX;
     if(y < -height)
-        y = boundryY;
+        visible = false;
     if(x > boundryX)
         x = -width;
-    if(y > boundryY )
-        y = -height;
+   // if(y > boundryY )
+    //    y = -height;
+    
+    if(!bullets.getVisible() && (random() % (int)rate) < 10)
+        fire(Px, Py);
+}
+
+void Enemy::draw() {
 
     glEnable(GL_TEXTURE_2D);
 
@@ -53,16 +61,14 @@ void Enemy::draw(int Px, int Py) {
         glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x, y, 0.0);
     glEnd();
-    glDisable(GL_TEXTURE_2D);
- 
+    glDisable(GL_TEXTURE_2D);  
+}
+
+void Enemy::drawBullets() {
     if(bullets.getVisible()) {
-        bullets.draw();
         bullets.Tick(targetX, targetY);
     }
-        
-    if(!bullets.getVisible() && (random() % 1000) < 10)
-        fire(Px, Py);
-    
+    bullets.draw();
 }
 
 void Enemy::fire(int Px, int Py) {
@@ -71,16 +77,21 @@ void Enemy::fire(int Px, int Py) {
     bullets.fire(x + width/2, y, -0.75, targetX, targetY);
 }  
 
-int Enemy::looseHealth(int LH) { health -= LH; if(health <= 0) { health = 5; x = 0, y = boundryY - height; return 100;} return 0;};     
+int Enemy::looseHealth(int LH) { health -= LH; if(health <= 0) { x = -1, y = -1; visible = false; return 100;} return 0;};     
 int Enemy::getHealth() { return health; }
-float Enemy::getX() { return x; }
+float Enemy::getX() { return x; } 
 float Enemy::getY() { return y; }
 int Enemy::getWidth() { return width; }
 int Enemy::getHeight() { return height; }
-bool Enemy::getVisible() { return isVisible; }
+bool Enemy::getVisible() { return visible; }
 
-void Enemy::setX(int X) { x = X; }
-void Enemy::setVisible(bool visible) { isVisible = visible; }
+void Enemy::setX(float X) { x = X; }
+void Enemy::setY(float Y) { y = Y; }
+void Enemy::setSize(float multiple) { width *= multiple; height *= multiple; }
+void Enemy::setMaxHealth(int mHealth) { maxHealth = mHealth; health = maxHealth;}
+void Enemy::setSpeed(float mSpeed) { speed = mSpeed; }
+void Enemy::setFireRate(float Rate) { rate = 2500.f / Rate; }
+void Enemy::setVisible(bool Visible) { visible = Visible; }
 
 bool Enemy::getBulletVisible() { return bullets.getVisible(); }
 float Enemy::getBulletX() { return bullets.getX(); }; 
@@ -90,7 +101,7 @@ float Enemy::getBulletHeight() { return bullets.getHeight(); };
 
 void Enemy::setBulletVisible(bool visible) { bullets.setVisible(false); }
 
-void Enemy::moveLeft() { x -= 0.3f; }
-void Enemy::moveRight() { x += 0.3f; }
-void Enemy::moveUp() { y += 0.3f; }
-void Enemy::moveDown() { y -= 0.3f; }
+void Enemy::moveLeft() { x -= speed; }
+void Enemy::moveRight() { x += speed; }
+void Enemy::moveUp() { y += speed; }
+void Enemy::moveDown() { y -= speed; }

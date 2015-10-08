@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -Wall -g
 PROG = Return-void
 
-SRCS = main.cpp Game.cpp Menu.cpp Ship.cpp Bullet.cpp Enemy.cpp
+SRCS = main.cpp Game.cpp Menu.cpp Ship.cpp Bullet.cpp Enemy.cpp Level.cpp
 
 LIBS =  -framework OpenGL -framework GLUT -Wno-deprecated-declarations
 

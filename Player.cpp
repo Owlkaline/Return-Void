@@ -27,7 +27,7 @@ void Player::setup(GLuint *newTextures) {
     texture = newTextures[0];
     
     for(int i = 0; i < NUMBULLETS; ++i) 
-        bullets[i].setup(newTextures[3], 0.5, 3);
+        bullets[i].setup(newTextures[3], 0.25, 1.5);
     
     printf("Player bullets constructed\n");
 }
@@ -128,5 +128,5 @@ int Player::getBulletHeight(int i) { return bullets[i].getHeight(); }
 void Player::reset() { x = 50; y = 5; health--;}
 void Player::moveLeft() { x -= 0.5f; }
 void Player::moveRight() { x += 0.5f; }
-void Player::moveUp() { y += 0.25f; }
-void Player::moveDown() { y -= 0.25f; }
+void Player::moveUp() { y += 0.35f; }
+void Player::moveDown() { y -= 0.35f; }

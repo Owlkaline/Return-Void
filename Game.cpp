@@ -6,7 +6,7 @@ Game::Game() {
 }
 
 void Game::setup() {
-    
+    level.setup();
     score = 0;
     GLuint playerTextures[5];
     playerTextures[0] = LoadTexture( "Textures/Game/Ship.bmp" );
@@ -18,7 +18,7 @@ void Game::setup() {
     GLuint enemyTexture[2];
     enemyTexture[0] = LoadTexture( "Textures/Game/Enemy.bmp" ); 
     enemyTexture[1] = LoadTexture( "Textures/Game/EnemyBullet.bmp" ); 
-    
+    //default
     for(int i = 0; i < 10; ++i) {
         enemy[i].setup(enemyTexture);
         enemy[i].setX(i*10);
@@ -40,7 +40,7 @@ void Game::setup() {
 
     //Health Bar
     texture[11] = LoadTexture( "Textures/Hud/HealthBar.bmp" );
-    
+    level.Level1(enemy);
     printf("Game setup\n");
 }
 
@@ -291,21 +291,31 @@ void Game::drawHud() {
 }
 
 bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState) {
+    level.Tick(enemy);
     keyPress(keyState, prevKeyState);
     player.Tick();
     collisions();
     
+    for(int i = 0; i < 10; ++i) {
+        if(enemy[i].getVisible())
+            enemy[i].Tick(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2);
+    }
+    
     draw();
     
-    if(player.getHealth() <= 0)
+    if(player.getHealth() <= 0)  
         return false;
+    
     return true;
 }
 
 void Game::draw() {
     for(int i = 0; i < 10; ++i) {
         if(enemy[i].getVisible())
-            enemy[i].draw(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2);        
+            enemy[i].draw(); 
+        if(enemy[i].getBulletVisible()) {
+            enemy[i].drawBullets();
+        }   
     }
     
     if(player.getHealth() > 0) {

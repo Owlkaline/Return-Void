@@ -1,3 +1,5 @@
+//Version 0.1
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
@@ -66,6 +68,20 @@ void mouse(int button, int state, int x, int y) {
     
 }
 
+void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length) {
+    glColor3f(R, G, B); // Text Colour
+    glRasterPos2i(PosX, PosY); //coordinates of text
+    glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
+    
+    void * font = GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
+       
+     for(int i = 0; i < length; i++) {
+             glutBitmapCharacter(font, str[i]);
+     }  
+     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	
@@ -116,7 +132,7 @@ void display() {
            break;
     }
     keyState[27] = prevKeyState[27];
-    
+    drawChar(0, 98, 0.5f, 0.0f, 1.0f, "Version_0.1", 11);
     glFlush();       
     glutSwapBuffers(); 
 }
@@ -136,7 +152,8 @@ void setup() {
 int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
-
+    for(int i = 0; i < 1; ++i)
+        printf("%f\n",  1 + (random() % 100) / 100.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
 
     glClearColor(0.0, 0.0, 0.0, 255.0);         // black background

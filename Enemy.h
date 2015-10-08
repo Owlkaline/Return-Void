@@ -24,6 +24,8 @@ class Enemy
         void setup(GLuint *Texture);
         void destroy();
         
+        void Tick(float Px, float Py);
+        
         float getX();
         float getY();
         int getWidth();
@@ -41,19 +43,25 @@ class Enemy
         void moveRight();
         void moveUp();
         void moveDown();
-        void draw(int Px, int Py);
+        void draw();
+        void drawBullets();
         
         int looseHealth(int healthlost);
         
-        void setX(int X);
-        void setVisible(bool visible);      
+        void setX(float X);
+        void setY(float Y);
+        void setSize(float multiple);
+        void setSpeed(float mSpeed);
+        void setMaxHealth(int mHealth);
+        void setVisible(bool visible);   
+        void setFireRate(float rate);   
         void setBulletVisible(bool visible);      
     protected:  
         int boundryX, boundryY; 
         int width, height;
-        float x, y, targetX, targetY;  
-        int health;
-        bool isVisible;
+        float x, y, targetX, targetY, rate, speed;  
+        int health, maxHealth;
+        bool visible;
         Bullet bullets;
         GLuint texture;
 };
