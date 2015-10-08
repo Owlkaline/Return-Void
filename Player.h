@@ -30,6 +30,7 @@ class Player
         void moveUp();
         void moveDown();
         void draw();  
+        void Tick();
         
         float getX();
         float getY();
@@ -56,7 +57,7 @@ class Player
         float x, y; 
         bool visible; 
         int health;
-        Bullet bullets[20];
+        Bullet bullets[10];
         GLuint texture;
         GLuint PlayerLeftText;
         GLuint PlayerRightText;

@@ -18,8 +18,11 @@ void Game::setup() {
     GLuint enemyTexture[2];
     enemyTexture[0] = LoadTexture( "Textures/Game/Enemy.bmp" ); 
     enemyTexture[1] = LoadTexture( "Textures/Game/EnemyBullet.bmp" ); 
-    enemy.setup(enemyTexture);
     
+    for(int i = 0; i < 10; ++i) {
+        enemy[i].setup(enemyTexture);
+        enemy[i].setX(i*10);
+    }
     //Score
     texture[0] = LoadTexture( "Textures/Score/Zero.bmp" );
     texture[1] = LoadTexture( "Textures/Score/One.bmp" );
@@ -43,74 +46,84 @@ void Game::setup() {
 
 void Game::destroy() {
     player.destroy();
-    enemy.destroy();
+    
+    for(int i = 0; i < 1; ++i) {
+        enemy[i].destroy();
+    }
 }
   
 void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
-    if(keyState[(unsigned char)'a'] == BUTTON_DOWN) {
-        player.moveLeft();
-        player.leftImage();
-    }
-    if(keyState[(unsigned char)'d'] == BUTTON_DOWN) {
-        player.moveRight();
-        player.rightImage();
-    }
-    if(keyState[(unsigned char)'w'] == BUTTON_DOWN)
-        player.moveUp();
-    if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
-        player.moveDown();
     
-    //Fire player weapon
-    if(keyState[32] == BUTTON_DOWN) { //Space Bar
-        if(prevKeyState[32] != BUTTON_DOWN) {
-            player.fire();
+    if(player.getVisible()) {
+        if(keyState[(unsigned char)'a'] == BUTTON_DOWN) {
+            player.moveLeft();
+            player.leftImage();
         }
-    }
-    prevKeyState[32] = keyState[32];
+        if(keyState[(unsigned char)'d'] == BUTTON_DOWN) {
+            player.moveRight();
+            player.rightImage();
+        }
+        if(keyState[(unsigned char)'w'] == BUTTON_DOWN)
+            player.moveUp();
+        if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
+            player.moveDown();
         
-    if(keyState[(unsigned char)'a'] == BUTTON_UP && keyState[(unsigned char)'d'] == BUTTON_UP) {
-        player.stationaryImage();
+        //Fire player weapon
+        if(keyState[32] == BUTTON_DOWN) { //Space Bar
+            if(prevKeyState[32] != BUTTON_DOWN) {
+                player.fire();
+            }
+        }
+        prevKeyState[32] = keyState[32];
+            
+        if(keyState[(unsigned char)'a'] == BUTTON_UP && keyState[(unsigned char)'d'] == BUTTON_UP) {
+            player.stationaryImage();
+        }
     }
 }
 
 void Game::collisions() {   
-    if(enemy.getVisible()) {
-        if( (player.getX()+1 >= enemy.getX()+1 && player.getX()+1 <= ( enemy.getX()+1 + enemy.getWidth()-1 ) ) || 
-          ((player.getX()+1 + player.getWidth()-1) >= enemy.getX()+1 && ( player.getX()+1 + enemy.getWidth()-1 ) <= ( enemy.getX()+1 + enemy.getWidth()-1 )) ) {
-               
-           if( (player.getY()+1 >= enemy.getY()+1 && player.getY()+1 <= ( enemy.getY()+1 + enemy.getHeight()-1 ) ) || 
-              ((player.getY()+1 + player.getHeight()-1) >= enemy.getY()+1 && ( player.getY()+1 + enemy.getHeight()-1 ) <= ( enemy.getY()+1 + enemy.getHeight()-1 )) ) {
+    for(int i = 0; i < 10; ++i) {
+        if(enemy[i].getVisible() && player.getVisible()) {
+            if( (player.getX()+1 >= enemy[i].getX()+1 && player.getX()+1 <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
+              ( (player.getX()+1 + player.getWidth()-1) >= enemy[i].getX()+1 && ( player.getX()+1 + enemy[i].getWidth()-1 ) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 )) ) {
                    
-               enemy.looseHealth(1);
-               player.reset(); 
-           }
-        }
-        
-        for(int i = 0; i < 20; ++i) {
-            if(player.getBulletVisible(i)) {
-                if( (player.getBulletX(i) >= enemy.getX()+1 && player.getBulletX(i) <= ( enemy.getX()+1 + enemy.getWidth()-1 ) ) || 
-                 ((player.getBulletX(i) + player.getBulletWidth(i)) >= enemy.getX()+1 && ( player.getBulletX(i) + enemy.getWidth()-1 ) <= ( enemy.getX()+1 + enemy.getWidth()-1 )) ) {
-               
-                    if( (player.getBulletY(i) >= enemy.getY()+1 && player.getBulletY(i) <= ( enemy.getY()+1 + enemy.getHeight()-1 ) ) || 
-                      ((player.getBulletY(i) + player.getBulletHeight(i)) >= enemy.getY()+1 && ( player.getBulletY(i) + enemy.getHeight()-1 ) <= ( enemy.getY()+1 + enemy.getHeight()-1 )) ) {
+               if( (player.getY()+1 >= enemy[i].getY()+1 && player.getY()+1 <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 ) ) || 
+                 ( (player.getY()+1 + player.getHeight()-1) >= enemy[i].getY()+1 && ( player.getY()+1 + enemy[i].getHeight()-1 ) <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 )) ) {
                        
-                       player.setBulletVisible(false, i);
-                       score += enemy.looseHealth(1);
-                    }
-                } 
+                   enemy[i].looseHealth(1);
+                   player.reset(); 
+               }
             }
         }
-    }
-    
-    if(player.getVisible() && enemy.getBulletVisible()) {
-        if( (player.getX() >= enemy.getBulletX() && player.getX() <= ( enemy.getBulletX() + enemy.getBulletWidth() ) ) || 
-          ( (player.getX() + player.getWidth()) >= enemy.getBulletX() && ( player.getX() + enemy.getBulletWidth() ) <= ( enemy.getBulletX() + enemy.getBulletWidth() )) ) {
           
-            if( (player.getY()-1 >= enemy.getBulletY() && player.getY()-1 <= ( enemy.getBulletY() + enemy.getBulletHeight()-1 ) ) || 
-              ( (player.getY() + player.getHeight()-1) >= enemy.getBulletY() && ( player.getY() + enemy.getBulletHeight()-1 ) <= ( enemy.getBulletY() + enemy.getBulletHeight() )) ) {
-                enemy.setBulletVisible(false);
-                player.reset();
-                
+        if(enemy[i].getVisible()) {  
+            for(int j = 0; j < 10; ++j) {
+                if(player.getBulletVisible(j)) {
+                    if( (player.getBulletX(j) >= enemy[i].getX()+1 && player.getBulletX(j) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
+                      ( (player.getBulletX(j) + player.getBulletWidth(j)) >= enemy[i].getX()+1 && ( player.getBulletX(j) + enemy[i].getWidth()-1 ) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 )) ) {
+                   
+                        if( (player.getBulletY(j) >= enemy[i].getY()+1 && player.getBulletY(j) <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 ) ) || 
+                          ( (player.getBulletY(j) + player.getBulletHeight(j)) >= enemy[i].getY()+1 && ( player.getBulletY(j) + enemy[i].getHeight()-1 ) <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 )) ) {
+                           
+                           player.setBulletVisible(false, j);
+                           score += enemy[i].looseHealth(1);
+                        }
+                    } 
+                }
+            }
+        }
+        
+        if(player.getVisible() && enemy[i].getBulletVisible()) {
+            if( (player.getX() >= enemy[i].getBulletX() && player.getX() <= ( enemy[i].getBulletX() + enemy[i].getBulletWidth() ) ) || 
+              ( (player.getX() + player.getWidth()) >= enemy[i].getBulletX() && ( player.getX() + enemy[i].getBulletWidth() ) <= ( enemy[i].getBulletX() + enemy[i].getBulletWidth() )) ) {
+              
+                if( (player.getY()-1 >= enemy[i].getBulletY() && player.getY()-1 <= ( enemy[i].getBulletY() + enemy[i].getBulletHeight()-1 ) ) || 
+                  ( (player.getY() + player.getHeight()-1) >= enemy[i].getBulletY() && ( player.getY() + enemy[i].getBulletHeight()-1 ) <= ( enemy[i].getBulletY() + enemy[i].getBulletHeight() )) ) {
+                    enemy[i].setBulletVisible(false);
+                    player.reset();
+                    
+                }
             }
         }
     }
@@ -277,26 +290,30 @@ void Game::drawHud() {
     
 }
 
-void Game::draw() {
+bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState) {
+    keyPress(keyState, prevKeyState);
+    player.Tick();
+    collisions();
+    
+    draw();
+    
+    if(player.getHealth() <= 0)
+        return false;
+    return true;
+}
 
-    if(enemy.getVisible())
-        enemy.draw(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2);        
-   
+void Game::draw() {
+    for(int i = 0; i < 10; ++i) {
+        if(enemy[i].getVisible())
+            enemy[i].draw(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2);        
+    }
+    
     if(player.getHealth() > 0) {
         player.draw();
-        collisions();
     }
     
     drawHud();
     drawScore();
-    //drawChar(50 ,98, 0, 1, 0, "Score", 5);
-}
-
-float Game::atan2(float opposite, float adjacent) {
-    float angle;
-    angle = tan(opposite/adjacent);
-    angle = 180 - angle;
-    return angle;
 }
 
 

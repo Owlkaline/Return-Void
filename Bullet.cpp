@@ -10,15 +10,15 @@ Bullet::Bullet() {
          
         boundryX = 100 - width;
         boundryY = 95 - height;
-        visible = false;
+        visible = true;
    }
    
 void Bullet::setup(GLuint newText, float Width, float Height) {
     width = Width;
     height = Height;
-    visible = false;
-    x = 1;
-    y = 1;
+    visible = true;
+    x = -1;
+    y = -1;
     texture = newText;
 }
 
@@ -111,5 +111,5 @@ float Bullet::getX() { return x; }
 float Bullet::getY() { return y; }
 int Bullet::getWidth() { return width; }
 int Bullet::getHeight() { return height; }
-void Bullet::setVisible(bool Visible) { visible = Visible; if(!visible) {x = 1; y = 1;} }
+void Bullet::setVisible(bool Visible) { visible = Visible; if(!visible) {x = -1; y = -1;} }
 bool Bullet::getVisible() { return visible; }

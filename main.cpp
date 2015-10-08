@@ -75,13 +75,14 @@ void display() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     int screenNum;
+    bool alive;
     switch(screen) {
        case sGame:
            if(keyState[27] == BUTTON_DOWN) //ESC
                screen = sMenu;
-               
-           game.keyPress(keyState, prevKeyState);
-           game.draw();
+           alive = game.Tick(keyState, prevKeyState);
+           if(!alive)
+               screen = sMenu;
            break;
        case sMenu:           
            

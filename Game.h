@@ -28,19 +28,20 @@ class Game
         Game();
         void setup();
         void destroy();
+        bool Tick(unsigned char* keyState, unsigned char* prevKeyState);  
+        void collisions(); 
+    protected:  
+        Player player;
+        Enemy enemy[10];
+        int score;
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);
         void draw();
-        void collisions();        
-    protected:  
-        Player player;
-        Enemy enemy;
-        int score;
+             
+        
         void drawScore();
         void drawStars();
-        float atan2(float opposite, float adjacent);
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);
-        //void drawString(int PosX, int PosY, float R, float G, float B, std::string str);
         void drawHud();
         GLuint LoadTexture( const char * filename );
         GLuint texture[12];

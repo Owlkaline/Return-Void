@@ -45,6 +45,7 @@ class Enemy
         
         int looseHealth(int healthlost);
         
+        void setX(int X);
         void setVisible(bool visible);      
         void setBulletVisible(bool visible);      
     protected:  
