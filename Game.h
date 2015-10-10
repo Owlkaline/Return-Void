@@ -35,6 +35,8 @@ class Game
         Player player;
         Enemy enemy[10];
         Level level;
+        clock_t crntTime;
+        clock_t shootTime;
         int score;
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);

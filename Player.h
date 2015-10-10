@@ -22,15 +22,22 @@ class Player
         Player();
         void setup(GLuint *newTextures);
         void destroy();
-        void reset();
+        void respawn(int x, int y);
         
+        void takeHealth(int Health);
+        
+        void Tick();
+        void draw();  
         void fire();
+        
         void moveLeft();
         void moveRight();
         void moveUp();
         void moveDown();
-        void draw();  
-        void Tick();
+
+        void leftImage();
+        void rightImage();
+        void stationaryImage();
         
         float getX();
         float getY();
@@ -45,11 +52,8 @@ class Player
         int getBulletWidth(int i); 
         int getBulletHeight(int i);     
         
+        
         void setBulletVisible(bool visible, int i);
-      
-        void leftImage();
-        void rightImage();
-        void stationaryImage();
 
     protected:  
         int boundryX, boundryY; 

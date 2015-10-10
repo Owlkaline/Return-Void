@@ -152,8 +152,10 @@ void setup() {
 int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
-    for(int i = 0; i < 1; ++i)
-        printf("%f\n",  1 + (random() % 100) / 100.0f);
+    
+    time_t crntTime = time(0);
+    printf("%li", crntTime);
+    
     glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
 
     glClearColor(0.0, 0.0, 0.0, 255.0);         // black background
@@ -179,7 +181,6 @@ int main(int argc, char** argv) {
     glAlphaFunc(GL_GREATER, 0.1);
     glEnable(GL_ALPHA_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  //  glEnable( GL_BLEND ); 
     glutIgnoreKeyRepeat(1);
     
     glutDisplayFunc(display);
@@ -192,6 +193,7 @@ int main(int argc, char** argv) {
     glClearColor(0.0, 0.0, 0.0, 255.0);
     setup();
     printf("Setup Complete\n");
+     
     glutMainLoop(); 
     return 0;
 }

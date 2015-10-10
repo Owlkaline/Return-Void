@@ -2,6 +2,7 @@
 
 Game::Game() {
     srand (time(NULL));
+    crntTime = clock();
     printf("Game Constructed\n");
 }
 
@@ -71,7 +72,15 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         //Fire player weapon
         if(keyState[32] == BUTTON_DOWN) { //Space Bar
             if(prevKeyState[32] != BUTTON_DOWN) {
+                printf("Space Bar pressed\n");
+                shootTime = crntTime;
                 player.fire();
+            } else {
+                printf("%li\n", crntTime - shootTime);
+                if( (crntTime - shootTime) > 3000) {
+                    shootTime = crntTime;
+                    player.fire();
+                }
             }
         }
         prevKeyState[32] = keyState[32];
@@ -91,8 +100,9 @@ void Game::collisions() {
                if( (player.getY()+1 >= enemy[i].getY()+1 && player.getY()+1 <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 ) ) || 
                  ( (player.getY()+1 + player.getHeight()-1) >= enemy[i].getY()+1 && ( player.getY()+1 + enemy[i].getHeight()-1 ) <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 )) ) {
                        
-                   enemy[i].looseHealth(1);
-                   player.reset(); 
+                   enemy[i].looseHealth(2);
+                   player.takeHealth(2);
+                   player.respawn(50, 5); 
                }
             }
         }
@@ -121,7 +131,8 @@ void Game::collisions() {
                 if( (player.getY()-1 >= enemy[i].getBulletY() && player.getY()-1 <= ( enemy[i].getBulletY() + enemy[i].getBulletHeight()-1 ) ) || 
                   ( (player.getY() + player.getHeight()-1) >= enemy[i].getBulletY() && ( player.getY() + enemy[i].getBulletHeight()-1 ) <= ( enemy[i].getBulletY() + enemy[i].getBulletHeight() )) ) {
                     enemy[i].setBulletVisible(false);
-                    player.reset();
+                    player.takeHealth(1);
+                    player.respawn(50, 5);
                     
                 }
             }
@@ -217,7 +228,7 @@ void Game::drawScore() {
 }
 
 void Game::drawHud() {
-
+    crntTime = clock();
     drawStars();
     
     glEnable(GL_TEXTURE_2D);
