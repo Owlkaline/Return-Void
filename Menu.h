@@ -29,10 +29,11 @@ class Menu
         int select;
         int height;
         int width;
+        void drawBackground();
         void drawRectangle(float x, float y, int textnum);
         GLuint LoadTexture( const char * filename );
         GLuint texture;
-        GLuint textures[6];
+        GLuint textures[8];
 };
 
 
