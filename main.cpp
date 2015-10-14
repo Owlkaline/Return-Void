@@ -6,9 +6,10 @@
 #include <GLUT/glut.h>// Header File For The GLut Library
 #else
 #include <GL/glut.h>
+#include <GL/glu.h>
 #include <GL/freeglut.h>
 #endif
-
+  
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h>      /* time */
@@ -37,6 +38,8 @@ double gridSquareWidth;
 
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
+
+bool alive;
 
 //std::string yes;
 
@@ -91,14 +94,23 @@ void display() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     int screenNum;
-    bool alive;
     switch(screen) {
        case sGame:
            if(keyState[27] == BUTTON_DOWN) //ESC
                screen = sMenu;
-           alive = game.Tick(keyState, prevKeyState);
-           if(!alive)
-               screen = sMenu;
+           game.draw();
+           if(!alive) {
+               game.drawGameOver();
+               if(keyState[(unsigned char)'y'] == BUTTON_DOWN) {
+                   game.setup();
+                   alive = true;
+               } else  if(keyState[(unsigned char)'n'] == BUTTON_DOWN) {
+                   screen = sMenu;
+               }
+           } else {
+               alive = game.Tick(keyState, prevKeyState);
+           }
+               
            break;
        case sMenu:           
            
@@ -137,24 +149,22 @@ void display() {
     glutSwapBuffers(); 
 }
 
-void setup() {
+void setup() { 
     screenResX = glutGet(GLUT_SCREEN_WIDTH);
     screenResY = glutGet(GLUT_SCREEN_HEIGHT);
 
     printf("Screen Resolution: %f\n", screenResX);
     printf("Screen Resolution: %f\n", screenResY);
-    
+     
     screen = sMenu;    
-
+    alive = true;
+    
     menu.setup();
 }
 
 int main(int argc, char** argv) {
 	/* initialize random seed: */
     srand (time(NULL));
-    
-    time_t crntTime = time(0);
-    printf("%li", crntTime);
     
     glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
 

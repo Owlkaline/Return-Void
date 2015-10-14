@@ -31,16 +31,19 @@ class Game
         void destroy();
         bool Tick(unsigned char* keyState, unsigned char* prevKeyState);  
         void collisions(); 
+        void draw();
+        void drawGameOver();
     protected:  
         Player player;
         Enemy enemy[10];
         Level level;
         clock_t crntTime;
         clock_t shootTime;
+        clock_t playerTime;
         int score;
+        void safeSpawn();
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);
-        void draw();
 
         void drawScore();
         void drawStars();
@@ -48,6 +51,7 @@ class Game
         void drawHud();
         GLuint LoadTexture( const char * filename );
         GLuint texture[12];
+        GLuint gameOverTexture;
 };
 
 

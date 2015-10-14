@@ -13,6 +13,7 @@
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
+#include <time.h>
 
 #include "Bullet.h"
 
@@ -39,33 +40,44 @@ class Player
         void rightImage();
         void stationaryImage();
         
-        float getX();
-        float getY();
         int getHealth();
         int getWidth();
         int getHeight();
+        float getX();
+        float getY();
+        bool isAlive();
         bool getVisible();
+        bool getInvincible();
          
-        bool getBulletVisible(int i);
+        int getBulletWidth(int i); 
+        int getBulletHeight(int i);
         float getBulletX(int i);
         float getBulletY(int i); 
-        int getBulletWidth(int i); 
-        int getBulletHeight(int i);     
+        bool getBulletVisible(int i);    
         
-        
+        void setHealth(int newHealth);
+        void setVisible(bool Visible);
         void setBulletVisible(bool visible, int i);
 
     protected:  
-        int boundryX, boundryY; 
-        int width, height;
-        float x, y; 
-        bool visible; 
         int health;
+        int fireRate;
+        int width, height;
+        int boundryX, boundryY; 
+
+        float x, y; 
+        bool visible, alive, invincible;
+        clock_t invincibleTime;
+        clock_t globalTime; 
+        clock_t drawTime;
+        bool drawInvincible;
         Bullet bullets[10];
         GLuint texture;
         GLuint PlayerLeftText;
         GLuint PlayerRightText;
         GLuint PlayerText;
+        
+        void drawShip();
 };
 
 

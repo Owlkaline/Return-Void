@@ -30,7 +30,7 @@ void Enemy::destroy() {
     //free(texture);
 }
 
-void Enemy::Tick(float Px, float Py) {
+void Enemy::Tick(float Px, float Py, bool Pvisible) {
     moveDown();
     if(x < -width)
         x = boundryX;
@@ -41,7 +41,7 @@ void Enemy::Tick(float Px, float Py) {
    // if(y > boundryY )
     //    y = -height;
     
-    if(!bullets.getVisible() && (random() % (int)rate) < 10)
+    if(Pvisible && !bullets.getVisible() && (random() % (int)rate) < 10)
         fire(Px, Py);
 }
 

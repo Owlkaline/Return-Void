@@ -1,11 +1,11 @@
 #!/usr/bin/make -f
 CC = g++
-CFLAGS  = -Wall -g
+CFLAGS  = -Wall -g -O3
 PROG = Return-void
 
 SRCS = main.cpp Game.cpp Menu.cpp Ship.cpp Bullet.cpp Enemy.cpp Level.cpp
 
-LIBS =  -framework OpenGL -framework GLUT -Wno-deprecated-declarations
+LIBS = -framework Carbon -framework Cocoa -framework OpenGL -framework GLUT -Wno-deprecated-declarations
 
 all: $(PROG)
 

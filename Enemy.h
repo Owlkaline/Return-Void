@@ -24,7 +24,7 @@ class Enemy
         void setup(GLuint *Texture);
         void destroy();
         
-        void Tick(float Px, float Py);
+        void Tick(float Px, float Py, bool Pvisible);
         
         float getX();
         float getY();

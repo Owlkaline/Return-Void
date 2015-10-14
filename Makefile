@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 CC = g++
-CFLAGS  = -Wall -g
+CFLAGS  = -Wall -g -O3
 PROG = Return-void
 
 SRCS = main.cpp Menu.cpp Game.cpp Level.cpp Player.cpp Enemy.cpp Bullet.cpp  

@@ -42,7 +42,10 @@ void Game::setup() {
     //Health Bar
     texture[11] = LoadTexture( "Textures/Hud/HealthBar.bmp" );
     level.Level1(enemy);
-    printf("Game setup\n");
+    
+    //GameOver texture
+    gameOverTexture = LoadTexture( "Textures/Hud/GameOver.bmp" );
+    printf("Game setup\n");    
 }
 
 void Game::destroy() {
@@ -72,12 +75,14 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         //Fire player weapon
         if(keyState[32] == BUTTON_DOWN) { //Space Bar
             if(prevKeyState[32] != BUTTON_DOWN) {
-                printf("Space Bar pressed\n");
-                shootTime = crntTime;
-                player.fire();
+               // printf("Space Bar pressed\n");
+               if( (crntTime - shootTime) > 2000) {
+                   shootTime = crntTime;
+                   player.fire();
+               }
             } else {
-                printf("%li\n", crntTime - shootTime);
-                if( (crntTime - shootTime) > 3000) {
+                //printf("%li\n", crntTime - shootTime);
+                if( (crntTime - shootTime) > 2000) {
                     shootTime = crntTime;
                     player.fire();
                 }
@@ -93,7 +98,7 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
 
 void Game::collisions() {   
     for(int i = 0; i < 10; ++i) {
-        if(enemy[i].getVisible() && player.getVisible()) {
+        if(enemy[i].getVisible() && player.getVisible() && !player.getInvincible()) {
             if( (player.getX()+1 >= enemy[i].getX()+1 && player.getX()+1 <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
               ( (player.getX()+1 + player.getWidth()-1) >= enemy[i].getX()+1 && ( player.getX()+1 + enemy[i].getWidth()-1 ) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 )) ) {
                    
@@ -102,7 +107,8 @@ void Game::collisions() {
                        
                    enemy[i].looseHealth(2);
                    player.takeHealth(2);
-                   player.respawn(50, 5); 
+                   player.setVisible(false);
+                   playerTime = clock(); 
                }
             }
         }
@@ -124,7 +130,7 @@ void Game::collisions() {
             }
         }
         
-        if(player.getVisible() && enemy[i].getBulletVisible()) {
+        if(player.getVisible() && !player.getInvincible() && enemy[i].getBulletVisible()) {
             if( (player.getX() >= enemy[i].getBulletX() && player.getX() <= ( enemy[i].getBulletX() + enemy[i].getBulletWidth() ) ) || 
               ( (player.getX() + player.getWidth()) >= enemy[i].getBulletX() && ( player.getX() + enemy[i].getBulletWidth() ) <= ( enemy[i].getBulletX() + enemy[i].getBulletWidth() )) ) {
               
@@ -132,8 +138,8 @@ void Game::collisions() {
                   ( (player.getY() + player.getHeight()-1) >= enemy[i].getBulletY() && ( player.getY() + enemy[i].getBulletHeight()-1 ) <= ( enemy[i].getBulletY() + enemy[i].getBulletHeight() )) ) {
                     enemy[i].setBulletVisible(false);
                     player.takeHealth(1);
-                    player.respawn(50, 5);
-                    
+                    player.setVisible(false);
+                    playerTime = clock();              
                 }
             }
         }
@@ -153,6 +159,24 @@ void Game::drawChar(int PosX, int PosY, float R, float G, float B, char str[25],
      }  
      glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
+}
+
+void Game::drawGameOver() {
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, gameOverTexture);
+	
+	//Top Bar    
+	glBegin(GL_QUADS);
+      glTexCoord2f(0.01f, 1.0f); 
+      glVertex3f(35, 70, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(65, 70, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(65, 30, 0.0);
+      glTexCoord2f(0.01f, 0.0f);
+      glVertex3f(35, 30, 0.0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 void Game::drawStars() {
@@ -247,10 +271,17 @@ void Game::drawHud() {
     glEnd();
     glDisable(GL_TEXTURE_2D);
 	//glBindTexture(GL_TEXTURE_2D, texture[1]);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	
     
-    //Health Bar  
+    //Health Bar     
     glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+      glVertex3f(79, 97, 0.0);
+      glVertex3f(79 + 20, 97, 0.0);
+      glVertex3f(79 + 20, 95, 0.0);
+      glVertex3f(79, 95, 0.0);
+      
+    glColor3f(1.0f, 0.0f, 0.0f);
       glVertex3f(79, 97, 0.0);
       //glTexCoord2f(1.0f, 0.0f);
       glVertex3f(79 + 20 * (player.getHealth()/5.0f), 97, 0.0);
@@ -308,11 +339,16 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState) {
     collisions();
     
     for(int i = 0; i < 10; ++i) {
-        if(enemy[i].getVisible())
-            enemy[i].Tick(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2);
+        if(player.isAlive() && enemy[i].getVisible())
+            enemy[i].Tick(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, player.getVisible());
     }
     
-    draw();
+    if(player.isAlive() && !player.getVisible()) {
+        if( (crntTime - playerTime) > 3000) {
+            shootTime = playerTime;
+            player.respawn(50, 5);
+        }
+    }  
     
     if(player.getHealth() <= 0)  
         return false;

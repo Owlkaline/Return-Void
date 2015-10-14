@@ -20,7 +20,7 @@ void Level::Tick(Enemy *enemy) {
 }
 
 void Level::randomSpawn(Enemy *enemy, int i) {
-        enemy[i].setSize(0.7 + (random() % 130) / 100.0f); 
+        enemy[i].setSize(0.7 + (random() % 110) / 100.0f); 
         enemy[i].setX( ((random() % (100 - enemy[i].getWidth()))));
         enemy[i].setY( ((random() % (100 - enemy[i].getHeight())) + 100));
         enemy[i].setSpeed( (random() % 50) / 100.0f + 0.03f);

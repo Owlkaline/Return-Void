@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+CC = g++
+CFLAGS  = -Wall -g -O3 -m32
+PROG = Return-void
+
+SRCS = main.cpp Menu.cpp Game.cpp Level.cpp Player.cpp Enemy.cpp Bullet.cpp  
+
+LIBS =  -lopengl32 -lglut32
+
+all: $(PROG)
+
+$(PROG):	$(SRCS)
+	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LIBS)
+
+clean:
+	rm -f $(PROG) 
+
