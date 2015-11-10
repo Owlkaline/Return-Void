@@ -112,8 +112,9 @@ void Menu::draw() {
             drawRectangle(50 - width/2, 50 - height/2, 1);
             drawRectangle(50 - width/2, 40 - height/2, 5);
             break;
-    }        
-  /*  glEnable(GL_TEXTURE_2D);
+    }   
+    glColor4f(1.0f, 1.0f, 1.0f, 0.0f);     
+    glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, textures[6]);
 	
@@ -128,7 +129,8 @@ void Menu::draw() {
         glVertex3f(0, 50, 0.0);
     glEnd();
     
-    glDisable(GL_TEXTURE_2D);*/
+    glDisable(GL_TEXTURE_2D);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
 }
 

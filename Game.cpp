@@ -98,8 +98,28 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
 
 void Game::collisions() {   
     for(int i = 0; i < 10; ++i) {
+        float enemyRadius = pow((pow(enemy[i].getWidth()/2, 2) + pow(enemy[i].getHeight()/2, 2)), 0.5);
+        float playerRadius = pow((pow(player.getWidth()/2, 2) + pow(player.getHeight()/2, 2)), 0.5);
+        float totalRadius;
+            
+        float diffx;
+        float diffy;
+        float distance;  
         if(enemy[i].getVisible() && player.getVisible() && !player.getInvincible()) {
-            if( (player.getX()+1 >= enemy[i].getX()+1 && player.getX()+1 <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
+                    
+            totalRadius = enemyRadius + playerRadius;
+            diffx = abs((enemy[i].getX() + enemy[i].getWidth()/2) - (player.getX() + player.getWidth()/2));
+            diffy = abs((enemy[i].getY() + enemy[i].getHeight()/2) - (player.getY() + player.getHeight()/2)); 
+            distance = pow((pow(diffx, 2) + pow(diffy, 2)), 0.5);
+          //  printf("%d Radius: %f diffX: %f diffY: %f\n", i, enemyRadius, diffx, diffy);
+            
+            if(totalRadius >= distance) {
+                enemy[i].looseHealth(2);
+                player.takeHealth(2);
+                player.setVisible(false);
+                playerTime = clock();
+            }
+        /*    if( (player.getX()+1 >= enemy[i].getX()+1 && player.getX()+1 <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
               ( (player.getX()+1 + player.getWidth()-1) >= enemy[i].getX()+1 && ( player.getX()+1 + enemy[i].getWidth()-1 ) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 )) ) {
                    
                if( (player.getY()+1 >= enemy[i].getY()+1 && player.getY()+1 <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 ) ) || 
@@ -110,13 +130,61 @@ void Game::collisions() {
                    player.setVisible(false);
                    playerTime = clock(); 
                }
-            }
+            }*/
         }
           
         if(enemy[i].getVisible()) {  
             for(int j = 0; j < 10; ++j) {
                 if(player.getBulletVisible(j)) {
-                    if( (player.getBulletX(j) >= enemy[i].getX()+1 && player.getBulletX(j) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
+                    float P1x = player.getBulletX(j);
+                    float P1y = player.getBulletY(j);
+                    float P2x = player.getBulletX(j) + player.getBulletWidth(j)/2;
+                    float P2y = player.getBulletY(j);
+                    float P3x = player.getBulletX(j) + player.getBulletWidth(j)/2;
+                    float P3y = player.getBulletY(j) + player.getBulletHeight(j)/2;
+                    float P4x = player.getBulletX(j);
+                    float P4y = player.getBulletY(j) + player.getBulletHeight(j);
+                    diffx = abs((enemy[i].getX() + enemy[i].getWidth()/2) - (player.getBulletX(j) + player.getBulletWidth(j)/2));
+                    diffy = abs((enemy[i].getY() + enemy[i].getHeight()/2) - (player.getBulletY(j) + player.getBulletHeight(j)/2)); 
+                    distance = pow((pow(diffx, 2) + pow(diffy, 2)), 0.5);
+                    
+                    if(enemyRadius >= distance) {
+                        player.setBulletVisible(false, j);
+                        score += enemy[i].looseHealth(1);
+                    } else {
+                        diffx = abs((enemy[i].getX() + enemy[i].getWidth()/2) - P1x);
+                        diffy = abs((enemy[i].getY() + enemy[i].getHeight()/2) - P1y); 
+                        distance = pow((pow(diffx, 2) + pow(diffy, 2)), 0.5);
+                        if(enemyRadius >= distance) {
+                            player.setBulletVisible(false, j);
+                            score += enemy[i].looseHealth(1);                
+                        } else {
+                            diffx = abs((enemy[i].getX() + enemy[i].getWidth()/2) - P2x);
+                            diffy = abs((enemy[i].getY() + enemy[i].getHeight()/2) - P2y); 
+                            distance = pow((pow(diffx, 2) + pow(diffy, 2)), 0.5);
+                            if(enemyRadius >= distance) {
+                                player.setBulletVisible(false, j);
+                                score += enemy[i].looseHealth(1);  
+                            } else {
+                                diffx = abs((enemy[i].getX() + enemy[i].getWidth()/2) - P3x);
+                                diffy = abs((enemy[i].getY() + enemy[i].getHeight()/2) - P3y); 
+                                distance = pow((pow(diffx, 2) + pow(diffy, 2)), 0.5);
+                                if(enemyRadius >= distance) { 
+                                    player.setBulletVisible(false, j);
+                                    score += enemy[i].looseHealth(1);  
+                                } else {
+                                    diffx = abs((enemy[i].getX() + enemy[i].getWidth()/2) - P4x);
+                                    diffy = abs((enemy[i].getY() + enemy[i].getHeight()/2) - P4y); 
+                                    distance = pow((pow(diffx, 2) + pow(diffy, 2)), 0.5);
+                                    if(enemyRadius >= distance) {
+                                        player.setBulletVisible(false, j);
+                                        score += enemy[i].looseHealth(1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    /*if( (player.getBulletX(j) >= enemy[i].getX()+1 && player.getBulletX(j) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 ) ) || 
                       ( (player.getBulletX(j) + player.getBulletWidth(j)) >= enemy[i].getX()+1 && ( player.getBulletX(j) + enemy[i].getWidth()-1 ) <= ( enemy[i].getX()+1 + enemy[i].getWidth()-1 )) ) {
                    
                         if( (player.getBulletY(j) >= enemy[i].getY()+1 && player.getBulletY(j) <= ( enemy[i].getY()+1 + enemy[i].getHeight()-1 ) ) || 
@@ -125,7 +193,7 @@ void Game::collisions() {
                            player.setBulletVisible(false, j);
                            score += enemy[i].looseHealth(1);
                         }
-                    } 
+                    } */
                 }
             }
         }
@@ -396,6 +464,13 @@ GLuint Game::LoadTexture( const char * filename ) {
                             // Without an fseek, the order is GRAB
     fread( data, 1, width * height * 4, file );
     fclose( file );
+    
+   /* for(int i = 0; i M width*height*4; i+=4) {
+        data[i]
+        data[i+1]
+        data[i+2]
+        data[i+3]
+    }*/
  
      glGenTextures(1, &textures);
      glBindTexture(GL_TEXTURE_2D, textures);

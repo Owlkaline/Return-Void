@@ -6,18 +6,26 @@
 #-------Current Bugs-------------------------------------------
 #--------------------------------------------------------------
 
-1. SOLVED
+1. SOLVED 31/9/15
 
-2. #Version 1.0 - Uncomfirmed 
+2. #Version 1.0 - Uncomfirmed  5/10/15
    Floating point Error, while in Game shooting enemies
    existance Unknown
-
+   
+   14/10/15
+   Edit - if spam start and enter between menu and game, results
+   in Floating point Error
+   
+   
+3. 14/10/15
+   Similar to bug 2, when constantly flicking between the menu and
+   game the enemy ship progressively get bigger.
 
 #--------------------------------------------------------------
 #-------Bugs Resolved------------------------------------------
 #--------------------------------------------------------------
 
-1. #Before Version 0.1
+1. #Before Version 0.1 31/9/15
    When hold shift and moving then releasing shit causes shipp
    to continuously move in 2 directions or less in the last
    direction that the user was holding even if the user 

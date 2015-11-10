@@ -21,6 +21,8 @@ void Enemy::setup(GLuint *EnemyText) {
     health = maxHealth; 
     x = 0;
     y = boundryY - height; 
+    width = 5;
+    height = 5; 
     visible = true;
     texture = EnemyText[0]; 
     bullets.setup(EnemyText[1], 0.5, 1);
