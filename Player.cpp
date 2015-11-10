@@ -72,13 +72,13 @@ void Player::drawShip() {
 	glBindTexture(GL_TEXTURE_2D, texture);
         
     glBegin(GL_POLYGON);
-      glTexCoord2f(0.03f, 1.0f); 
+      glTexCoord2f(0.0f, 1.0f); 
       glVertex3f(x, y + height, 0.0);
-      glTexCoord2f(1.03f, 1.0f);
+      glTexCoord2f(1.0f, 1.0f);
       glVertex3f(x + width, y + height, 0.0);
-      glTexCoord2f(1.03f, 0.0f);
+      glTexCoord2f(1.0f, 0.0f);
       glVertex3f(x + width, y, 0.0);
-      glTexCoord2f(0.03f, 0.0f);
+      glTexCoord2f(0.0f, 0.0f);
       glVertex3f(x, y, 0.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
@@ -100,8 +100,8 @@ void Player::draw() {
         y = 0;
     if(x > boundryX)
         x = boundryX;
-    if(y > boundryY)
-        y = boundryY;
+    //if(y > boundryY)
+   //     y = boundryY;
     
     if(!invincible) {
        drawShip();

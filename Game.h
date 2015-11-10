@@ -6,8 +6,10 @@
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
 #include <GLUT/glut.h>// Header File For The GLut Library
 #else
+#include <GL/gl.h>
 #include <GL/glut.h>
 #include <GL/freeglut.h>
+#include <png.h>
 #endif
 
 #include <stdio.h> 

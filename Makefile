@@ -5,7 +5,7 @@ PROG = Return-void
 
 SRCS = main.cpp Menu.cpp Game.cpp Level.cpp Player.cpp Enemy.cpp Bullet.cpp  
 
-LIBS = -lglut -lGLU -lGL
+LIBS = -lglut -lGLU -lGL -lpng
 
 all: $(PROG)
 
