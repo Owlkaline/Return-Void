@@ -145,6 +145,8 @@ void display() {
     }
     keyState[27] = prevKeyState[27];
     drawChar(0, 98, 0.5f, 0.0f, 1.0f, "Version_0.1", 11);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_ONE, GL_ONE);
     glFlush();       
     glutSwapBuffers(); 
 }
@@ -188,9 +190,10 @@ int main(int argc, char** argv) {
         printf("GameMode %s NOT possible\n", mode_string);
         glutFullScreen();
     }
+    glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
     glAlphaFunc(GL_GREATER, 0.1);
     glEnable(GL_ALPHA_TEST);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glutIgnoreKeyRepeat(1);
     
     glutDisplayFunc(display);

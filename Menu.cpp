@@ -1,21 +1,21 @@
 #include "Menu.h"
 
+#define TEXTURE_LOAD_ERROR 0
+
 Menu::Menu() {
-    height = 4;
+    height = 8;
     width = 8;  
     select = 0;
+    numOptions = 2;
     printf("Menu Constructed\n");
 }
 
 void Menu::setup() {
-    textures[0] = LoadTexture( "Textures/Menu/Start.bmp" );
-    textures[1] = LoadTexture( "Textures/Menu/Options.bmp" );
-    textures[2] = LoadTexture( "Textures/Menu/Exit.bmp" );
-    textures[3] = LoadTexture( "Textures/Menu/SelectedStart.bmp" );
-    textures[4] = LoadTexture( "Textures/Menu/SelectedOptions.bmp" );
-    textures[5] = LoadTexture( "Textures/Menu/SelectedExit.bmp" );
-    textures[6] = LoadTexture( "Textures/Menu/Selector.bmp" );
-    textures[7] = LoadTexture( "Textures/Menu/Background.bmp" );
+    textures[0] = LoadTexture( "Textures/Menu/Start.png" );
+    textures[1] = LoadTexture( "Textures/Menu/Options.png" );
+    textures[2] = LoadTexture( "Textures/Menu/Exit.png" );
+    textures[3] = LoadTexture( "Textures/Menu/Selector.png" );
+    textures[4] = LoadTexture( "Textures/Menu/Background.png" );
     
     printf("Menu setup\n");
 }
@@ -30,7 +30,7 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
 
     if(keyState[(unsigned char)'s'] == BUTTON_DOWN) {
         if(prevKeyState[(unsigned char)'s'] != BUTTON_DOWN) {
-         if(select < 2)
+         if(select < numOptions)
              select++;
         }
     }
@@ -58,20 +58,28 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
 void Menu::drawBackground() {
     glEnable(GL_TEXTURE_2D);
     
-	glBindTexture(GL_TEXTURE_2D, textures[7]);
+	glBindTexture(GL_TEXTURE_2D, textures[4]);
 	
     glBegin(GL_QUADS);
-        glTexCoord2f(0.05f, 1.0f); 
+        glTexCoord2f(0.0f, 1.0f); 
         glVertex3f(0, 100, 0.0);
         glTexCoord2f(1.0f, 1.0f);
         glVertex3f(100, 100, 0.0);
         glTexCoord2f(1.0f, 0.0f);
         glVertex3f(100, 0, 0.0);
-        glTexCoord2f(0.05f, 0.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(0, 0, 0.0);
     glEnd();
-    
+    glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
     glDisable(GL_TEXTURE_2D);
+    
+     glBegin(GL_QUADS); 
+        glVertex3f(30, 60, 0.0);
+        glVertex3f(70, 60, 0.0);
+        glVertex3f(70, 0, 0.0);
+        glVertex3f(30, 0, 0.0);
+    glEnd();
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void Menu::drawRectangle(float x, float y, int textnum) {
@@ -96,76 +104,145 @@ void Menu::drawRectangle(float x, float y, int textnum) {
 
 void Menu::draw() {
     drawBackground();
-    switch(select) {
-        case 0:
-            drawRectangle(50 - width/2, 60 - height/2, 3);
-            drawRectangle(50 - width/2, 50 - height/2, 1);
-            drawRectangle(50 - width/2, 40 - height/2, 2);
-            break;
-        case 1:
-            drawRectangle(50 - width/2, 60 - height/2, 0);
-            drawRectangle(50 - width/2, 50 - height/2, 4);
-            drawRectangle(50 - width/2, 40 - height/2, 2);
-            break;
-        case 2:
-            drawRectangle(50 - width/2, 60 - height/2, 0);
-            drawRectangle(50 - width/2, 50 - height/2, 1);
-            drawRectangle(50 - width/2, 40 - height/2, 5);
-            break;
-    }   
-    glColor4f(1.0f, 1.0f, 1.0f, 0.0f);     
+    
     glEnable(GL_TEXTURE_2D);
     
-	glBindTexture(GL_TEXTURE_2D, textures[6]);
+	glBindTexture(GL_TEXTURE_2D, textures[3]);
 	
     glBegin(GL_QUADS);
-        glTexCoord2f(0.1f, 1.0f); 
-        glVertex3f(0, 55, 0.0);
-        glTexCoord2f(1.03f, 1.0f);
-        glVertex3f(45, 55, 0.0);
-        glTexCoord2f(1.03f, 0.0f);
-        glVertex3f(45, 50, 0.0);
-        glTexCoord2f(0.1f, 0.0f);
-        glVertex3f(0, 50, 0.0);
+        glTexCoord2f(0.0f, 1.0f); 
+        glVertex3f(0, 60 - select*5, 0.0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(70, 60 - select*5, 0.0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(70, 55 - select*5, 0.0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(0, 55 - select*5, 0.0);
     glEnd();
-    
     glDisable(GL_TEXTURE_2D);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
+    drawRectangle(35 - width/2, 54, 0);
+    drawRectangle(35 - width/2, 49, 1);
+    drawRectangle(35 - width/2, 44, 2);
 }
 
 GLuint Menu::LoadTexture( const char * filename ) {
-    GLuint textures;
+    int width;
+    int height;
+    
+    //header for testing if it is a png
+    png_byte header[8];
  
-    int width, height;
-
-    unsigned char * data;
-
-    FILE * file;
-
-    file = fopen( filename, "rb" );
-  
-    if ( file == NULL ) return 0;
-    // printf("file opened\n");
-    width = 1024;
-    height = 1024;
-    data = (unsigned char *)malloc( width * height * 4 );
-    //int size = fseek(file,);
-    fseek(file,3,SEEK_CUR); // if we go forward 3 bytes then the BMP color
-                            // order is BGRA.
-                            // Without an fseek, the order is GRAB
-    fread( data, 1, width * height * 4, file );
-    fclose( file );
+    //open file as binary
+    FILE *fp = fopen(filename, "rb");
+    if (!fp) {
+      return TEXTURE_LOAD_ERROR;
+    }
  
-     glGenTextures(1, &textures);
-     glBindTexture(GL_TEXTURE_2D, textures);
+    //read the header
+    fread(header, 1, 8, fp);
+ 
+    //test if png
+    int is_png = !png_sig_cmp(header, 0, 8);
+    if (!is_png) {
+      fclose(fp);
+      return TEXTURE_LOAD_ERROR;
+    }
+ 
+    //create png struct
+    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    if (!png_ptr) {
+      fclose(fp);
+      return (TEXTURE_LOAD_ERROR);
+    }
+ 
+    //create png info struct
+    png_infop info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr) {
+      png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
+      fclose(fp);
+      return (TEXTURE_LOAD_ERROR);
+    }
+ 
+    //create png info struct
+    png_infop end_info = png_create_info_struct(png_ptr);
+    if (!end_info) {
+      png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
+      fclose(fp);
+      return (TEXTURE_LOAD_ERROR);
+    }
+ 
+    //png error stuff, not sure libpng man suggests this.
+    if (setjmp(png_jmpbuf(png_ptr))) {
+      png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+      fclose(fp);
+      return (TEXTURE_LOAD_ERROR);
+    }
+ 
+    //init png reading
+    png_init_io(png_ptr, fp);
+ 
+    //let libpng know you already read the first 8 bytes
+    png_set_sig_bytes(png_ptr, 8);
+ 
+    // read all the info up to the image data
+    png_read_info(png_ptr, info_ptr);
   
-     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
-     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
-     free( data );
-     return textures;
+    //variables to pass to get info
+    int bit_depth, color_type;
+    png_uint_32 twidth, theight;
+ 
+    // get info about png
+    png_get_IHDR(png_ptr, info_ptr, &twidth, &theight, &bit_depth, &color_type, NULL, NULL, NULL);
+ 
+    //update width and height based on png info 
+    width = twidth;
+    height = theight;
+ 
+    // Update the png info struct.
+    png_read_update_info(png_ptr, info_ptr);
+ 
+    // Row size in bytes.
+    int rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+ 
+    // Allocate the image_data as a big block, to be given to opengl
+    png_byte *image_data = new png_byte[rowbytes * height];
+    if (!image_data) {
+      //clean up memory and close stuff
+      png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+      fclose(fp);
+      return TEXTURE_LOAD_ERROR;
+   }
+ 
+   //row_pointers is for pointing to image_data for reading the png with libpng
+   png_bytep *row_pointers = new png_bytep[height];
+   if (!row_pointers) {
+     //clean up memory and close stuff
+     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+     delete[] image_data;
+     fclose(fp);
+     return TEXTURE_LOAD_ERROR;
+   }
+   // set the individual row_pointers to point at the correct offsets of image_data
+   for (int i = 0; i < height; ++i)
+     row_pointers[height - 1 - i] = image_data + i * rowbytes;
+ 
+   //read the png into image_data through row_pointers
+   png_read_image(png_ptr, row_pointers);
+ 
+   //Now generate the OpenGL texture object
+   GLuint texture;
+   glGenTextures(1, &texture);
+   glBindTexture(GL_TEXTURE_2D, texture);
+   glTexImage2D(GL_TEXTURE_2D,0, GL_RGBA, width, height, 0,
+       GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*) image_data);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+ 
+   //clean up memory and close stuff
+   png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+   delete[] image_data;
+   delete[] row_pointers;
+   fclose(fp);
+ 
+   return texture;
 }

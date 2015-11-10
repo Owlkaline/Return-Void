@@ -8,6 +8,7 @@
 #else
 #include <GL/glut.h>
 #include <GL/freeglut.h>
+#include <png.h>
 #endif
 
 #include <stdio.h> 
@@ -29,6 +30,7 @@ class Menu
         int select;
         int height;
         int width;
+        int numOptions;
         void drawBackground();
         void drawRectangle(float x, float y, int textnum);
         GLuint LoadTexture( const char * filename );
