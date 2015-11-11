@@ -29,7 +29,7 @@ class Game
 {
     public:
         Game();
-        void setup();
+        void setup(float aspectRatio);
         void destroy();
         bool Tick(unsigned char* keyState, unsigned char* prevKeyState);  
         void collisions(); 

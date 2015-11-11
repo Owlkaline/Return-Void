@@ -17,7 +17,7 @@ Enemy::Enemy() {
     printf("Enemy Constructed\n");
 }
    
-void Enemy::setup(GLuint *EnemyText) {
+void Enemy::setup(GLuint *EnemyText, float aspectRatio) {
     health = maxHealth; 
     x = 0;
     y = boundryY - height; 

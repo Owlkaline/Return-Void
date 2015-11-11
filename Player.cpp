@@ -6,16 +6,18 @@
 
 Player::Player() {
     width = 5;
-    height = 10;
+    height = 5;
     boundryX = 100 - width;
     boundryY = 92 - height;
     globalTime = clock();
     printf("Player Constructed\n");
 }
    
-void Player::setup(GLuint *newTextures) {
+void Player::setup(GLuint *newTextures, float aspectRatio) {
     x = 50.0f;
     y = 5.0f;
+   // width*=aspectRatio;
+    height=5*aspectRatio;
     health = 5;
     drawInvincible = true;
     fireRate = 2000;
@@ -100,8 +102,8 @@ void Player::draw() {
         y = 0;
     if(x > boundryX)
         x = boundryX;
-    //if(y > boundryY)
-   //     y = boundryY;
+    if(y > boundryY)
+        y = boundryY;
     
     if(!invincible) {
        drawShip();

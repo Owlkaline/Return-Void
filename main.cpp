@@ -30,8 +30,7 @@ enum Screen {
 double windowWidth = 100; //veiwing world x
 double windowHeight = 100; // veiwing world y
 
-double screenResX;
-double screenResY;
+float aspectRatio;
 
 int refreshMillis = 20; 
 double gridSquareWidth; 
@@ -102,7 +101,7 @@ void display() {
            if(!alive) {
                game.drawGameOver();
                if(keyState[(unsigned char)'y'] == BUTTON_DOWN) {
-                   game.setup();
+                   game.setup(aspectRatio);
                    alive = true;
                } else  if(keyState[(unsigned char)'n'] == BUTTON_DOWN) {
                    screen = sMenu;
@@ -128,7 +127,7 @@ void display() {
                    break;
                case 1: 
                    screen = sGame;
-                   game.setup();
+                   game.setup(aspectRatio);
                    break;
                case 2:
                    screen = sOptions;
@@ -152,11 +151,9 @@ void display() {
 }
 
 void setup() { 
-    screenResX = glutGet(GLUT_SCREEN_WIDTH);
-    screenResY = glutGet(GLUT_SCREEN_HEIGHT);
-
-    printf("Screen Resolution: %f\n", screenResX);
-    printf("Screen Resolution: %f\n", screenResY);
+    int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
+    int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+    aspectRatio = (float)screenResX / screenResY;
      
     screen = sMenu;    
     alive = true;
@@ -181,19 +178,21 @@ int main(int argc, char** argv) {
     glutGameModeString(mode_string);
     if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
         printf("GameMode %s is possible\n", mode_string);
-                                 // destroys the current graphics window
+        
+        // destroys the current graphics window
         glutDestroyWindow(0);
         glutEnterGameMode();
-                                 // hide the cursor
-        glutSetCursor(GLUT_CURSOR_NONE);
     } else {
         printf("GameMode %s NOT possible\n", mode_string);
         glutFullScreen();
-    }
+    }       
+    // hide the cursor
+    glutSetCursor(GLUT_CURSOR_NONE);
+    
     glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
     glAlphaFunc(GL_GREATER, 0.1);
     glEnable(GL_ALPHA_TEST);
-   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     glutIgnoreKeyRepeat(1);
     
     glutDisplayFunc(display);

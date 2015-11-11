@@ -21,7 +21,7 @@ class Enemy
 {
     public:
         Enemy();
-        void setup(GLuint *Texture);
+        void setup(GLuint *Texture, float aspectRatio);
         void destroy();
         
         void Tick(float Px, float Py, bool Pvisible);
@@ -58,7 +58,7 @@ class Enemy
         void setBulletVisible(bool visible);      
     protected:  
         int boundryX, boundryY; 
-        int width, height;
+        float width, height;
         float x, y, targetX, targetY, rate, speed;  
         int health, maxHealth;
         bool visible;

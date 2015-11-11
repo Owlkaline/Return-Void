@@ -21,7 +21,7 @@ class Player
 {
     public:
         Player();
-        void setup(GLuint *newTextures);
+        void setup(GLuint *newTextures, float aspectRatio);
         void destroy();
         void respawn(int x, int y);
         
@@ -62,7 +62,7 @@ class Player
     protected:  
         int health;
         int fireRate;
-        int width, height;
+        float width, height;
         int boundryX, boundryY; 
 
         float x, y; 
