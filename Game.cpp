@@ -14,7 +14,7 @@ void Game::setup(float aspectRatio) {
     data>>showHitBox;
     data.close();
     
-    
+    increment = 0;
     printf("%d", showHitBox);
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);
     level.setup();
@@ -92,16 +92,24 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         if(keyState[32] == BUTTON_DOWN) { //Space Bar
             if(prevKeyState[32] != BUTTON_DOWN) {
                // printf("Space Bar pressed\n");
-               if( (crntTime - shootTime) > 2000) {
-                   shootTime = crntTime;
+               if(increment > 5) {
+                   increment = 0;
                    player.fire();
                }
+             /*  if( (crntTime - shootTime) > 2000) {
+                   shootTime = crntTime;
+                   player.fire();
+               }*/
             } else {
                 //printf("%li\n", crntTime - shootTime);
-                if( (crntTime - shootTime) > 2000) {
+               if(increment > 5) {
+                   increment = 0;
+                   player.fire();
+               }                
+/*if( (crntTime - shootTime) > 2000) {
                     shootTime = crntTime;
                     player.fire();
-                }
+                }*/
             }
         }
         prevKeyState[32] = keyState[32];
@@ -427,7 +435,7 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
     
     if(player.getHealth() <= 0)  
         return false;
-    
+    increment++;
     return true;
 }
 

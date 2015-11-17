@@ -43,6 +43,7 @@ class Game
         clock_t crntTime;
         clock_t shootTime;
         clock_t playerTime;
+        int increment;
         int score;
         bool showHitBox;
         void safeSpawn();
