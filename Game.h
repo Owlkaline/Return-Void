@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <fstream>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -31,7 +32,7 @@ class Game
         Game();
         void setup(float aspectRatio);
         void destroy();
-        bool Tick(unsigned char* keyState, unsigned char* prevKeyState);  
+        bool Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY);  
         void collisions(); 
         void draw();
         void drawGameOver();
@@ -43,10 +44,12 @@ class Game
         clock_t shootTime;
         clock_t playerTime;
         int score;
+        bool showHitBox;
         void safeSpawn();
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);
 
+        void drawHitBox(float Ax, float Ay, float Aw, float Ah);
         void drawScore();
         void drawStars();
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);

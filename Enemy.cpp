@@ -14,7 +14,6 @@ Enemy::Enemy() {
     x = 0;
     y = boundryY - height; 
     visible = true;
-    printf("Enemy Constructed\n");
 }
    
 void Enemy::setup(GLuint *EnemyText, float aspectRatio) {
@@ -48,22 +47,35 @@ void Enemy::Tick(float Px, float Py, bool Pvisible) {
 }
 
 void Enemy::draw() {
-
+    glPushMatrix();
+    //glLoadIdentity();
+    glTranslatef(x+width/2, y+width/2, 0);
+        
+    glRotatef(180, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
     
     glBegin(GL_POLYGON);
-        glTexCoord2f(0.0f, 0.0f); 
+      glTexCoord2f(0.0f, 1.0f); 
+      glVertex3f(-width/2, height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f); 
+      glVertex3f(width/2, height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f); 
+      glVertex3f(width/2, -height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(-width/2, -height/2, 0.0);
+   /*     glTexCoord2f(0.0f, 0.0f); 
         glVertex3f(x, y + height, 0.0);
         glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + width, y + height, 0.0);
         glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x + width, y, 0.0);
         glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x, y, 0.0);
+        glVertex3f(x, y, 0.0);*/
     glEnd();
-    glDisable(GL_TEXTURE_2D);  
+    glDisable(GL_TEXTURE_2D); 
+    glPopMatrix(); 
 }
 
 void Enemy::drawBullets() {

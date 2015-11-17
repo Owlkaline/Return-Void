@@ -14,6 +14,7 @@
 #include <stdlib.h> 
 #include <time.h>      /* time */
 #include <iostream>
+#include <fstream>
 
 #include "Game.h"
 #include "Menu.h"
@@ -22,15 +23,20 @@
 #define BUTTON_DOWN 1
 
 enum Screen {
-    sMenu = 0,
-    sGame = 1,
-    sOptions = 2  
+    sMenu,
+    sOptions, 
+    sGame
 };
+
+GLuint menuTextures[4];
+GLuint gameTextures[19];
 
 double windowWidth = 100; //veiwing world x
 double windowHeight = 100; // veiwing world y
 
 float aspectRatio;
+float aspectW;
+float aspectH;
 
 int refreshMillis = 20; 
 double gridSquareWidth; 
@@ -38,11 +44,11 @@ double gridSquareWidth;
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
 
+float mouseX, mouseY;
+
 bool alive;
 
-//std::string yes;
-
-Game game;
+Game game; 
 Menu menu;
 Screen screen;
 
@@ -52,7 +58,7 @@ void Timer(int value) {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-        keyState[putchar (tolower(key))] = BUTTON_DOWN;
+    keyState[putchar (tolower(key))] = BUTTON_DOWN;
 }
 
 void keyboard_up(unsigned char key, int x, int y) {
@@ -66,8 +72,10 @@ void specialKeys(int key, int x, int y) {
      }
 }
 
-void mouse(int button, int state, int x, int y) {
-    
+void mouse(int x, int y) {
+    mouseX = x * aspectW;
+    mouseY = y * aspectH;
+    //printf("x: %f y: %f\n", mouseX, mouseY);
 }
 
 void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length) {
@@ -95,8 +103,10 @@ void display() {
     int screenNum;
     switch(screen) {
        case sGame:
-           if(keyState[27] == BUTTON_DOWN) //ESC
+           if(keyState[27] == BUTTON_DOWN) {//ESC
+               alive = true;
                screen = sMenu;
+           }
            game.draw();
            if(!alive) {
                game.drawGameOver();
@@ -105,25 +115,27 @@ void display() {
                    alive = true;
                } else  if(keyState[(unsigned char)'n'] == BUTTON_DOWN) {
                    screen = sMenu;
+                   alive = true;
                }
            } else {
-               alive = game.Tick(keyState, prevKeyState);
+               alive = game.Tick(keyState, prevKeyState, mouseX, mouseY);
            }
                
            break;
        case sMenu:           
-           
+           glutSetCursor(GLUT_CURSOR_NONE);
            screenNum = menu.keyPress(keyState, prevKeyState);
            if(keyState[27] == BUTTON_DOWN) {//ESC
                if(prevKeyState[27] != BUTTON_DOWN) {
                    glutLeaveGameMode();
-                   exit(0);
+                   exit(1);
                }
            }
            
            switch(screenNum) {
                case -1:
-                   exit(0);                  
+                   glutLeaveGameMode();
+                   exit(-1);                  
                    break;
                case 1: 
                    screen = sGame;
@@ -131,22 +143,32 @@ void display() {
                    break;
                case 2:
                    screen = sOptions;
-                   break;
-              
+                   menu.readSettings();                   
+                   menu.changeMenu(sOptions); 
+                   break;              
            }
            menu.draw();
            break;
        case sOptions:
-           if(keyState[27] == BUTTON_DOWN) {//ESC
+           screenNum = menu.keyPress(keyState, prevKeyState);
+           menu.draw();
+           if(keyState[27] == BUTTON_DOWN && prevKeyState[13] != BUTTON_DOWN) {//ESC
+               menu.saveSettings();
                screen = sMenu;
+               menu.changeMenu(sMenu); 
+           }
+           if(screenNum == 3) {
+               screen = sMenu;
+               menu.changeMenu(sMenu);
            }
            break;
     }
-    keyState[27] = prevKeyState[27];
+    prevKeyState[27] = keyState[27];//esc
+    prevKeyState[13] = keyState[13];//enter
     drawChar(0, 98, 0.5f, 0.0f, 1.0f, "Version_0.1", 11);
     glEnable (GL_BLEND);
     glBlendFunc (GL_ONE, GL_ONE);
-    glFlush();       
+   // glFlush();       
     glutSwapBuffers(); 
 }
 
@@ -154,10 +176,11 @@ void setup() {
     int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
     int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
     aspectRatio = (float)screenResX / screenResY;
-     
+    aspectW = 100.0f/screenResX;
+    aspectH = 100.0f/screenResY;
     screen = sMenu;    
     alive = true;
-    
+
     menu.setup();
 }
 
@@ -200,10 +223,12 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyboard); 
     glutKeyboardUpFunc(keyboard_up); 
     glutSpecialFunc(specialKeys);
-    
-    glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
-    glClearColor(0.0, 0.0, 0.0, 255.0);
+    glutPassiveMotionFunc(mouse);
     setup();
+    glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
+  // glOrtho(0/*-aspectRatio*/, aspectRatio*100.0-78, -1*100 + 100.0, 1*100.0, -1, 1);
+    glClearColor(0.0, 0.0, 0.0, 255.0);
+    
     printf("Setup Complete\n");
      
     glutMainLoop(); 

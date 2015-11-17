@@ -9,6 +9,14 @@ Game::Game() {
 }
 
 void Game::setup(float aspectRatio) {
+
+    std::ifstream data ("settings.in", std::ios_base::in);
+    data>>showHitBox;
+    data.close();
+    
+    
+    printf("%d", showHitBox);
+    glutSetCursor(GLUT_CURSOR_CROSSHAIR);
     level.setup();
     score = 0;
     GLuint playerTextures[5];
@@ -26,6 +34,8 @@ void Game::setup(float aspectRatio) {
         enemy[i].setup(enemyTexture, aspectRatio);
         enemy[i].setX(i*10);
     }
+    printf("Enemies Constructed\n");
+    
     //Score
     texture[0] = LoadTexture( "Textures/Score/Zero.png" );
     texture[1] = LoadTexture( "Textures/Score/One.png" );
@@ -52,7 +62,6 @@ void Game::setup(float aspectRatio) {
 
 void Game::destroy() {
     player.destroy();
-    
     for(int i = 0; i < 1; ++i) {
         enemy[i].destroy();
     }
@@ -73,7 +82,12 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
             player.moveUp();
         if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
             player.moveDown();
-        
+            
+        if(keyState[(unsigned char)'e'] == BUTTON_DOWN)
+            player.rotateLeft();
+        if(keyState[(unsigned char)'q'] == BUTTON_DOWN)
+            player.rotateRight();
+            
         //Fire player weapon
         if(keyState[32] == BUTTON_DOWN) { //Space Bar
             if(prevKeyState[32] != BUTTON_DOWN) {
@@ -98,25 +112,75 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
     }
 }
 
+void Game::drawHitBox(float Ax, float Ay, float Aw, float Ah) {
+    glColor4f(1.0, 0.0f, 0.0f, 0.5);
+    glBegin(GL_QUADS);
+     
+      //Bottom
+      glVertex3f(Ax, Ay+0.1, 0.0);
+      glVertex3f(Ax + Aw, Ay + 0.1, 0.0); 
+      glVertex3f(Ax + Aw, Ay, 0.0);
+      glVertex3f(Ax, Ay, 0.0);
+      
+      //Top
+      glVertex3f(Ax, Ay+Ah, 0.0);
+      glVertex3f(Ax + Aw, Ay + Ah, 0.0); 
+      glVertex3f(Ax + Aw, Ay + Ah - 0.1, 0.0);
+      glVertex3f(Ax, Ay + Ah - 0.1, 0.0);
+      
+      //Left
+      glVertex3f(Ax, Ay+Ah, 0.0);
+      glVertex3f(Ax + 0.1, Ay + Ah, 0.0); 
+      glVertex3f(Ax + 0.1, Ay, 0.0);
+      glVertex3f(Ax, Ay, 0.0);
+      
+      //Right
+      glVertex3f(Ax + Aw - 0.1, Ay+Ah, 0.0);
+      glVertex3f(Ax + Aw, Ay + Ah, 0.0); 
+      glVertex3f(Ax + Aw, Ay, 0.0);
+      glVertex3f(Ax + Aw - 0.1, Ay, 0.0);
+              
+    glEnd();
+}
+
 void Game::collisions() {   
     for(int i = 0; i < 10; ++i) {
-        float enemyRadius = pow((pow(enemy[i].getWidth()/2, 2) + pow(enemy[i].getHeight()/2, 2)), 0.5);
-        float playerRadius = pow((pow(player.getWidth()/2, 2) + pow(player.getHeight()/2, 2)), 0.5);
-        float totalRadius;
+        //float enemyRadius = pow((pow(enemy[i].getWidth()/2, 2) + pow(enemy[i].getHeight()/2, 2)), 0.5);
+       // float playerRadius = pow((pow(player.getWidth()/2, 2) + pow(player.getHeight()/2, 2)), 0.5);
+        //float totalRadius;
             
-        float diffx;
-        float diffy;
-        float distance;  
-        
-        if(enemy[i].getVisible() && player.getVisible() && !player.getInvincible()) {
-            float Ax = player.getX();
-            float Ay = player.getY();
-            float Aw = player.getWidth();
-            float Ah = player.getHeight();
-            float Bx = enemy[i].getX();
-            float By = enemy[i].getY();
-            float Bw = enemy[i].getWidth();
-            float Bh = enemy[i].getHeight();
+       // float diffx;
+        //float diffy;
+       // float distance;  
+       
+       //Player
+       float Ax = player.getX()+0.5;
+       float Ay = player.getY()-0.75;
+       float Aw = player.getWidth()-1;
+       float Ah = player.getHeight()-0.8;
+            
+       //Enemy     
+       float Bx = enemy[i].getX() + ( (enemy[i].getWidth()/10.0f) * 2);
+       float By = enemy[i].getY() + ( (enemy[i].getHeight()/10.0f) );
+       float Bw = enemy[i].getWidth()-( (enemy[i].getWidth()/10.0f) * 3);
+       float Bh = enemy[i].getHeight() - ( (enemy[i].getHeight()/10.0f) );
+            
+       //Player bullets     
+       float Cx;
+       float Cy;
+       float Cw;
+       float Ch;
+       
+       //Ememy Bullets
+       float Dx = enemy[i].getBulletX();
+       float Dy = enemy[i].getBulletY();
+       float Dw = enemy[i].getBulletWidth();
+       float Dh = enemy[i].getBulletHeight();
+       if(showHitBox) {
+           drawHitBox(Ax, Ay, Aw, Ah);
+           drawHitBox(Bx, By, Bw, Bh);            
+       }
+        if(enemy[i].getVisible() && player.getVisible() && !player.getInvincible()) {            
             if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
                 enemy[i].looseHealth(2);
                 player.takeHealth(2);
@@ -128,15 +192,14 @@ void Game::collisions() {
         if(enemy[i].getVisible()) {  
             for(int j = 0; j < 10; ++j) {
                 if(player.getBulletVisible(j)) {
-                    float Ax = player.getBulletX(j);
-                    float Ay = player.getBulletY(j);
-                    float Aw = player.getBulletWidth(j);
-                    float Ah = player.getBulletHeight(j);
-                    float Bx = enemy[i].getX();
-                    float By = enemy[i].getY();
-                    float Bw = enemy[i].getWidth();
-                    float Bh = enemy[i].getHeight();
-                    if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
+                    Cx = player.getBulletX(j) + 0.2;
+                    Cy = player.getBulletY(j) - 1;
+                    Cw = player.getBulletWidth(j);
+                    Ch = player.getBulletHeight(j);
+                    if(showHitBox) {
+                        drawHitBox(Cx, Cy, Cw, Ch);
+                    }
+                    if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
                          player.setBulletVisible(false, j);
                          score += enemy[i].looseHealth(1);
                     }        
@@ -144,16 +207,11 @@ void Game::collisions() {
             }
         }
         
-        if(player.getVisible() && !player.getInvincible() && enemy[i].getBulletVisible()) {
-            float Ax = player.getX();
-            float Ay = player.getY();
-            float Aw = player.getWidth();
-            float Ah = player.getHeight();
-            float Bx = enemy[i].getBulletX();
-            float By = enemy[i].getBulletY();
-            float Bw = enemy[i].getBulletWidth();
-            float Bh = enemy[i].getBulletHeight();
-            if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
+        if(player.getVisible() && !player.getInvincible() && enemy[i].getBulletVisible()) {   
+            if(showHitBox) {
+                drawHitBox(Dx, Dy, Dw, Dh);
+            }
+            if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
                 enemy[i].setBulletVisible(false);
                 player.takeHealth(1);
                 player.setVisible(false);
@@ -349,10 +407,10 @@ void Game::drawHud() {
     
 }
 
-bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState) {
+bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY) {
     level.Tick(enemy);
     keyPress(keyState, prevKeyState);
-    player.Tick();
+    player.Tick(mouseX, mouseY);
     collisions();
     
     for(int i = 0; i < 10; ++i) {

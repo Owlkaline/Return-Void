@@ -7,6 +7,8 @@
 Player::Player() {
     width = 5;
     height = 5;
+    angle = 0;
+    speed = 0.5f;
     boundryX = 100 - width;
     boundryY = 92 - height;
     globalTime = clock();
@@ -16,6 +18,7 @@ Player::Player() {
 void Player::setup(GLuint *newTextures, float aspectRatio) {
     x = 50.0f;
     y = 5.0f;
+    angle = 0;
    // width*=aspectRatio;
     height=5*aspectRatio;
     health = 5;
@@ -30,8 +33,8 @@ void Player::setup(GLuint *newTextures, float aspectRatio) {
     texture = newTextures[0];
    // globalTime = clock();
     for(int i = 0; i < NUMBULLETS; ++i) 
-        bullets[i].setup(newTextures[3], 0.25, 1.5);
-    
+        bullets[i].setup(newTextures[3], 0.5, 3);
+    increment = 0;
     printf("Player bullets constructed\n");
 }
 
@@ -54,36 +57,68 @@ void Player::stationaryImage() {
     texture = PlayerText;
 }
 
-void Player::Tick() {
+void Player::Tick(float mouseX, float mouseY) {
+    
     globalTime = clock();
     if(health < 0) {
         health = 0;
         alive = false;
         visible = false;    
     }
+    float diffx = x - mouseX; 
+    float diffy = y - mouseY;
+    float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
+    float directionX = (diffx) / (distance+10);
+    float directionY = (diffy) / (distance+10);
+   // angle = tan(directionY/directionX);
+    if(angle > 360) {
+        angle = angle - 360;
+    } else if(angle < 0) {
+        angle = 360 - angle;
+    }
         
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible())    
             bullets[i].Tick();
     }
+    increment++;
+    if(increment > 100)
+        increment = 0;
 }
 
 void Player::drawShip() {
-    glEnable(GL_TEXTURE_2D);
-      
-	glBindTexture(GL_TEXTURE_2D, texture);
+    glPushMatrix();
+    //glLoadIdentity();
+    glTranslatef(x+width/2, y+width/2, 0); // M1 - 2nd translation
         
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2
+    //glTranslatef( -width/2, -height/2, 0);  // M3 - 1st translation  
+   
+    glEnable(GL_TEXTURE_2D);
+    
+	glBindTexture(GL_TEXTURE_2D, texture);
+    
     glBegin(GL_POLYGON);
-      glTexCoord2f(0.0f, 1.0f); 
-      glVertex3f(x, y + height, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x + width, y + height, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x + width, y, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x, y, 0.0);
+    glTexCoord2f(0.0f, 1.0f); 
+    glVertex3f(-width/2, height/2, 0.0);
+    glTexCoord2f(1.0f, 1.0f); 
+    glVertex3f(width/2, height/2, 0.0);
+    glTexCoord2f(1.0f, 0.0f); 
+    glVertex3f(width/2, -height/2, 0.0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-width/2, -height/2, 0.0);
+
     glEnd();
     glDisable(GL_TEXTURE_2D);
+    
+    glPopMatrix();
+   // glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+                       // Reset The View
+  //  glPushMatrix();
+ //   glTranslatef(x,y, 0);
+  //  glRotatef(45, 0.0, 0.0, 1.0f);
+    //glTranslatef(x, y, 0);
+  // glPopMatrix();
 }
 
 void Player::draw() {
@@ -131,7 +166,7 @@ void Player::fire() {
     bool found = false;
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible() == false) {
-            bullets[i].fire(x + width/2, y + height, 1.75);
+            bullets[i].fire(x + width/2, y + height-1, 1.75);
             found = true;
         }
         if(found)
@@ -139,7 +174,14 @@ void Player::fire() {
     }
 }  
 
-void Player::setHealth(int newHealth) { health = newHealth; };
+void Player::moveLeft() { x -= speed; }
+void Player::moveRight() { x += speed; }
+void Player::moveUp() { y += speed; }
+void Player::moveDown() { y -= speed; }
+
+void Player::rotateRight() { angle--; }
+void Player::rotateLeft() { angle++; }
+void Player::setHealth(int newHealth) { health = newHealth; }
 void Player::setVisible(bool Visible) { visible = Visible; }   
 int Player::getWidth() { return width; }
 int Player::getHealth() { return health; }
@@ -159,7 +201,4 @@ int Player::getBulletWidth(int i) { return bullets[i].getWidth(); }
 int Player::getBulletHeight(int i) { return bullets[i].getHeight(); }
 
 void Player::respawn(int X, int Y) { invincible = true; invincibleTime = globalTime; drawTime = globalTime; x = X; y = Y; visible = true;}
-void Player::moveLeft() { x -= 0.5f; }
-void Player::moveRight() { x += 0.5f; }
-void Player::moveUp() { y += 0.45f; }
-void Player::moveDown() { y -= 0.45f; }
+

@@ -27,7 +27,7 @@ class Player
         
         void takeHealth(int Health);
         
-        void Tick();
+        void Tick(float mouseX, float mouseY);
         void draw();  
         void fire();
         
@@ -35,6 +35,9 @@ class Player
         void moveRight();
         void moveUp();
         void moveDown();
+        
+        void rotateRight();
+        void rotateLeft();
 
         void leftImage();
         void rightImage();
@@ -62,10 +65,13 @@ class Player
     protected:  
         int health;
         int fireRate;
+        float angle;
         float width, height;
         int boundryX, boundryY; 
+        int increment;
 
         float x, y; 
+        float speed;
         bool visible, alive, invincible;
         clock_t invincibleTime;
         clock_t globalTime; 

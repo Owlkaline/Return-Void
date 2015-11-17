@@ -7,10 +7,42 @@ Menu::Menu() {
     width = 8;  
     select = 0;
     numOptions = 2;
+    screen = 0;
     printf("Menu Constructed\n");
 }
 
+void Menu::drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length) {
+    glColor3f(R, G, B); // Text Colour
+    glRasterPos2i(PosX, PosY); //coordinates of text
+    glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
+    void * font = GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
+       
+     for(int i = 0; i < length; i++) {
+             
+             glutBitmapCharacter(font, str[i]);
+     }  
+     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    
+}
+
+void Menu::saveSettings() {
+    std::ofstream data ("settings.in", std::ios_base::out);
+    data<<showHitBox;
+    data.close();
+}
+
+void Menu::readSettings() {
+    std::ifstream data ("settings.in", std::ios_base::in);
+    data>>showHitBox;
+    data.close();
+}
+
+void Menu::changeMenu(int newScreen) {
+    screen = newScreen;
+}
+
 void Menu::setup() {
+   
     textures[0] = LoadTexture( "Textures/Menu/Start.png" );
     textures[1] = LoadTexture( "Textures/Menu/Options.png" );
     textures[2] = LoadTexture( "Textures/Menu/Exit.png" );
@@ -35,22 +67,83 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         }
     }
     
-    prevKeyState[(unsigned char)'s'] = keyState[(unsigned char)'s'];
-    prevKeyState[(unsigned char)'w'] = keyState[(unsigned char)'w'];
-    
-    if(keyState[13] == BUTTON_DOWN) {
-        switch(select) {
-            case 0:
-                return 1;
-                break;
+    if(keyState[(unsigned char)'d'] == BUTTON_DOWN && prevKeyState[(unsigned char)'d'] != BUTTON_DOWN) {
+        switch(screen) {
             case 1:
-                return 2;
-                break;
-            case 2:
-                return -1;
-                break;
+                switch(select) {
+                    case 0: //hit box on/off
+                        if(showHitBox) {
+                            showHitBox = 0;
+                        } else {
+                            showHitBox = 1;
+                        }
+                        break;
+                    case 1://controls
+                        break;
+                    case 2://return to main menu button
+                        break;
+                }
+            break;
         }
     }
+    
+    if(keyState[(unsigned char)'a'] == BUTTON_DOWN && prevKeyState[(unsigned char)'a'] != BUTTON_DOWN) {
+        switch(screen) {
+            case 1:
+                switch(select) {
+                    case 0: //hit box on/off
+                        if(showHitBox) {
+                            showHitBox = 0;
+                        } else {
+                            showHitBox = 1;
+                        }
+                        break;
+                    case 1://controls
+                        break;
+                    case 2://return to main menu button
+                        break;
+                }
+            break;
+        }
+    }
+    
+    if(keyState[13] == BUTTON_DOWN && prevKeyState[13] != BUTTON_DOWN) {
+        switch(screen) {
+           case 0:
+               switch(select) {
+                   case 0://game start
+                       return 1;
+                       break;
+                   case 1://options
+                      // prevKeyState[13] = keyState[13];
+                       return 2;
+                       break;
+                   case 2://exit
+                       return -1;
+                       break;
+               }
+               break;
+           case 1:
+               switch(select) {
+                   case 0://hit box on/off
+                       break;
+                   case 1://Controls
+                       break;
+                   case 2://Return to main menu
+                       saveSettings();
+                       return 3;
+                       break;
+               }
+               break;
+       }
+    }
+    
+    prevKeyState[(unsigned char)'w'] = keyState[(unsigned char)'w'];
+    prevKeyState[(unsigned char)'a'] = keyState[(unsigned char)'a'];
+    prevKeyState[(unsigned char)'s'] = keyState[(unsigned char)'s'];
+    prevKeyState[(unsigned char)'d'] = keyState[(unsigned char)'d'];
+
+    prevKeyState[13] = keyState[13];
     
     return 0;
 }
@@ -105,6 +198,7 @@ void Menu::drawRectangle(float x, float y, int textnum) {
 void Menu::draw() {
     drawBackground();
     
+    //Selector
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, textures[3]);
@@ -121,9 +215,35 @@ void Menu::draw() {
     glEnd();
     glDisable(GL_TEXTURE_2D);
     
-    drawRectangle(35 - width/2, 54, 0);
-    drawRectangle(35 - width/2, 49, 1);
-    drawRectangle(35 - width/2, 44, 2);
+    switch(screen) {
+        //Menu
+        case 0:         
+            drawRectangle(35 - width/2, 54, 0);//start
+            drawRectangle(35 - width/2, 49, 1);//options
+            drawRectangle(35 - width/2, 44, 2);//exit
+            break;
+        //Options
+        case 1:
+            glPushMatrix();
+            if(showHitBox) {
+                char str[26] = "Show hit boxes: < True  >";;
+                drawChar(35 - width/2, 56, 1.0f, 1.0f, 1.0f, str, 25);
+            } else {
+                char str[26] = "Show hit boxes: < False >";
+                drawChar(35 - width/2, 56, 1.0f, 1.0f, 1.0f, str, 25);
+            }
+            glPopMatrix();
+            
+            char strC[25] = "Controls";
+            drawChar(35 - width/2, 51, 1.0f, 1.0f, 1.0f, strC, 8);
+            
+            char str[25] = "Return";
+            drawChar(35 - width/2, 46, 1.0f, 1.0f, 1.0f, str, 6);
+
+            break;
+    }
+    
+
 }
 
 GLuint Menu::LoadTexture( const char * filename ) {
