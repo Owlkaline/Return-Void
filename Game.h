@@ -45,7 +45,10 @@ class Game
         clock_t playerTime;
         int increment;
         int score;
+        
         bool showHitBox;
+        bool collisionOn;
+        
         void safeSpawn();
         
         void keyPress(unsigned char* keyState, unsigned char* prevKeyState);

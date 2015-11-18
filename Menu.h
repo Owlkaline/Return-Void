@@ -35,7 +35,10 @@ class Menu
         int height;
         int width;        
         int numOptions;
+        
         bool showHitBox;
+        bool collisionOn;
+        
         void drawBackground();
         void drawRectangle(float x, float y, int textnum);
         int screen;

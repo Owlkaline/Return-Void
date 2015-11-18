@@ -17,7 +17,7 @@ Player::Player() {
    
 void Player::setup(GLuint *newTextures, float newAspectRatio) {
     x = 50.0f;
-    y = 5.0f;
+    y = 50.0f;
     angle = 0;
     aspectRatio = newAspectRatio;
    // width*=aspectRatio;
@@ -66,20 +66,29 @@ void Player::Tick(float mouseX, float mouseY) {
         alive = false;
         visible = false;    
     }
-    float diffx = mouseX -x; 
-    float diffy = mouseY -y;
-    float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
-    float directionX = (diffx) / (distance+10);
-    float directionY = (diffy) / (distance+10);
+    float diffx = mouseX - (x+width/2); 
+    float diffy = mouseY - (y-height/2);
+    //float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
+    //float directionX = (diffx) / (distance+10);
+    //float directionY = (diffy) / (distance+10);
     //angle = tan(directionY/directionX);
 
 
-    if (diffx > 0.0 && diffy > 0.0) {
-       angle = atan(diffy/diffx) *180 / M_PI ;
-       angle = - angle -90;
-    } else {
-      angle =0;
-    }
+    if (diffx > 0.0 && diffy > 0.0) {//Quadrant 4
+        angle = atan(diffy/diffx) *180 / M_PI ;
+        angle = -angle - 90;
+    } else if(diffx < 0 && diffy > 0) {//Quadrant 3
+        angle = atan(diffy/diffx) *180 / M_PI ;
+        angle = -angle + 90;
+    } else if(diffx < 0 && diffy < 0) {//Quadrant 2
+        angle = atan(diffy/diffx) *180 / M_PI ;
+        angle = -angle+90;
+    } else if(diffx > 0 && diffy < 0) {//Quadrant 1
+        angle = atan(diffy/diffx) * 180 / M_PI ;
+        angle = -angle-90;
+    } //else {
+     // angle =0;
+   // }
 
 
 
@@ -101,7 +110,7 @@ void Player::Tick(float mouseX, float mouseY) {
 void Player::drawShip() {
     glPushMatrix();
     //glLoadIdentity();
-    glTranslatef(x+width/2, y+width/2, 0); // M1 - 2nd translation
+    glTranslatef(x, y, 0); // M1 - 2nd translation
     glScalef(1,aspectRatio,1);        
     glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2
     glTranslatef( -x, -y, 0);  // M3 - 1st translation  

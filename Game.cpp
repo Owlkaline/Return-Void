@@ -12,6 +12,7 @@ void Game::setup(float aspectRatio) {
 
     std::ifstream data ("settings.in", std::ios_base::in);
     data>>showHitBox;
+    data>>collisionOn;
     data.close();
     
     increment = 0;
@@ -188,6 +189,7 @@ void Game::collisions() {
            drawHitBox(Ax, Ay, Aw, Ah);
            drawHitBox(Bx, By, Bw, Bh);            
        }
+       if(collisionOn) {
         if(enemy[i].getVisible() && player.getVisible() && !player.getInvincible()) {            
             if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
                 enemy[i].looseHealth(2);
@@ -196,37 +198,42 @@ void Game::collisions() {
                 playerTime = clock();
             }         
         }
-          
-        if(enemy[i].getVisible()) {  
-            for(int j = 0; j < 10; ++j) {
-                if(player.getBulletVisible(j)) {
-                    Cx = player.getBulletX(j) + 0.2;
-                    Cy = player.getBulletY(j) - 1;
-                    Cw = player.getBulletWidth(j);
-                    Ch = player.getBulletHeight(j);
-                    if(showHitBox) {
-                        drawHitBox(Cx, Cy, Cw, Ch);
-                    }
-                    if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
-                         player.setBulletVisible(false, j);
-                         score += enemy[i].looseHealth(1);
-                    }        
-                }
-            }
-        }
+       }
+       
+       if(enemy[i].getVisible()) {  
+           for(int j = 0; j < 10; ++j) {
+               if(player.getBulletVisible(j)) {
+                   Cx = player.getBulletX(j) + 0.2;
+                   Cy = player.getBulletY(j) - 1;
+                   Cw = player.getBulletWidth(j);
+                   Ch = player.getBulletHeight(j);
+                   if(showHitBox) {
+                       drawHitBox(Cx, Cy, Cw, Ch);
+                   }
+                   if(collisionOn) {
+                       if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
+                            player.setBulletVisible(false, j);
+                            score += enemy[i].looseHealth(1);
+                       }  
+                   }      
+               }
+           }
+       }
         
-        if(player.getVisible() && !player.getInvincible() && enemy[i].getBulletVisible()) {   
-            if(showHitBox) {
-                drawHitBox(Dx, Dy, Dw, Dh);
-            }
-            if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
-                enemy[i].setBulletVisible(false);
-                player.takeHealth(1);
-                player.setVisible(false);
-                playerTime = clock();
-            }        
-        }
-    }
+       if(player.getVisible() && !player.getInvincible() && enemy[i].getBulletVisible()) {   
+           if(showHitBox) {
+               drawHitBox(Dx, Dy, Dw, Dh);
+           }
+           if(collisionOn) {
+               if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
+                   enemy[i].setBulletVisible(false);
+                   player.takeHealth(1);
+                   player.setVisible(false);
+                   playerTime = clock();
+               }   
+           }     
+       }
+   }
 }
 
 //draw string
@@ -419,7 +426,7 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
     level.Tick(enemy);
     keyPress(keyState, prevKeyState);
     player.Tick(mouseX, mouseY);
-   // collisions();
+    collisions();
     
     for(int i = 0; i < 10; ++i) {
         if(player.isAlive() && enemy[i].getVisible())
@@ -470,8 +477,9 @@ GLuint Game::LoadTexture( const char * filename ) {
     }
  
     //read the header
-    fread(header, 1, 8, fp);
- 
+    size_t a = fread(header, 1, 8, fp);
+    a = a - a;
+    
     //test if png
     int is_png = !png_sig_cmp(header, 0, 8);
     if (!is_png) {

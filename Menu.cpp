@@ -28,12 +28,15 @@ void Menu::drawChar(int PosX, int PosY, float R, float G, float B, char str[25],
 void Menu::saveSettings() {
     std::ofstream data ("settings.in", std::ios_base::out);
     data<<showHitBox;
+    data<<"\n";
+    data<<collisionOn;
     data.close();
 }
 
 void Menu::readSettings() {
     std::ifstream data ("settings.in", std::ios_base::in);
     data>>showHitBox;
+    data>>collisionOn;
     data.close();
 }
 
@@ -67,7 +70,7 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         }
     }
     
-    if(keyState[(unsigned char)'d'] == BUTTON_DOWN && prevKeyState[(unsigned char)'d'] != BUTTON_DOWN) {
+    if( (keyState[(unsigned char)'a'] == BUTTON_DOWN && prevKeyState[(unsigned char)'a'] != BUTTON_DOWN) || (keyState[(unsigned char)'d'] == BUTTON_DOWN && prevKeyState[(unsigned char)'d'] != BUTTON_DOWN) ) {
         switch(screen) {
             case 1:
                 switch(select) {
@@ -78,27 +81,12 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
                             showHitBox = 1;
                         }
                         break;
-                    case 1://controls
-                        break;
-                    case 2://return to main menu button
-                        break;
-                }
-            break;
-        }
-    }
-    
-    if(keyState[(unsigned char)'a'] == BUTTON_DOWN && prevKeyState[(unsigned char)'a'] != BUTTON_DOWN) {
-        switch(screen) {
-            case 1:
-                switch(select) {
-                    case 0: //hit box on/off
-                        if(showHitBox) {
-                            showHitBox = 0;
+                    case 1://collision on/off
+                        if(collisionOn) {
+                            collisionOn = 0;
                         } else {
-                            showHitBox = 1;
+                            collisionOn = 1;
                         }
-                        break;
-                    case 1://controls
                         break;
                     case 2://return to main menu button
                         break;
@@ -234,8 +222,15 @@ void Menu::draw() {
             }
             glPopMatrix();
             
-            char strC[25] = "Controls";
-            drawChar(35 - width/2, 51, 1.0f, 1.0f, 1.0f, strC, 8);
+            glPushMatrix();
+            if(collisionOn) {
+                char str[25] = "Collisions On: < True  >";
+                drawChar(35 - width/2, 51, 1.0f, 1.0f, 1.0f, str, 25);
+            } else {
+                char str[25] = "Collisions On: < False >";
+                drawChar(35 - width/2, 51, 1.0f, 1.0f, 1.0f, str, 25);
+            }
+            glPopMatrix();
             
             char str[25] = "Return";
             drawChar(35 - width/2, 46, 1.0f, 1.0f, 1.0f, str, 6);
@@ -260,8 +255,8 @@ GLuint Menu::LoadTexture( const char * filename ) {
     }
  
     //read the header
-    fread(header, 1, 8, fp);
- 
+    size_t a = fread(header, 1, 8, fp);
+    a = a - a;
     //test if png
     int is_png = !png_sig_cmp(header, 0, 8);
     if (!is_png) {

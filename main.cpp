@@ -165,7 +165,8 @@ void display() {
     }
     prevKeyState[27] = keyState[27];//esc
     prevKeyState[13] = keyState[13];//enter
-    drawChar(0, 98, 0.5f, 0.0f, 1.0f, "Version_0.1", 11);
+    char versionStr[12] = "Version_0.2";
+    drawChar(0, 98, 0.5f, 0.0f, 1.0f, versionStr, 12);
     glEnable (GL_BLEND);
     glBlendFunc (GL_ONE, GL_ONE);
    // glFlush();       
@@ -222,7 +223,8 @@ int main(int argc, char** argv) {
     glutTimerFunc(0, Timer, 0);   
     glutKeyboardFunc(keyboard); 
     glutKeyboardUpFunc(keyboard_up); 
-    glutSpecialFunc(specialKeys);
+    glutSpecialFunc(specialKeys);   
+    glutMotionFunc(mouse);
     glutPassiveMotionFunc(mouse);
     setup();
 
