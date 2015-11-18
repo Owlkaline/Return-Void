@@ -12,12 +12,15 @@
 #include <png.h>
 #endif
 
+#include <iostream>
+#include <list>
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <fstream>
+#include <vector>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -38,7 +41,8 @@ class Game
         void drawGameOver();
     protected:  
         Player player;
-        Enemy enemy[10];
+        //Enemy enemy[10];
+        std::vector<Enemy*> enemy;
         Level level;
         clock_t crntTime;
         clock_t shootTime;

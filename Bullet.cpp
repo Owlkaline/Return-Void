@@ -13,7 +13,8 @@ Bullet::Bullet() {
         visible = true;
    }
    
-void Bullet::setup(GLuint newText, float Width, float Height) {
+void Bullet::setup(GLuint newText, float Width, float Height, float aspectRatio) {
+    this->aspectRatio = aspectRatio;
     width = Width;
     height = Height;
     visible = true;
@@ -22,29 +23,20 @@ void Bullet::setup(GLuint newText, float Width, float Height) {
     texture = newText;
 }
 
-void Bullet::Tick() {    
+void Bullet::Tick(float X, float Y) {    
     y += speed;
 }
 
-void Bullet::Tick(float X, float Y) {
-  //  float angle;
-   
-    if(pow(pow(x-startX,2)+pow(y-startY,2), 0.5) >= distance)
+void Bullet::Tick() {
+  
+  if(pos)
     {
-        x -= speed * directionX;
-        y -= speed * directionY;
+        x += speed * directionX;
+        y += speed * directionY;
     } else {
         x -= speed * directionX;
         y -= speed * directionY; 
     }
-    
-   // angle = tan(opposite/adjacent);
-   //     angle *= M_PI /180;
-   // angle = 90.0f - angle;
-   // x+= 1;
-   // y += (opposite/adjacent)*0.1 * x;
-   // x += speed * cos(angle);
-   // y += speed * sin(angle);
     
 }
     
@@ -63,7 +55,32 @@ void Bullet::draw() {
         visible = false;
     }
     
+    glPushMatrix();
+    //glLoadIdentity();
+    glTranslatef(x, y, 0); // M1 - 2nd translation
+    glScalef(1,aspectRatio,1);        
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2
+    glTranslatef( -x, -y, 0);  // M3 - 1st translation  
+   
+    glEnable(GL_TEXTURE_2D);
     
+	glBindTexture(GL_TEXTURE_2D, texture);
+    
+    glBegin(GL_POLYGON);
+      glTexCoord2f(0.0f, 1.0f); 
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f); 
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f); 
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
+
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    
+    glPopMatrix();
+    /*
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -79,7 +96,7 @@ void Bullet::draw() {
         glVertex3f(x, y, 0.0);
     glEnd();
 
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);*/
 }  
 
 void Bullet::fire(float newX, float newY, float mSpeed) {
@@ -89,7 +106,8 @@ void Bullet::fire(float newX, float newY, float mSpeed) {
     visible = true;
 }
 
-void Bullet::fire(float newX, float newY, float mSpeed, float X, float Y) {
+void Bullet::fire(float newX, float newY, float mSpeed, float X, float Y, bool pos) {
+    this->pos = pos;
     x = newX;
     y = newY;
     speed = mSpeed;
@@ -105,6 +123,20 @@ void Bullet::fire(float newX, float newY, float mSpeed, float X, float Y) {
     distance = pow(pow(opposite,2.0f) + pow(adjacent,2.0f), 0.5f);
     directionX = (opposite) / (distance+10);
     directionY = (adjacent) / (distance+10);
+    
+    if (opposite > 0.0 && adjacent > 0.0) {//Quadrant 1
+        angle = atan(adjacent/opposite) *180 / M_PI ;
+        angle = angle - 90;
+    }else if(opposite < 0 && adjacent > 0) {//Quadrant 2
+        angle = atan(adjacent/opposite) *180 / M_PI ;
+        angle = angle + 90;
+    } else     if(opposite < 0 && adjacent < 0) {//Quadrant 3
+        angle = atan(adjacent/opposite) *180 / M_PI ;
+        angle = angle+90;
+    } else     if(opposite > 0 && adjacent < 0) {//Quadrant 4
+        angle = atan(adjacent/opposite) * 180 / M_PI ;
+        angle = angle - 90;
+    }
 }
 
 float Bullet::getX() { return x; }

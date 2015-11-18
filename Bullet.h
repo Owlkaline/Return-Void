@@ -28,11 +28,12 @@ class Bullet
         void setVisible(bool visible);
         bool getVisible();
         void fire(float newX, float newY, float mSpeed);
-        void fire(float newX, float newY, float mSpeed, float X, float Y);
+        void fire(float newX, float newY, float mSpeed, float X, float Y, bool pos);
         void draw();
-        void setup(GLuint newText, float Width, float Height);
+        void setup(GLuint newText, float Width, float Height, float aspectRatio);
     protected:  
-        bool visible;
+        float aspectRatio, angle;
+        bool visible, pos;
         int boundryX, boundryY; 
         float width, height;
         float x, y, speed, startX, startY, endX, endY, distance, directionX, directionY;  

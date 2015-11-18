@@ -14,11 +14,13 @@ void Game::setup(float aspectRatio) {
     data>>showHitBox;
     data>>collisionOn;
     data.close();
+
+    enemy.push_back(new Enemy);
     
     increment = 0;
     printf("%d", showHitBox);
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);
-    level.setup();
+    
     score = 0;
     GLuint playerTextures[5];
     playerTextures[0] = LoadTexture( "Textures/Game/Ship.png" );
@@ -30,12 +32,13 @@ void Game::setup(float aspectRatio) {
     GLuint enemyTexture[2];
     enemyTexture[0] = LoadTexture( "Textures/Game/Enemy.png" ); 
     enemyTexture[1] = LoadTexture( "Textures/Game/EnemyBullet.png" ); 
+    level.setup(enemyTexture, aspectRatio);
     //default
-    for(int i = 0; i < 10; ++i) {
-        enemy[i].setup(enemyTexture, aspectRatio);
-        enemy[i].setX(i*10);
-    }
-    printf("Enemies Constructed\n");
+    //for(int i = 0; i < 10; ++i) {
+   // for(unsigned int i = 0; i < enemy.size(); i++) {
+   // enemy.setup(enemyTexture, aspectRatio);
+   // }
+    //printf("Enemies Constructed\n");
     
     //Score
     texture[0] = LoadTexture( "Textures/Score/Zero.png" );
@@ -54,8 +57,8 @@ void Game::setup(float aspectRatio) {
 
     //Health Bar
     texture[11] = LoadTexture( "Textures/Hud/HealthBar.png" );
-    level.Level1(enemy);
-    
+    //level.Level1(enemy);
+    level.Level1();
     //GameOver texture
     gameOverTexture = LoadTexture( "Textures/Hud/GameOver.png" );
     printf("Game setup\n");    
@@ -63,9 +66,10 @@ void Game::setup(float aspectRatio) {
 
 void Game::destroy() {
     player.destroy();
-    for(int i = 0; i < 1; ++i) {
-        enemy[i].destroy();
+    for(unsigned int i = 0; i < enemy.size(); ++i) {
+        enemy[i]->destroy();
     }
+    level.destroy();
 }
   
 void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
@@ -97,20 +101,12 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
                    increment = 0;
                    player.fire();
                }
-             /*  if( (crntTime - shootTime) > 2000) {
-                   shootTime = crntTime;
-                   player.fire();
-               }*/
             } else {
                 //printf("%li\n", crntTime - shootTime);
                if(increment > 5) {
                    increment = 0;
                    player.fire();
                }                
-/*if( (crntTime - shootTime) > 2000) {
-                    shootTime = crntTime;
-                    player.fire();
-                }*/
             }
         }
         prevKeyState[32] = keyState[32];
@@ -153,15 +149,8 @@ void Game::drawHitBox(float Ax, float Ay, float Aw, float Ah) {
 }
 
 void Game::collisions() {   
-    for(int i = 0; i < 10; ++i) {
-        //float enemyRadius = pow((pow(enemy[i].getWidth()/2, 2) + pow(enemy[i].getHeight()/2, 2)), 0.5);
-       // float playerRadius = pow((pow(player.getWidth()/2, 2) + pow(player.getHeight()/2, 2)), 0.5);
-        //float totalRadius;
-            
-       // float diffx;
-        //float diffy;
-       // float distance;  
-       
+    for(unsigned int i = 0; i < enemy.size(); ++i) {
+
        //Player
        float Ax = player.getX()+0.5;
        float Ay = player.getY()-0.75;
@@ -169,10 +158,10 @@ void Game::collisions() {
        float Ah = player.getHeight()-0.8;
             
        //Enemy     
-       float Bx = enemy[i].getX() + ( (enemy[i].getWidth()/10.0f) * 2);
-       float By = enemy[i].getY() + ( (enemy[i].getHeight()/10.0f) );
-       float Bw = enemy[i].getWidth()-( (enemy[i].getWidth()/10.0f) * 3);
-       float Bh = enemy[i].getHeight() - ( (enemy[i].getHeight()/10.0f) );
+       float Bx = enemy[i]->getX() + ( (enemy[i]->getWidth()/10.0f) * 2);
+       float By = enemy[i]->getY() + ( (enemy[i]->getHeight()/10.0f) );
+       float Bw = enemy[i]->getWidth()-( (enemy[i]->getWidth()/10.0f) * 3);
+       float Bh = enemy[i]->getHeight() - ( (enemy[i]->getHeight()/10.0f) );
             
        //Player bullets     
        float Cx;
@@ -181,18 +170,18 @@ void Game::collisions() {
        float Ch;
        
        //Ememy Bullets
-       float Dx = enemy[i].getBulletX();
-       float Dy = enemy[i].getBulletY();
-       float Dw = enemy[i].getBulletWidth();
-       float Dh = enemy[i].getBulletHeight();
+       float Dx = enemy[i]->getBulletX();
+       float Dy = enemy[i]->getBulletY();
+       float Dw = enemy[i]->getBulletWidth();
+       float Dh = enemy[i]->getBulletHeight();
        if(showHitBox) {
            drawHitBox(Ax, Ay, Aw, Ah);
            drawHitBox(Bx, By, Bw, Bh);            
        }
        if(collisionOn) {
-        if(enemy[i].getVisible() && player.getVisible() && !player.getInvincible()) {            
+        if(enemy[i]->getVisible() && player.getVisible() && !player.getInvincible()) {            
             if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
-                enemy[i].looseHealth(2);
+                enemy[i]->looseHealth(2);
                 player.takeHealth(2);
                 player.setVisible(false);
                 playerTime = clock();
@@ -200,8 +189,8 @@ void Game::collisions() {
         }
        }
        
-       if(enemy[i].getVisible()) {  
-           for(int j = 0; j < 10; ++j) {
+       if(enemy[i]->getVisible()) {  
+           for(int j = 0; j < player.getBulletNum(); ++j) {
                if(player.getBulletVisible(j)) {
                    Cx = player.getBulletX(j) + 0.2;
                    Cy = player.getBulletY(j) - 1;
@@ -213,20 +202,20 @@ void Game::collisions() {
                    if(collisionOn) {
                        if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
                             player.setBulletVisible(false, j);
-                            score += enemy[i].looseHealth(1);
+                            score += enemy[i]->looseHealth(1);
                        }  
                    }      
                }
            }
        }
         
-       if(player.getVisible() && !player.getInvincible() && enemy[i].getBulletVisible()) {   
+       if(player.getVisible() && !player.getInvincible() && enemy[i]->getBulletVisible()) {   
            if(showHitBox) {
                drawHitBox(Dx, Dy, Dw, Dh);
            }
            if(collisionOn) {
                if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
-                   enemy[i].setBulletVisible(false);
+                   enemy[i]->setBulletVisible(false);
                    player.takeHealth(1);
                    player.setVisible(false);
                    playerTime = clock();
@@ -413,24 +402,25 @@ void Game::drawHud() {
           glVertex3f(79 + 20 * ((i+1)/5.0f), 97.0f, 0.0);
           glVertex3f(79 + 20 * ((i+1)/5.0f), 95, 0.0);
           glVertex3f(78.8f + 20 * ((i+1)/5.0f), 95, 0.0);
-      }
-      
-      // drawString(50, 50, 1.0f, 0, 0, "Score: 5396");      
+      }     
     glEnd();
+    
     glColor3f(1.0f, 1.0f, 1.0f);
     glDisable(GL_TEXTURE_2D);
     
 }
 
 bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY) {
-    level.Tick(enemy);
+    //level.Tick(enemy);
+    std::vector<Enemy*> newEnemy = level.Tick();
+    enemy.swap(newEnemy);
     keyPress(keyState, prevKeyState);
     player.Tick(mouseX, mouseY);
     collisions();
     
-    for(int i = 0; i < 10; ++i) {
-        if(player.isAlive() && enemy[i].getVisible())
-            enemy[i].Tick(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, player.getVisible());
+    for(unsigned int i = 0; i < enemy.size(); ++i) {
+        if(player.isAlive() && enemy[i]->getVisible())
+            enemy[i]->Tick(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, player.getVisible());
     }
     
     if(player.isAlive() && !player.getVisible()) {
@@ -447,11 +437,11 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
 }
 
 void Game::draw() {
-    for(int i = 0; i < 10; ++i) {
-        if(enemy[i].getVisible())
-            enemy[i].draw(); 
-        if(enemy[i].getBulletVisible()) {
-            enemy[i].drawBullets();
+    for(unsigned int i = 0; i < enemy.size(); ++i) {
+        if(enemy[i]->getVisible())
+            enemy[i]->draw(); 
+        if(enemy[i]->getBulletVisible()) {
+            enemy[i]->drawBullets();
         }   
     }
 

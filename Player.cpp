@@ -2,15 +2,13 @@
 
 #include <stdlib.h>
 
-#define NUMBULLETS 10
-
 Player::Player() {
     width = 5;
     height = 5;
     angle = 0;
     speed = 0.5f;
-    boundryX = 100 - width;
-    boundryY = 92 - height;
+    boundryX = 100;
+    boundryY = 92;
     globalTime = clock();
     printf("Player Constructed\n");
 }
@@ -32,10 +30,15 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
     PlayerLeftText = newTextures[1];
     PlayerRightText = newTextures[2];
     texture = newTextures[0];
-   // globalTime = clock();
-    for(int i = 0; i < NUMBULLETS; ++i) 
-        bullets[i].setup(newTextures[3], 0.5, 3);
+
+    bulletTexture = newTextures[3];
     increment = 0;
+    secondincrement = 0;
+    
+    bullets.push_back(new Bullet);
+    for(unsigned int i = 0; i < bullets.size(); i++) {
+        bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
+    }
     printf("Player bullets constructed\n");
 }
 
@@ -66,31 +69,28 @@ void Player::Tick(float mouseX, float mouseY) {
         alive = false;
         visible = false;    
     }
+    lastMouseX = mouseX;
+    lastMouseY = mouseY;
     float diffx = mouseX - (x+width/2); 
     float diffy = mouseY - (y-height/2);
-    //float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
-    //float directionX = (diffx) / (distance+10);
-    //float directionY = (diffy) / (distance+10);
+    float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
+    directionX = (diffx) / (distance+10);
+    directionY = (diffy) / (distance+10);
     //angle = tan(directionY/directionX);
-
-
-    if (diffx > 0.0 && diffy > 0.0) {//Quadrant 4
+    
+     if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
         angle = atan(diffy/diffx) *180 / M_PI ;
-        angle = -angle - 90;
-    } else if(diffx < 0 && diffy > 0) {//Quadrant 3
+        angle = angle - 90;
+    }else if(diffx < 0 && diffy > 0) {//Quadrant 2
         angle = atan(diffy/diffx) *180 / M_PI ;
-        angle = -angle + 90;
-    } else if(diffx < 0 && diffy < 0) {//Quadrant 2
+        angle = angle + 90;
+    } else     if(diffx < 0 && diffy < 0) {//Quadrant 3
         angle = atan(diffy/diffx) *180 / M_PI ;
-        angle = -angle+90;
-    } else if(diffx > 0 && diffy < 0) {//Quadrant 1
+        angle = angle+90;
+    } else     if(diffx > 0 && diffy < 0) {//Quadrant 4
         angle = atan(diffy/diffx) * 180 / M_PI ;
-        angle = -angle-90;
-    } //else {
-     // angle =0;
-   // }
-
-
+        angle = angle - 90;
+    }
 
    // if(angle > 360) {
    //     angle = angle - 360;
@@ -98,13 +98,19 @@ void Player::Tick(float mouseX, float mouseY) {
    //     angle = 360 - angle;
    // }
         
-    for(int i = 0; i < NUMBULLETS; ++i) {
-        if(bullets[i].getVisible())    
-            bullets[i].Tick();
+    for(unsigned int i = 0; i < bullets.size(); ++i) {
+        if(bullets[i]->getVisible()) {   
+            bullets[i]->Tick();
+        } else {
+            bullets.erase(bullets.begin() + i);
+        }
     }
     increment++;
-    if(increment > 100)
+    secondincrement++;
+    if(increment > 1000)
         increment = 0;
+    if(secondincrement > 300) 
+        secondincrement = 0;
 }
 
 void Player::drawShip() {
@@ -145,21 +151,20 @@ void Player::drawShip() {
 void Player::draw() {
     if(!visible)
         return;
-        
-    for(int i = 0; i < NUMBULLETS; ++i) {
-        if(bullets[i].getVisible())           
-            bullets[i].draw();
+    for(unsigned int i = 0; i < bullets.size(); ++i) {
+        if(bullets[i]->getVisible())
+            bullets[i]->draw();
     } 
         
     //glColor3f(0.0, 1.0, 0.0);
-    if(x < 0)
-        x = 0;
-    if(y < 0)
-        y = 0;
-    if(x > boundryX)
-        x = boundryX;
-    if(y > boundryY)
-        y = boundryY;
+    if(x < 0+width/2)
+        x = width/2;
+    if(y < 0+height/2)
+        y = height/2;
+    if(x > boundryX - width/2)
+        x = boundryX - width/2;
+    if(y > boundryY - height/2)
+        y = boundryY - height/2;
     
     if(!invincible) {
        drawShip();
@@ -184,16 +189,14 @@ void Player::draw() {
 }
 
 void Player::fire() {
-    bool found = false;
-    for(int i = 0; i < NUMBULLETS; ++i) {
-        if(bullets[i].getVisible() == false) {
-            bullets[i].fire(x + width/2, y + height-1, 1.75);
-            found = true;
-        }
-        if(found)
-            break;
-    }
+    bullets.push_back(new Bullet);
+    int i = bullets.size()-1;
+   // printf("%d\n", i);
+    bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
+    bullets[i]->fire( x-(0.1f*directionX), y + ((height/2 + 5)*directionY), 1.75, lastMouseX, lastMouseY, true);
 }  
+
+int Player::getBulletNum() { return bullets.size(); }
 
 void Player::moveLeft() { x -= speed; }
 void Player::moveRight() { x += speed; }
@@ -214,12 +217,12 @@ bool Player::getVisible() { return visible; }
 bool Player::getInvincible() { return invincible; }
 
 void Player::takeHealth(int Health) { health -= Health; if(health < 0) health = 0; }
-void Player::setBulletVisible(bool Visible, int i) { bullets[i].setVisible(Visible); }
-bool Player::getBulletVisible(int i) { return bullets[i].getVisible(); }
-float Player::getBulletX(int i) { return bullets[i].getX(); }
-float Player::getBulletY(int i) { return bullets[i].getY(); }
-int Player::getBulletWidth(int i) { return bullets[i].getWidth(); }
-int Player::getBulletHeight(int i) { return bullets[i].getHeight(); }
+void Player::setBulletVisible(bool Visible, int i) { bullets[i]->setVisible(Visible); }
+bool Player::getBulletVisible(int i) { return bullets[i]->getVisible(); }
+float Player::getBulletX(int i) { return bullets[i]->getX(); }
+float Player::getBulletY(int i) { return bullets[i]->getY(); }
+int Player::getBulletWidth(int i) { return bullets[i]->getWidth(); }
+int Player::getBulletHeight(int i) { return bullets[i]->getHeight(); }
 
-void Player::respawn(int X, int Y) { invincible = true; invincibleTime = globalTime; drawTime = globalTime; x = X; y = Y; visible = true;}
+void Player::respawn(int X, int Y) { invincible = true; invincibleTime = globalTime; drawTime = globalTime; increment = 0; secondincrement = 0; x = X; y = Y; visible = true;}
 

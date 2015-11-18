@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 #include "Enemy.h"
 
@@ -24,12 +25,16 @@ class Level
 {
     public:
         Level();
-        void Tick(Enemy *enemy);
-        void Level1(Enemy *enemy);        
-        void setup();
-        void randomSpawn(Enemy *enemy, int i);
+        std::vector<Enemy*> Tick();
+        void Level1();        
+        void setup(GLuint *enemyTextures, float aspectRatio);
+        void randomSpawn();
+        void destroy();
     protected:      
+        std::vector<Enemy*> enemy;
+        GLuint enemyTexture[2];
         bool inLevel;
+        float aspectRatio;
         int crntLevel;
 };
 

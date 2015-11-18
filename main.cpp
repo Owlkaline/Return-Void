@@ -74,8 +74,8 @@ void specialKeys(int key, int x, int y) {
 
 void mouse(int x, int y) {
     mouseX = x * aspectW;
-    mouseY = y * aspectH;
-    //printf("x: %f y: %f\n", mouseX, mouseY);
+    mouseY = 100 - (y * aspectH);
+   // printf("x: %f y: %f\n", mouseX, mouseY);
 }
 
 void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length) {
@@ -105,15 +105,18 @@ void display() {
        case sGame:
            if(keyState[27] == BUTTON_DOWN) {//ESC
                alive = true;
+               game.destroy();
                screen = sMenu;
            }
            game.draw();
            if(!alive) {
                game.drawGameOver();
                if(keyState[(unsigned char)'y'] == BUTTON_DOWN) {
+                   game.destroy();
                    game.setup(aspectRatio);
                    alive = true;
                } else  if(keyState[(unsigned char)'n'] == BUTTON_DOWN) {
+                   game.destroy();
                    screen = sMenu;
                    alive = true;
                }
@@ -122,7 +125,8 @@ void display() {
            }
                
            break;
-       case sMenu:           
+       case sMenu:     
+           game.destroy();      
            glutSetCursor(GLUT_CURSOR_NONE);
            screenNum = menu.keyPress(keyState, prevKeyState);
            if(keyState[27] == BUTTON_DOWN) {//ESC

@@ -24,7 +24,7 @@ void Enemy::setup(GLuint *EnemyText, float aspectRatio) {
     height = 5; 
     visible = true;
     texture = EnemyText[0]; 
-    bullets.setup(EnemyText[1], 0.5, 1);
+    bullets.setup(EnemyText[1], 0.5, 1, aspectRatio);
 }
 
 void Enemy::destroy() {
@@ -80,7 +80,8 @@ void Enemy::draw() {
 
 void Enemy::drawBullets() {
     if(bullets.getVisible()) {
-        bullets.Tick(targetX, targetY);
+        //bullets.Tick(targetX, targetY);
+       bullets.Tick();
     }
     bullets.draw();
 }
@@ -88,7 +89,7 @@ void Enemy::drawBullets() {
 void Enemy::fire(int Px, int Py) {
     targetX = Px;
     targetY = Py;
-    bullets.fire(x + width/2, y, -0.75, targetX, targetY);
+    bullets.fire(x + width/2, y, -0.75, targetX, targetY, false);
 }  
 
 int Enemy::looseHealth(int LH) { health -= LH; if(health <= 0) { x = -1, y = -1; visible = false; return 100;} return 0;};     
@@ -101,7 +102,7 @@ bool Enemy::getVisible() { return visible; }
 
 void Enemy::setX(float X) { x = X; }
 void Enemy::setY(float Y) { y = Y; }
-void Enemy::setSize(float multiple) { width *= multiple; height *= multiple; }
+void Enemy::setSize(float multiple) { width = 5*multiple; height = 5*multiple; }
 void Enemy::setMaxHealth(int mHealth) { maxHealth = mHealth; health = maxHealth;}
 void Enemy::setSpeed(float mSpeed) { speed = mSpeed; }
 void Enemy::setFireRate(float Rate) { rate = 2500.f / Rate; }

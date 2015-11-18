@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 #include "Bullet.h"
 
@@ -52,6 +53,7 @@ class Player
         bool getVisible();
         bool getInvincible();
          
+        int getBulletNum();
         int getBulletWidth(int i); 
         int getBulletHeight(int i);
         float getBulletX(int i);
@@ -68,8 +70,9 @@ class Player
         float angle;
         float width, height;
         int boundryX, boundryY; 
-        int increment;
-        float aspectRatio;
+        int increment, secondincrement;
+        float aspectRatio, lastMouseX, lastMouseY;
+        float directionX, directionY;
 
         float x, y; 
         float speed;
@@ -78,8 +81,10 @@ class Player
         clock_t globalTime; 
         clock_t drawTime;
         bool drawInvincible;
-        Bullet bullets[10];
+        //Bullet bullets[10];
+        std::vector<Bullet*> bullets;
         GLuint texture;
+        GLuint bulletTexture;
         GLuint PlayerLeftText;
         GLuint PlayerRightText;
         GLuint PlayerText;
