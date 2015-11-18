@@ -419,7 +419,7 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
     level.Tick(enemy);
     keyPress(keyState, prevKeyState);
     player.Tick(mouseX, mouseY);
-    collisions();
+   // collisions();
     
     for(int i = 0; i < 10; ++i) {
         if(player.isAlive() && enemy[i].getVisible())

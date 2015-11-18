@@ -69,6 +69,7 @@ class Player
         float width, height;
         int boundryX, boundryY; 
         int increment;
+        float aspectRatio;
 
         float x, y; 
         float speed;

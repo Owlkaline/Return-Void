@@ -15,12 +15,13 @@ Player::Player() {
     printf("Player Constructed\n");
 }
    
-void Player::setup(GLuint *newTextures, float aspectRatio) {
+void Player::setup(GLuint *newTextures, float newAspectRatio) {
     x = 50.0f;
     y = 5.0f;
     angle = 0;
+    aspectRatio = newAspectRatio;
    // width*=aspectRatio;
-    height=5*aspectRatio;
+    height=5;//*aspectRatio;
     health = 5;
     drawInvincible = true;
     fireRate = 2000;
@@ -65,17 +66,28 @@ void Player::Tick(float mouseX, float mouseY) {
         alive = false;
         visible = false;    
     }
-    float diffx = x - mouseX; 
-    float diffy = y - mouseY;
+    float diffx = mouseX -x; 
+    float diffy = mouseY -y;
     float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
     float directionX = (diffx) / (distance+10);
     float directionY = (diffy) / (distance+10);
-   // angle = tan(directionY/directionX);
-    if(angle > 360) {
-        angle = angle - 360;
-    } else if(angle < 0) {
-        angle = 360 - angle;
+    //angle = tan(directionY/directionX);
+
+
+    if (diffx > 0.0 && diffy > 0.0) {
+       angle = atan(diffy/diffx) *180 / M_PI ;
+       angle = - angle -90;
+    } else {
+      angle =0;
     }
+
+
+
+   // if(angle > 360) {
+   //     angle = angle - 360;
+   // } else if(angle < 0) {
+   //     angle = 360 - angle;
+   // }
         
     for(int i = 0; i < NUMBULLETS; ++i) {
         if(bullets[i].getVisible())    
@@ -90,23 +102,23 @@ void Player::drawShip() {
     glPushMatrix();
     //glLoadIdentity();
     glTranslatef(x+width/2, y+width/2, 0); // M1 - 2nd translation
-        
+    glScalef(1,aspectRatio,1);        
     glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2
-    //glTranslatef( -width/2, -height/2, 0);  // M3 - 1st translation  
+    glTranslatef( -x, -y, 0);  // M3 - 1st translation  
    
     glEnable(GL_TEXTURE_2D);
     
 	glBindTexture(GL_TEXTURE_2D, texture);
     
     glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 1.0f); 
-    glVertex3f(-width/2, height/2, 0.0);
-    glTexCoord2f(1.0f, 1.0f); 
-    glVertex3f(width/2, height/2, 0.0);
-    glTexCoord2f(1.0f, 0.0f); 
-    glVertex3f(width/2, -height/2, 0.0);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(-width/2, -height/2, 0.0);
+      glTexCoord2f(0.0f, 1.0f); 
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f); 
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f); 
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
 
     glEnd();
     glDisable(GL_TEXTURE_2D);

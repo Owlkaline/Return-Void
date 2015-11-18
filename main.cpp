@@ -225,8 +225,14 @@ int main(int argc, char** argv) {
     glutSpecialFunc(specialKeys);
     glutPassiveMotionFunc(mouse);
     setup();
-    glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
-  // glOrtho(0/*-aspectRatio*/, aspectRatio*100.0-78, -1*100 + 100.0, 1*100.0, -1, 1);
+
+    int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
+    int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+
+
+//    glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
+    glOrtho(0, (100.0/screenResX)*screenResX, 0, (100.0/screenResY)*screenResY, -1.0, 1.0);   // setup a 100x100x2 viewing world
+   // glOrtho(-aspectRatio*100, aspectRatio*100, -1*100, 1*100, -1, 1);
     glClearColor(0.0, 0.0, 0.0, 255.0);
     
     printf("Setup Complete\n");
