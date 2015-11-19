@@ -30,13 +30,9 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/Users/ChinupGayWindows/Downloads/freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
-			<Add directory="C:/Program Files (x86)/GnuWin32/include" />
 		</Compiler>
 		<Linker>
-			<Add option="-lOpenGL32 -lglu32 -lfreeglut -lpng" />
-			<Add directory="C:/Users/ChinupGayWindows/Downloads/freeglut-MinGW-3.0.0-1.mp/freeglut/lib" />
-			<Add directory="C:/Program Files (x86)/GnuWin32/lib" />
+			<Add option="-lglut -lGLU -lGL -lpng" />
 		</Linker>
 		<Unit filename="Textures/Game/Enemy.png" />
 		<Unit filename="Textures/Game/EnemyBullet.png" />
