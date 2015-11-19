@@ -27,7 +27,7 @@ void Enemy::setup(GLuint *EnemyText, float aspectRatio) {
     visible = true;
     texture = EnemyText[0];
     this->aspectRatio = aspectRatio;
-    bullets.setup(EnemyText[1], 0.5, 1, aspectRatio);
+    bullets.setup(EnemyText[1], 0.5, 0.5, aspectRatio);
 }
 
 void Enemy::destroy() {

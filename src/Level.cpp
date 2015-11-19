@@ -39,7 +39,7 @@ void Level::randomSpawn() {
     for(unsigned int i = 0; i < enemy.size(); i++) {
         if(!enemy[i]->getVisible()) {
             enemy[i]->setSize(0.7 + (rand() % 110) / 100.0f); 
-            enemy[i]->setX( rand() % 100 );
+            enemy[i]->setX( rand() % 100 + enemy[i]->getWidth()/2);
             enemy[i]->setY( ((rand() % 100) + 100) );
             enemy[i]->setSpeed( (rand() % 50) / 100.0f + 0.03f);
             enemy[i]->setMaxHealth( (rand() % 8) + 4);
