@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "../include/Menu.h"
 
 #define TEXTURE_LOAD_ERROR 0
 

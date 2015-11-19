@@ -7,7 +7,7 @@
 #else
 #include <GL/glut.h>
 #include <GL/glu.h>
-#include <GL/freeglut.h>
+#include <GL/freeglut.h> 
 #endif
   
 #include <stdio.h> 
@@ -16,8 +16,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "Game.h"
-#include "Menu.h"
+#include "../include/Game.h"
+#include "../include/Menu.h"
 
 //key states
 #define BUTTON_UP   0

@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "../include/Game.h"
 
 #define TEXTURE_LOAD_ERROR 0
 
