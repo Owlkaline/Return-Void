@@ -4,28 +4,28 @@
 Enemy::Enemy() {
     srand (time(NULL));
     width = 5;
-    height = 5;  
+    height = 5;
     speed = 0.3f;
-    maxHealth = 5;       
-    health = maxHealth; 
+    maxHealth = 5;
+    health = maxHealth;
     boundryX = 100;
     boundryY = 92 - height;
     rate = 2500.0f;
     x = 0;
-    y = boundryY - height; 
+    y = boundryY - height;
     visible = true;
 }
-   
+
 void Enemy::setup(GLuint *EnemyText, float aspectRatio) {
-    health = maxHealth; 
+    health = maxHealth;
     x = 0;
-    y = boundryY - height; 
+    y = boundryY - height;
     width = 5;
-    height = 5; 
+    height = 5;
     hitTimer = 0;
     isHit = false;
     visible = true;
-    texture = EnemyText[0]; 
+    texture = EnemyText[0];
     this->aspectRatio = aspectRatio;
     bullets.setup(EnemyText[1], 0.5, 1, aspectRatio);
 }
@@ -44,10 +44,10 @@ void Enemy::Tick(float Px, float Py, bool Pvisible) {
         x = -width;
    // if(y > boundryY )
     //    y = -height;
-    
-    if(Pvisible && !bullets.getVisible() && (random() % (int)rate) < 10)
+
+    if(Pvisible && !bullets.getVisible() && (rand() % (int)rate) < 10)
         fire(Px, Py);
-        
+
 }
 
 void Enemy::draw() {
@@ -63,29 +63,29 @@ void Enemy::draw() {
     } else {
         glColor3f(1.0f, 1.0f, 1.0f);
     }
-    
+
     glTranslatef(x, y, 0); // M1 - 2nd translation
-    glScalef(1,aspectRatio,1);        
+    glScalef(1,aspectRatio,1);
     glRotatef(180, 0.0f, 0.0f, 1.0f); //M2
-    glTranslatef( -x, -y, 0);  // M3 - 1st translation  
-   
+    glTranslatef( -x, -y, 0);  // M3 - 1st translation
+
     glEnable(GL_TEXTURE_2D);
-    
+
 	glBindTexture(GL_TEXTURE_2D, texture);
-    
+
     glBegin(GL_POLYGON);
-      glTexCoord2f(0.0f, 1.0f); 
+      glTexCoord2f(0.0f, 1.0f);
       glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f); 
+      glTexCoord2f(1.0f, 1.0f);
       glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f); 
+      glTexCoord2f(1.0f, 0.0f);
       glVertex3f(x+width/2, y-height/2, 0.0);
       glTexCoord2f(0.0f, 0.0f);
       glVertex3f(x-width/2, y-height/2, 0.0);
 
     glEnd();
     glDisable(GL_TEXTURE_2D);
-    
+
     glPopMatrix();
     glColor3f(1.0f, 1.0f, 1.0f);
 }
@@ -102,23 +102,23 @@ void Enemy::fire(int Px, int Py) {
     targetX = Px;
     targetY = Py;
     bullets.fire(x + width/2, y, targetX, targetY, 0.75);
-}  
+}
 
-int Enemy::looseHealth(int LH) { 
-    health -= LH; 
-    if(health <= 0) { 
-        x = -1, y = -1; 
-        visible = false; 
+int Enemy::looseHealth(int LH) {
+    health -= LH;
+    if(health <= 0) {
+        x = -1, y = -1;
+        visible = false;
         return 100;
-    } 
-    
+    }
+
     if(!isHit)
         isHit = true;
     return 0;
-} 
+}
 
 int Enemy::getHealth() { return health; }
-float Enemy::getX() { return x; } 
+float Enemy::getX() { return x; }
 float Enemy::getY() { return y; }
 int Enemy::getWidth() { return width; }
 int Enemy::getHeight() { return height; }
@@ -133,10 +133,10 @@ void Enemy::setFireRate(float rate) { this->rate = 2500.f / rate; }
 void Enemy::setVisible(bool visible) { this->visible = visible; }
 
 bool Enemy::getBulletVisible() { return bullets.getVisible(); }
-float Enemy::getBulletX() { return bullets.getX(); }; 
-float Enemy::getBulletY() { return bullets.getY(); }; 
-float Enemy::getBulletWidth() { return bullets.getWidth(); }; 
-float Enemy::getBulletHeight() { return bullets.getHeight(); }; 
+float Enemy::getBulletX() { return bullets.getX(); };
+float Enemy::getBulletY() { return bullets.getY(); };
+float Enemy::getBulletWidth() { return bullets.getWidth(); };
+float Enemy::getBulletHeight() { return bullets.getHeight(); };
 
 void Enemy::setBulletVisible(bool visible) { bullets.setVisible(visible); }
 
