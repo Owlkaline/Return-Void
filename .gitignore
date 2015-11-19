@@ -26,6 +26,7 @@ Return-void
 # Executables
 *.exe
 *.out
+*.o
 *.app
 
 # tempry files
