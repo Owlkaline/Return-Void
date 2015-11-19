@@ -12,7 +12,7 @@ void Game::setup(float aspectRatio) {
 
     std::ifstream data ("settings.in", std::ios_base::in);
     data>>showHitBox;
-    data>>collisionOn;
+    data>>collisionOff;
     data.close();
 
     enemy.push_back(new Enemy);
@@ -152,16 +152,16 @@ void Game::collisions() {
     for(unsigned int i = 0; i < enemy.size(); ++i) {
 
        //Player
-       float Ax = player.getX()+0.5;
-       float Ay = player.getY()-0.75;
-       float Aw = player.getWidth()-1;
-       float Ah = player.getHeight()-0.8;
+       float Ax = player.getX()-player.getWidth()/2;
+       float Ay = player.getY()-player.getHeight()/2;
+       float Aw = player.getWidth()-player.getWidth()*2/10;
+       float Ah = player.getHeight();
             
        //Enemy     
-       float Bx = enemy[i]->getX() + ( (enemy[i]->getWidth()/10.0f) * 2);
-       float By = enemy[i]->getY() + ( (enemy[i]->getHeight()/10.0f) );
-       float Bw = enemy[i]->getWidth()-( (enemy[i]->getWidth()/10.0f) * 3);
-       float Bh = enemy[i]->getHeight() - ( (enemy[i]->getHeight()/10.0f) );
+       float Bx = enemy[i]->getX() - (enemy[i]->getWidth()*3.5f/10.0f);
+       float By = enemy[i]->getY() - (enemy[i]->getHeight()*6/10.0f);
+       float Bw = enemy[i]->getWidth() - (enemy[i]->getWidth()*3.5f/10.0f);
+       float Bh = enemy[i]->getHeight() + (enemy[i]->getHeight()*2/10.0f);
             
        //Player bullets     
        float Cx;
@@ -178,11 +178,11 @@ void Game::collisions() {
            drawHitBox(Ax, Ay, Aw, Ah);
            drawHitBox(Bx, By, Bw, Bh);            
        }
-       if(collisionOn) {
+       if(!collisionOff) {
         if(enemy[i]->getVisible() && player.getVisible() && !player.getInvincible()) {            
             if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
-                enemy[i]->looseHealth(2);
-                player.takeHealth(2);
+                score += enemy[i]->looseHealth(2);
+                player.takeHealth();
                 player.setVisible(false);
                 playerTime = clock();
             }         
@@ -199,7 +199,7 @@ void Game::collisions() {
                    if(showHitBox) {
                        drawHitBox(Cx, Cy, Cw, Ch);
                    }
-                   if(collisionOn) {
+                   if(!collisionOff) {
                        if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
                             player.setBulletVisible(false, j);
                             score += enemy[i]->looseHealth(1);
@@ -213,10 +213,10 @@ void Game::collisions() {
            if(showHitBox) {
                drawHitBox(Dx, Dy, Dw, Dh);
            }
-           if(collisionOn) {
+           if(!collisionOff) {
                if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
                    enemy[i]->setBulletVisible(false);
-                   player.takeHealth(1);
+                   player.takeHealth();
                    player.setVisible(false);
                    playerTime = clock();
                }   
@@ -411,7 +411,6 @@ void Game::drawHud() {
 }
 
 bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY) {
-    //level.Tick(enemy);
     std::vector<Enemy*> newEnemy = level.Tick();
     enemy.swap(newEnemy);
     keyPress(keyState, prevKeyState);
@@ -420,7 +419,7 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
     
     for(unsigned int i = 0; i < enemy.size(); ++i) {
         if(player.isAlive() && enemy[i]->getVisible())
-            enemy[i]->Tick(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, player.getVisible());
+            enemy[i]->Tick(player.getX(), player.getY(), player.getVisible());
     }
     
     if(player.isAlive() && !player.getVisible()) {

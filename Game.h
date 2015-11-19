@@ -51,7 +51,7 @@ class Game
         int score;
         
         bool showHitBox;
-        bool collisionOn;
+        bool collisionOff;
         
         void safeSpawn();
         

@@ -32,8 +32,8 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
     texture = newTextures[0];
 
     bulletTexture = newTextures[3];
-    increment = 0;
-    secondincrement = 0;
+    invincTimer = 0;
+    flashTimer = 0;
     
     bullets.push_back(new Bullet);
     for(unsigned int i = 0; i < bullets.size(); i++) {
@@ -43,6 +43,9 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
 }
 
 void Player::destroy() {
+    for(unsigned int i = 0; i < bullets.size(); i++) {
+        bullets.erase(bullets.begin() + i);
+    }
     //free(PlayerText);
    // free(PlayerLeftText);
    // free(PlayerRightText);
@@ -71,12 +74,13 @@ void Player::Tick(float mouseX, float mouseY) {
     }
     lastMouseX = mouseX;
     lastMouseY = mouseY;
-    float diffx = mouseX - (x+width/2); 
-    float diffy = mouseY - (y-height/2);
-    float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
+    float diffx = mouseX - x; 
+    float diffy = mouseY - y;
+    //float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
+    float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
     directionX = (diffx) / (distance+10);
     directionY = (diffy) / (distance+10);
-    //angle = tan(directionY/directionX);
+    //angle = tan(directionY/directionX);    
     
      if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
         angle = atan(diffy/diffx) *180 / M_PI ;
@@ -91,12 +95,6 @@ void Player::Tick(float mouseX, float mouseY) {
         angle = atan(diffy/diffx) * 180 / M_PI ;
         angle = angle - 90;
     }
-
-   // if(angle > 360) {
-   //     angle = angle - 360;
-   // } else if(angle < 0) {
-   //     angle = 360 - angle;
-   // }
         
     for(unsigned int i = 0; i < bullets.size(); ++i) {
         if(bullets[i]->getVisible()) {   
@@ -105,12 +103,8 @@ void Player::Tick(float mouseX, float mouseY) {
             bullets.erase(bullets.begin() + i);
         }
     }
-    increment++;
-    secondincrement++;
-    if(increment > 1000)
-        increment = 0;
-    if(secondincrement > 300) 
-        secondincrement = 0;
+    invincTimer++;
+    flashTimer++;
 }
 
 void Player::drawShip() {
@@ -148,6 +142,22 @@ void Player::drawShip() {
   // glPopMatrix();
 }
 
+void Player::flash() {
+    if(invincTimer > 80)
+        invincible = false;
+    
+    if(flashTimer > 10) {
+        glColor3f(0.2f, 0.2f, 0.5f);
+        drawShip();
+    } else {
+        glColor3f(1.0, 1.0, 1.0);
+        drawShip();
+    }
+    
+    if(flashTimer > 20)
+        flashTimer = 0;
+}
+
 void Player::draw() {
     if(!visible)
         return;
@@ -166,25 +176,10 @@ void Player::draw() {
     if(y > boundryY - height/2)
         y = boundryY - height/2;
     
-    if(!invincible) {
-       drawShip();
+    if(invincible) {
+        flash();
     } else {
-       if((globalTime - invincibleTime) > 20000) {
-           invincible = false;
-       } else {
-           if(drawInvincible) {
-               drawShip();
-               if((globalTime - drawTime) > 1500) {
-                   drawInvincible = false;
-                   drawTime = globalTime;
-               }
-           } else {
-               if((globalTime - drawTime) > 1500) {
-                   drawInvincible = true;
-                   drawTime = globalTime;
-               }
-           }
-       }
+        drawShip();
     }
 }
 
@@ -193,7 +188,7 @@ void Player::fire() {
     int i = bullets.size()-1;
    // printf("%d\n", i);
     bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
-    bullets[i]->fire( x-(0.1f*directionX), y + ((height/2 + 5)*directionY), 1.75, lastMouseX, lastMouseY, true);
+    bullets[i]->fire( x-(bullets[i]->getWidth()/2 * directionX), y + ((height)*directionY), directionX, directionY, 1.75, angle);
 }  
 
 int Player::getBulletNum() { return bullets.size(); }
@@ -209,14 +204,14 @@ void Player::setHealth(int newHealth) { health = newHealth; }
 void Player::setVisible(bool Visible) { visible = Visible; }   
 int Player::getWidth() { return width; }
 int Player::getHealth() { return health; }
-int Player::getHeight() { return height; }
+int Player::getHeight() { return height*aspectRatio; }
 float Player::getX() { return x; }
 float Player::getY() { return y; }
 bool Player::isAlive() { return alive; }
 bool Player::getVisible() { return visible; }
 bool Player::getInvincible() { return invincible; }
 
-void Player::takeHealth(int Health) { health -= Health; if(health < 0) health = 0; }
+void Player::takeHealth() { health -= 1; if(health < 0) health = 0; }
 void Player::setBulletVisible(bool Visible, int i) { bullets[i]->setVisible(Visible); }
 bool Player::getBulletVisible(int i) { return bullets[i]->getVisible(); }
 float Player::getBulletX(int i) { return bullets[i]->getX(); }
@@ -224,5 +219,5 @@ float Player::getBulletY(int i) { return bullets[i]->getY(); }
 int Player::getBulletWidth(int i) { return bullets[i]->getWidth(); }
 int Player::getBulletHeight(int i) { return bullets[i]->getHeight(); }
 
-void Player::respawn(int X, int Y) { invincible = true; invincibleTime = globalTime; drawTime = globalTime; increment = 0; secondincrement = 0; x = X; y = Y; visible = true;}
+void Player::respawn(int X, int Y) { invincible = true; invincTimer = 0; flashTimer = 0; x = X; y = Y; visible = true;}
 

@@ -3,41 +3,29 @@
 #include <stdlib.h>
 
 Bullet::Bullet() {
-        width = 0.5;
-        height = 6;
-        x = 0.0f;
-        y = 0.0f; 
+    width = 0.5;
+    height = 6;
+    x = 0.0f;
+    y = 0.0f; 
          
-        boundryX = 100 - width;
-        boundryY = 95 - height;
-        visible = true;
-   }
+    boundryX = 100 - width;
+    boundryY = 95 - height;
+    visible = true;
+}
    
-void Bullet::setup(GLuint newText, float Width, float Height, float aspectRatio) {
+void Bullet::setup(GLuint newText, float width, float height, float aspectRatio) {
     this->aspectRatio = aspectRatio;
-    width = Width;
-    height = Height;
+    this->width = width;
+    this->height = height;
     visible = true;
     x = -1;
     y = -1;
     texture = newText;
 }
 
-void Bullet::Tick(float X, float Y) {    
-    y += speed;
-}
-
 void Bullet::Tick() {
-  
-  if(pos)
-    {
         x += speed * directionX;
-        y += speed * directionY;
-    } else {
-        x -= speed * directionX;
-        y -= speed * directionY; 
-    }
-    
+        y += speed * directionY;  
 }
     
 void Bullet::draw() {
@@ -80,68 +68,48 @@ void Bullet::draw() {
     glDisable(GL_TEXTURE_2D);
     
     glPopMatrix();
-    /*
-    glEnable(GL_TEXTURE_2D);
-    
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-    glBegin(GL_POLYGON);
-        glTexCoord2f(0.0f, 1.0f); 
-        glVertex3f(x, y + height, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x + width, y + height, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(x + width, y, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x, y, 0.0);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);*/
 }  
 
-void Bullet::fire(float newX, float newY, float mSpeed) {
-    x = newX;
-    y = newY;
-    speed = mSpeed;
+void Bullet::fire(float x, float y, float speed) {
+    this->x = x;
+    this->y = y;
+    this->speed = speed;
     visible = true;
 }
 
-void Bullet::fire(float newX, float newY, float mSpeed, float X, float Y, bool pos) {
-    this->pos = pos;
-    x = newX;
-    y = newY;
+void Bullet::fire(float x, float y, float endX, float endY, float mSpeed) {
+    this->x = x;
+    this->y = y;
     speed = mSpeed;
     visible = true;
     
     startX = x;
     startY = y;
-    endX = X;
-    endY = Y;
+    this->endX = endX;
+    this->endY = endY;
     float opposite = endX - startX;
     float adjacent = endY - startY;
     
     distance = pow(pow(opposite,2.0f) + pow(adjacent,2.0f), 0.5f);
     directionX = (opposite) / (distance+10);
-    directionY = (adjacent) / (distance+10);
+    directionY = (adjacent) / (distance+10);   
+}
+
+void Bullet::fire(float x, float y, float directionX, float directionY,  float speed, float angle) {
+    this->x = x;
+    this->y = y;
+    this->speed = speed;
+    visible = true;
     
-    if (opposite > 0.0 && adjacent > 0.0) {//Quadrant 1
-        angle = atan(adjacent/opposite) *180 / M_PI ;
-        angle = angle - 90;
-    }else if(opposite < 0 && adjacent > 0) {//Quadrant 2
-        angle = atan(adjacent/opposite) *180 / M_PI ;
-        angle = angle + 90;
-    } else     if(opposite < 0 && adjacent < 0) {//Quadrant 3
-        angle = atan(adjacent/opposite) *180 / M_PI ;
-        angle = angle+90;
-    } else     if(opposite > 0 && adjacent < 0) {//Quadrant 4
-        angle = atan(adjacent/opposite) * 180 / M_PI ;
-        angle = angle - 90;
-    }
+    this->directionX = directionX;
+    this->directionY = directionY;
+    this->angle = angle;   
 }
 
 float Bullet::getX() { return x; }
 float Bullet::getY() { return y; }
 int Bullet::getWidth() { return width; }
 int Bullet::getHeight() { return height; }
-void Bullet::setVisible(bool Visible) { visible = Visible; if(!visible) {x = -1; y = -1;} }
+void Bullet::setVisible(bool visible) { this->visible = visible; if(!this->visible) {x = -1; y = -1;} }
 bool Bullet::getVisible() { return visible; }
+

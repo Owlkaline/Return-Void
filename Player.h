@@ -26,7 +26,7 @@ class Player
         void destroy();
         void respawn(int x, int y);
         
-        void takeHealth(int Health);
+        void takeHealth();
         
         void Tick(float mouseX, float mouseY);
         void draw();  
@@ -65,12 +65,14 @@ class Player
         void setBulletVisible(bool visible, int i);
 
     protected:  
+        void flash();
+       
         int health;
         int fireRate;
         float angle;
         float width, height;
         int boundryX, boundryY; 
-        int increment, secondincrement;
+        int invincTimer, flashTimer;
         float aspectRatio, lastMouseX, lastMouseY;
         float directionX, directionY;
 

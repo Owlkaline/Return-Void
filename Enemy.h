@@ -48,20 +48,21 @@ class Enemy
         
         int looseHealth(int healthlost);
         
-        void setX(float X);
-        void setY(float Y);
+        void setX(float x);
+        void setY(float y);
         void setSize(float multiple);
-        void setSpeed(float mSpeed);
-        void setMaxHealth(int mHealth);
+        void setSpeed(float speed);
+        void setMaxHealth(int maxHealth);
         void setVisible(bool visible);   
         void setFireRate(float rate);   
         void setBulletVisible(bool visible);      
     protected:  
         int boundryX, boundryY; 
         float width, height;
-        float x, y, targetX, targetY, rate, speed;  
-        int health, maxHealth;
-        bool visible;
+        float x, y, targetX, targetY;
+        float rate, speed, aspectRatio;  
+        int health, maxHealth, hitTimer;
+        bool visible, isHit;
         Bullet bullets;
         GLuint texture;
 };

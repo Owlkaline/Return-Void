@@ -20,20 +20,20 @@ class Bullet
     public:
         Bullet();
         void Tick();
-        void Tick(float X, float Y);
         float getX();
         float getY();
         int getWidth();
         int getHeight();
         void setVisible(bool visible);
         bool getVisible();
-        void fire(float newX, float newY, float mSpeed);
-        void fire(float newX, float newY, float mSpeed, float X, float Y, bool pos);
+        void fire(float x, float y, float speed);
+        void fire(float x, float y, float endX, float endY, float speed);
+        void fire(float x, float y, float directionX, float directionY,  float speed, float angle);
         void draw();
-        void setup(GLuint newText, float Width, float Height, float aspectRatio);
+        void setup(GLuint newText, float width, float height, float aspectRatio);
     protected:  
         float aspectRatio, angle;
-        bool visible, pos;
+        bool visible;
         int boundryX, boundryY; 
         float width, height;
         float x, y, speed, startX, startY, endX, endY, distance, directionX, directionY;  

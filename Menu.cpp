@@ -223,7 +223,7 @@ void Menu::draw() {
             glPopMatrix();
             
             glPushMatrix();
-            if(collisionOn) {
+            if(!collisionOn) {
                 char str[25] = "Collisions On: < True  >";
                 drawChar(35 - width/2, 51, 1.0f, 1.0f, 1.0f, str, 25);
             } else {
