@@ -13,7 +13,6 @@
 #include <stdio.h> 
 #include <cstdlib>
 #include <stdlib.h>
-#include <time.h>
 #include <vector>
 
 #include "Bullet.h"
@@ -79,9 +78,6 @@ class Player
         float x, y; 
         float speed;
         bool visible, alive, invincible;
-        clock_t invincibleTime;
-        clock_t globalTime; 
-        clock_t drawTime;
         bool drawInvincible;
         //Bullet bullets[10];
         std::vector<Bullet*> bullets;

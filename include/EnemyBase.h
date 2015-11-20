@@ -1,5 +1,5 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef ENEMYBASE_H
+#define ENEMYBASE_H
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
@@ -17,14 +17,15 @@
 
 #include "Bullet.h"
 
-class Enemy 
+class EnemyBase 
 {
     public:
-        Enemy();
-        void setup(GLuint *Texture, float aspectRatio);
+        EnemyBase();
+        void setup(GLuint *Texture, GLuint *EnemyBuletTextures, float aspectRatio);
         void destroy();
         
         void Tick(float Px, float Py, bool Pvisible);
+        void spawn(float x, float y, float speed, int maxHealth, float fireRate);
         
         float getX();
         float getY();
@@ -50,22 +51,24 @@ class Enemy
         
         void setX(float x);
         void setY(float y);
-        void setSize(float multiple);
+        void setSize(float size);
+        void setSize(float width, float height);
         void setSpeed(float speed);
         void setMaxHealth(int maxHealth);
         void setVisible(bool visible);   
         void setFireRate(float rate);   
         void setBulletVisible(bool visible);      
     protected:  
+        void move();
         int boundryX, boundryY; 
         float width, height;
         float x, y, targetX, targetY;
-        float rate, speed, aspectRatio;  
-        int health, maxHealth, hitTimer;
+        float fireRate, speed, aspectRatio;  
+        int health, maxHealth, hitTimer, score;
         bool visible, isHit;
+        int shootTimer;
         Bullet bullets;
         GLuint texture;
 };
-
 
 #endif

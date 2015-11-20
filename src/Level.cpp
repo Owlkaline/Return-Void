@@ -8,68 +8,89 @@ Level::Level() {
 
 void Level::destroy() {
     inLevel = false;
-    //for(unsigned int i = 0; i < enemy.size(); i++) {
-    enemy.erase(enemy.begin(), enemy.end());
+    //for(unsigned int i = 0; i < BaseEnemies.size(); i++) {
+    BaseEnemies.erase(BaseEnemies.begin(), BaseEnemies.end());
+    BasicEnemies.erase(BasicEnemies.begin(), BasicEnemies.end());
     //printf("\nenemies destroid");
     //}    
 }
 
-void Level::setup(GLuint *enemyTexture, float aspectRatio) {
+void Level::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures, float aspectRatio) {
     this->aspectRatio = aspectRatio;
-    this->enemyTexture[0] = enemyTexture[0];
-    this->enemyTexture[1] = enemyTexture[1];
+    for(unsigned int i = 0; i < sizeof(enemyTextures)/sizeof(enemyTextures[0]); ++i) {
+        this->enemyTextures[i] = enemyTextures[i];
+    }
+    this->enemyBulletTextures[0] = enemyBulletTextures[0];
+    //this->BaseEnemiesTexture[1] = BaseEnemiesTexture[1];
     crntLevel = -1;
     inLevel = false;
 }
 
-std::vector<Enemy*> Level::Tick() {
+void Level::Tick() {
     switch(crntLevel) {
         case 1:
             Level1();
             break;
     }
-    return enemy;
+    //return BaseEnemies;
 }
 
 void Level::randomSpawn() {
-
-    //int numEnemies = 10 - enemy.size();
-
-        
-    for(unsigned int i = 0; i < enemy.size(); i++) {
-        if(!enemy[i]->getVisible()) {
-            enemy[i]->setSize(0.7 + (rand() % 110) / 100.0f); 
-            enemy[i]->setX( rand() % 100 + enemy[i]->getWidth()/2);
-            enemy[i]->setY( ((rand() % 100) + 100) );
-            enemy[i]->setSpeed( (rand() % 50) / 100.0f + 0.03f);
-            enemy[i]->setMaxHealth( (rand() % 8) + 4);
-            enemy[i]->setFireRate( (rand() % 200) / 100.0f + 0.5);
-            enemy[i]->setVisible(true);
-           // printf("\ntotal enemy: %d", enemy.size());
+    
+    for(unsigned int i = 0; i < BaseEnemies.size(); i++) {
+        if(!BaseEnemies[i]->getVisible()) {
+            float x = ( rand() % (100-BaseEnemies[i]->getWidth()/2) + BaseEnemies[i]->getWidth()/2);
+            float y = ( ((rand() % 100) + 100) );
+            float speed = ( (rand() % 50) / 100.0f + 0.03f);
+            int maxHealth = ( (rand() % 8) + 4);
+            int fireRate = (250 + rand()%100);
+            BaseEnemies[i]->spawn(x, y, speed, maxHealth, fireRate);
+           // printf("\ntotal BaseEnemies: %d", BaseEnemies.size());
         }
     }
+    
+    for(unsigned int i = 0; i < BasicEnemies.size(); i++) {
+        if(!BasicEnemies[i]->getVisible()) {
+            float x = ( rand() % (100-BasicEnemies[i]->getWidth()/2) + BasicEnemies[i]->getWidth()/2);
+            float y = ( ((rand() % 100) + 100) );
+            float speed = ( (rand() % 25) / 100.0f + 0.02f);
+            int fireRate = (20 + rand()%40);
+            BasicEnemies[i]->spawn(x, y, speed, fireRate);
+           // printf("\ntotal BaseEnemies: %d", BaseEnemies.size());
+        }
+    }
+        
+    
+   /* for(unsigned int i = 0; i < BasicEnemies.size(); i++) {
+        if(!BasicEnemies[i]->getVisible()) {
+            float x = ( rand() % (100-BasicEnemies[i]->getWidth()/2) + BasicEnemies[i]->getWidth()/2);
+            float y = ( ((rand() % 100) + 100) );
+            float speed = ( (rand() % 50) / 100.0f + 0.03f);
+            int fireRate = (50);
+            BasicEnemies[i]->spawn(50, 50, speed, fireRate);
+           // printf("\ntotal BaseEnemies: %d", BaseEnemies.size());
+        }
+    }*/
 }
 
 void Level::Level1() {
 
     // 100 of Myclass
     //vector<MyClass> myVector( 100, MyClass() );
-   // for(unsigned int i = 0; i < enemy.size(); i++) {
-    //    if(!enemy[i]->getVisible()) {
-     //       enemy.erase(enemy.begin() + i);
+   // for(unsigned int i = 0; i < BaseEnemies.size(); i++) {
+    //    if(!BaseEnemies[i]->getVisible()) {
+     //       BaseEnemies.erase(BaseEnemies.begin() + i);
     //    }
    // }
     if(!inLevel) {
-        for(int i = 0; i < 10; i++) {
-            enemy.push_back(new Enemy);
-            enemy[i]->setup(enemyTexture, aspectRatio);
-            enemy[i]->setSize(0.7 + (rand() % 110) / 100.0f); 
-            enemy[i]->setX(-10);
-            enemy[i]->setY(-10);
-            enemy[i]->setSpeed( (rand() % 50) / 100.0f + 0.03f);
-            enemy[i]->setMaxHealth( (rand() % 8) + 4);
-            enemy[i]->setFireRate( (rand() % 200) / 100.0f + 0.5);
-            enemy[i]->setVisible(true);
+        for(int i = 0; i < 7; i++) {   
+            BaseEnemies.push_back(new EnemyBase);
+            BaseEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio); 
+            
+            if(i < 3) {  
+                BasicEnemies.push_back(new BasicEnemy);
+                BasicEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);       
+            }
         }
         inLevel = true;
         crntLevel = 1;

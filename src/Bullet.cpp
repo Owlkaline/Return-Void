@@ -21,6 +21,7 @@ void Bullet::setup(GLuint newText, float width, float height, float aspectRatio)
     x = -1;
     y = -1;
     texture = newText;
+    angle = 0;
 }
 
 void Bullet::Tick() {

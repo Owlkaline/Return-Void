@@ -3,13 +3,8 @@
 #include <stdlib.h>
 
 Player::Player() {
-    width = 5;
-    height = 5;
-    angle = 0;
-    speed = 0.5f;
     boundryX = 100;
     boundryY = 92;
-    globalTime = clock();
     printf("Player Constructed\n");
 }
    
@@ -17,8 +12,10 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
     x = 50.0f;
     y = 50.0f;
     angle = 0;
+    speed = 0.5f;
     aspectRatio = newAspectRatio;
    // width*=aspectRatio;
+    width = 5;
     height=5;//*aspectRatio;
     health = 5;
     drawInvincible = true;
@@ -35,7 +32,7 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
     invincTimer = 0;
     flashTimer = 0;
     
-    bullets.push_back(new Bullet);
+    //bullets.push_back(new Bullet);
     for(unsigned int i = 0; i < bullets.size(); i++) {
         bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
     }
@@ -66,7 +63,6 @@ void Player::stationaryImage() {
 
 void Player::Tick(float mouseX, float mouseY) {
     
-    globalTime = clock();
     if(health < 0) {
         health = 0;
         alive = false;
@@ -161,6 +157,7 @@ void Player::flash() {
 void Player::draw() {
     if(!visible)
         return;
+        
     for(unsigned int i = 0; i < bullets.size(); ++i) {
         if(bullets[i]->getVisible())
             bullets[i]->draw();
@@ -200,8 +197,8 @@ void Player::moveDown() { y -= speed; }
 
 void Player::rotateRight() { angle--; }
 void Player::rotateLeft() { angle++; }
-void Player::setHealth(int newHealth) { health = newHealth; }
-void Player::setVisible(bool Visible) { visible = Visible; }   
+void Player::setHealth(int health) { this->health = health; }
+void Player::setVisible(bool visible) { this->visible = visible; }   
 int Player::getWidth() { return width; }
 int Player::getHealth() { return health; }
 int Player::getHeight() { return height*aspectRatio; }
@@ -212,12 +209,12 @@ bool Player::getVisible() { return visible; }
 bool Player::getInvincible() { return invincible; }
 
 void Player::takeHealth() { health -= 1; if(health < 0) health = 0; }
-void Player::setBulletVisible(bool Visible, int i) { bullets[i]->setVisible(Visible); }
+void Player::setBulletVisible(bool visible, int i) { bullets[i]->setVisible(visible); }
 bool Player::getBulletVisible(int i) { return bullets[i]->getVisible(); }
 float Player::getBulletX(int i) { return bullets[i]->getX(); }
 float Player::getBulletY(int i) { return bullets[i]->getY(); }
 int Player::getBulletWidth(int i) { return bullets[i]->getWidth(); }
 int Player::getBulletHeight(int i) { return bullets[i]->getHeight(); }
 
-void Player::respawn(int X, int Y) { invincible = true; invincTimer = 0; flashTimer = 0; x = X; y = Y; visible = true;}
+void Player::respawn(int x, int y) { invincible = true; invincTimer = 0; flashTimer = 0; this->x = x; this->y = y; visible = true;}
 

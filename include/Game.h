@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyTypes.h"
 #include "Level.h"
 
 #define BUTTON_UP   0
@@ -42,7 +42,7 @@ class Game
     protected:  
         Player player;
         //Enemy enemy[10];
-        std::vector<Enemy*> enemy;
+        std::vector<EnemyBase*> enemy;
         Level level;
         clock_t crntTime;
         clock_t shootTime;

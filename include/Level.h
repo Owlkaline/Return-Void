@@ -16,7 +16,8 @@
 #include <time.h>
 #include <vector>
 
-#include "Enemy.h"
+#include "EnemyBase.h"
+#include "EnemyTypes.h"
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
@@ -25,14 +26,16 @@ class Level
 {
     public:
         Level();
-        std::vector<Enemy*> Tick();
+        void Tick();
         void Level1();        
-        void setup(GLuint *enemyTextures, float aspectRatio);
+        void setup(GLuint *enemyTextures, GLuint *enemyBuletTextures, float aspectRatio);
         void randomSpawn();
         void destroy();
-    protected:      
-        std::vector<Enemy*> enemy;
-        GLuint enemyTexture[2];
+        std::vector<EnemyBase*> BaseEnemies;
+        std::vector<BasicEnemy*> BasicEnemies;
+    protected:   
+        GLuint enemyTextures[2];
+        GLuint enemyBulletTextures[2];
         bool inLevel;
         float aspectRatio;
         int crntLevel;
