@@ -15,7 +15,7 @@ void BasicEnemy::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  floa
     texture = enemyTextures[1];
     this->aspectRatio = aspectRatio;
     bullets.setup(enemyBulletTextures[0], 0.5, 0.5, aspectRatio);
-    score = 300;  
+    score = 300;
 }
 
 void BasicEnemy::spawn(float x, float y, float speed, float fireRate) {

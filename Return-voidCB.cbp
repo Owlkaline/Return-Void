@@ -30,16 +30,15 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/Users/ChinupGayWindows/Downloads/freeglut-MinGW-3.0.0-1.mp/freeglut/include" />
-			<Add directory="C:/Program Files (x86)/GnuWin32/include" />
+			<Add directory="C:/Program Files (x86)/Linker/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lOpenGL32 -lglu32 -lfreeglut -lpng" />
-			<Add directory="C:/Users/ChinupGayWindows/Downloads/freeglut-MinGW-3.0.0-1.mp/freeglut/lib" />
-			<Add directory="C:/Program Files (x86)/GnuWin32/lib" />
+			<Add directory="C:/Program Files (x86)/Linker/lib" />
 		</Linker>
-		<Unit filename="Textures/Game/Enemy.png" />
-		<Unit filename="Textures/Game/EnemyBullet.png" />
+		<Unit filename="Textures/Game/BaseEnemy.png" />
+		<Unit filename="Textures/Game/BasicBullet.png" />
+		<Unit filename="Textures/Game/BasicEnemy.png" />
 		<Unit filename="Textures/Game/PlayerBullet.png" />
 		<Unit filename="Textures/Game/Ship.png" />
 		<Unit filename="Textures/Game/ShipLeft.png" />
@@ -62,13 +61,15 @@
 		<Unit filename="Textures/Score/Two.png" />
 		<Unit filename="Textures/Score/Zero.png" />
 		<Unit filename="include/Bullet.h" />
-		<Unit filename="include/Enemy.h" />
+		<Unit filename="include/EnemyBase.h" />
+		<Unit filename="include/EnemyTypes.h" />
 		<Unit filename="include/Game.h" />
 		<Unit filename="include/Level.h" />
 		<Unit filename="include/Menu.h" />
 		<Unit filename="include/Player.h" />
 		<Unit filename="src/Bullet.cpp" />
-		<Unit filename="src/Enemy.cpp" />
+		<Unit filename="src/EnemyBase.cpp" />
+		<Unit filename="src/EnemyTypes.cpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Level.cpp" />
 		<Unit filename="src/Menu.cpp" />
