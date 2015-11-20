@@ -24,9 +24,8 @@
 #define BUTTON_DOWN 1
 
 enum Screen {
-    sMenu,
-    sOptions,
-    sGame
+    sGame,
+    sMenu
 };
 
 //Textures
@@ -150,42 +149,14 @@ void display() {
            game.destroy();
            glutSetCursor(GLUT_CURSOR_NONE);
            screenNum = menu.keyPress(keyState, prevKeyState);
-           if(keyState[27] == BUTTON_DOWN) {//ESC
-               if(prevKeyState[27] != BUTTON_DOWN) {
-                   glutLeaveGameMode();
-                   exit(1);
-               }
-           }
 
            switch(screenNum) {
-               case -1:
-                   glutLeaveGameMode();
-                   exit(-1);
-                   break;
                case 1:
                    screen = sGame;
                    game.setup(aspectRatio);
                    break;
-               case 2:
-                   screen = sOptions;
-                   menu.readSettings();
-                   menu.changeMenu(sOptions);
-                   break;
            }
            menu.draw();
-           break;
-       case sOptions:
-           screenNum = menu.keyPress(keyState, prevKeyState);
-           menu.draw();
-           if(keyState[27] == BUTTON_DOWN && prevKeyState[13] != BUTTON_DOWN) {//ESC
-               menu.saveSettings();
-               screen = sMenu;
-               menu.changeMenu(sMenu);
-           }
-           if(screenNum == 3) {
-               screen = sMenu;
-               menu.changeMenu(sMenu);
-           }
            break;
     }
     prevKeyState[27] = keyState[27];//esc

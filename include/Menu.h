@@ -11,7 +11,7 @@
 #include <png.h>
 #endif
 
-#include <stdio.h> 
+#include <stdio.h>
 #include <cstdlib>
 #include <stdlib.h>
 #include <fstream>
@@ -19,32 +19,41 @@
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
 
-class Menu 
+class Menu
 {
     public:
         Menu();
         void setup();
         void saveSettings();
         void readSettings();
-        void changeMenu(int a); 
+        void changeMenu(int a);
         int keyPress(unsigned char* keyState, unsigned char* prevKeyState);
-        void draw();       
-    protected:  
+        void draw();
+    protected:
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);
         int select;
         int height;
-        int width;        
+        int width;
         int numOptions;
-        
+        int menuSelections;
+        int optionsSelections;
+        int instructionSelections;
+
         bool showHitBox;
         bool collisionOn;
-        
+
         void drawBackground();
-        void drawRectangle(float x, float y, int textnum);
-        int screen;
+        //int screen;
         GLuint LoadTexture( const char * filename );
         GLuint texture;
         GLuint textures[8];
+        enum Screen {
+            sGame,
+            sMenu,
+            sOptions,
+            sInstructions
+        };
+        Screen screen;
 };
 
 
