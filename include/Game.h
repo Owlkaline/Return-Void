@@ -14,7 +14,7 @@
 
 #include <iostream>
 #include <list>
-#include <stdio.h> 
+#include <stdio.h>
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
@@ -29,17 +29,17 @@
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
 
-class Game 
+class Game
 {
     public:
         Game();
         void setup(float aspectRatio);
         void destroy();
-        bool Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY);  
-        void collisions(); 
+        bool Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY, unsigned int* mouseBtnState);
+        void collisions();
         void draw();
         void drawGameOver();
-    protected:  
+    protected:
         Player player;
         //Enemy enemy[10];
         std::vector<EnemyBase*> enemy;
@@ -49,13 +49,13 @@ class Game
         clock_t playerTime;
         int increment;
         int score;
-        
+
         bool showHitBox;
         bool collisionOff;
-        
+
         void safeSpawn();
-        
-        void keyPress(unsigned char* keyState, unsigned char* prevKeyState);
+
+        void keyPress(unsigned char* keyState, unsigned char* prevKeyState,  unsigned int* mouseBtnState);
 
         void drawHitBox(float Ax, float Ay, float Aw, float Ah);
         void drawScore();

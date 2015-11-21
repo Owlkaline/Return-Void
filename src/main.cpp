@@ -48,6 +48,7 @@ int refreshMillis = 20;
 //Keeps the current key state, keeps the key state of the previous key state
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
+unsigned int  mouseBtnState[3];
 
 //Current coords of the mouse
 float mouseX, mouseY;
@@ -82,6 +83,32 @@ void specialKeys(int key, int x, int y) {
      case GLUT_KEY_LEFT:
             break;
      }
+}
+
+void mouseBtn(int btn, int state, int x, int y) {
+    if(btn==GLUT_LEFT_BUTTON && state==GLUT_DOWN) {
+        mouseBtnState[0] = BUTTON_DOWN;
+    }
+
+    if(btn==GLUT_RIGHT_BUTTON && state==GLUT_DOWN) {
+        mouseBtnState[1] = BUTTON_DOWN;
+    }
+
+    if(btn==GLUT_MIDDLE_BUTTON && state==GLUT_DOWN) {
+        mouseBtnState[2] = BUTTON_DOWN;
+    }
+
+    if(btn==GLUT_LEFT_BUTTON && state==GLUT_UP) {
+        mouseBtnState[0] = BUTTON_UP;
+    }
+
+    if(btn==GLUT_RIGHT_BUTTON && state==GLUT_UP) {
+        mouseBtnState[1] = BUTTON_UP;
+    }
+
+    if(btn==GLUT_MIDDLE_BUTTON && state==GLUT_UP) {
+        mouseBtnState[2] = BUTTON_DOWN;
+    }
 }
 
 //Updates mouse coords
@@ -142,7 +169,7 @@ void display() {
                }
            } else {
                //updates game
-               alive = game.Tick(keyState, prevKeyState, mouseX, mouseY);
+               alive = game.Tick(keyState, prevKeyState, mouseX, mouseY, mouseBtnState);
            }
            break;
        case sMenu:
@@ -220,6 +247,7 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboard_up);
     glutSpecialFunc(specialKeys);
+    glutMouseFunc(mouseBtn);
     glutMotionFunc(mouse);
     glutPassiveMotionFunc(mouse);
     setup();

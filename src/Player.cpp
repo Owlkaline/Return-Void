@@ -79,18 +79,19 @@ void Player::Tick(float mouseX, float mouseY) {
     //angle = tan(directionY/directionX);
 
      if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
-        angle = atan(diffy/diffx) *180 / M_PI ;
-        angle = angle - 90;
+        angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
+        angle = angle - 90.0f;
     }else if(diffx < 0 && diffy > 0) {//Quadrant 2
-        angle = atan(diffy/diffx) *180 / M_PI ;
-        angle = angle + 90;
+        angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
+        angle = angle + 90.0f;
     } else     if(diffx < 0 && diffy < 0) {//Quadrant 3
-        angle = atan(diffy/diffx) *180 / M_PI ;
-        angle = angle+90;
+        angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
+        angle = angle+90.0f;
     } else     if(diffx > 0 && diffy < 0) {//Quadrant 4
-        angle = atan(diffy/diffx) * 180 / M_PI ;
-        angle = angle - 90;
+        angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
+        angle = angle - 90.0f;
     }
+         //   floor(angle);
 
     for(unsigned int i = 0; i < bullets.size(); ++i) {
         if(bullets[i]->getVisible()) {
@@ -184,8 +185,10 @@ void Player::fire() {
     bullets.push_back(new Bullet);
     int i = bullets.size()-1;
    // printf("%d\n", i);
-    bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
-    bullets[i]->fire( x-(bullets[i]->getWidth()/2 * directionX), y + ((height)*directionY), directionX, directionY, 1.0, angle);
+    //bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
+    bullets[i]->setup(bulletTexture, 0.25, 1.5, aspectRatio);
+   // bullets[i]->fire( x-(bullets[i]->getWidth()/2 * directionX), y + ((height)*directionY), directionX, directionY, 1.0, angle);
+   bullets[i]->fire( x, y, directionX, directionY, 1.0, angle);
 }
 
 int Player::getBulletNum() { return bullets.size(); }

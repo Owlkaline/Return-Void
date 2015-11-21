@@ -75,7 +75,7 @@ void Game::destroy() {
     level.destroy();
 }
 
-void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
+void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState, unsigned int* mouseBtnState) {
 
     if(player.getVisible()) {
         if(keyState[(unsigned char)'a'] == BUTTON_DOWN) {
@@ -91,26 +91,14 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
         if(keyState[(unsigned char)'s'] == BUTTON_DOWN)
             player.moveDown();
 
-        if(keyState[(unsigned char)'e'] == BUTTON_DOWN)
-            player.rotateLeft();
-        if(keyState[(unsigned char)'q'] == BUTTON_DOWN)
-            player.rotateRight();
+
 
         //Fire player weapon
-        if(keyState[32] == BUTTON_DOWN) { //Space Bar
-            if(prevKeyState[32] != BUTTON_DOWN) {
-               // printf("Space Bar pressed\n");
+        if(keyState[32] == BUTTON_DOWN || mouseBtnState[0] == BUTTON_DOWN) { //Space Bar
                if(increment > 5) {
                    increment = 0;
                    player.fire();
                }
-            } else {
-                //printf("%li\n", crntTime - shootTime);
-               if(increment > 5) {
-                   increment = 0;
-                   player.fire();
-               }
-            }
         }
         prevKeyState[32] = keyState[32];
 
@@ -488,11 +476,11 @@ void Game::drawHud() {
 
 }
 
-bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY) {
+bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY, unsigned int* mouseBtnState) {
     //std::vector<level.BaseEnemiesBase*> newlevel.BaseEnemies =
     level.Tick();
     //level.BaseEnemies.swap(newlevel.BaseEnemies);
-    keyPress(keyState, prevKeyState);
+    keyPress(keyState, prevKeyState, mouseBtnState);
     player.Tick(mouseX, mouseY);
     collisions();
 
