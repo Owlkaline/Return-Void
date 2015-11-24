@@ -1,7 +1,7 @@
 #include "../include/EnemyBase.h"
 
 EnemyBase::EnemyBase() {
-    srand (time(NULL));   
+    srand (time(NULL));
     boundryX = 100;
     boundryY = 92 - height;
 }
@@ -21,27 +21,25 @@ void EnemyBase::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float
     texture = enemyTextures[0];
     this->aspectRatio = aspectRatio;
     bullets.setup(enemyBulletTextures[0], 0.5, 0.5, aspectRatio);
-    score = 100;  
+    score = 100;
 }
 
 void EnemyBase::destroy() {
     //free(texture);
 }
 
-void EnemyBase::move() {
+void EnemyBase::movement() {
     moveDown();
 }
 
 void EnemyBase::Tick(float Px, float Py, bool Pvisible) {
-    move();
+    movement();
     if(x < -width)
         x = boundryX;
     if(y < -height)
         visible = false;
     if(x > boundryX)
         x = -width;
-   // if(y > boundryY )
-    //    y = -height;
 
     if(Pvisible && !bullets.getVisible() && shootTimer > fireRate) {
         shootTimer = 0;
@@ -102,7 +100,6 @@ void EnemyBase::draw() {
 
 void EnemyBase::drawBullets() {
     if(bullets.getVisible()) {
-        //bullets.Tick(targetX, targetY);
        bullets.Tick();
     }
     bullets.draw();
@@ -114,10 +111,25 @@ void EnemyBase::fire(int Px, int Py) {
     bullets.fire(x + width/2, y, targetX, targetY, 0.75);
 }
 
+int EnemyBase::Drops() {
+    int random = rand()%100;
+    if(random < 75) {
+        random = rand()%90;
+        if(random < 30) {
+            item = Money;
+        } else if (random > 60) {
+            item = Shield;
+        } else {
+            item = Bomb;
+        }
+        return item;
+    }
+    return -1;
+}
+
 int EnemyBase::looseHealth(int LH) {
     health -= LH;
     if(health <= 0) {
-        x = -1, y = -1;
         visible = false;
         return score;
     }
@@ -130,8 +142,8 @@ int EnemyBase::looseHealth(int LH) {
 int EnemyBase::getHealth() { return health; }
 float EnemyBase::getX() { return x; }
 float EnemyBase::getY() { return y; }
-int EnemyBase::getWidth() { return width; }
-int EnemyBase::getHeight() { return height; }
+float EnemyBase::getWidth() { return width; }
+float EnemyBase::getHeight() { return height; }
 bool EnemyBase::getVisible() { return visible; }
 
 void EnemyBase::setX(float x) { this->x = x; }

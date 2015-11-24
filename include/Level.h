@@ -10,7 +10,7 @@
 #include <GL/freeglut.h>
 #endif
 
-#include <stdio.h> 
+#include <stdio.h>
 #include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
@@ -18,27 +18,39 @@
 
 #include "EnemyBase.h"
 #include "EnemyTypes.h"
+#include "Powerups.h"
+//#include ""
 
 #define BUTTON_UP   0
 #define BUTTON_DOWN 1
 
-class Level 
+class Level
 {
     public:
         Level();
         void Tick();
-        void Level1();        
-        void setup(GLuint *enemyTextures, GLuint *enemyBuletTextures, float aspectRatio);
+        void Level1();
+        void setup(GLuint *enemyTextures, GLuint *enemyBuletTextures, GLuint *powerupTextures, float aspectRatio);
         void randomSpawn();
         void destroy();
+        std::vector<Powerups*> powerups;
         std::vector<EnemyBase*> BaseEnemies;
         std::vector<BasicEnemy*> BasicEnemies;
-    protected:   
+    protected:
         GLuint enemyTextures[2];
         GLuint enemyBulletTextures[2];
+        GLuint powerupTextures[3];
         bool inLevel;
         float aspectRatio;
         int crntLevel;
+        void newDrop(float x, float y);
+
+        enum ItemDrop {
+            Money,
+            Shield,
+            Bomb
+        };
+        ItemDrop item;
 };
 
 

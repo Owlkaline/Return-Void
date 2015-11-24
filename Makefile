@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -Wall -g -O3
 PROG = Return-void
 
-SRCS = ./src/main.cpp ./src/Menu.cpp ./src/Game.cpp ./src/Level.cpp ./src/Player.cpp ./src/EnemyBase.cpp ./src/EnemyTypes.cpp ./src/Bullet.cpp
+SRCS = ./src/main.cpp ./src/Menu.cpp ./src/Game.cpp ./src/Level.cpp ./src/Player.cpp ./src/EnemyBase.cpp ./src/EnemyTypes.cpp ./src/Bullet.cpp ./src/Powerups.cpp
 
 LIBS = -lglut -lGLU -lGL -lpng
 

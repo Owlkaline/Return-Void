@@ -45,7 +45,6 @@ void Bullet::draw() {
     }
 
     glPushMatrix();
-    //glLoadIdentity();
     glTranslatef(x, y, 0); // M1 - 2nd translation
     glScalef(1,aspectRatio,1);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2

@@ -55,47 +55,44 @@ void Menu::setup() {
     printf("Menu setup\n");
 }
 
-int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
-     if(keyState[27] == BUTTON_DOWN) {//ESC
-         if(prevKeyState[27] != BUTTON_DOWN) {
-             switch(screen) {
-                 case sInstructions:
-                     numOptions = menuSelections;
-                     select = 0;
-                     screen = sMenu;
-                 case sOptions:
-                     numOptions = menuSelections;
-                     select = 0;
-                     saveSettings();
-                     screen = sMenu;
-                     break;
-                 case sMenu:
-                     glutLeaveGameMode();
-                     exit(1);
-                     break;
-                 case sGame:
-                     break;
+int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState, unsigned int * specialKey, unsigned int* prevSpeicalKey) {
+     if(keyState[27] == BUTTON_DOWN && prevKeyState[27] != BUTTON_DOWN) {//ESC
+         switch(screen) {
+             case sInstructions:
+                 numOptions = menuSelections;
+                 select = 0;
+                 screen = sMenu;
+                 break;
+             case sOptions:
+                 numOptions = menuSelections;
+                 select = 0;
+                 saveSettings();
+                 screen = sMenu;
+                 break;
+             case sMenu:
+                 glutLeaveGameMode();
+                 exit(1);
+                 break;
+             case sGame:
+                 break;
              }
-        }
     }
 
     if(screen != sInstructions) {
-        if(keyState[(unsigned char)'w'] == BUTTON_DOWN) {
-            if(prevKeyState[(unsigned char)'w'] != BUTTON_DOWN) {
-             if(select > 0)
-                  select--;
-            }
+        if( (keyState[(unsigned char)'w'] == BUTTON_DOWN && prevKeyState[(unsigned char)'w'] != BUTTON_DOWN) || (specialKey[2] == BUTTON_DOWN && prevKeyState[2] != BUTTON_DOWN)) {
+            if(select > 0)
+                select--;
         }
 
-        if(keyState[(unsigned char)'s'] == BUTTON_DOWN) {
-            if(prevKeyState[(unsigned char)'s'] != BUTTON_DOWN) {
-             if(select < numOptions)
-                 select++;
+        if( (keyState[(unsigned char)'s'] == BUTTON_DOWN && prevKeyState[(unsigned char)'s'] != BUTTON_DOWN) || (specialKey[3] == BUTTON_DOWN && prevSpeicalKey[3] != BUTTON_DOWN) ) {
+            if(select < numOptions) {
+                select++;
             }
         }
     }
 
-    if( (keyState[(unsigned char)'a'] == BUTTON_DOWN && prevKeyState[(unsigned char)'a'] != BUTTON_DOWN) || (keyState[(unsigned char)'d'] == BUTTON_DOWN && prevKeyState[(unsigned char)'d'] != BUTTON_DOWN) ) {
+    if( (keyState[(unsigned char)'a'] == BUTTON_DOWN && prevKeyState[(unsigned char)'a'] != BUTTON_DOWN) || (keyState[(unsigned char)'d'] == BUTTON_DOWN && prevKeyState[(unsigned char)'d'] != BUTTON_DOWN) ||//A and D
+        (specialKey[0] == BUTTON_DOWN && prevSpeicalKey[0] != BUTTON_DOWN) || (specialKey[1] == BUTTON_DOWN && prevSpeicalKey[1] != BUTTON_DOWN)) {//Left and Right
         switch(screen) {
             case sOptions:
                 switch(select) {
@@ -128,7 +125,6 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
     if(keyState[13] == BUTTON_DOWN && prevKeyState[13] != BUTTON_DOWN) {
         switch(screen) {
            case sMenu:
-               //numOptions = 4;
                switch(select) {
                    case 0://game start
                        return 1;
@@ -150,7 +146,6 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
                }
                break;
            case sOptions:
-               //numOptions = 2;
                switch(select) {
                    case 0://hit box on/off
                        break;
@@ -165,7 +160,6 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
                }
                 break;
             case sInstructions:
-                //numOptions = 0;
                 switch(select) {
                     case 8://Return to menu
                         numOptions = menuSelections;
@@ -184,6 +178,11 @@ int Menu::keyPress(unsigned char* keyState, unsigned char* prevKeyState) {
     prevKeyState[(unsigned char)'a'] = keyState[(unsigned char)'a'];
     prevKeyState[(unsigned char)'s'] = keyState[(unsigned char)'s'];
     prevKeyState[(unsigned char)'d'] = keyState[(unsigned char)'d'];
+
+    prevSpeicalKey[0] = specialKey[0];
+    prevSpeicalKey[1] = specialKey[1];
+    prevSpeicalKey[2] = specialKey[2];
+    prevSpeicalKey[3] = specialKey[3];
 
     prevKeyState[13] = keyState[13];
 
@@ -316,7 +315,9 @@ GLuint Menu::LoadTexture( const char * filename ) {
     //open file as binary
     FILE *fp = fopen(filename, "rb");
     if (!fp) {
-      return TEXTURE_LOAD_ERROR;
+        printf("\nFailed to load Texture\n");
+        exit(TEXTURE_LOAD_ERROR);
+        return TEXTURE_LOAD_ERROR;
     }
 
     //read the header
@@ -325,8 +326,10 @@ GLuint Menu::LoadTexture( const char * filename ) {
     //test if png
     int is_png = !png_sig_cmp(header, 0, 8);
     if (!is_png) {
-      fclose(fp);
-      return TEXTURE_LOAD_ERROR;
+        printf("\nFile is not PNG\n");
+        exit(TEXTURE_LOAD_ERROR);
+        fclose(fp);
+        return TEXTURE_LOAD_ERROR;
     }
 
     //create png struct

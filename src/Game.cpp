@@ -16,29 +16,28 @@ void Game::setup(float aspectRatio) {
     data.close();
 
     increment = 0;
-   // printf("%d", showHitBox);
+
     glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 
     score = 0;
     GLuint playerTextures[5];
-    playerTextures[0] = LoadTexture( "Textures/Game/Ship.png" );
-    playerTextures[1] = LoadTexture( "Textures/Game/ShipLeft.png" );
-    playerTextures[2] = LoadTexture( "Textures/Game/ShipRight.png" );
-    playerTextures[3] = LoadTexture( "Textures/Game/PlayerBullet.png" );
+    playerTextures[0] = LoadTexture( "Textures/Game/Ships/Ship.png" );
+    playerTextures[1] = LoadTexture( "Textures/Game/Ships/ShipLeft.png" );
+    playerTextures[2] = LoadTexture( "Textures/Game/Ships/ShipRight.png" );
+    playerTextures[3] = LoadTexture( "Textures/Game/Bullets/PlayerBullet.png" );
     player.setup(playerTextures, aspectRatio);
 
     GLuint EnemyTexture[2];
     GLuint EnemyBulletTexture[2];
-    EnemyTexture[0] = LoadTexture( "Textures/Game/BaseEnemy.png" );
-    EnemyTexture[1] = LoadTexture( "Textures/Game/BasicEnemy.png" );
-    EnemyBulletTexture[0] = LoadTexture( "Textures/Game/BasicBullet.png" );
-    level.setup(EnemyTexture, EnemyBulletTexture, aspectRatio);
-    //default
-    //for(int i = 0; i < 10; ++i) {
-   // for(unsigned int i = 0; i < level.BaseEnemies.size(); i++) {
-   // level.BaseEnemies.setup(level.BaseEnemiesTexture, aspectRatio);
-   // }
-    //printf("Enemies Constructed\n");
+    EnemyTexture[0] = LoadTexture( "Textures/Game/Ships/BaseEnemy.png" );
+    EnemyTexture[1] = LoadTexture( "Textures/Game/Ships/BasicEnemy.png" );
+    EnemyBulletTexture[0] = LoadTexture( "Textures/Game/Bullets/BasicBullet.png" );
+
+    GLuint powerupTextures[3];
+    powerupTextures[0] = LoadTexture( "Textures/Game/Powerups/Money.png" );
+    powerupTextures[1] = LoadTexture( "Textures/Game/Powerups/Shield.png" );
+    powerupTextures[2] = LoadTexture( "Textures/Game/Powerups/Bomb.png" );
+    level.setup(EnemyTexture, EnemyBulletTexture, powerupTextures, aspectRatio);
 
     //Score
     texture[0] = LoadTexture( "Textures/Score/Zero.png" );
@@ -55,12 +54,11 @@ void Game::setup(float aspectRatio) {
     //Top Bar
     texture[10] = LoadTexture( "Textures/Hud/TopBar.png" );
 
-    //Health Bar
-    texture[11] = LoadTexture( "Textures/Hud/HealthBar.png" );
-    //level.Level1(level.BaseEnemies);
-    level.Level1();
     //GameOver texture
     gameOverTexture = LoadTexture( "Textures/Hud/GameOver.png" );
+
+    level.Level1();
+
     printf("Game setup\n");
 }
 
@@ -94,7 +92,7 @@ void Game::keyPress(unsigned char* keyState, unsigned char* prevKeyState, unsign
 
 
         //Fire player weapon
-        if(keyState[32] == BUTTON_DOWN || mouseBtnState[0] == BUTTON_DOWN) { //Space Bar
+        if(keyState[32] == BUTTON_DOWN || mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) { //Space Bar and left click
                if(increment > 5) {
                    increment = 0;
                    player.fire();
@@ -112,7 +110,7 @@ void Game::drawHitBox(float Ax, float Ay, float Aw, float Ah) {
     glColor4f(1.0, 0.0f, 0.0f, 0.5);
     glBegin(GL_QUADS);
 
-      //Bottom
+    //Bottom
       glVertex3f(Ax, Ay+0.1, 0.0);
       glVertex3f(Ax + Aw, Ay + 0.1, 0.0);
       glVertex3f(Ax + Aw, Ay, 0.0);
@@ -140,155 +138,171 @@ void Game::drawHitBox(float Ax, float Ay, float Aw, float Ah) {
 }
 
 void Game::collisions() {
+    //Player
+    float Ax = player.getX()-player.getWidth()/2;
+    float Ay = player.getY()-player.getHeight()/2;
+    float Aw = player.getWidth()-player.getWidth()*2/10;
+    float Ah = player.getHeight();
+
+       //Powerups
+    float Ex;
+    float Ey;
+    float Ew;
+    float Eh;
+
+    //Powerup Collision
+    for(unsigned int i = 0; i < level.powerups.size(); i++) {
+        if(level.powerups[i]->getVisible() && player.getVisible()) {
+            Ex = level.powerups[i]->getX();
+            Ey = level.powerups[i]->getY();
+            Ew = level.powerups[i]->getWidth();
+            Eh = level.powerups[i]->getHeight();
+            if( (Ax + Aw) >= Ex && Ax <= (Ex + Ew) && (Ay + Ah) >= Ey && Ay <= (Ey + Eh) ) {
+                level.powerups[i]->setVisible(false);
+            }
+        }
+    }
+
     for(unsigned int i = 0; i < level.BaseEnemies.size(); ++i) {
 
-       //Player
-       float Ax = player.getX()-player.getWidth()/2;
-       float Ay = player.getY()-player.getHeight()/2;
-       float Aw = player.getWidth()-player.getWidth()*2/10;
-       float Ah = player.getHeight();
+        //level.BaseEnemies
+        float Bx = level.BaseEnemies[i]->getX() - (level.BaseEnemies[i]->getWidth()*3.5f/10.0f);
+        float By = level.BaseEnemies[i]->getY() - (level.BaseEnemies[i]->getHeight()*6/10.0f);
+        float Bw = level.BaseEnemies[i]->getWidth() - (level.BaseEnemies[i]->getWidth()*3.5f/10.0f);
+        float Bh = level.BaseEnemies[i]->getHeight() + (level.BaseEnemies[i]->getHeight()*2/10.0f);
 
-       //level.BaseEnemies
-       float Bx = level.BaseEnemies[i]->getX() - (level.BaseEnemies[i]->getWidth()*3.5f/10.0f);
-       float By = level.BaseEnemies[i]->getY() - (level.BaseEnemies[i]->getHeight()*6/10.0f);
-       float Bw = level.BaseEnemies[i]->getWidth() - (level.BaseEnemies[i]->getWidth()*3.5f/10.0f);
-       float Bh = level.BaseEnemies[i]->getHeight() + (level.BaseEnemies[i]->getHeight()*2/10.0f);
+        //Player bullets
+        float Cx;
+        float Cy;
+        float Cw;
+        float Ch;
 
-       //Player bullets
-       float Cx;
-       float Cy;
-       float Cw;
-       float Ch;
-
-       //Ememy Bullets
-       float Dx = level.BaseEnemies[i]->getBulletX();
-       float Dy = level.BaseEnemies[i]->getBulletY();
-       float Dw = level.BaseEnemies[i]->getBulletWidth();
-       float Dh = level.BaseEnemies[i]->getBulletHeight();
-       if(showHitBox) {
-           drawHitBox(Ax, Ay, Aw, Ah);
-           drawHitBox(Bx, By, Bw, Bh);
-       }
-       if(!collisionOff) {
-        if(level.BaseEnemies[i]->getVisible() && player.getVisible() && !player.getInvincible()) {
-            if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
-                score += level.BaseEnemies[i]->looseHealth(2);
-                player.takeHealth();
-                player.setVisible(false);
-                playerTime = clock();
+        //Ememy Bullets
+        float Dx = level.BaseEnemies[i]->getBulletX();
+        float Dy = level.BaseEnemies[i]->getBulletY();
+        float Dw = level.BaseEnemies[i]->getBulletWidth();
+        float Dh = level.BaseEnemies[i]->getBulletHeight();
+        if(showHitBox) {
+            drawHitBox(Ax, Ay, Aw, Ah);
+            drawHitBox(Bx, By, Bw, Bh);
+        }
+        if(!collisionOff) {
+            if(level.BaseEnemies[i]->getVisible() && player.getVisible() && !player.getInvincible()) {
+                if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
+                    score += level.BaseEnemies[i]->looseHealth(2);
+                    player.takeHealth();
+                    player.setVisible(false);
+                    playerTime = clock();
+                }
             }
         }
-       }
 
-       if(level.BaseEnemies[i]->getVisible()) {
-           for(int j = 0; j < player.getBulletNum(); ++j) {
-               if(player.getBulletVisible(j)) {
-                   Cx = player.getBulletX(j) + 0.2;
-                   Cy = player.getBulletY(j) - 1;
-                   Cw = player.getBulletWidth(j);
-                   Ch = player.getBulletHeight(j);
-                   if(showHitBox) {
-                       drawHitBox(Cx, Cy, Cw, Ch);
-                   }
-                   if(!collisionOff) {
-                       if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
-                            player.setBulletVisible(false, j);
-                            score += level.BaseEnemies[i]->looseHealth(1);
-                       }
-                   }
-               }
-           }
-       }
-
-       if(player.getVisible() && !player.getInvincible() && level.BaseEnemies[i]->getBulletVisible()) {
-           if(showHitBox) {
-               drawHitBox(Dx, Dy, Dw, Dh);
-           }
-           if(!collisionOff) {
-               if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
-                   level.BaseEnemies[i]->setBulletVisible(false);
-                   player.takeHealth();
-                   player.setVisible(false);
-                   playerTime = clock();
-               }
-           }
-       }
-   }
-
-   for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
-
-       //Player
-       float Ax = player.getX()-player.getWidth()/2;
-       float Ay = player.getY()-player.getHeight()/2;
-       float Aw = player.getWidth()-player.getWidth()*2/10;
-       float Ah = player.getHeight();
-
-       //level.BasicEnemies
-       float Bx = level.BasicEnemies[i]->getX() - (level.BasicEnemies[i]->getWidth()*3.5f/10.0f);
-       float By = level.BasicEnemies[i]->getY() - (level.BasicEnemies[i]->getHeight()*6/10.0f);
-       float Bw = level.BasicEnemies[i]->getWidth() - (level.BasicEnemies[i]->getWidth()*3.5f/10.0f);
-       float Bh = level.BasicEnemies[i]->getHeight() + (level.BasicEnemies[i]->getHeight()*2/10.0f);
-
-       //Player bullets
-       float Cx;
-       float Cy;
-       float Cw;
-       float Ch;
-
-       //Ememy Bullets
-       float Dx = level.BasicEnemies[i]->getBulletX();
-       float Dy = level.BasicEnemies[i]->getBulletY();
-       float Dw = level.BasicEnemies[i]->getBulletWidth();
-       float Dh = level.BasicEnemies[i]->getBulletHeight();
-       if(showHitBox) {
-           drawHitBox(Ax, Ay, Aw, Ah);
-           drawHitBox(Bx, By, Bw, Bh);
-       }
-       if(!collisionOff) {
-        if(level.BasicEnemies[i]->getVisible() && player.getVisible() && !player.getInvincible()) {
-            if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
-                score += level.BasicEnemies[i]->looseHealth(2);
-                player.takeHealth();
-                player.setVisible(false);
-                playerTime = clock();
+        if(level.BaseEnemies[i]->getVisible()) {
+            for(int j = 0; j < player.getBulletNum(); ++j) {
+                if(player.getBulletVisible(j)) {
+                    Cx = player.getBulletX(j) + 0.2;
+                    Cy = player.getBulletY(j) - 1;
+                    Cw = player.getBulletWidth(j);
+                    Ch = player.getBulletHeight(j);
+                    if(showHitBox) {
+                        drawHitBox(Cx, Cy, Cw, Ch);
+                    }
+                    if(!collisionOff) {
+                        if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
+                             player.setBulletVisible(false, j);
+                             score += level.BaseEnemies[i]->looseHealth(1);
+                        }
+                    }
+                }
             }
         }
-       }
 
-       if(level.BasicEnemies[i]->getVisible()) {
-           for(int j = 0; j < player.getBulletNum(); ++j) {
-               if(player.getBulletVisible(j)) {
-                   Cx = player.getBulletX(j) + 0.2;
-                   Cy = player.getBulletY(j) - 1;
-                   Cw = player.getBulletWidth(j);
-                   Ch = player.getBulletHeight(j);
-                   if(showHitBox) {
-                       drawHitBox(Cx, Cy, Cw, Ch);
-                   }
-                   if(!collisionOff) {
-                       if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
-                            player.setBulletVisible(false, j);
-                            score += level.BasicEnemies[i]->looseHealth(1);
-                       }
-                   }
-               }
-           }
-       }
+        if(player.getVisible() && !player.getInvincible() && level.BaseEnemies[i]->getBulletVisible()) {
+            if(showHitBox) {
+                drawHitBox(Dx, Dy, Dw, Dh);
+            }
+            if(!collisionOff) {
+                if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
+                    level.BaseEnemies[i]->setBulletVisible(false);
+                    player.takeHealth();
+                    player.setVisible(false);
+                    playerTime = clock();
+                }
+            }
+        }
+    }
 
-       if(player.getVisible() && !player.getInvincible() && level.BasicEnemies[i]->getBulletVisible()) {
-           if(showHitBox) {
-               drawHitBox(Dx, Dy, Dw, Dh);
-           }
-           if(!collisionOff) {
-               if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
-                   level.BasicEnemies[i]->setBulletVisible(false);
-                   player.takeHealth();
-                   player.setVisible(false);
-                   playerTime = clock();
-               }
-           }
-       }
-   }
+    for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
+        //level.BasicEnemies
+        float Bx = level.BasicEnemies[i]->getX() - (level.BasicEnemies[i]->getWidth()*3.5f/10.0f);
+        float By = level.BasicEnemies[i]->getY() - (level.BasicEnemies[i]->getHeight()*6/10.0f);
+        float Bw = level.BasicEnemies[i]->getWidth() - (level.BasicEnemies[i]->getWidth()*3.5f/10.0f);
+        float Bh = level.BasicEnemies[i]->getHeight() + (level.BasicEnemies[i]->getHeight()*2/10.0f);
+
+        //Player bullets
+        float Cx;
+        float Cy;
+        float Cw;
+        float Ch;
+
+        //Ememy Bullets
+        float Dx = level.BasicEnemies[i]->getBulletX();
+        float Dy = level.BasicEnemies[i]->getBulletY();
+        float Dw = level.BasicEnemies[i]->getBulletWidth();
+        float Dh = level.BasicEnemies[i]->getBulletHeight();
+
+        if(showHitBox) {
+            drawHitBox(Ax, Ay, Aw, Ah);
+            drawHitBox(Bx, By, Bw, Bh);
+        }
+        if(!collisionOff) {
+            //Collision with BasicEnemies and player
+            if(level.BasicEnemies[i]->getVisible() && player.getVisible() && !player.getInvincible()) {
+                if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
+                    score += level.BasicEnemies[i]->looseHealth(2);
+                    player.takeHealth();
+                    player.setVisible(false);
+                    playerTime = clock();
+                }
+            }
+        }
+
+        //Collision with BasicEnemies and player bullets
+        if(level.BasicEnemies[i]->getVisible()) {
+            for(int j = 0; j < player.getBulletNum(); ++j) {
+                if(player.getBulletVisible(j)) {
+                    Cx = player.getBulletX(j) + 0.2;
+                    Cy = player.getBulletY(j) - 1;
+                    Cw = player.getBulletWidth(j);
+                    Ch = player.getBulletHeight(j);
+                    if(showHitBox) {
+                        drawHitBox(Cx, Cy, Cw, Ch);
+                    }
+                    if(!collisionOff) {
+                        if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
+                             player.setBulletVisible(false, j);
+                             score += level.BasicEnemies[i]->looseHealth(1);
+                        }
+                    }
+                }
+            }
+        }
+
+        //Collision with BasicEnemies and Player
+        if(player.getVisible() && !player.getInvincible() && level.BasicEnemies[i]->getBulletVisible()) {
+            if(showHitBox) {
+                drawHitBox(Dx, Dy, Dw, Dh);
+            }
+            if(!collisionOff) {
+                if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
+                    level.BasicEnemies[i]->setBulletVisible(false);
+                    player.takeHealth();
+                    player.setVisible(false);
+                    playerTime = clock();
+                }
+            }
+        }
+    }
 }
 
 //draw string
@@ -415,8 +429,6 @@ void Game::drawHud() {
       glVertex3f(0, 92, 0.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
-	//glBindTexture(GL_TEXTURE_2D, texture[1]);
-
 
     //Health Bar
     glBegin(GL_QUADS);
@@ -477,19 +489,23 @@ void Game::drawHud() {
 }
 
 bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mouseX, float mouseY, unsigned int* mouseBtnState) {
-    //std::vector<level.BaseEnemiesBase*> newlevel.BaseEnemies =
     level.Tick();
-    //level.BaseEnemies.swap(newlevel.BaseEnemies);
+
     keyPress(keyState, prevKeyState, mouseBtnState);
+
     player.Tick(mouseX, mouseY);
-    collisions();
+
+     for(unsigned int i = 0; i < level.powerups.size(); ++i) {
+        if(level.powerups[i]->getVisible())
+            level.powerups[i]->Tick();
+    }
 
     for(unsigned int i = 0; i < level.BaseEnemies.size(); ++i) {
         if(player.isAlive() && level.BaseEnemies[i]->getVisible())
             level.BaseEnemies[i]->Tick(player.getX(), player.getY(), player.getVisible());
     }
 
-        for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
+    for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
         if(player.isAlive() && level.BasicEnemies[i]->getVisible())
             level.BasicEnemies[i]->Tick(player.getX(), player.getY(), player.getVisible());
     }
@@ -501,6 +517,8 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
         }
     }
 
+    collisions();
+
     if(player.getHealth() <= 0)
         return false;
     increment++;
@@ -508,6 +526,11 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
 }
 
 void Game::draw() {
+    for(unsigned int i = 0; i < level.powerups.size(); ++i) {
+        if(level.powerups[i]->getVisible())
+            level.powerups[i]->draw();
+    }
+
     for(unsigned int i = 0; i < level.BaseEnemies.size(); ++i) {
         if(level.BaseEnemies[i]->getVisible())
             level.BaseEnemies[i]->draw();
@@ -542,7 +565,9 @@ GLuint Game::LoadTexture( const char * filename ) {
     //open file as binary
     FILE *fp = fopen(filename, "rb");
     if (!fp) {
-      return TEXTURE_LOAD_ERROR;
+        printf("\nFailed to load Texture: \n    %s\n", filename);
+        exit(TEXTURE_LOAD_ERROR);
+        return TEXTURE_LOAD_ERROR;
     }
 
     //read the header
@@ -552,8 +577,10 @@ GLuint Game::LoadTexture( const char * filename ) {
     //test if png
     int is_png = !png_sig_cmp(header, 0, 8);
     if (!is_png) {
-      fclose(fp);
-      return TEXTURE_LOAD_ERROR;
+        printf("\nFile is not PNG\n");
+        exit(TEXTURE_LOAD_ERROR);
+        fclose(fp);
+        return TEXTURE_LOAD_ERROR;
     }
 
     //create png struct

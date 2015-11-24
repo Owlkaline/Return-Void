@@ -14,9 +14,8 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
     angle = 0;
     speed = 0.5f;
     aspectRatio = newAspectRatio;
-   // width*=aspectRatio;
     width = 5;
-    height=5;//*aspectRatio;
+    height=5;
     health = 5;
     drawInvincible = true;
     fireRate = 2000;
@@ -32,7 +31,6 @@ void Player::setup(GLuint *newTextures, float newAspectRatio) {
     invincTimer = 0;
     flashTimer = 0;
 
-    //bullets.push_back(new Bullet);
     for(unsigned int i = 0; i < bullets.size(); i++) {
         bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
     }
@@ -72,11 +70,9 @@ void Player::Tick(float mouseX, float mouseY) {
     lastMouseY = mouseY;
     float diffx = mouseX - x;
     float diffy = mouseY - y;
-    //float distance = pow( (diffx * diffx) + (diffy * diffy) , 0.5);
     float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
     directionX = (diffx) / (distance);
     directionY = (diffy) / (distance);
-    //angle = tan(directionY/directionX);
 
      if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
         angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
@@ -91,7 +87,6 @@ void Player::Tick(float mouseX, float mouseY) {
         angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
         angle = angle - 90.0f;
     }
-         //   floor(angle);
 
     for(unsigned int i = 0; i < bullets.size(); ++i) {
         if(bullets[i]->getVisible()) {
@@ -106,7 +101,6 @@ void Player::Tick(float mouseX, float mouseY) {
 
 void Player::drawShip() {
     glPushMatrix();
-    //glLoadIdentity();
     glTranslatef(x, y, 0); // M1 - 2nd translation
     glScalef(1,aspectRatio,1);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2
@@ -130,13 +124,6 @@ void Player::drawShip() {
     glDisable(GL_TEXTURE_2D);
 
     glPopMatrix();
-   // glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
-                       // Reset The View
-  //  glPushMatrix();
- //   glTranslatef(x,y, 0);
-  //  glRotatef(45, 0.0, 0.0, 1.0f);
-    //glTranslatef(x, y, 0);
-  // glPopMatrix();
 }
 
 void Player::flash() {
@@ -184,11 +171,8 @@ void Player::draw() {
 void Player::fire() {
     bullets.push_back(new Bullet);
     int i = bullets.size()-1;
-   // printf("%d\n", i);
-    //bullets[i]->setup(bulletTexture, 0.5, 3, aspectRatio);
     bullets[i]->setup(bulletTexture, 0.25, 1.5, aspectRatio);
-   // bullets[i]->fire( x-(bullets[i]->getWidth()/2 * directionX), y + ((height)*directionY), directionX, directionY, 1.0, angle);
-   bullets[i]->fire( x, y, directionX, directionY, 1.0, angle);
+    bullets[i]->fire( x, y, directionX, directionY, 1.0, angle);
 }
 
 int Player::getBulletNum() { return bullets.size(); }
@@ -202,9 +186,9 @@ void Player::rotateRight() { angle--; }
 void Player::rotateLeft() { angle++; }
 void Player::setHealth(int health) { this->health = health; }
 void Player::setVisible(bool visible) { this->visible = visible; }
-int Player::getWidth() { return width; }
+float Player::getWidth() { return width; }
 int Player::getHealth() { return health; }
-int Player::getHeight() { return height*aspectRatio; }
+float Player::getHeight() { return height*aspectRatio; }
 float Player::getX() { return x; }
 float Player::getY() { return y; }
 bool Player::isAlive() { return alive; }

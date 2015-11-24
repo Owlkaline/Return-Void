@@ -1,7 +1,7 @@
 #include "../include/EnemyTypes.h"
 
 void BasicEnemy::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float aspectRatio) {
-    maxHealth = 12;
+    maxHealth = 8;
     health = maxHealth;
     x = -100;
     y = -100;

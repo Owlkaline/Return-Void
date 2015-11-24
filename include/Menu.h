@@ -27,7 +27,7 @@ class Menu
         void saveSettings();
         void readSettings();
         void changeMenu(int a);
-        int keyPress(unsigned char* keyState, unsigned char* prevKeyState);
+        int keyPress(unsigned char* keyState, unsigned char* prevKeyState, unsigned int * specialKey, unsigned int* prevSpeicalKey);
         void draw();
     protected:
         void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length);
@@ -43,7 +43,6 @@ class Menu
         bool collisionOn;
 
         void drawBackground();
-        //int screen;
         GLuint LoadTexture( const char * filename );
         GLuint texture;
         GLuint textures[8];

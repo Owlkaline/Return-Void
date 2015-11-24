@@ -41,7 +41,6 @@ class Game
         void drawGameOver();
     protected:
         Player player;
-        //Enemy enemy[10];
         std::vector<EnemyBase*> enemy;
         Level level;
         clock_t crntTime;

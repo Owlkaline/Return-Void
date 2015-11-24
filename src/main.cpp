@@ -49,6 +49,8 @@ int refreshMillis = 20;
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
 unsigned int  mouseBtnState[3];
+unsigned int  specialKey[5];
+unsigned int  prevSpeicalKey[5];
 
 //Current coords of the mouse
 float mouseX, mouseY;
@@ -79,36 +81,41 @@ void keyboard_up(unsigned char key, int x, int y) {
 
 //keys for special key presses (F1, F2, CTRL, LEFT, RIGHT etc)
 void specialKeys(int key, int x, int y) {
-     switch (key) {
-     case GLUT_KEY_LEFT:
-            break;
-     }
+
+    if( key == GLUT_KEY_LEFT) {
+        specialKey[0] = BUTTON_DOWN;
+    } else {
+        specialKey[0] = BUTTON_UP;
+    }
+
+    if( key == GLUT_KEY_RIGHT) {
+        specialKey[1] = BUTTON_DOWN;
+    } else {
+        specialKey[1] = BUTTON_UP;
+    }
+
+    if( key == GLUT_KEY_UP) {
+        specialKey[2] = BUTTON_DOWN;
+    } else {
+        specialKey[2] = BUTTON_UP;
+    }
+
+    if( key == GLUT_KEY_DOWN) {
+        specialKey[3] = BUTTON_DOWN;
+    } else {
+        specialKey[3] = BUTTON_UP;
+    }
+
 }
 
 void mouseBtn(int btn, int state, int x, int y) {
-    if(btn==GLUT_LEFT_BUTTON && state==GLUT_DOWN) {
-        mouseBtnState[0] = BUTTON_DOWN;
+    if(state == BUTTON_DOWN) {
+        state = BUTTON_UP;
+    } else {
+        state = BUTTON_DOWN;
     }
 
-    if(btn==GLUT_RIGHT_BUTTON && state==GLUT_DOWN) {
-        mouseBtnState[1] = BUTTON_DOWN;
-    }
-
-    if(btn==GLUT_MIDDLE_BUTTON && state==GLUT_DOWN) {
-        mouseBtnState[2] = BUTTON_DOWN;
-    }
-
-    if(btn==GLUT_LEFT_BUTTON && state==GLUT_UP) {
-        mouseBtnState[0] = BUTTON_UP;
-    }
-
-    if(btn==GLUT_RIGHT_BUTTON && state==GLUT_UP) {
-        mouseBtnState[1] = BUTTON_UP;
-    }
-
-    if(btn==GLUT_MIDDLE_BUTTON && state==GLUT_UP) {
-        mouseBtnState[2] = BUTTON_DOWN;
-    }
+    mouseBtnState[btn] = state;
 }
 
 //Updates mouse coords
@@ -175,7 +182,7 @@ void display() {
        case sMenu:
            game.destroy();
            glutSetCursor(GLUT_CURSOR_NONE);
-           screenNum = menu.keyPress(keyState, prevKeyState);
+           screenNum = menu.keyPress(keyState, prevKeyState, specialKey, prevSpeicalKey);
 
            switch(screenNum) {
                case 1:
@@ -204,6 +211,10 @@ void setup() {
     aspectH = 100.0f/screenResY;
     screen = sMenu;
     alive = true;
+
+    for(int i = 0; i < 5; ++i) {
+        specialKey[i] = BUTTON_UP;
+    }
 
     menu.setup();
 }
