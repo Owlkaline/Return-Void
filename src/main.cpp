@@ -242,6 +242,7 @@ int main(int argc, char** argv) {
         glutEnterGameMode();
     } else {
         printf("GameMode %s NOT possible\n", mode_string);
+        glutCreateWindow("Return-Void");
         glutFullScreen();
     }
     // hide the cursor
