@@ -120,8 +120,8 @@ void mouseBtn(int btn, int state, int x, int y) {
 
 //Updates mouse coords
 void mouse(int x, int y) {
-    mouseX = x * aspectW;
-    mouseY = 100 - (y * aspectH);
+    mouseX = ((float)x) * aspectW;
+    mouseY = (100.0 - (((float)y) * aspectH)) ;
 }
 
 //Draws Text to the screen

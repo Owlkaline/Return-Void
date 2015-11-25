@@ -81,14 +81,27 @@ void Level::randomSpawn() {
 void Level::Level1() {
     if(!inLevel) {
         for(int i = 0; i < 7; i++) {
-            BaseEnemies.push_back(new EnemyBase);
+/*            BaseEnemies.push_back(new EnemyBase);
             BaseEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
 
             if(i < 3) {
                 BasicEnemies.push_back(new BasicEnemy);
                 BasicEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
             }
+*/
+
+           if (i % 3 == 0) {
+              BaseEnemies.push_back(new BasicEnemy);
+           } else {
+              BaseEnemies.push_back(new EnemyBase);
+           }
+
+            BaseEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
+
+
         }
+
+
         inLevel = true;
         crntLevel = 1;
     }

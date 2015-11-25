@@ -21,11 +21,11 @@ class EnemyBase
 {
     public:
         EnemyBase();
-        void setup(GLuint *Texture, GLuint *EnemyBuletTextures, float aspectRatio);
+        virtual void setup(GLuint *Texture, GLuint *EnemyBuletTextures, float aspectRatio);
         void destroy();
 
         void Tick(float Px, float Py, bool Pvisible);
-        void spawn(float x, float y, float speed, int maxHealth, float fireRate);
+        virtual void spawn(float x, float y, float speed, int maxHealth, float fireRate);
 
         float getX();
         float getY();

@@ -70,9 +70,10 @@ void Player::Tick(float mouseX, float mouseY) {
     lastMouseY = mouseY;
     float diffx = mouseX - x;
     float diffy = mouseY - y;
+    diffy /= aspectRatio;
     float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
     directionX = (diffx) / (distance);
-    directionY = (diffy) / (distance);
+    directionY = (diffy*aspectRatio) / (distance);
 
      if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
         angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
@@ -101,9 +102,11 @@ void Player::Tick(float mouseX, float mouseY) {
 
 void Player::drawShip() {
     glPushMatrix();
+
     glTranslatef(x, y, 0); // M1 - 2nd translation
     glScalef(1,aspectRatio,1);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);                  // M2
+        //glScalef(1,aspectRatio,1);
     glTranslatef( -x, -y, 0);  // M3 - 1st translation
 
     glEnable(GL_TEXTURE_2D);

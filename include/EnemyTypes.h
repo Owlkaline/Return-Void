@@ -5,8 +5,8 @@
 
 class BasicEnemy: public EnemyBase {
     public:
-        void setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float aspectRatio);
-        void spawn(float x, float y, float speed, float fireRate);
+        virtual void setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float aspectRatio);
+        virtual void spawn(float x, float y, float speed, float fireRate);
 };
 
 
