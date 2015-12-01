@@ -9,7 +9,6 @@ Level::Level() {
 void Level::destroy() {
     inLevel = false;
     BaseEnemies.erase(BaseEnemies.begin(), BaseEnemies.end());
-    BasicEnemies.erase(BasicEnemies.begin(), BasicEnemies.end());
 }
 
 void Level::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures, GLuint *powerupTextures, float aspectRatio) {
@@ -64,41 +63,18 @@ void Level::randomSpawn() {
             BaseEnemies[i]->spawn(x, y, speed, maxHealth, fireRate);
         }
     }
-
-    for(unsigned int i = 0; i < BasicEnemies.size(); i++) {
-        if(!BasicEnemies[i]->getVisible()) {
-            item = (ItemDrop)BasicEnemies[i]->Drops();
-            newDrop(BasicEnemies[i]->getX(), BasicEnemies[i]->getY());
-            float x = ( rand() % (int)(100-BasicEnemies[i]->getWidth()/2) + BasicEnemies[i]->getWidth()/2);
-            float y = ( ((rand() % 100) + 100) );
-            float speed = ( (rand() % 25) / 100.0f + 0.02f);
-            int fireRate = (20 + rand()%40);
-            BasicEnemies[i]->spawn(x, y, speed, fireRate);
-        }
-    }
 }
 
 void Level::Level1() {
     if(!inLevel) {
         for(int i = 0; i < 7; i++) {
-/*            BaseEnemies.push_back(new EnemyBase);
-            BaseEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
-
-            if(i < 3) {
-                BasicEnemies.push_back(new BasicEnemy);
-                BasicEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
-            }
-*/
-
            if (i % 3 == 0) {
               BaseEnemies.push_back(new BasicEnemy);
            } else {
-              BaseEnemies.push_back(new EnemyBase);
+              BaseEnemies.push_back(new BaseEnemy);
            }
 
-            BaseEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
-
-
+           BaseEnemies[i]->setup(enemyTextures, enemyBulletTextures, aspectRatio);
         }
 
 

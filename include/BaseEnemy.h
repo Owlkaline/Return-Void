@@ -17,10 +17,10 @@
 
 #include "Bullet.h"
 
-class EnemyBase
+class BaseEnemy
 {
     public:
-        EnemyBase();
+        BaseEnemy();
         virtual void setup(GLuint *Texture, GLuint *EnemyBuletTextures, float aspectRatio);
         void destroy();
 

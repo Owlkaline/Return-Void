@@ -1,9 +1,9 @@
 #ifndef ENEMYTYPES_H
 #define ENEMYTYPES_H
 
-#include "EnemyBase.h"
+#include "BaseEnemy.h"
 
-class BasicEnemy: public EnemyBase {
+class BasicEnemy: public BaseEnemy {
     public:
         virtual void setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float aspectRatio);
         virtual void spawn(float x, float y, float speed, float fireRate);

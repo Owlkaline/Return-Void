@@ -1,12 +1,12 @@
-#include "../include/EnemyBase.h"
+#include "../include/BaseEnemy.h"
 
-EnemyBase::EnemyBase() {
+BaseEnemy::BaseEnemy() {
     srand (time(NULL));
     boundryX = 100;
     boundryY = 92 - height;
 }
 
-void EnemyBase::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float aspectRatio) {
+void BaseEnemy::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float aspectRatio) {
     maxHealth = 5;
     health = maxHealth;
     x = -100;
@@ -24,15 +24,15 @@ void EnemyBase::setup(GLuint *enemyTextures, GLuint *enemyBulletTextures,  float
     score = 100;
 }
 
-void EnemyBase::destroy() {
+void BaseEnemy::destroy() {
     //free(texture);
 }
 
-void EnemyBase::movement() {
+void BaseEnemy::movement() {
     moveDown();
 }
 
-void EnemyBase::Tick(float Px, float Py, bool Pvisible) {
+void BaseEnemy::Tick(float Px, float Py, bool Pvisible) {
     movement();
     if(x < -width)
         x = boundryX;
@@ -48,7 +48,7 @@ void EnemyBase::Tick(float Px, float Py, bool Pvisible) {
     shootTimer++;
 }
 
-void EnemyBase::spawn(float x, float y, float speed, int maxHealth, float fireRate) {
+void BaseEnemy::spawn(float x, float y, float speed, int maxHealth, float fireRate) {
     this->x = x;
     this->y = y;
     this->speed = speed;
@@ -58,7 +58,7 @@ void EnemyBase::spawn(float x, float y, float speed, int maxHealth, float fireRa
     visible = true;
 }
 
-void EnemyBase::draw() {
+void BaseEnemy::draw() {
     glPushMatrix();
     //If EnemyBase is hit alter colour to red, otherwise is normal colours
     if(isHit) {
@@ -98,20 +98,20 @@ void EnemyBase::draw() {
     glColor3f(1.0f, 1.0f, 1.0f);
 }
 
-void EnemyBase::drawBullets() {
+void BaseEnemy::drawBullets() {
     if(bullets.getVisible()) {
        bullets.Tick();
     }
     bullets.draw();
 }
 
-void EnemyBase::fire(int Px, int Py) {
+void BaseEnemy::fire(int Px, int Py) {
     targetX = Px;
     targetY = Py;
     bullets.fire(x + width/2, y, targetX, targetY, 0.75);
 }
 
-int EnemyBase::Drops() {
+int BaseEnemy::Drops() {
     int random = rand()%100;
     if(random < 75) {
         random = rand()%90;
@@ -127,7 +127,7 @@ int EnemyBase::Drops() {
     return -1;
 }
 
-int EnemyBase::looseHealth(int LH) {
+int BaseEnemy::looseHealth(int LH) {
     health -= LH;
     if(health <= 0) {
         visible = false;
@@ -139,32 +139,32 @@ int EnemyBase::looseHealth(int LH) {
     return 0;
 }
 
-int EnemyBase::getHealth() { return health; }
-float EnemyBase::getX() { return x; }
-float EnemyBase::getY() { return y; }
-float EnemyBase::getWidth() { return width; }
-float EnemyBase::getHeight() { return height; }
-bool EnemyBase::getVisible() { return visible; }
+int BaseEnemy::getHealth() { return health; }
+float BaseEnemy::getX() { return x; }
+float BaseEnemy::getY() { return y; }
+float BaseEnemy::getWidth() { return width; }
+float BaseEnemy::getHeight() { return height; }
+bool BaseEnemy::getVisible() { return visible; }
 
-void EnemyBase::setX(float x) { this->x = x; }
-void EnemyBase::setY(float y) { this->y = y; }
-void EnemyBase::setSize(float size) { width = size; height = size; }
-void EnemyBase::setSize(float width, float height) { this->width = width; this->height = height; }
-void EnemyBase::setMaxHealth(int maxHealth) { this->maxHealth = maxHealth; health = maxHealth;}
-void EnemyBase::setSpeed(float speed) { this->speed = speed; }
-void EnemyBase::setFireRate(float fireRate) { this->fireRate = fireRate; }
-void EnemyBase::setVisible(bool visible) { this->visible = visible; }
+void BaseEnemy::setX(float x) { this->x = x; }
+void BaseEnemy::setY(float y) { this->y = y; }
+void BaseEnemy::setSize(float size) { width = size; height = size; }
+void BaseEnemy::setSize(float width, float height) { this->width = width; this->height = height; }
+void BaseEnemy::setMaxHealth(int maxHealth) { this->maxHealth = maxHealth; health = maxHealth;}
+void BaseEnemy::setSpeed(float speed) { this->speed = speed; }
+void BaseEnemy::setFireRate(float fireRate) { this->fireRate = fireRate; }
+void BaseEnemy::setVisible(bool visible) { this->visible = visible; }
 
-bool EnemyBase::getBulletVisible() { return bullets.getVisible(); }
-float EnemyBase::getBulletX() { return bullets.getX(); };
-float EnemyBase::getBulletY() { return bullets.getY(); };
-float EnemyBase::getBulletWidth() { return bullets.getWidth(); };
-float EnemyBase::getBulletHeight() { return bullets.getHeight(); };
+bool BaseEnemy::getBulletVisible() { return bullets.getVisible(); }
+float BaseEnemy::getBulletX() { return bullets.getX(); };
+float BaseEnemy::getBulletY() { return bullets.getY(); };
+float BaseEnemy::getBulletWidth() { return bullets.getWidth(); };
+float BaseEnemy::getBulletHeight() { return bullets.getHeight(); };
 
-void EnemyBase::setBulletVisible(bool visible) { bullets.setVisible(visible); }
+void BaseEnemy::setBulletVisible(bool visible) { bullets.setVisible(visible); }
 
-void EnemyBase::moveLeft() { x -= speed; }
-void EnemyBase::moveRight() { x += speed; }
-void EnemyBase::moveUp() { y += speed; }
-void EnemyBase::moveDown() { y -= speed; }
+void BaseEnemy::moveLeft() { x -= speed; }
+void BaseEnemy::moveRight() { x += speed; }
+void BaseEnemy::moveUp() { y += speed; }
+void BaseEnemy::moveDown() { y -= speed; }
 

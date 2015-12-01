@@ -16,7 +16,7 @@
 #include <time.h>
 #include <vector>
 
-#include "EnemyBase.h"
+#include "BaseEnemy.h"
 #include "EnemyTypes.h"
 #include "Powerups.h"
 //#include ""
@@ -34,7 +34,7 @@ class Level
         void randomSpawn();
         void destroy();
         std::vector<Powerups*> powerups;
-        std::vector<EnemyBase*> BaseEnemies;
+        std::vector<BaseEnemy*> BaseEnemies;
         std::vector<BasicEnemy*> BasicEnemies;
     protected:
         GLuint enemyTextures[2];

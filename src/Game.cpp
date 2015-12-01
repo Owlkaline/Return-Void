@@ -67,9 +67,6 @@ void Game::destroy() {
     for(unsigned int i = 0; i < level.BaseEnemies.size(); ++i) {
         level.BaseEnemies[i]->destroy();
     }
-        for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
-        level.BasicEnemies[i]->destroy();
-    }
     level.destroy();
 }
 
@@ -224,78 +221,6 @@ void Game::collisions() {
             if(!collisionOff) {
                 if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
                     level.BaseEnemies[i]->setBulletVisible(false);
-                    player.takeHealth();
-                    player.setVisible(false);
-                    playerTime = clock();
-                }
-            }
-        }
-    }
-
-    for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
-        //level.BasicEnemies
-        float Bx = level.BasicEnemies[i]->getX() - (level.BasicEnemies[i]->getWidth()*3.5f/10.0f);
-        float By = level.BasicEnemies[i]->getY() - (level.BasicEnemies[i]->getHeight()*6/10.0f);
-        float Bw = level.BasicEnemies[i]->getWidth() - (level.BasicEnemies[i]->getWidth()*3.5f/10.0f);
-        float Bh = level.BasicEnemies[i]->getHeight() + (level.BasicEnemies[i]->getHeight()*2/10.0f);
-
-        //Player bullets
-        float Cx;
-        float Cy;
-        float Cw;
-        float Ch;
-
-        //Ememy Bullets
-        float Dx = level.BasicEnemies[i]->getBulletX();
-        float Dy = level.BasicEnemies[i]->getBulletY();
-        float Dw = level.BasicEnemies[i]->getBulletWidth();
-        float Dh = level.BasicEnemies[i]->getBulletHeight();
-
-        if(showHitBox) {
-            drawHitBox(Ax, Ay, Aw, Ah);
-            drawHitBox(Bx, By, Bw, Bh);
-        }
-        if(!collisionOff) {
-            //Collision with BasicEnemies and player
-            if(level.BasicEnemies[i]->getVisible() && player.getVisible() && !player.getInvincible()) {
-                if( (Ax + Aw) >= Bx && Ax <= (Bx + Bw) && (Ay + Ah) >= By && Ay <= (By + Bh) ) {
-                    score += level.BasicEnemies[i]->looseHealth(2);
-                    player.takeHealth();
-                    player.setVisible(false);
-                    playerTime = clock();
-                }
-            }
-        }
-
-        //Collision with BasicEnemies and player bullets
-        if(level.BasicEnemies[i]->getVisible()) {
-            for(int j = 0; j < player.getBulletNum(); ++j) {
-                if(player.getBulletVisible(j)) {
-                    Cx = player.getBulletX(j) + 0.2;
-                    Cy = player.getBulletY(j) - 1;
-                    Cw = player.getBulletWidth(j);
-                    Ch = player.getBulletHeight(j);
-                    if(showHitBox) {
-                        drawHitBox(Cx, Cy, Cw, Ch);
-                    }
-                    if(!collisionOff) {
-                        if( (Cx + Cw) >= Bx && Cx <= (Bx + Bw) && (Cy + Ch) >= By && Cy <= (By + Bh) ) {
-                             player.setBulletVisible(false, j);
-                             score += level.BasicEnemies[i]->looseHealth(1);
-                        }
-                    }
-                }
-            }
-        }
-
-        //Collision with BasicEnemies and Player
-        if(player.getVisible() && !player.getInvincible() && level.BasicEnemies[i]->getBulletVisible()) {
-            if(showHitBox) {
-                drawHitBox(Dx, Dy, Dw, Dh);
-            }
-            if(!collisionOff) {
-                if( (Ax + Aw) >= Dx && Ax <= (Dx + Dw) && (Ay + Ah) >= Dy && Ay <= (Dy + Dh) ) {
-                    level.BasicEnemies[i]->setBulletVisible(false);
                     player.takeHealth();
                     player.setVisible(false);
                     playerTime = clock();
@@ -505,11 +430,6 @@ bool Game::Tick(unsigned char* keyState, unsigned char* prevKeyState, float mous
             level.BaseEnemies[i]->Tick(player.getX(), player.getY(), player.getVisible());
     }
 
-    for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
-        if(player.isAlive() && level.BasicEnemies[i]->getVisible())
-            level.BasicEnemies[i]->Tick(player.getX(), player.getY(), player.getVisible());
-    }
-
     if(player.isAlive() && !player.getVisible()) {
         if( (crntTime - playerTime) > 3000) {
             shootTime = playerTime;
@@ -536,14 +456,6 @@ void Game::draw() {
             level.BaseEnemies[i]->draw();
         if(level.BaseEnemies[i]->getBulletVisible()) {
             level.BaseEnemies[i]->drawBullets();
-        }
-    }
-
-    for(unsigned int i = 0; i < level.BasicEnemies.size(); ++i) {
-        if(level.BasicEnemies[i]->getVisible())
-            level.BasicEnemies[i]->draw();
-        if(level.BasicEnemies[i]->getBulletVisible()) {
-            level.BasicEnemies[i]->drawBullets();
         }
     }
 
