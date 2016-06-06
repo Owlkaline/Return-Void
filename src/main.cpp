@@ -1,5 +1,13 @@
 //Version 0.1
 
+#include "../include/defines.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>  /* time */
+#include <iostream>
+#include <fstream>
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
@@ -10,27 +18,8 @@
 #include <GL/freeglut.h>
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>      /* time */
-#include <iostream>
-#include <fstream>
-
 #include "../include/Game.h"
-#include "../include/Menu.h"
-
-//key states
-#define BUTTON_UP   0
-#define BUTTON_DOWN 1
-
-enum Screen {
-    sGame,
-    sMenu
-};
-
-//Textures
-GLuint menuTextures[4];
-GLuint gameTextures[19];
+#include "../include/MainMenu.h"
 
 //Screen grid 100x100
 double gridWidth = 100; //veiwing world x
@@ -55,226 +44,187 @@ unsigned int  prevSpeicalKey[5];
 //Current coords of the mouse
 float mouseX, mouseY;
 
-//is the Player alive?
-bool alive;
+int type = GAME;
 
-//Game Menu and Screen objects
-Game game;
-Menu menu;
-Screen screen;
+DisplayManager* Display[2] = { new MainMenu(), new Game() };
 
 //Sets the pace of the game
 void Timer(int value) {
-   glutPostRedisplay();    // Post a paint request to activate display()
+   glutPostRedisplay();  // Post a paint request to activate display()
    glutTimerFunc(refreshMillis, Timer, 0); // subsequent timer call at milliseconds
 }
 
 //Updates what keys are pressed
 void keyboard(unsigned char key, int x, int y) {
-    keyState[putchar (tolower(key))] = BUTTON_DOWN;
+  keyState[putchar (tolower(key))] = BUTTON_DOWN;
 }
 
 //Updates what keys are released
 void keyboard_up(unsigned char key, int x, int y) {
-        keyState[putchar (tolower(key))] = BUTTON_UP;
+    keyState[putchar (tolower(key))] = BUTTON_UP;
 }
 
 //keys for special key presses (F1, F2, CTRL, LEFT, RIGHT etc)
 void specialKeys(int key, int x, int y) {
 
-    if( key == GLUT_KEY_LEFT) {
-        specialKey[0] = BUTTON_DOWN;
-    } else {
-        specialKey[0] = BUTTON_UP;
-    }
+  if( key == GLUT_KEY_LEFT) {
+    specialKey[LEFT_KEY] = BUTTON_DOWN;
+  } else {
+    specialKey[LEFT_KEY] = BUTTON_UP;
+  }
 
-    if( key == GLUT_KEY_RIGHT) {
-        specialKey[1] = BUTTON_DOWN;
-    } else {
-        specialKey[1] = BUTTON_UP;
-    }
+  if( key == GLUT_KEY_RIGHT) {
+    specialKey[RIGHT_KEY] = BUTTON_DOWN;
+  } else {
+    specialKey[RIGHT_KEY] = BUTTON_UP;
+  }
 
-    if( key == GLUT_KEY_UP) {
-        specialKey[2] = BUTTON_DOWN;
-    } else {
-        specialKey[2] = BUTTON_UP;
-    }
+  if( key == GLUT_KEY_UP) {
+    specialKey[UP_KEY] = BUTTON_DOWN;
+  } else {
+    specialKey[UP_KEY] = BUTTON_UP;
+  }
 
-    if( key == GLUT_KEY_DOWN) {
-        specialKey[3] = BUTTON_DOWN;
-    } else {
-        specialKey[3] = BUTTON_UP;
-    }
+  if( key == GLUT_KEY_DOWN) {
+    specialKey[DOWN_KEY] = BUTTON_DOWN;
+  } else {
+    specialKey[DOWN_KEY] = BUTTON_UP;
+  }
 
 }
 
 void mouseBtn(int btn, int state, int x, int y) {
-    if(state == BUTTON_DOWN) {
-        state = BUTTON_UP;
-    } else {
-        state = BUTTON_DOWN;
-    }
+  if(state == BUTTON_DOWN) {
+    state = BUTTON_UP;
+  } else {
+    state = BUTTON_DOWN;
+  }
 
-    mouseBtnState[btn] = state;
-}
+  mouseBtnState[btn] = state;
+} 
 
 //Updates mouse coords
 void mouse(int x, int y) {
-    mouseX = ((float)x) * aspectW;
-    mouseY = (100.0 - (((float)y) * aspectH)) ;
+  mouseX = ((float)x); //* aspectW;
+  mouseY = SPACE_Y_RESOLUTION - ((float)y); //* aspectH)) ; // Inverted: SPACE_Y_RESOLUTION - ((((float)y) * aspectH))
 }
 
-//Draws Text to the screen
-void drawChar(int PosX, int PosY, float R, float G, float B, char str[25], int length) {
-    glColor3f(R, G, B); // Text Colour
-    glRasterPos2i(PosX, PosY); //coordinates of text
-    glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
-
-    void * font = GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
-
-     for(int i = 0; i < length; i++) {
-             glutBitmapCharacter(font, str[i]);//Draw character to screen
-     }
-     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);//return colours to the full amounts
-}
 
 //Draw function
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
+  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);  
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
 
-	glColor4ub(255,255,255,255); //sets full colours and alpha
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
-
-	//Texture options
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    int screenNum; //keeps current screen number
-    switch(screen) {
-       case sGame:
-           //Returns to the menu when escape is pressed
-           if(keyState[27] == BUTTON_DOWN) {//ESC
-               alive = true;
-               game.destroy();
-               screen = sMenu;
-           }
-
-           //Draws the game
-           game.draw();
-
-           //Checks to see if player is alive to show the game over screen
-           if(!alive) {
-               game.drawGameOver();
-               if(keyState[(unsigned char)'y'] == BUTTON_DOWN) {//Restart Game
-                   game.destroy();
-                   game.setup(aspectRatio);
-                   alive = true;
-               } else  if(keyState[(unsigned char)'n'] == BUTTON_DOWN) {//Return to Menu
-                   game.destroy();
-                   screen = sMenu;
-                   alive = true;
-               }
-           } else {
-               //updates game
-               alive = game.Tick(keyState, prevKeyState, mouseX, mouseY, mouseBtnState);
-           }
-           break;
-       case sMenu:
-           game.destroy();
-           glutSetCursor(GLUT_CURSOR_NONE);
-           screenNum = menu.keyPress(keyState, prevKeyState, specialKey, prevSpeicalKey);
-
-           switch(screenNum) {
-               case 1:
-                   screen = sGame;
-                   game.setup(aspectRatio);
-                   break;
-           }
-           menu.draw();
-           break;
+  glColor4ub(255,255,255,255); //sets full colours and alpha
+  
+  if(Display[type]->hasEnded()) {
+    Display[type]->clean();
+    switch(type) {
+      case MAINMENU:
+        glutLeaveGameMode();
+        exit(0);
+        break;
+      case GAME:
+        type = 0;        
+        Display[type] = new MainMenu();
     }
-    prevKeyState[27] = keyState[27];//esc
-    prevKeyState[13] = keyState[13];//enter
-    char versionStr[12] = "Version_0.4";
-    drawChar(0, 98, 0.5f, 0.0f, 1.0f, versionStr, 12);
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_ONE, GL_ONE);
-   // glFlush();
-    glutSwapBuffers();
+    
+      
+  }
+
+  Display[type]->update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+  Display[type]->draw();
+
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  prevKeyState[ESC] = keyState[ESC];
+  
+  glutSwapBuffers();
 }
 
 void setup() {
-    int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
-    int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
-    aspectRatio = (float)screenResX / screenResY;
-    aspectW = 100.0f/screenResX;
-    aspectH = 100.0f/screenResY;
-    screen = sMenu;
-    alive = true;
-
-    for(int i = 0; i < 5; ++i) {
-        specialKey[i] = BUTTON_UP;
-    }
-
-    menu.setup();
+  int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
+  int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  aspectRatio = (float)screenResX / screenResY;
+  aspectW = 100.0f/screenResX;
+  aspectH = 100.0f/screenResY;
+   
+  for(int i = 0; i < 5; ++i) {
+    specialKey[i] = BUTTON_UP;
+  }
+  
+  Display[MAINMENU] = new MainMenu();
+  Display[GAME] = new Game();
 }
 
 int main(int argc, char** argv) {
-	/* initialize random seed: */
-    srand (time(NULL));
+  /* initialize random seed: */
+  srand (time(NULL));
 
-    glClearColor(0.0f, 0.0f, 0.0f, 255.0f);         // black background
+  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);     // black background
 
-    glClearColor(0.0, 0.0, 0.0, 255.0);         // black background
+  glClearColor(0.0, 0.0, 0.0, 255.0);     // black background
 
-	glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-    char mode_string[24];
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
+  char mode_string[24];
 
-    sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
-    glutGet(GLUT_SCREEN_HEIGHT));
-    glutGameModeString(mode_string);
-    if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
-        printf("GameMode %s is possible\n", mode_string);
+  sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
+  glutGet(GLUT_SCREEN_HEIGHT));
+  glutGameModeString(mode_string);
+  if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+    printf("GameMode %s is possible\n", mode_string);
 
-        // destroys the current graphics window
-        glutDestroyWindow(0);
-        glutEnterGameMode();
-    } else {
-        printf("GameMode %s NOT possible\n", mode_string);
-        glutCreateWindow("Return-Void");
-        glutFullScreen();
-    }
-    // hide the cursor
-    glutSetCursor(GLUT_CURSOR_NONE);
+    // destroys the current graphics window
+    glutDestroyWindow(0);
+    glutEnterGameMode();
+  } else {
+    printf("GameMode %s NOT possible\n", mode_string);
+    glutCreateWindow("Return-Void");
+    glutFullScreen();
+  }
+  // hide the cursor
+  glutSetCursor(GLUT_CURSOR_NONE);
 
-    glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
-    glAlphaFunc(GL_GREATER, 0.1);
-    glEnable(GL_ALPHA_TEST);
+  glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
+  glAlphaFunc(GL_GREATER, 0.1);
+  glEnable(GL_ALPHA_TEST);
 
-    glutIgnoreKeyRepeat(1);
+  glutIgnoreKeyRepeat(1);
 
-    glutDisplayFunc(display);
-    glutTimerFunc(0, Timer, 0);
-    glutKeyboardFunc(keyboard);
-    glutKeyboardUpFunc(keyboard_up);
-    glutSpecialFunc(specialKeys);
-    glutMouseFunc(mouseBtn);
-    glutMotionFunc(mouse);
-    glutPassiveMotionFunc(mouse);
-    setup();
+  glutDisplayFunc(display);
+  glutTimerFunc(0, Timer, 0);
+  glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyboard_up);
+  glutSpecialFunc(specialKeys);
+  glutMouseFunc(mouseBtn);
+  glutMotionFunc(mouse);
+  glutPassiveMotionFunc(mouse);
+  setup();
+  
+  int  screenResX = glutGet(GLUT_SCREEN_WIDTH);
+  int  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  
+  const float ratio(static_cast<float>(SPACE_X_RESOLUTION)/static_cast<float>(SPACE_Y_RESOLUTION));
+  
+  gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
+  
+  if (static_cast<float>(screenResX)/screenResY > ratio) {
+    //  scale_ = static_cast<float>(screenResY)/SPACE_Y_RESOLUTION;
+    screenResY = screenResY;
+    screenResX  = screenResY * ratio;
+    glViewport((screenResX-screenResX)*0.5f, 0, screenResX, screenResY);
+  }
+  else {
+    // scale_ = static_cast<float>(screenResX)/SPACE_X_RESOLUTION;
+    screenResY = screenResX / ratio;
+    screenResX  = screenResX;
+    glViewport(0, (screenResY-screenResY)*0.5f, screenResX, screenResY);
+  }
 
-    int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
-    int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  glClearColor(0.0, 0.0, 0.0, 255.0);
 
+  printf("Setup Complete\n");
 
-//    glOrtho(0.0, gridWidth, 0.0, gridHeight, -1.0, 1.0);   // setup a 100x100x2 viewing world
-    glOrtho(0, (gridWidth/screenResX)*screenResX, 0, (gridHeight/screenResY)*screenResY, -1.0, 1.0);   // setup a 100x100x2 viewing world
-   // glOrtho(-aspectRatio*100, aspectRatio*100, -1*100, 1*100, -1, 1);
-    glClearColor(0.0, 0.0, 0.0, 255.0);
-
-    printf("Setup Complete\n");
-
-    glutMainLoop();
-    return 0;
+  glutMainLoop();
+  return 0;
 }
