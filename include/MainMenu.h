@@ -1,9 +1,12 @@
 #ifndef MainMenu_H
 #define MainMenu_H
 
+#include <vector>
+
 #include "./DisplayManager.h"
 #include "./defines.h"
 #include "./LoadTexture.h"
+#include "./Button.h"
 
 class MainMenu: public DisplayManager {
   public:
@@ -15,8 +18,13 @@ class MainMenu: public DisplayManager {
     void restart();
     void clean();
   protected:
+    float cursorX, cursorY, cursorRadius;
+    void drawCursor();
     void drawBackground();
-    GLuint background;
+    GLuint background, cursorTexture;
+    Button buttons[3];
+    //std::vector<Button*> buttons;
+   // Button buttons;
 };
 
 #endif

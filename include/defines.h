@@ -13,34 +13,38 @@
 #endif
 
 // key states
-#define BUTTON_UP             0
-#define BUTTON_DOWN           1
+#define BUTTON_UP              0
+#define BUTTON_DOWN            1
 
 // Game States
-#define MAINMENU              0
-#define GAME                  1
+#define EXIT                   -1
+#define MAINMENU               0
+#define GAME                   1
 
-#define SPACE_X_RESOLUTION    1920//1440
-#define SPACE_Y_RESOLUTION    1080//810
+#define SPACE_X_RESOLUTION     1920 //1440
+#define SPACE_Y_RESOLUTION     1080 //810
 
 #define MINIMUM_DISTANCETOSHIP 100
 
-// Arrow Keys
-#define LEFT_KEY              0
-#define RIGHT_KEY             1
-#define UP_KEY                2
-#define DOWN_KEY              3
+#define LEFTHANDED             0
+#define CENTERED               1
+#define RIGHTHANDED            2
 
+// Arrow Keys
+#define LEFT_KEY               0
+#define RIGHT_KEY              1
+#define UP_KEY                 2
+#define DOWN_KEY               3
 
 // Keys
-#define ESC                   27
-#define A                     65
-#define D                     68
-#define S                     83
-#define W                     87
-#define a                     97
-#define d                     100
-#define s                     115
-#define w                     119
+#define ESC                    27
+#define A                      65
+#define D                      68
+#define S                      83
+#define W                      87
+#define a                      97
+#define d                      100
+#define s                      115
+#define w                      119
 
 #endif

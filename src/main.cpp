@@ -44,7 +44,7 @@ unsigned int  prevSpeicalKey[5];
 //Current coords of the mouse
 float mouseX, mouseY;
 
-int type = GAME;
+int type = MAINMENU;
 
 DisplayManager* Display[2] = { new MainMenu(), new Game() };
 
@@ -114,29 +114,33 @@ void mouse(int x, int y) {
 void display() {
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);  
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
+  
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
+
+  //Texture options
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
-  
-  if(Display[type]->hasEnded()) {
-    Display[type]->clean();
-    switch(type) {
-      case MAINMENU:
-        glutLeaveGameMode();
-        exit(0);
-        break;
-      case GAME:
-        type = MAINMENU;        
-        Display[type]->setup();
-    }
-    
-      
-  }
 
   Display[type]->update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
+  
+  if(Display[type]->hasEnded()) {  
+    Display[type]->clean(); 
+    type = Display[type]->getEndType();
+    if(type == EXIT) {
+      glutLeaveGameMode();
+      exit(0);
+    }
+    Display[type]->setup();   
+  }
 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
+  
+  glEnable (GL_BLEND);
+  glBlendFunc (GL_ONE, GL_ONE);
   
   glutSwapBuffers();
 }

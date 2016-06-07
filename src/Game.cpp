@@ -1,11 +1,11 @@
 #include "../include/Game.h"
 
 Game::Game() {
-
   //glutSetCursor(GLUT_CURSOR_NONE);
 }
 
 void Game::setup() {
+  type = MAINMENU;
   ended = false;
   isNew = true;
   ChRadius = 20;
@@ -26,45 +26,9 @@ void Game::drawCrosshair() {
     lastChX = ChX;
     lastChY = ChY;
   } else {
-    float shipX = ship.getX();
-    float shipY = ship.getY();
-    float dirX = ship.getDirectionX();
-    float dirY = ship.getDirectionY();
-    lastChX = shipX +  MINIMUM_DISTANCETOSHIP*dirX;
-    lastChY = shipY + MINIMUM_DISTANCETOSHIP*dirY;
-   /* if(ChX == shipX) { 
-      if(ChY > shipY) {
-        lastChX = ChX;
-        lastChY = shipY+MINIMUM_DISTANCETOSHIP;
-      } else if(ChY < shipY) {
-        lastChX = ChX;
-        lastChY = shipY-MINIMUM_DISTANCETOSHIP;
-      } 
-    } else if (ChY == shipY) {
-        if(ChX > shipX) {
-          lastChX = ChX+MINIMUM_DISTANCETOSHIP;
-          lastChY = shipY;
-        } else if(ChX < shipX) {
-          lastChX = ChX-MINIMUM_DISTANCETOSHIP;
-          lastChY = shipY;
-        } 
-    } else if(ChX > shipX) {
-        if(ChY > shipY) {
-          lastChX = ChX+MINIMUM_DISTANCETOSHIP;
-          lastChY = ChY+MINIMUM_DISTANCETOSHIP;
-        } else if(ChY < shipY) {
-          lastChX = ChX+MINIMUM_DISTANCETOSHIP;
-          lastChY = ChY-MINIMUM_DISTANCETOSHIP;
-        }    
-    } else if (ChX < shipX) {
-        if(ChY > shipY) {
-          lastChX = ChX-MINIMUM_DISTANCETOSHIP;
-          lastChY = ChY+MINIMUM_DISTANCETOSHIP;
-        } else if(ChY < shipY) {
-          lastChX = ChX-MINIMUM_DISTANCETOSHIP;
-          lastChY = ChY-MINIMUM_DISTANCETOSHIP;
-        }  
-    }*/
+    lastChX = ship.getX() +  MINIMUM_DISTANCETOSHIP*ship.getDirectionX();
+    lastChY = ship.getY() + MINIMUM_DISTANCETOSHIP*ship.getDirectionY();
+   
   }
   
   glBegin(GL_QUADS);
@@ -95,6 +59,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
+    type = MAINMENU;
     ended = true;
   }
   

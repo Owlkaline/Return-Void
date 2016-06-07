@@ -11,10 +11,11 @@ class DisplayManager {
     virtual void setup() = 0;
     virtual void restart() = 0;
     virtual void clean() = 0;
+    int getEndType() { return type; }
     bool hasEnded() { return ended; }
   protected:
-    bool ended;
-
+    bool ended = false;
+    int type;
 };
 
 #endif
