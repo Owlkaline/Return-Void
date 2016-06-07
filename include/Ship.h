@@ -11,8 +11,11 @@ class Ship {
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
     void draw();
     void setup();
-    //float getX();
-    //float getY();
+    float getX();
+    float getY();
+    float getDirectionX();
+    float getDirectionY();
+    float getDistanceFromCursor();
     //float getHealth();
   protected:
     //void respawn();
@@ -23,7 +26,7 @@ class Ship {
     float speed;
     float angle;
     float width, height;
-    float directionX, directionY;
+    float directionX, directionY, distanceFromCursor;
     //float directionX, directionY;   
 };
 

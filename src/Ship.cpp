@@ -23,10 +23,10 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   float diffx = mouseX - x;
   float diffy = mouseY - y;
   //diffy /= aspectRatio;
-  float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
-  directionX = (diffx) / (distance);
-  directionY = (diffy) / distance;//*aspectRatio) / (distance);
-
+  distanceFromCursor = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
+  directionX = (diffx) / (distanceFromCursor);
+  directionY = (diffy) / distanceFromCursor;//*aspectRatio) / (distance);
+ 
   if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
     angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
     angle = angle - 90.0f;
@@ -41,13 +41,17 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
      angle = angle - 90.0f;
   }
    
-  if(keyState[W] == BUTTON_DOWN || keyState[w] == BUTTON_DOWN) {
-    y+=speed*directionY;
-    x+=speed*directionX;
-  } else if(keyState[S] == BUTTON_DOWN || keyState[s] == BUTTON_DOWN) {
+ if(distanceFromCursor > MINIMUM_DISTANCETOSHIP) {
+    if(keyState[W] == BUTTON_DOWN || keyState[w] == BUTTON_DOWN) {
+      y+=speed*directionY;
+      x+=speed*directionX;
+    } 
+  }
+  if(keyState[S] == BUTTON_DOWN || keyState[s] == BUTTON_DOWN) {
+    
     y-=speed*directionY;
     x-=speed*directionX;
-  }
+  } 
     
   if(keyState[D] == BUTTON_DOWN || keyState[d] == BUTTON_DOWN) {
     x+=speed*directionY;
@@ -88,14 +92,29 @@ void Ship::draw() {
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(x-width/2, y-width/2, 0.0);
   glEnd();
-
+  glDisable(GL_TEXTURE_2D);
   glPopMatrix();     
 }
     
+float Ship::getX() {
+  return x;
+}
 
+float Ship::getY() {
+  return y;
+}   
 
+float Ship::getDirectionX() {
+  return directionX;
+}
+
+float Ship::getDirectionY() {
+  return directionY;
+}    
     
-    
+float Ship::getDistanceFromCursor() {
+  return distanceFromCursor;
+}
     //float x, y;
     //int health;
     //float speed;

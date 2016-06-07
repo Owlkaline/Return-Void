@@ -11,6 +11,7 @@ class Game: public DisplayManager {
     
     void draw();
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+    void setup();
     void restart();
     void clean();
   protected:
@@ -19,7 +20,7 @@ class Game: public DisplayManager {
     Ship ship;
     bool isNew;
     // Cross Hair
-    float ChX, ChY, ChRadius;
+    float lastChX, lastChY, ChX, ChY, ChRadius;
     GLuint ChTexture;
 };
 

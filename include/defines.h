@@ -23,6 +23,8 @@
 #define SPACE_X_RESOLUTION    1920//1440
 #define SPACE_Y_RESOLUTION    1080//810
 
+#define MINIMUM_DISTANCETOSHIP 100
+
 // Arrow Keys
 #define LEFT_KEY              0
 #define RIGHT_KEY             1

@@ -1,17 +1,30 @@
 #include "../include/MainMenu.h"
 
 MainMenu::MainMenu() {
+
+}
+
+void MainMenu::setup() {
   ended = false;
+  background = txt::LoadTexture("Textures/Menu/Background.png");
 }
 
 void MainMenu::drawBackground() {
-  glColor3f(0.0, 1.0, 0.0);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, background);
+    //glColor3f(0.0, 0.0, 0.0f);
   glBegin(GL_QUADS);
-    glVertex3f(0, 100, 0.0);
-    glVertex3f(100, 100, 0.0);
-    glVertex3f(100, 0, 0.0);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(0, SPACE_Y_RESOLUTION, 0.0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, 0.0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(SPACE_X_RESOLUTION, 0, 0.0);
+    glTexCoord2f(0.0f, 0.0f);
     glVertex3f(0, 0, 0.0);
   glEnd();
+  //glColor3f(1.0, 1.0, 1.0f);
+  glDisable(GL_TEXTURE_2D);
 }
 
 

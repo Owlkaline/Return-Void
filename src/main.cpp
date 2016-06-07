@@ -125,8 +125,8 @@ void display() {
         exit(0);
         break;
       case GAME:
-        type = 0;        
-        Display[type] = new MainMenu();
+        type = MAINMENU;        
+        Display[type]->setup();
     }
     
       
@@ -152,8 +152,8 @@ void setup() {
     specialKey[i] = BUTTON_UP;
   }
   
-  Display[MAINMENU] = new MainMenu();
-  Display[GAME] = new Game();
+  //Display[MAINMENU] = new MainMenu();
+  Display[type]->setup();
 }
 
 int main(int argc, char** argv) {
