@@ -34,7 +34,7 @@ void Button::drawChar() {
   glTranslatef(x, y, 0);
   glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
 
-  void * font = GLUT_BITMAP_TIMES_ROMAN_24;
+ // void * font = GLUT_BITMAP_TIMES_ROMAN_24;
   //GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
    glScalef(1,1,1);
   for(int i = 0; i < length; i++) {

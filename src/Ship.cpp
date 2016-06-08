@@ -16,6 +16,10 @@ void Ship::setup() {
   textures[0] = txt::LoadTexture("Textures/Game/Ship.png");
   textures[1] = txt::LoadTexture("Textures/Game/ShipLeft.png");
   textures[2] = txt::LoadTexture("Textures/Game/ShipRight.png");
+  for(int i = 0; i < MAXWEAPONS; ++i) {
+    mountSlot[i] = new BasicMount;
+    mountSlot[i]->setup(mountPosX[i], mountPosY[i]);
+  }
 }
     
 void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -60,7 +64,7 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     x-=speed*directionY;
     y+=speed*directionX;
   }  
-    
+
   if(x < width/2) 
     x = width/2;
   if(x > SPACE_X_RESOLUTION-width/2)
@@ -69,11 +73,14 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     y = height/2;
   if(y > SPACE_Y_RESOLUTION-height/2)
     y = SPACE_Y_RESOLUTION-height/2;
+    
+    
+  for(int i = 0; i < MAXWEAPONS; ++i) 
+   mountSlot[i]->update(x, y, directionX, directionY, angle);
 }
 
 void Ship::draw() {
   glPushMatrix();
-  //angle++;
   glTranslatef(x, y, 0); // M1 - 2nd translation
   glRotatef(angle, 0.0f, 0.0f, 1.0f);  
   glTranslatef(-x, -y, 0); // M1 - 2nd translation
@@ -84,18 +91,21 @@ void Ship::draw() {
  // glColor3f(0.0, 0.0, 1.0);
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x-width/2, y+width/2, 0.0);
+    glVertex3f(x-width/2, y+height/2, 0.0);
     glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x+width/2, y+width/2, 0.0);
+    glVertex3f(x+width/2, y+height/2, 0.0);
     glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x+width/2, y-width/2, 0.0);
+    glVertex3f(x+width/2, y-height/2, 0.0);
     glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x-width/2, y-width/2, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
   glEnd();
   glDisable(GL_TEXTURE_2D);
-  glPopMatrix();     
+  glPopMatrix();    
+  
+  for(int i = 0; i < MAXWEAPONS; ++i) 
+    mountSlot[i]->draw(); 
 }
-    
+   
 float Ship::getX() {
   return x;
 }
@@ -115,10 +125,4 @@ float Ship::getDirectionY() {
 float Ship::getDistanceFromCursor() {
   return distanceFromCursor;
 }
-    //float x, y;
-    //int health;
-    //float speed;
-    //float angle;
-    //float width, height;
-    //float directionX, directionY;   
 

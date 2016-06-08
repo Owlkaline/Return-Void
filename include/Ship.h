@@ -1,9 +1,13 @@
 #ifndef SHIP_H
 #define SHIP_H
 
+#define MAXWEAPONS 3
+
+#include <math.h>
+
 #include "./defines.h"
 #include "./LoadTexture.h"
-#include <math.h>
+#include "./BasicMount.h"
 
 class Ship {
   public:
@@ -19,7 +23,11 @@ class Ship {
     //float getHealth();
   protected:
     //void respawn();
-    GLuint textures[3];
+    const float mountPosX[MAXWEAPONS] = {18, -22, -2};
+    const float mountPosY[MAXWEAPONS] = {0, 0, 30};
+    
+    GLuint textures[MAXWEAPONS];
+    Mount* mountSlot[MAXWEAPONS];
     
     float x, y;
     //int health;
