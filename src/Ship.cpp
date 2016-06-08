@@ -126,3 +126,11 @@ float Ship::getDistanceFromCursor() {
   return distanceFromCursor;
 }
 
+void Ship::clean() {
+    for(int i = 0; i < MAXWEAPONS; ++i) {
+      mountSlot[i]->clean();
+      delete mountSlot[i];
+    }
+
+}
+

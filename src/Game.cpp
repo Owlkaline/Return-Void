@@ -76,5 +76,5 @@ void Game::draw() {
 }
 
 void Game::clean() {
-  
+  ship.clean();
 }

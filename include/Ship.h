@@ -15,6 +15,7 @@ class Ship {
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
     void draw();
     void setup();
+    void clean();
     float getX();
     float getY();
     float getDirectionX();
