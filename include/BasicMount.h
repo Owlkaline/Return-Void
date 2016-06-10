@@ -9,11 +9,12 @@ class BasicMount: public Mount {
     BasicMount();
     void update(float x, float y, float directionX, float directionY, float angle);
 
-    void setup(float offsetX, float offsetY);
+    void setup();
     void reset();
 
   protected:
     void addBullet();
+    int maxMounts;
 };
 
 #endif

@@ -19,10 +19,15 @@ void MainMenu::setup() {
   buttonWidth = 145;
   buttonHeight = 45;
   buttons[2].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 4.5-buttonHeight, buttonWidth, buttonHeight);
+  buttonWidth = 145;
+  buttonHeight = 45;
+  buttons[3].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 3.5-buttonHeight, buttonWidth, buttonHeight);
+  
   buttons[0].setTexture((char*)"Textures/Menu/Start.png");
-  buttons[1].setTexture((char*)"Textures/Menu/Settings.png");
-  buttons[2].setTexture((char*)"Textures/Menu/Quit.png");
- 
+  buttons[1].setTexture((char*)"Textures/Menu/Seed.png");
+  buttons[2].setTexture((char*)"Textures/Menu/Settings.png");
+  buttons[3].setTexture((char*)"Textures/Menu/Quit.png");
+  numOfButtons = 4;
   //char* txt = "Start";
   //buttons.setText(txt, 5 );
   //19e8ab R 25 G 232 B 171
@@ -95,7 +100,7 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
   cursorX = mouseX;
   cursorY = mouseY;
   
-  for(int i = 0; i < 3; ++i)
+  for(int i = 0; i < numOfButtons; ++i)
     buttons[i].update(mouseX, mouseY, mouseBtnState);
   
   if(buttons[0].checkIfClicked()) {
@@ -103,10 +108,14 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
     ended = true;
   }
   if(buttons[1].checkIfClicked()) {
+    type = SEEDEDGAME;
+    ended = true;
+  }
+  if(buttons[2].checkIfClicked()) {
     //type = SETTINGS;
     //ended = true;
   }
-  if(buttons[2].checkIfClicked()) {
+  if(buttons[3].checkIfClicked()) {
     type = EXIT;
     ended = true;
   }
@@ -116,7 +125,7 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
 void MainMenu::draw() {  
   drawBackground();
   
-  for(int i = 0; i < 3; ++i)
+  for(int i = 0; i < numOfButtons; ++i)
     buttons[i].draw();
   
   drawCursor();

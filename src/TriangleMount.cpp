@@ -4,7 +4,7 @@ TriangleMount::TriangleMount() {
 ticks=0;
 }
 
-void TriangleMount::setup(float offsetX, float offsetY) { 
+void TriangleMount::setup() { 
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_Y_RESOLUTION;
   angle = 0;
@@ -12,8 +12,6 @@ void TriangleMount::setup(float offsetX, float offsetY) {
   height = 32;
   timer = 14;
   ticks = 0;
-  this->offsetX = offsetX;
-  this->offsetY = offsetY;
   Texture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
 } 
 

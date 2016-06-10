@@ -10,11 +10,13 @@
 
 class Mount {
   public:
-    virtual void setup(float offsetX, float offsetY) = 0;
+    virtual void setup() = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle) = 0;
     virtual void reset() = 0;
-    
-    void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } };
+        void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }
+        
+    void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
+
     void fire() {
       addBullet();
       int i = bullets.size()-1;

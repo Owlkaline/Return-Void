@@ -1,8 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <vector>
+
 #include "./DisplayManager.h"
 #include "./Ship.h"
+#include "./BasicEnemy.h"
 #include "./LoadTexture.h"
 
 class Game: public DisplayManager {
@@ -14,10 +17,13 @@ class Game: public DisplayManager {
     void setup();
     void restart();
     void clean();
+    
+    void newWave();
   protected:
     void drawBackground();
     void drawCrosshair();
     Ship ship;
+    std::vector<Enemy*> enemy;
     bool isNew;
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;

@@ -4,7 +4,7 @@ BasicMount::BasicMount() {
 ticks=0;
 }
 
-void BasicMount::setup(float offsetX, float offsetY) { 
+void BasicMount::setup() { 
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_Y_RESOLUTION;
   angle = 0;
@@ -12,8 +12,6 @@ void BasicMount::setup(float offsetX, float offsetY) {
   height = 64;
   timer = 7;
   ticks = 0;
-  this->offsetX = offsetX;
-  this->offsetY = offsetY;
   Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
 } 
 

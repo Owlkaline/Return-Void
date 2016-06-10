@@ -135,7 +135,7 @@ void display() {
         break;
       case SEEDEDGAME: 
         newtype = GAME;
-        Display[newtype]->setSeed(Display[type]->getSeed());
+        Display[newtype]->setSeed(9847);
         break;
       case GAME:
         Display[newtype]->setSeed(time(NULL));

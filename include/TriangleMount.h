@@ -8,7 +8,7 @@ class TriangleMount: public Mount {
     TriangleMount();
     void update(float x, float y, float directionX, float directionY, float angle);
 
-    void setup(float offsetX, float offsetY);
+    void setup();
     void reset();
 
   protected:

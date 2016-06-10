@@ -22,7 +22,8 @@ class MainMenu: public DisplayManager {
     void drawCursor();
     void drawBackground();
     GLuint background, cursorTexture;
-    Button buttons[3];
+    Button buttons[4];
+    int numOfButtons;
     //std::vector<Button*> buttons;
    // Button buttons;
 };

@@ -7,6 +7,7 @@ Game::Game() {
 }
 
 void Game::setup() {
+  srand(seed);
   type = MAINMENU;
   ended = false;
   isNew = true;
@@ -53,11 +54,24 @@ void Game::restart() {
 
 }
 
+void Game::newWave() {
+  unsigned int numOfEnemies = rand()%100;
+  for(unsigned int i = 0; i < numOfEnemies; ++i) {
+    enemy.push_back(new BasicEnemy);
+    enemy[i]->setup();
+    enemy[i]->setX(rand()%(int)(SPACE_X_RESOLUTION-enemy[i]->getWidth()) +enemy[i]->getWidth());
+    enemy[i]->setY(rand()%(int)(SPACE_Y_RESOLUTION*5) +enemy[i]->getHeight()+SPACE_Y_RESOLUTION);
+  }
+}
+
 void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(isNew) {
     ship.setup();
     isNew = false;
   }
+  
+  if(enemy.size() == 0) 
+    newWave();
   
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
@@ -68,15 +82,27 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   ChX = mouseX;
   ChY = mouseY;
   ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+  
+  for(int i = 0; i < enemy.size(); ++i) {
+    if(enemy[i]->isVisible()) {
+      enemy[i]->update();
+    } else {
+      enemy.erase(enemy.begin()+i);
+    }
+  }
+  
 }
 
 void Game::draw() {  
   drawBackground();
   ship.draw();
+  for(int i = 0; i < enemy.size(); ++i) 
+    enemy[i]->draw();
   drawCrosshair();
   
 }
 
 void Game::clean() {
   ship.clean();
+  enemy.erase(enemy.begin(), enemy.end());
 }

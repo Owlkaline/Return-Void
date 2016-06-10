@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -Wall -g -O3
 PROG = Return-void
 
-SRCS = ./src/main.cpp ./src/Game.cpp ./src/MainMenu.cpp ./src/Ship.cpp ./src/LoadTexture.cpp ./src/Button.cpp ./src/BasicMount.cpp ./src/TriangleMount.cpp ./src/BluePlasma.cpp  ./src/GreenPlasma.cpp
+SRCS = ./src/main.cpp ./src/Game.cpp ./src/MainMenu.cpp ./src/Ship.cpp ./src/LoadTexture.cpp ./src/Button.cpp ./src/BasicMount.cpp ./src/TriangleMount.cpp ./src/BluePlasma.cpp  ./src/GreenPlasma.cpp ./src/BasicEnemy.cpp
 
 LIBS = -lglut -lGLU -lGL -lpng
 

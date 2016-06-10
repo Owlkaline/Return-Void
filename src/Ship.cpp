@@ -13,17 +13,21 @@ void Ship::setup() {
   angle = 0;
   directionX = 1;
   directionY = 1; 
-  textures[0] = txt::LoadTexture("Textures/Game/Ship.png");
-  textures[1] = txt::LoadTexture("Textures/Game/ShipLeft.png");
-  textures[2] = txt::LoadTexture("Textures/Game/ShipRight.png");
+  textures[0] = txt::LoadTexture("Textures/Game/Ships/Ship.png");
+  textures[1] = txt::LoadTexture("Textures/Game/Ships/ShipLeft.png");
+  textures[2] = txt::LoadTexture("Textures/Game/Ships/ShipRight.png");
   for(int i = 0; i < MAXWEAPONS; ++i) {
-    if(i != 2) {
-      mountSlot[i] = new BasicMount;
-      mountSlot[i]->setup(mountPosX[i], mountPosY[i]);
-    } else {
-      mountSlot[i] = new TriangleMount;
-      mountSlot[i]->setup(mountPosX[i], mountPosY[i]);
+    switch(i) {
+      case 0:
+      case 1:   
+        WeaponMount[i] = new BasicMount;
+        break;
+      case 2:
+        WeaponMount[i] = new TriangleMount;
+        break;
     }
+    WeaponMount[i]->setup();
+    WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
   }
 }
     
@@ -81,7 +85,7 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     
     
   for(int i = 0; i < MAXWEAPONS; ++i) 
-    mountSlot[i]->update(x, y, directionX, directionY, angle);
+    WeaponMount[i]->update(x, y, directionX, directionY, angle);
 }
 
 void Ship::draw() {
@@ -108,7 +112,7 @@ void Ship::draw() {
   glPopMatrix();    
   
   for(int i = 0; i < MAXWEAPONS; ++i) 
-    mountSlot[i]->draw(); 
+    WeaponMount[i]->draw(); 
 }
    
 float Ship::getX() {
@@ -133,8 +137,8 @@ float Ship::getDistanceFromCursor() {
 
 void Ship::clean() {
     for(int i = 0; i < MAXWEAPONS; ++i) {
-      mountSlot[i]->clean();
-      delete mountSlot[i];
+      WeaponMount[i]->clean();
+      delete WeaponMount[i];
     }
 
 }
