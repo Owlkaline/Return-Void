@@ -1,23 +1,23 @@
-#include "../include/BasicMount.h"
+#include "../include/TriangleMount.h"
 
-BasicMount::BasicMount() {
+TriangleMount::TriangleMount() {
 ticks=0;
 }
 
-void BasicMount::setup(float offsetX, float offsetY) { 
+void TriangleMount::setup(float offsetX, float offsetY) { 
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_Y_RESOLUTION;
   angle = 0;
-  width = 8;
-  height = 64;
-  timer = 7;
+  width = 32;
+  height = 32;
+  timer = 14;
   ticks = 0;
   this->offsetX = offsetX;
   this->offsetY = offsetY;
-  Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
+  Texture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
 } 
 
-void BasicMount::update(float x, float y, float directionX, float directionY, float angle) {  
+void TriangleMount::update(float x, float y, float directionX, float directionY, float angle) {  
   float rad = angle* (float)M_PI / 180;
   float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
@@ -36,10 +36,10 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   }
 }
 
-void BasicMount::addBullet() {
-  bullets.push_back(new BluePlasma);
+void TriangleMount::addBullet() {
+  bullets.push_back(new GreenPlasma);
 }
 
-void BasicMount::reset() {
+void TriangleMount::reset() {
 
 }

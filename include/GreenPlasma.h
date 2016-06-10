@@ -1,12 +1,12 @@
-#ifndef BLUEPLASMA_H
-#define BLUEPLASMA_H
+#ifndef GREENPLASMA_H
+#define GREENPLASMA_H
 
 #include "./Weapon.h"
 #include "./defines.h"
 
-class BluePlasma: public Weapon {
+class GreenPlasma: public Weapon {
   public:
-    BluePlasma();
+    GreenPlasma();
     void update();
     void draw();
     void setup(float x, float y, float dirX, float dirY, float angle);

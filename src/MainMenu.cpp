@@ -19,10 +19,9 @@ void MainMenu::setup() {
   buttonWidth = 145;
   buttonHeight = 45;
   buttons[2].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 4.5-buttonHeight, buttonWidth, buttonHeight);
-  buttons[0].setTexture("Textures/Menu/Start.png");
-  buttons[1].setTexture("Textures/Menu/Settings.png");
-  buttons[2].setTexture("Textures/Menu/Quit.png");
-  
+  buttons[0].setTexture((char*)"Textures/Menu/Start.png");
+  buttons[1].setTexture((char*)"Textures/Menu/Settings.png");
+  buttons[2].setTexture((char*)"Textures/Menu/Quit.png");
  
   //char* txt = "Start";
   //buttons.setText(txt, 5 );
@@ -122,7 +121,7 @@ void MainMenu::draw() {
   
   drawCursor();
 }
-
+ 
 void MainMenu::restart() {
 
 }

@@ -127,13 +127,23 @@ void display() {
   Display[type]->draw();
   
   if(Display[type]->hasEnded()) {  
-    Display[type]->clean(); 
-    type = Display[type]->getEndType();
-    if(type == EXIT) {
-      glutLeaveGameMode();
-      exit(0);
+    int newtype = Display[type]->getEndType();
+    switch(newtype) {
+      case EXIT:
+        glutLeaveGameMode();
+        exit(0);
+        break;
+      case SEEDEDGAME: 
+        newtype = GAME;
+        Display[newtype]->setSeed(Display[type]->getSeed());
+        break;
+      case GAME:
+        Display[newtype]->setSeed(time(NULL));
+        break;
     }
-    Display[type]->setup();   
+    Display[type]->clean(); 
+    type = newtype;
+    Display[type]->setup();
   }
 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

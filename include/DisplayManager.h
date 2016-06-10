@@ -11,10 +11,13 @@ class DisplayManager {
     virtual void setup() = 0;
     virtual void restart() = 0;
     virtual void clean() = 0;
+    unsigned int getSeed() { return seed; };
+    void setSeed(unsigned int newSeed) { seed = newSeed; srand(seed); }
     int getEndType() { return type; }
     bool hasEnded() { return ended; }
   protected:
-    bool ended = false;
+    unsigned int seed;
+    bool ended;
     int type;
 };
 

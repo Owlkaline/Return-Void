@@ -8,6 +8,7 @@
 #include "./defines.h"
 #include "./LoadTexture.h"
 #include "./BasicMount.h"
+#include "./TriangleMount.h"
 
 class Ship {
   public:
@@ -25,7 +26,7 @@ class Ship {
   protected:
     //void respawn();
     const float mountPosX[MAXWEAPONS] = {18, -22, -2};
-    const float mountPosY[MAXWEAPONS] = {0, 0, 30};
+    const float mountPosY[MAXWEAPONS] = {0, 0, 50};
     
     GLuint textures[MAXWEAPONS];
     Mount* mountSlot[MAXWEAPONS];

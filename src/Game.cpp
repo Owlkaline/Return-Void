@@ -2,6 +2,8 @@
 
 Game::Game() {
   //glutSetCursor(GLUT_CURSOR_NONE);
+  seed = time(NULL);
+  srand (seed);
 }
 
 void Game::setup() {

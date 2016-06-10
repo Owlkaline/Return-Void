@@ -20,6 +20,7 @@
 #define EXIT                   -1
 #define MAINMENU               0
 #define GAME                   1
+#define SEEDEDGAME             2
 
 #define SPACE_X_RESOLUTION     1920 //1440
 #define SPACE_Y_RESOLUTION     1080 //810

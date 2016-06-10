@@ -17,8 +17,13 @@ void Ship::setup() {
   textures[1] = txt::LoadTexture("Textures/Game/ShipLeft.png");
   textures[2] = txt::LoadTexture("Textures/Game/ShipRight.png");
   for(int i = 0; i < MAXWEAPONS; ++i) {
-    mountSlot[i] = new BasicMount;
-    mountSlot[i]->setup(mountPosX[i], mountPosY[i]);
+    if(i != 2) {
+      mountSlot[i] = new BasicMount;
+      mountSlot[i]->setup(mountPosX[i], mountPosY[i]);
+    } else {
+      mountSlot[i] = new TriangleMount;
+      mountSlot[i]->setup(mountPosX[i], mountPosY[i]);
+    }
   }
 }
     
@@ -76,7 +81,7 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     
     
   for(int i = 0; i < MAXWEAPONS; ++i) 
-   mountSlot[i]->update(x, y, directionX, directionY, angle);
+    mountSlot[i]->update(x, y, directionX, directionY, angle);
 }
 
 void Ship::draw() {

@@ -1,12 +1,11 @@
-#ifndef BASICMOUNT_H
-#define BASICMOUNT_H
+#ifndef TRIANGLEMOUNT_H
+#define TRIANGLEMOUNT_H
 
 #include "./Mount.h"
 
-
-class BasicMount: public Mount {
+class TriangleMount: public Mount {
   public:
-    BasicMount();
+    TriangleMount();
     void update(float x, float y, float directionX, float directionY, float angle);
 
     void setup(float offsetX, float offsetY);
@@ -15,5 +14,6 @@ class BasicMount: public Mount {
   protected:
     void addBullet();
 };
+
 
 #endif

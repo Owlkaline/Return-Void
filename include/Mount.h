@@ -6,6 +6,7 @@
 
 #include "./LoadTexture.h"
 #include "./BluePlasma.h"
+#include "./GreenPlasma.h"
 
 class Mount {
   public:
@@ -15,11 +16,12 @@ class Mount {
     
     void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } };
     void fire() {
-      bullets.push_back(new BluePlasma);
+      addBullet();
       int i = bullets.size()-1;
       bullets[i]->setup(x, y, dirX, dirY, angle);
       bullets[i]->setVisible(true);
     }
+    
     void draw() {
       for(unsigned int i = 0; i < bullets.size(); ++i)
         bullets[i]->draw();
@@ -63,6 +65,8 @@ class Mount {
     float offsetX, offsetY;
     GLuint Texture;
     std::vector<Weapon*> bullets;
+    
+    virtual void addBullet()=0;
 };
 
 #endif
