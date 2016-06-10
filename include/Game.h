@@ -7,6 +7,7 @@
 #include "./Ship.h"
 #include "./BasicEnemy.h"
 #include "./LoadTexture.h"
+#include "./Collisions.h"
 
 class Game: public DisplayManager {
   public:

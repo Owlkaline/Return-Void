@@ -1,7 +1,7 @@
 #include "../include/TriangleMount.h"
 
 TriangleMount::TriangleMount() {
-ticks=0;
+  ticks=0;
 }
 
 void TriangleMount::setup() { 
@@ -10,8 +10,10 @@ void TriangleMount::setup() {
   angle = 0;
   width = 32;
   height = 32;
+  health = 20;
   timer = 14;
   ticks = 0;
+  visible = true;
   Texture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
 } 
 

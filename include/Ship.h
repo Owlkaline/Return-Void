@@ -19,10 +19,15 @@ class Ship {
     void clean();
     float getX();
     float getY();
+    float getWidth();
+    float getHeight();
+    bool getVisible();
     float getDirectionX();
     float getDirectionY();
     float getDistanceFromCursor();
     //float getHealth();
+    void takeDamage(int damage);
+    
   protected:
     //void respawn();
     const float mountPosX[MAXWEAPONS] = {18, -22, -2};
@@ -32,9 +37,10 @@ class Ship {
     Mount* WeaponMount[MAXWEAPONS];
     
     float x, y;
-    //int health;
+    int health;
     float speed;
     float angle;
+    bool visible;
     float width, height;
     float directionX, directionY, distanceFromCursor;
     //float directionX, directionY;   

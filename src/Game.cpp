@@ -62,6 +62,7 @@ void Game::newWave() {
     enemy[i]->setX(rand()%(int)(SPACE_X_RESOLUTION-enemy[i]->getWidth()) +enemy[i]->getWidth());
     enemy[i]->setY(rand()%(int)(SPACE_Y_RESOLUTION*5) +enemy[i]->getHeight()+SPACE_Y_RESOLUTION);
   }
+  srand (rand()%RAND_MAX);
 }
 
 void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -91,6 +92,12 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     }
   }
   
+  Collisions::detect(&ship, enemy);
+  
+  if(!ship.getVisible()) {
+    type = MAINMENU;
+    ended = true;    
+  }
 }
 
 void Game::draw() {  

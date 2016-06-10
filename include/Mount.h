@@ -17,11 +17,13 @@ class Mount {
         
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
-    void fire() {
-      addBullet();
-      int i = bullets.size()-1;
-      bullets[i]->setup(x, y, dirX, dirY, angle);
-      bullets[i]->setVisible(true);
+    void fire() { 
+      if(visible) {
+        addBullet();
+        int i = bullets.size()-1;
+        bullets[i]->setup(x, y, dirX, dirY, angle);
+        bullets[i]->setVisible(true);
+      }
     }
     
     void draw() {
@@ -55,7 +57,18 @@ class Mount {
     float getY() { return y; }
     float getWidth() { return width; }
     float getHeight() { return height; }
-
+    bool isVisible() { return visible; }
+    
+    int bulletHit(int index) { return bullets[index]->hit(); }
+    int getNumBullets() { return bullets.size(); }
+    float getBulletX(int index) { return bullets[index]->getX(); }
+    float getBulletY(int index) { return bullets[index]->getY(); }
+    float getBulletWidth(int index) { return bullets[index]->getWidth(); }
+    float getBulletHeight(int index) { return bullets[index]->getHeight(); }
+    
+    void setVisible(bool visible) { this->visible = visible; }
+    
+    void takeDamage(int damage) { health -= damage; }
    
   protected:
     int health;
@@ -65,6 +78,7 @@ class Mount {
     float fireRate;
     float angle;
     float offsetX, offsetY;
+    bool visible;
     GLuint Texture;
     std::vector<Weapon*> bullets;
     

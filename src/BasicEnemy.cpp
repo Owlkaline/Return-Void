@@ -19,9 +19,17 @@ void BasicEnemy::update() {
   y-=5;
   if(y <= -height)
     visible = false;
-  for(int i = 0; i < maxWeaponMounts; ++i) 
-    WeaponMount[i]->update(x, y, 0, -1, 180);
   
+  float numMountsDead = 0;
+  for(int i = 0; i < maxWeaponMounts; ++i) {
+    if(WeaponMount[i]->isVisible()) {
+      WeaponMount[i]->update(x, y, 0, -1, 180);
+    } else {
+      numMountsDead++;
+    }
+  }
+  if(numMountsDead == maxWeaponMounts) 
+    visible = false;
   
   
 }

@@ -27,8 +27,21 @@ class Enemy {
     float getY() { return y; }
     float getWidth() { return width; }
     float getHeight() { return height; }
+    
+    int getNumOfMounts() { return maxWeaponMounts; }
+    float getMountX(int index) { return WeaponMount[index]->getX(); }
+    float getMountY(int index) { return WeaponMount[index]->getY(); }
+    float getMountWidth(int index) { return WeaponMount[index]->getWidth(); }
+    float getMountHeight(int index) { return WeaponMount[index]->getHeight(); }
+    
+    int bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
+    int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
+    float getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
+    float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
+    float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
+    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
 
-   
+    std::vector<Mount*> getMount() { return WeaponMount; }
   protected:
     int health;
     float x,y, width, height;

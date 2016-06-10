@@ -10,8 +10,10 @@ void BasicMount::setup() {
   angle = 0;
   width = 8;
   height = 64;
+  health = 10;
   timer = 7;
   ticks = 0;
+  visible = true;
   Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
 } 
 

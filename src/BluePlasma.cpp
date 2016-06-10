@@ -10,6 +10,7 @@ void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   width = 4;
   height = 32;
   speed = 25;
+  damage = 1;
   this->angle = angle;
   directionX = dirX;
   directionY = dirY;

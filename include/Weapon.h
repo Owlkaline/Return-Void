@@ -13,6 +13,8 @@ class Weapon {
     
     void setVisible(bool visible) { this->visible = visible; }
     
+    int getDamage() { return damage; }
+    int hit() { visible = false; return damage; }
     float getX() { return x; }
     float getY() { return y; }
     float getWidth() { return width; }
@@ -23,6 +25,7 @@ class Weapon {
     float x,y, width, height, speed;
     float directionX, directionY;
     float angle;
+    int damage;
     bool visible;
     GLuint Texture;
 };

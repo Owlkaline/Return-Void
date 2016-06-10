@@ -9,8 +9,10 @@ void Ship::setup() {
   y = 100;
   width = 100;
   height = 100;
+  health = 60;
   speed = 5;
   angle = 0;
+  visible = true;
   directionX = 1;
   directionY = 1; 
   textures[0] = txt::LoadTexture("Textures/Game/Ships/Ship.png");
@@ -89,6 +91,7 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
 }
 
 void Ship::draw() {
+  if(visible){
   glPushMatrix();
   glTranslatef(x, y, 0); // M1 - 2nd translation
   glRotatef(angle, 0.0f, 0.0f, 1.0f);  
@@ -110,9 +113,15 @@ void Ship::draw() {
   glEnd();
   glDisable(GL_TEXTURE_2D);
   glPopMatrix();    
-  
+  }
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->draw(); 
+}
+
+void Ship::takeDamage(int damage) {
+  health -= damage;
+  if(health <= 0)
+    visible = false;
 }
    
 float Ship::getX() {
@@ -122,6 +131,18 @@ float Ship::getX() {
 float Ship::getY() {
   return y;
 }   
+
+float Ship::getWidth() {
+  return width;
+}
+
+float Ship::getHeight() {
+  return height;
+}   
+
+bool Ship::getVisible() {
+  return visible;
+}
 
 float Ship::getDirectionX() {
   return directionX;

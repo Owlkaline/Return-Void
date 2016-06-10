@@ -10,6 +10,7 @@ void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   width = 12;
   height = 32;
   speed = 12;
+  damage = 2;
   this->angle = angle;
   directionX = dirX;
   directionY = dirY;
