@@ -23,12 +23,14 @@ void Ship::setup() {
       case 0:
       case 1:   
         WeaponMount[i] = new BasicMount;
+        WeaponMount[i]->setup(BLUEPLASMA);
         break;
       case 2:
         WeaponMount[i] = new TriangleMount;
+        WeaponMount[i]->setup();
         break;
     }
-    WeaponMount[i]->setup();
+    
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
   }
 }

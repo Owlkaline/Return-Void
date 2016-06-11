@@ -6,6 +6,7 @@
 #include "./DisplayManager.h"
 #include "./Ship.h"
 #include "./BasicEnemy.h"
+#include "./CorruptedStarShip.h"
 #include "./LoadTexture.h"
 #include "./Collisions.h"
 

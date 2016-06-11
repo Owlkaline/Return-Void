@@ -7,10 +7,12 @@
 #include "./LoadTexture.h"
 #include "./BluePlasma.h"
 #include "./GreenPlasma.h"
+#include "./RedPlasma.h"
 
 class Mount {
   public:
     virtual void setup() = 0;
+    virtual void setup(int variant) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle) = 0;
     virtual void reset() = 0;
         void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }

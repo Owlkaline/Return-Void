@@ -4,6 +4,10 @@ TriangleMount::TriangleMount() {
   ticks=0;
 }
 
+void TriangleMount::setup(int variant) {
+  setup();
+}
+
 void TriangleMount::setup() { 
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_Y_RESOLUTION;

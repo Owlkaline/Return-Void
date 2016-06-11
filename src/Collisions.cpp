@@ -1,7 +1,7 @@
 #include "../include/Collisions.h"
 
 void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
-  int shipQuad = getQuadrant(ship->getX(), ship->getY());
+  int shipQuad = getQuadrant(ship->getX(), ship->getY(), 1);
   
   // Ship x, y, width, height 
   float Sw = ship->getWidth();
@@ -17,7 +17,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
     for(int j = 0; j < enemy[i]->getNumOfMounts(); ++j) {
       // The bullets number for the weapon
       for(int k = 0; k < enemy[i]->getNumOfBullets(j); ++k) {
-        if(getQuadrant(enemy[i]->getBulletX(j, k), enemy[i]->getBulletY(j, k)) == shipQuad) {
+        if(getQuadrant(enemy[i]->getBulletX(j, k), enemy[i]->getBulletY(j, k), 1) == shipQuad) {
           // Enemy bullet x, y, width, height 
           float Bx = enemy[i]->getBulletX(j, k);
           float By = enemy[i]->getBulletY(j ,k);
@@ -36,13 +36,13 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
     float Ey = enemy[i]->getY();
     float Eh = enemy[i]->getHeight();
       
-    int enemyQuad = getQuadrant(enemy[i]->getX(), enemy[i]->getY());
+    int enemyQuad = getQuadrant(enemy[i]->getX(), enemy[i]->getY(), 1);
     
     // Collision between player bullets and enemyship
     for(int j = 0; j < ship->getNumOfMounts(); ++j) {
 
       for(int k = 0; k < ship->getNumOfBullets(j); ++k) {
-        if(getQuadrant(ship->getBulletX(j, k), ship->getBulletY(j, k)) == enemyQuad) {
+        if(getQuadrant(ship->getBulletX(j, k), ship->getBulletY(j, k),1) == enemyQuad) {
           // Ship bullet x, y, width, height 
           float Bx = ship->getBulletX(j, k);
           float By = ship->getBulletY(j, k);
@@ -57,16 +57,21 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
   }
 }
 
-int Collisions::getQuadrant(float x, float y) {
-  float halfX = SPACE_X_RESOLUTION/2;
-  float halfY = SPACE_Y_RESOLUTION/2;
-  if(x < halfX && y > halfY) {
-    return 1;
-  } else if (x < halfX && y < halfY) {
-    return 2;
-  } else if (x > halfX && y < halfY) {
-    return 3;
-  } else if (x < halfX && y < halfY) {
-    return 4;
-  }  
+int Collisions::getQuadrant(float x, float y, int level) {
+  float halfX = SPACE_X_RESOLUTION/(2*level);
+  float halfY = SPACE_Y_RESOLUTION/(2*level);
+  
+  if(level == MAXLEVEL) {
+    if(x < halfX && y > halfY) {
+      return 1*level;
+    } else if (x < halfX && y < halfY) {
+      return 2*level;
+    } else if (x > halfX && y < halfY) {
+      return 3*level;
+    } else if (x < halfX && y < halfY) {
+      return 4*level;
+    }  
+  } else { 
+    return getQuadrant(x, y, level+1);
+  }
 }

@@ -57,7 +57,14 @@ void Game::restart() {
 void Game::newWave() {
   unsigned int numOfEnemies = rand()%100;
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
-    enemy.push_back(new BasicEnemy);
+    switch(rand()%2 +1) {
+      case 1:
+        enemy.push_back(new BasicEnemy);       
+        break;
+      case 2:
+        enemy.push_back(new CorruptedStarShip);
+        break;
+    }    
     enemy[i]->setup();
     enemy[i]->setX(rand()%(int)(SPACE_X_RESOLUTION-enemy[i]->getWidth()) +enemy[i]->getWidth());
     enemy[i]->setY(rand()%(int)(SPACE_Y_RESOLUTION*5) +enemy[i]->getHeight()+SPACE_Y_RESOLUTION);

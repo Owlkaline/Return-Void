@@ -31,6 +31,9 @@
 #define CENTERED               1
 #define RIGHTHANDED            2
 
+#define REDPLASMA              1
+#define BLUEPLASMA             2
+
 // Arrow Keys
 #define LEFT_KEY               0
 #define RIGHT_KEY              1
