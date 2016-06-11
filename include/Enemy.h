@@ -41,6 +41,12 @@ class Enemy {
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
 
+    void takeDamage(int damage) {
+      health -= damage;
+      if(health <= 0)
+        visible = false;
+    }
+
     std::vector<Mount*> getMount() { return WeaponMount; }
   protected:
     int health;

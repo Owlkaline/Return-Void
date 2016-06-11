@@ -3,6 +3,7 @@
 void BasicEnemy::setup() {
   width = 75;
   height = 75;
+  health = 10;
   maxWeaponMounts = 1;
   visible = true;
   x = -SPACE_X_RESOLUTION;

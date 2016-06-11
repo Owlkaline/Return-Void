@@ -7,8 +7,8 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
   float Sw = ship->getWidth();
   float Sx = ship->getX()-Sw/2;
   float Sy = ship->getY();
-
   float Sh = ship->getHeight();
+  
   // Enemy Number
   for(int i = 0; i < enemy.size(); ++i) {
   
@@ -18,7 +18,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
       // The bullets number for the weapon
       for(int k = 0; k < enemy[i]->getNumOfBullets(j); ++k) {
         if(getQuadrant(enemy[i]->getBulletX(j, k), enemy[i]->getBulletY(j, k)) == shipQuad) {
-          // Bullet x, y, width, height 
+          // Enemy bullet x, y, width, height 
           float Bx = enemy[i]->getBulletX(j, k);
           float By = enemy[i]->getBulletY(j ,k);
           float Bw = enemy[i]->getBulletWidth(j, k);
@@ -30,11 +30,31 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
       }   
     }
     
+    // Enemy x, y, width, height 
+    float Ew = enemy[i]->getWidth();
+    float Ex = enemy[i]->getX()-Ew/2;
+    float Ey = enemy[i]->getY();
+    float Eh = enemy[i]->getHeight();
+      
+    int enemyQuad = getQuadrant(enemy[i]->getX(), enemy[i]->getY());
+    
     // Collision between player bullets and enemyship
-  }
- 
- // std::vector<Mount*> Emounts = enemy.getMount();
+    for(int j = 0; j < ship->getNumOfMounts(); ++j) {
 
+      for(int k = 0; k < ship->getNumOfBullets(j); ++k) {
+        if(getQuadrant(ship->getBulletX(j, k), ship->getBulletY(j, k)) == enemyQuad) {
+          // Ship bullet x, y, width, height 
+          float Bx = ship->getBulletX(j, k);
+          float By = ship->getBulletY(j, k);
+          float Bw = ship->getBulletWidth(j, k);
+          float Bh = ship->getBulletHeight(j, k);
+          if( (Ex + Ew) >= Bx && Ex <= (Bx + Bw) && (Ey + Eh) >= By && Ey <= (By + Bh) ) {
+            enemy[i]->takeDamage(ship->bulletHit(j, k));
+          }
+        } 
+      }
+    }
+  }
 }
 
 int Collisions::getQuadrant(float x, float y) {

@@ -17,11 +17,19 @@ class Ship {
     void draw();
     void setup();
     void clean();
+        
     float getX();
     float getY();
     float getWidth();
     float getHeight();
     bool getVisible();
+    int getNumOfMounts();
+    float getBulletX(int mIndex, int bIndex);
+    float getBulletY(int mIndex, int bIndex);
+    float getBulletWidth(int mIndex, int bIndex);
+    float getBulletHeight(int mIndex, int bIndex);
+    int getNumOfBullets(int index);
+    int bulletHit(int mIndex, int bIndex);
     float getDirectionX();
     float getDirectionY();
     float getDistanceFromCursor();

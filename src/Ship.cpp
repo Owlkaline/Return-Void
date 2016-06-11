@@ -161,6 +161,17 @@ void Ship::clean() {
       WeaponMount[i]->clean();
       delete WeaponMount[i];
     }
-
 }
+
+int Ship::getNumOfMounts() {
+  return MAXWEAPONS;
+}
+
+float Ship::getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
+float Ship::getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
+float Ship::getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
+float Ship::getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
+
+int Ship::getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
+int Ship::bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
 
