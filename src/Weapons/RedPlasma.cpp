@@ -4,30 +4,6 @@ RedPlasma::RedPlasma() {
 
 }
 
-void RedPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
-  this->x = x;
-  this->y = y;
-  width = 12;
-  height = 12;
-  speed = 15;
-  damage = 2;
-  this->angle = angle;
-  directionX = dirX;
-  directionY = dirY;
-  visible = false;
-  Texture = txt::LoadTexture("Textures/Game/Weapons/RedPlasma.png");
-} 
-
-void RedPlasma::update() {
-  if(visible) {
-    y+=speed*directionY;
-    x+=speed*directionX;
-  }
-  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
-    visible = false;
-
-}
-
 void RedPlasma::draw() {
   glPushMatrix();
   glTranslatef(x, y, 0); // M1 - 2nd translation
@@ -56,3 +32,27 @@ void RedPlasma::reset() {
 void RedPlasma::clean() {
 
 }
+
+void RedPlasma::update() {
+  if(visible) {
+    y+=speed*directionY;
+    x+=speed*directionX;
+  }
+  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
+    visible = false;
+}
+
+void RedPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
+  this->x = x;
+  this->y = y;
+  width = 12;
+  height = 12;
+  speed = 15;
+  damage = 2;
+  this->angle = angle;
+  directionX = dirX;
+  directionY = dirY;
+  visible = false;
+  Texture = txt::LoadTexture("Textures/Game/Weapons/RedPlasma.png");
+} 
+

@@ -22,15 +22,18 @@
 #define GAME                   1
 #define SEEDEDGAME             2
 
+// Game x, y coordinate system
 #define SPACE_X_RESOLUTION     1920 //1440
 #define SPACE_Y_RESOLUTION     1080 //810
 
 #define MINIMUM_DISTANCETOSHIP 100
 
+// Text Alignment
 #define LEFTHANDED             0
 #define CENTERED               1
 #define RIGHTHANDED            2
 
+// Types of Bullets
 #define REDPLASMA              1
 #define BLUEPLASMA             2
 

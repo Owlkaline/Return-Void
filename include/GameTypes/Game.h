@@ -3,32 +3,37 @@
 
 #include <vector>
 
-#include "./DisplayManager.h"
 #include "../Ships/Ship.h"
+#include "./DisplayManager.h"
 #include "../Enemies/BasicEnemy.h"
-#include "../Enemies/CorruptedStarShip.h"
 #include "../Namespaces/Collisions.h"
+#include "../Enemies/CorruptedStarShip.h"
+
 
 class Game: public DisplayManager {
   public:
     Game();
     
-    void draw();
-    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+    void draw();    
     void setup();
-    void restart();
     void clean();
-    
     void newWave();
+    void restart();
+    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+
   protected:
-    void drawBackground();
     void drawCrosshair();
-    Ship ship;
-    std::vector<Enemy*> enemy;
-    bool isNew;
+    void drawBackground();
+    
+    bool isNew; //If Game is new
+    
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
-    GLuint ChTexture;
+    
+    Ship ship;
+    GLuint ChTexture; 
+    std::vector<Enemy*> enemy;
+
 };
 
 #endif

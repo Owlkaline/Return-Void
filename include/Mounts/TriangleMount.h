@@ -6,14 +6,14 @@
 class TriangleMount: public Mount {
   public:
     TriangleMount();
-    void update(float x, float y, float directionX, float directionY, float angle);
-    void setup(int variant);
-    void setup();
+    
     void reset();
-
+    void setup();
+    void setup(int variant);
+    void update(float x, float y, float directionX, float directionY, float angle);
+    
   protected:
     void addBullet();
 };
-
 
 #endif

@@ -4,30 +4,6 @@ BluePlasma::BluePlasma() {
 
 }
 
-void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {
-  this->x = x;
-  this->y = y;
-  width = 4;
-  height = 32;
-  speed = 25;
-  damage = 1;
-  this->angle = angle;
-  directionX = dirX;
-  directionY = dirY;
-  visible = false;
-  Texture = txt::LoadTexture("Textures/Game/Weapons/BluePlasma.png");
-} 
-
-void BluePlasma::update() {
-  if(visible) {
-    y+=speed*directionY;
-    x+=speed*directionX;
-  }
-  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
-    visible = false;
-
-}
-
 void BluePlasma::draw() { 
   glPushMatrix();
   glTranslatef(x, y, 0); // M1 - 2nd translation
@@ -56,3 +32,27 @@ void BluePlasma::reset() {
 void BluePlasma::clean() {
 
 }
+
+void BluePlasma::update() {
+  if(visible) {
+    y+=speed*directionY;
+    x+=speed*directionX;
+  }
+  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
+    visible = false;
+}
+
+void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {
+  this->x = x;
+  this->y = y;
+  width = 4;
+  height = 32;
+  speed = 25;
+  damage = 1;
+  this->angle = angle;
+  directionX = dirX;
+  directionY = dirY;
+  visible = false;
+  Texture = txt::LoadTexture("Textures/Game/Weapons/BluePlasma.png");
+} 
+

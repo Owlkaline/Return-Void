@@ -3,28 +3,30 @@
 
 #include <vector>
 
-#include "./DisplayManager.h"
 #include "../defines.h"
 #include "../Menus/Button.h"
+#include "./DisplayManager.h"
 
 class MainMenu: public DisplayManager {
   public:
     MainMenu();
     
     void draw();
-    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+    void clean();
     void setup();
     void restart();
-    void clean();
+    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+
   protected:
-    float cursorX, cursorY, cursorRadius;
     void drawCursor();
     void drawBackground();
-    GLuint background, cursorTexture;
+    
+    int numOfButtons;    
+    
+    float cursorX, cursorY, cursorRadius;
+    
     Button buttons[4];
-    int numOfButtons;
-    //std::vector<Button*> buttons;
-   // Button buttons;
+    GLuint background, cursorTexture;
 };
 
 #endif

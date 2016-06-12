@@ -4,19 +4,22 @@
 #include <vector>
 #include <math.h>
 
-#include "../Namespaces/LoadTexture.h"
+#include "../Weapons/RedPlasma.h"
 #include "../Weapons/BluePlasma.h"
 #include "../Weapons/GreenPlasma.h"
-#include "../Weapons/RedPlasma.h"
+#include "../Namespaces/LoadTexture.h"
 
 class Mount {
   public:
     virtual void setup() = 0;
+    virtual void reset() = 0;
     virtual void setup(int variant) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle) = 0;
-    virtual void reset() = 0;
-        void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }
-        
+   
+    void takeDamage(int damage) { health -= damage; }
+    void setVisible(bool visible) { this->visible = visible; }
+    void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }  
+    void clean() {   bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};      
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
     void fire() { 
@@ -54,39 +57,36 @@ class Mount {
         glDisable(GL_TEXTURE_2D);
         glPopMatrix(); 
       }
-    }
-    void clean() {   bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};
+    } 
     
+    bool isVisible() { return visible; }
+    
+    int getNumBullets() { return bullets.size(); }
+    int bulletHit(int index) { return bullets[index]->hit(); }
+
     float getX() { return x; }
     float getY() { return y; }
     float getWidth() { return width; }
     float getHeight() { return height; }
-    bool isVisible() { return visible; }
-    
-    int bulletHit(int index) { return bullets[index]->hit(); }
-    int getNumBullets() { return bullets.size(); }
     float getBulletX(int index) { return bullets[index]->getX(); }
     float getBulletY(int index) { return bullets[index]->getY(); }
     float getBulletWidth(int index) { return bullets[index]->getWidth(); }
     float getBulletHeight(int index) { return bullets[index]->getHeight(); }
-    
-    void setVisible(bool visible) { this->visible = visible; }
-    
-    void takeDamage(int damage) { health -= damage; }
    
   protected:
-    int health;
-    int ticks, timer;
-    float x,y, width, height;
-    float dirX, dirY;
-    float fireRate;
-    float angle;
-    float offsetX, offsetY;
-    bool visible;
-    GLuint Texture;
-    std::vector<Weapon*> bullets;
-    
     virtual void addBullet()=0;
+  
+    int health;
+    float angle;   
+    bool visible;
+    float fireRate;
+    int ticks, timer;
+    float dirX, dirY;
+    float offsetX, offsetY;
+    float x,y, width, height;
+
+    GLuint Texture;
+    std::vector<Weapon*> bullets; 
 };
 
 #endif

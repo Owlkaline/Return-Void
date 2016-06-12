@@ -4,30 +4,6 @@ GreenPlasma::GreenPlasma() {
 
 }
 
-void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
-  this->x = x;
-  this->y = y;
-  width = 12;
-  height = 32;
-  speed = 12;
-  damage = 2;
-  this->angle = angle;
-  directionX = dirX;
-  directionY = dirY;
-  visible = false;
-  Texture = txt::LoadTexture("Textures/Game/Weapons/GreenPlasma.png");
-} 
-
-void GreenPlasma::update() {
-  if(visible) {
-    y+=speed*directionY;
-    x+=speed*directionX;
-  }
-  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
-    visible = false;
-
-}
-
 void GreenPlasma::draw() {
   glPushMatrix();
   glTranslatef(x, y, 0); // M1 - 2nd translation
@@ -56,3 +32,27 @@ void GreenPlasma::reset() {
 void GreenPlasma::clean() {
 
 }
+
+void GreenPlasma::update() {
+  if(visible) {
+    y+=speed*directionY;
+    x+=speed*directionX;
+  }
+  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
+    visible = false;
+}
+
+void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
+  this->x = x;
+  this->y = y;
+  width = 12;
+  height = 32;
+  speed = 12;
+  damage = 2;
+  this->angle = angle;
+  directionX = dirX;
+  directionY = dirY;
+  visible = false;
+  Texture = txt::LoadTexture("Textures/Game/Weapons/GreenPlasma.png");
+} 
+

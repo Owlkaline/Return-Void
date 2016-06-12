@@ -8,4 +8,5 @@
 namespace txt {
   GLuint LoadTexture( const char * filename );
 }
+
 #endif

@@ -7,14 +7,14 @@
 
 
 class Button {
-   
   public:
     Button();
-    void setup(float x, float y, float width, float height);
-
+    
     void draw();
-    void update(float mouseX, float mouseY, unsigned int* mouseBtnState);
     void clean();
+    void setup(float x, float y, float width, float height);
+    void update(float mouseX, float mouseY, unsigned int* mouseBtnState);
+
     //Draws Text to the screen
     void drawChar();
     void setTexture(char* filename);
@@ -23,18 +23,15 @@ class Button {
     void setColour(float R, float G, float B);
 
     bool checkIfClicked();
-    //static void bindTexture();
-  protected:
-    bool isSelected, hasTexture, hasBeenClicked;
-    float x, y, width, height;
-    float R, G, B;
+
+  protected:    
     char str[25];
-    int length, align;
-    //static GLuint Texture;
-    //static GLuint getTexture();
+    float R, G, B;
+    int length, align; 
+    float x, y, width, height;
+    bool isSelected, hasTexture, hasBeenClicked;
+    
     GLuint Texture;
 };
-//GLuint Button::Texture = txt::LoadTexture("Textures/Menu/Button.png");
-//GLuint Button::Texture = txt::LoadTexture("Textures/Menu/Button.png");
 
 #endif

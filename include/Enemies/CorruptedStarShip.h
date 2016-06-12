@@ -1,5 +1,5 @@
-#ifndef CorruptedStarShip_H
-#define CorruptedStarShip_H
+#ifndef CORRUPTEDSTARSHIP_H
+#define CORRUPTEDSTARSHIP_H
 
 #include "./Enemy.h"
 
@@ -9,7 +9,6 @@ class CorruptedStarShip: public Enemy {
     void update();
     void reset();
     void draw();
-  protected:
 };
 
 #endif

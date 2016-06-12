@@ -4,8 +4,8 @@ TriangleMount::TriangleMount() {
   ticks=0;
 }
 
-void TriangleMount::setup(int variant) {
-  setup();
+void TriangleMount::reset() {
+
 }
 
 void TriangleMount::setup() { 
@@ -21,13 +21,19 @@ void TriangleMount::setup() {
   Texture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
 } 
 
+void TriangleMount::setup(int variant) {
+  setup();
+}
+
 void TriangleMount::update(float x, float y, float directionX, float directionY, float angle) {  
   float rad = angle* (float)M_PI / 180;
   float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
+  
   this->x = x+newX;
   this->y = y+newY;
   this->angle = angle;
+  
   dirX = directionX;
   dirY = directionY;
   
@@ -44,6 +50,4 @@ void TriangleMount::addBullet() {
   bullets.push_back(new GreenPlasma);
 }
 
-void TriangleMount::reset() {
 
-}

@@ -9,7 +9,6 @@ class BasicEnemy: public Enemy {
     void update();
     void reset();
     void draw();
-  protected:
 };
 
 #endif

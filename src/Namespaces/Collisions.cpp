@@ -1,5 +1,36 @@
 #include "../../include/Namespaces/Collisions.h"
 
+void Collisions::drawQuadTree() {
+  // Quadrants
+  // Top Left
+  drawBox(SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4 * 3, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
+    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+  
+  // Top Right
+  drawBox(SPACE_X_RESOLUTION/4 * 3, SPACE_Y_RESOLUTION/4 * 3, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
+    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    
+  // Bottom Right
+  drawBox(SPACE_X_RESOLUTION/4 * 3, SPACE_Y_RESOLUTION/4, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
+    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+  
+  // Bottom Left
+  drawBox(SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
+    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
+}
+
 void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
   int shipQuad = getQuadrant(ship->getX(), ship->getY(), 1);
   
@@ -70,90 +101,6 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
   }
 }
 
-int Collisions::getQuadrant(float x, float y, int level) {
-  float halfX = SPACE_X_RESOLUTION/(2*level);
-  float halfY = SPACE_Y_RESOLUTION/(2*level);
-  
-  if(level == MAXLEVEL) {
-    if(x < halfX && y > halfY) {
-      return 1*level;
-    } else if (x < halfX && y < halfY) {
-      return 2*level;
-    } else if (x > halfX && y < halfY) {
-      return 3*level;
-    } else if (x < halfX && y < halfY) {
-      return 4*level;
-    }  
-  } else { 
-    return getQuadrant(x, y, level+1);
-  }
-  return 0;
-}
-
-void Collisions::drawBox(float x, float y, float width, float height) {
-  float border = 2;
-  glColor3f(1.0, 0.0, 0.0);
-  glBegin(GL_QUADS);
-  
-    // Left
-    glVertex3f(x-width/2, y+height/2, 0.0);
-    glVertex3f(x-width/2+border, y+height/2, 0.0);
-    glVertex3f(x-width/2+border, y-height/2, 0.0);
-    glVertex3f(x-width/2, y-height/2, 0.0);
-    
-    // Right
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glVertex3f(x+width/2-border, y+height/2, 0.0);
-    glVertex3f(x+width/2-border, y-height/2, 0.0);
-    glVertex3f(x+width/2, y-height/2, 0.0);
-    
-    // top
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glVertex3f(x+width/2, y+height/2-border, 0.0);
-    glVertex3f(x-width/2, y+height/2-border, 0.0);
-    glVertex3f(x-width/2, y+height/2, 0.0);
-        
-    // bottom
-    glVertex3f(x+width/2, y-height/2, 0.0);
-    glVertex3f(x+width/2, y-height/2+border, 0.0);
-    glVertex3f(x-width/2, y-height/2+border, 0.0);
-    glVertex3f(x-width/2, y-height/2, 0.0);
-  
-  glEnd();
-  glColor3f(1.0, 1.0, 1.0);
-}
-
-void Collisions::drawQuadTree() {
-  // Quadrants
-  // Top Left
-  drawBox(SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4 * 3, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
-    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-  
-  // Top Right
-  drawBox(SPACE_X_RESOLUTION/4 * 3, SPACE_Y_RESOLUTION/4 * 3, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
-    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8 * 7, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8 * 5, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    
-  // Bottom Right
-  drawBox(SPACE_X_RESOLUTION/4 * 3, SPACE_Y_RESOLUTION/4, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
-    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 7, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 5, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-  
-  // Bottom Left
-  drawBox(SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2);
-    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8 * 3, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8 * 3, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-    drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
-}
-
 void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {    
   // Enemy x, y, width, height 
   float Ew;
@@ -197,4 +144,57 @@ void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {
       drawBox(Bx, By, Bw, Bh);
     }
   }
+}
+
+void Collisions::drawBox(float x, float y, float width, float height) {
+  float border = 2;
+  glColor3f(1.0, 0.0, 0.0);
+  glBegin(GL_QUADS);
+  
+    // Left
+    glVertex3f(x-width/2, y+height/2, 0.0);
+    glVertex3f(x-width/2+border, y+height/2, 0.0);
+    glVertex3f(x-width/2+border, y-height/2, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
+    
+    // Right
+    glVertex3f(x+width/2, y+height/2, 0.0);
+    glVertex3f(x+width/2-border, y+height/2, 0.0);
+    glVertex3f(x+width/2-border, y-height/2, 0.0);
+    glVertex3f(x+width/2, y-height/2, 0.0);
+    
+    // top
+    glVertex3f(x+width/2, y+height/2, 0.0);
+    glVertex3f(x+width/2, y+height/2-border, 0.0);
+    glVertex3f(x-width/2, y+height/2-border, 0.0);
+    glVertex3f(x-width/2, y+height/2, 0.0);
+        
+    // bottom
+    glVertex3f(x+width/2, y-height/2, 0.0);
+    glVertex3f(x+width/2, y-height/2+border, 0.0);
+    glVertex3f(x-width/2, y-height/2+border, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
+  
+  glEnd();
+  glColor3f(1.0, 1.0, 1.0);
+}
+
+int Collisions::getQuadrant(float x, float y, int level) {
+  float halfX = SPACE_X_RESOLUTION/(2*level);
+  float halfY = SPACE_Y_RESOLUTION/(2*level);
+  
+  if(level == MAXLEVEL) {
+    if(x < halfX && y > halfY) {
+      return 1*level;
+    } else if (x < halfX && y < halfY) {
+      return 2*level;
+    } else if (x > halfX && y < halfY) {
+      return 3*level;
+    } else if (x < halfX && y < halfY) {
+      return 4*level;
+    }  
+  } else { 
+    return getQuadrant(x, y, level+1);
+  }
+  return 0;
 }

@@ -1,18 +1,26 @@
 #include "../../include/Mounts/BasicMount.h"
 
 BasicMount::BasicMount() {
-ticks=0;
+  ticks=0;
+}
+
+void BasicMount::reset() {
+
+}
+
+void BasicMount::setup() { 
+  setup(BLUEPLASMA);
 }
 
 void BasicMount::setup(int variant) { 
-  x = -SPACE_X_RESOLUTION;
-  y = -SPACE_Y_RESOLUTION;
+  ticks = 0;
   angle = 0;
   width = 8;
   height = 64;
   health = 10;
-  ticks = 0;
   visible = true;
+  x = -SPACE_X_RESOLUTION;
+  y = -SPACE_Y_RESOLUTION;
   this->variant = variant;
   switch (variant) {
     case BLUEPLASMA:
@@ -24,10 +32,6 @@ void BasicMount::setup(int variant) {
   }
   Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");  
 } 
-
-void BasicMount::setup() { 
-  setup(BLUEPLASMA);
-}
 
 void BasicMount::update(float x, float y, float directionX, float directionY, float angle) {  
   float rad = angle* (float)M_PI / 180;
@@ -59,6 +63,3 @@ void BasicMount::addBullet() {
   }
 }
 
-void BasicMount::reset() {
-
-}

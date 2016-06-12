@@ -6,13 +6,12 @@
 class BluePlasma: public Weapon {
   public:
     BluePlasma();
-    void update();
-    void draw();
-    void setup(float x, float y, float dirX, float dirY, float angle);
+    
+    void draw(); 
     void reset();
     void clean();
-  protected:
-  
+    void update();
+    void setup(float x, float y, float dirX, float dirY, float angle);  
 };
 
 #endif
