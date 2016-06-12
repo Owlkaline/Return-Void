@@ -34,3 +34,7 @@ Return-void
 settings.in
 incomplete
 obj
+
+*.cbp
+*.depend
+*.layout
