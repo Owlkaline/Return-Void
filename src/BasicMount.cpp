@@ -22,8 +22,7 @@ void BasicMount::setup(int variant) {
       timer = 20;
       break;
   }
-  Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
-  
+  Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");  
 } 
 
 void BasicMount::setup() { 

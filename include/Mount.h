@@ -31,7 +31,8 @@ class Mount {
     void draw() {
       for(unsigned int i = 0; i < bullets.size(); ++i)
         bullets[i]->draw();
-    
+      
+      if(visible) {
         glPushMatrix();
         glTranslatef(x, y, 0); // M1 - 2nd translation
         glRotatef(angle, 0.0f, 0.0f, 1.0f);  
@@ -52,6 +53,7 @@ class Mount {
         glEnd();
         glDisable(GL_TEXTURE_2D);
         glPopMatrix(); 
+      }
     }
     void clean() {   bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};
     

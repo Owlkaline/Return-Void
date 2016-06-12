@@ -91,12 +91,11 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   ChY = mouseY;
   ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
   
-  for(int i = 0; i < enemy.size(); ++i) {
-    if(enemy[i]->isVisible()) {
-      enemy[i]->update();
-    } else {
-      enemy.erase(enemy.begin()+i);
-    }
+  for(unsigned int i = 0; i < enemy.size(); ++i) {
+    enemy[i]->update();
+    if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
+        enemy.erase(enemy.begin()+i);
+    } 
   }
   
   Collisions::detect(&ship, enemy);
@@ -109,10 +108,16 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
 
 void Game::draw() {  
   drawBackground();
+  //Collisions::drawQuadTree(); 
   ship.draw();
-  for(int i = 0; i < enemy.size(); ++i) 
-    enemy[i]->draw();
+  for(unsigned int i = 0; i < enemy.size(); ++i) {
+      enemy[i]->draw();
+  }
+
+ // Collisions::drawHitBoxes(&ship, enemy);
+
   drawCrosshair();
+  
   
 }
 

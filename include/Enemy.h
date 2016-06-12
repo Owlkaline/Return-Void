@@ -40,17 +40,33 @@ class Enemy {
     float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
+    
+    int getTotalNumOfBullets() { 
+      int totalBullets = 0; 
+      for(int i = 0; i < maxWeaponMounts; ++i) { 
+        totalBullets += 5;//WeaponMount[i]->getNumBullets(); 
+      }
+      return totalBullets;
+    }
 
     void takeDamage(int damage) {
       health -= damage;
       if(health <= 0)
         visible = false;
     }
+    
+        
+    void setVisible(bool visible) { 
+      this->visible = visible; 
+      for(int i = 0; i < maxWeaponMounts; ++i) {
+        WeaponMount[0]->setVisible(visible);
+      } 
+    }
 
     std::vector<Mount*> getMount() { return WeaponMount; }
   protected:
     int health;
-    float x,y, width, height;
+    float x,y, width, height, speed;
     bool visible;
     GLuint Texture;
     std::vector<Mount*> WeaponMount;

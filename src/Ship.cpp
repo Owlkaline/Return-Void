@@ -18,6 +18,8 @@ void Ship::setup() {
   textures[0] = txt::LoadTexture("Textures/Game/Ships/Ship.png");
   textures[1] = txt::LoadTexture("Textures/Game/Ships/ShipLeft.png");
   textures[2] = txt::LoadTexture("Textures/Game/Ships/ShipRight.png");
+  const float mountPosX[MAXWEAPONS] = {18, -22, -2};
+  const float mountPosY[MAXWEAPONS] = {0, 0, 50};
   for(int i = 0; i < MAXWEAPONS; ++i) {
     switch(i) {
       case 0:
@@ -161,7 +163,7 @@ float Ship::getDistanceFromCursor() {
 void Ship::clean() {
     for(int i = 0; i < MAXWEAPONS; ++i) {
       WeaponMount[i]->clean();
-      delete WeaponMount[i];
+     // delete WeaponMount[i];
     }
 }
 

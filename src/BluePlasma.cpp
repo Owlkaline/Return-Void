@@ -28,7 +28,7 @@ void BluePlasma::update() {
 
 }
 
-void BluePlasma::draw() {
+void BluePlasma::draw() { 
   glPushMatrix();
   glTranslatef(x, y, 0); // M1 - 2nd translation
   glRotatef(angle, 0.0f, 0.0f, 1.0f);  

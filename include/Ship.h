@@ -38,8 +38,6 @@ class Ship {
     
   protected:
     //void respawn();
-    const float mountPosX[MAXWEAPONS] = {18, -22, -2};
-    const float mountPosY[MAXWEAPONS] = {0, 0, 50};
     
     GLuint textures[3];
     Mount* WeaponMount[MAXWEAPONS];
