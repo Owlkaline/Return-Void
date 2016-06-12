@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -Wall -g -O3
 PROG = Return-void
 
-SRCS = ./src/main.cpp ./src/Game.cpp ./src/MainMenu.cpp ./src/Ship.cpp ./src/LoadTexture.cpp ./src/Button.cpp ./src/BasicMount.cpp ./src/TriangleMount.cpp ./src/RedPlasma.cpp ./src/BluePlasma.cpp  ./src/GreenPlasma.cpp ./src/BasicEnemy.cpp ./src/Collisions.cpp ./src/CorruptedStarShip.cpp
+SRCS = ./src/main.cpp ./src/GameTypes/Game.cpp ./src/GameTypes/MainMenu.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Menus/Button.cpp ./src/Ships/Ship.cpp ./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp 
 
 LIBS = -lglut -lGLU -lGL -lpng
 

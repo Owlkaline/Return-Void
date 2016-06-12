@@ -18,8 +18,8 @@
 #include <GL/freeglut.h>
 #endif
 
-#include "../include/Game.h"
-#include "../include/MainMenu.h"
+#include "../include/GameTypes/Game.h"
+#include "../include/GameTypes/MainMenu.h"
 
 //Screen grid 100x100
 double gridWidth = 100; //veiwing world x
