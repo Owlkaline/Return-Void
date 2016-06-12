@@ -4,6 +4,34 @@ TriangleMount::TriangleMount() {
   ticks=0;
 }
 
+void TriangleMount::draw() {
+  for(unsigned int i = 0; i < bullets.size(); ++i)
+    bullets[i]->draw();
+      
+  if(visible) {
+    glPushMatrix();
+    glTranslatef(x, y, 0); // M1 - 2nd translation
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+    glTranslatef(-x, -y, 0); // M1 - 2nd translation
+    glEnable(GL_TEXTURE_2D);
+
+    glEnable(GL_TEXTURE_2D);  
+    glBindTexture(GL_TEXTURE_2D, getTriangleMountTexture());
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix(); 
+  }
+} 
+
 void TriangleMount::reset() {
 
 }
@@ -18,7 +46,7 @@ void TriangleMount::setup() {
   timer = 14;
   ticks = 0;
   visible = true;
-  Texture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
+  currentTexture = 0;
 } 
 
 void TriangleMount::setup(int variant) {

@@ -7,6 +7,7 @@ class BasicMount: public Mount {
   public:
     BasicMount();
     
+    void draw();
     void reset();
     void setup();
     void setup(int variant);

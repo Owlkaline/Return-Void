@@ -7,6 +7,7 @@ class TriangleMount: public Mount {
   public:
     TriangleMount();
     
+    void draw();
     void reset();
     void setup();
     void setup(int variant);

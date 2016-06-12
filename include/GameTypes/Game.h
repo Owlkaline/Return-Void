@@ -2,8 +2,11 @@
 #define GAME_H
 
 #include <vector>
+#include <string>
+#include <sstream>
 
 #include "../Ships/Ship.h"
+#include "../Menus/Label.h"
 #include "./DisplayManager.h"
 #include "../Enemies/BasicEnemy.h"
 #include "../Namespaces/Collisions.h"
@@ -27,10 +30,13 @@ class Game: public DisplayManager {
     
     bool isNew; //If Game is new
     
+    int wave, level;
+    
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
-    
+ 
     Ship ship;
+    Label lbWave;
     GLuint ChTexture; 
     std::vector<Enemy*> enemy;
 

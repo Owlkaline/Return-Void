@@ -213,6 +213,7 @@ int main(int argc, char** argv) {
   glutMouseFunc(mouseBtn);
   glutMotionFunc(mouse);
   glutPassiveMotionFunc(mouse);
+  
   setup();
   
   int  screenResX = glutGet(GLUT_SCREEN_WIDTH);

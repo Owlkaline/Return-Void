@@ -11,6 +11,7 @@
 
 class Mount {
   public:
+    virtual void draw() = 0;
     virtual void setup() = 0;
     virtual void reset() = 0;
     virtual void setup(int variant) = 0;
@@ -24,6 +25,7 @@ class Mount {
 
     void fire() { 
       if(visible) {
+        currentTexture = 1;
         addBullet();
         int i = bullets.size()-1;
         bullets[i]->setup(x, y, dirX, dirY, angle);
@@ -31,33 +33,7 @@ class Mount {
       }
     }
     
-    void draw() {
-      for(unsigned int i = 0; i < bullets.size(); ++i)
-        bullets[i]->draw();
-      
-      if(visible) {
-        glPushMatrix();
-        glTranslatef(x, y, 0); // M1 - 2nd translation
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-        glTranslatef(-x, -y, 0); // M1 - 2nd translation
-        glEnable(GL_TEXTURE_2D);
 
-        glEnable(GL_TEXTURE_2D);  
-        glBindTexture(GL_TEXTURE_2D, Texture);
-        glBegin(GL_QUADS);
-          glTexCoord2f(0.0f, 1.0f);
-          glVertex3f(x-width/2, y+height/2, 0.0);
-          glTexCoord2f(1.0f, 1.0f);
-          glVertex3f(x+width/2, y+height/2, 0.0);
-          glTexCoord2f(1.0f, 0.0f);
-          glVertex3f(x+width/2, y-height/2, 0.0);
-          glTexCoord2f(0.0f, 0.0f);
-          glVertex3f(x-width/2, y-height/2, 0.0);
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
-        glPopMatrix(); 
-      }
-    } 
     
     bool isVisible() { return visible; }
     
@@ -82,11 +58,24 @@ class Mount {
     float fireRate;
     int ticks, timer;
     float dirX, dirY;
+    int currentTexture;
     float offsetX, offsetY;
     float x,y, width, height;
 
-    GLuint Texture;
     std::vector<Weapon*> bullets; 
+    
+    static GLuint getBasicMountTexture() {
+      static GLuint basicMountTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
+      return basicMountTexture;
+    }
+    static GLuint getBasicMountBrightTexture() {
+      static GLuint basicMountBrightTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMountBright.png");
+      return basicMountBrightTexture;
+    }
+    static GLuint getTriangleMountTexture() {
+      static GLuint triangleMountTexture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
+      return triangleMountTexture;
+    }
 };
 
 #endif

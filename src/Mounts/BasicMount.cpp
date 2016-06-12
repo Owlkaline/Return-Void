@@ -4,6 +4,39 @@ BasicMount::BasicMount() {
   ticks=0;
 }
 
+void BasicMount::draw() {
+  for(unsigned int i = 0; i < bullets.size(); ++i)
+    bullets[i]->draw();
+      
+  if(visible) {
+    glPushMatrix();
+    glTranslatef(x, y, 0); // M1 - 2nd translation
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+    glTranslatef(-x, -y, 0); // M1 - 2nd translation
+    glEnable(GL_TEXTURE_2D);
+
+    glEnable(GL_TEXTURE_2D);  
+    if(currentTexture == 1) {
+      glBindTexture(GL_TEXTURE_2D, getBasicMountBrightTexture());
+    } else {
+      glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
+    }
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix(); 
+     
+  }
+} 
+
 void BasicMount::reset() {
 
 }
@@ -19,6 +52,7 @@ void BasicMount::setup(int variant) {
   height = 64;
   health = 10;
   visible = true;
+  currentTexture = 0;
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_Y_RESOLUTION;
   this->variant = variant;
@@ -30,10 +64,11 @@ void BasicMount::setup(int variant) {
       timer = 20;
       break;
   }
-  Texture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");  
 } 
 
 void BasicMount::update(float x, float y, float directionX, float directionY, float angle) {  
+  if(currentTexture == 1)
+    currentTexture = 0;
   float rad = angle* (float)M_PI / 180;
   float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);

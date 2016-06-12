@@ -67,8 +67,16 @@ class Enemy {
    
     float x, y, width, height, speed;
 
-    GLuint Texture;
     std::vector<Mount*> WeaponMount;
+    
+    static GLuint getBasicEnemyTexture() {
+      static GLuint basicEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/BasicEnemy.png");
+      return basicEnemyTexture;
+    }
+    static GLuint getCorruptedStarShipTexture() {
+      static GLuint corruptedStarShipTexture = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
+      return corruptedStarShipTexture;
+    }
   
 };
 

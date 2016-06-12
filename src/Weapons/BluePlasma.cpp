@@ -10,7 +10,7 @@ void BluePlasma::draw() {
   glRotatef(angle, 0.0f, 0.0f, 1.0f);  
   glTranslatef(-x, -y, 0); // M1 - 2nd translation
   glEnable(GL_TEXTURE_2D);  
-  glBindTexture(GL_TEXTURE_2D, Texture);
+  glBindTexture(GL_TEXTURE_2D, getBluePlasmaTexture());
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
     glVertex3f(x-width/2, y+height/2, 0.0);
@@ -53,6 +53,5 @@ void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   directionX = dirX;
   directionY = dirY;
   visible = false;
-  Texture = txt::LoadTexture("Textures/Game/Weapons/BluePlasma.png");
 } 
 

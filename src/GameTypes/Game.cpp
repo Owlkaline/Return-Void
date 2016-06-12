@@ -17,11 +17,18 @@ void Game::draw() {
   //Collisions::drawHitBoxes(&ship, enemy);
 
   drawCrosshair();
+  lbWave.draw();
 }
 
 void Game::setup() {
   srand(seed);
+  
+  wave = 0;
+  
+  lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
+  lbWave.setColour( 1.0,  0.0,  1.0);
 
+  level = 1;
   isNew = true;
   ended = false;
   ChRadius = 20;
@@ -35,7 +42,15 @@ void Game::clean() {
 }
 
 void Game::newWave() {
-  unsigned int numOfEnemies = rand()%100;
+  //lbWave.setText((char*)"Wave 1", 6);
+  wave++;
+  std::stringstream ss;
+  ss << wave;
+  std::string str = "Wave " + ss.str();
+  lbWave.setText(str.c_str(), str.length() + 1);
+  lbWave.setTimer(40);
+  
+  unsigned int numOfEnemies = rand()%(10*wave);
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
     switch(rand()%2 +1) {
       case 1:
@@ -46,8 +61,8 @@ void Game::newWave() {
         break;
     }    
     enemy[i]->setup();
-    enemy[i]->setX(rand()%(int)(SPACE_X_RESOLUTION-enemy[i]->getWidth()) +enemy[i]->getWidth());
-    enemy[i]->setY(rand()%(int)(SPACE_Y_RESOLUTION*5) +enemy[i]->getHeight()+SPACE_Y_RESOLUTION);
+    enemy[i]->setX(rand()%(int)(SPACE_X_RESOLUTION-enemy[i]->getWidth()) + enemy[i]->getWidth()/2);
+    enemy[i]->setY(rand()%(int)(SPACE_Y_RESOLUTION*(2+wave)) + (enemy[i]->getHeight()+SPACE_Y_RESOLUTION));
   }
   srand (rand()%RAND_MAX);
 }
@@ -88,6 +103,8 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     type = MAINMENU;
     ended = true;    
   }
+  
+  lbWave.update();
 }
 
 void Game::drawCrosshair() { 

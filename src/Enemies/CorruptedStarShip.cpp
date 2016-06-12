@@ -10,8 +10,6 @@ void CorruptedStarShip::setup() {
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_X_RESOLUTION;
   
-  Texture = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
-  
   for(int i = 0; i < maxWeaponMounts; ++i) {
     WeaponMount.push_back(new BasicMount);
     WeaponMount[i]->setup(REDPLASMA);
@@ -41,7 +39,7 @@ void CorruptedStarShip::draw() {
     
   if(visible) {
     glEnable(GL_TEXTURE_2D); 
-    glBindTexture(GL_TEXTURE_2D, Texture);
+    glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture());
   
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
