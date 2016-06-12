@@ -10,13 +10,13 @@ void Label::draw() {
     glBindTexture(GL_TEXTURE_2D, Texture);
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width, y+height, 0.0);
+      glVertex3f(x-width/2, y+height/2, 0.0);
       glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width, y+height, 0.0);
+      glVertex3f(x+width/2, y+height/2, 0.0);
       glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width, y-height, 0.0);
+      glVertex3f(x+width/2, y-height/2, 0.0);
       glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width, y-height, 0.0);
+      glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();  
   
     glDisable(GL_TEXTURE_2D);
@@ -32,6 +32,15 @@ void Label::draw() {
 
 void Label::clean() {
 
+}
+
+void Label::setup(float x, float y, float scale) {
+  hasTexture = false;
+  isTimed = false;
+  ticks = 0;
+  this->x = x;
+  this->y = y;
+  this->scale = scale;
 }
 
 void Label::setup(float x, float y, float scale, bool timer) {
@@ -74,10 +83,6 @@ void Label::drawChar() {
 void Label::setTexture(char* filename) {
   Texture = txt::LoadTexture(filename);
   hasTexture = true;
-}
-
-void Label::setAlignment(int alignment) {
-  align = alignment;
 }
 
 void Label::setText(const char* str, int length) {

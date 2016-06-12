@@ -8,6 +8,8 @@ void Button::draw() {
   if(hasTexture) {
     if(hasBeenClicked) {
       glColor3f(0.0f, 0.0f, 0.0f);
+    } else if(isSelected) {
+      glColor3f(0.5f, 0.5f, 0.5f);
     } else {
       glColor3f(1.0, 1.0, 1.0);
     }
@@ -16,65 +18,56 @@ void Button::draw() {
     glBindTexture(GL_TEXTURE_2D, Texture);
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width, y+height, 0.0);
+      glVertex3f(x-width/2, y+height/2, 0.0);
       glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width, y+height, 0.0);
+      glVertex3f(x+width/2, y+height/2, 0.0);
       glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width, y-height, 0.0);
+      glVertex3f(x+width/2, y-height/2, 0.0);
       glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width, y-height, 0.0);
+      glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();  
   
     glDisable(GL_TEXTURE_2D);
-  }
-  drawChar();
+  } 
+  if(scale != -1)
+    lbTitle.draw();
+  
+  //drawChar();
 }
 
 void Button::clean() {
 
 }
 
-void Button::setup(float x, float y, float width, float height) {
+void Button::setup(float x, float y, float width, float height, float scale) {
   isSelected = false;
   hasTexture = false;
   hasBeenClicked = false;
+  usingCustomHitBox = false;
   
   this->x = x;
   this->y = y;
+  this->scale = scale;
   this->width = width;
   this->height = height;
+  lbTitle.setup(x, y, scale);
 }
 
 void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState) {
   hasBeenClicked = false;
-  if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
-    if(mouseX > x-width && mouseX < x+width) {
-      if(mouseY > y-height && mouseY < y+height) {
+  isSelected = false;
+  if(!usingCustomHitBox) {
+    if(mouseY > y-height/2 && mouseY < y+height/2) {
+      isSelected = true;
+      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
         hasBeenClicked = true;
       }
     }
-  } 
-}
-
-//Draws Text to the screen
-void Button::drawChar() {
-  glPushMatrix();
-  glColor3f(R, G, B); // Text Colour
-  //glRasterPos2i(x, y); //coordinates of text
-  glTranslatef(x, y, 0);
-  glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //colour blue
-
-  // void * font = GLUT_BITMAP_TIMES_ROMAN_24;
-  //GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
-   glScalef(1,1,1);
-  for(int i = 0; i < length; i++) {
-    //glutBitmapCharacter(font, str[i]);//Draw character to screen
-    glutStrokeCharacter(GLUT_STROKE_ROMAN , str[i]);
+  } else {
+    if(mouseY > customHitBox[2] && mouseY < customHitBox[3]) {
+      hasBeenClicked = true;
+    }
   }
-     
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);//return colours to the full amounts
-
-  glPopMatrix();
 }
 
 void Button::setTexture(char* filename) {
@@ -82,24 +75,24 @@ void Button::setTexture(char* filename) {
   hasTexture = true;
 }
 
-void Button::setAlignment(int alignment) {
-  align = alignment;
-}
-
-void Button::setText(char str[25], int length) {
-  for(int i = 0; i < length; ++i)
-    this->str[i] = str[i];
-  this->length = length;
+void Button::setText(const char* str, int length) {
+  lbTitle.setText(str, length);
 }
 
 void Button::setColour(float R, float G, float B) {
-  this->R = R;
-  this->G = G;
-  this->B = B;
+  lbTitle.setColour(R, G, B);
 }
 
-bool Button::checkIfClicked() {
+bool Button::Clicked() {
   return hasBeenClicked;
+}
+
+void Button::setCustomHitBox(float x1, float y1, float x2, float y2) {
+  usingCustomHitBox = true;
+  customHitBox[0] = x1;
+  customHitBox[1] = y1;
+  customHitBox[2] = x2;
+  customHitBox[3] = y2;
 }
 
 

@@ -8,6 +8,7 @@
 #include "../Ships/Ship.h"
 #include "../Menus/Label.h"
 #include "./DisplayManager.h"
+#include "../Menus/PausedMenu.h"
 #include "../Enemies/BasicEnemy.h"
 #include "../Namespaces/Collisions.h"
 #include "../Enemies/CorruptedStarShip.h"
@@ -39,6 +40,7 @@ class Game: public DisplayManager {
  
     Ship ship;
     Label lbWave, lbScore;
+    PausedMenu pMenu;
     std::string strScore;
     GLuint ChTexture; 
     std::vector<Enemy*> enemy;

@@ -17,30 +17,26 @@ void MainMenu::clean() {
 
 }
 
+
+
 void MainMenu::setup() {
   ended = false;
   cursorRadius = 20;
   type = EXIT;
+  numOfButtons = 4;
   
   // Buttons
-  float buttonWidth = 140;
-  float buttonHeight = 35;
-  buttons[0].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 6.5-buttonHeight, buttonWidth, buttonHeight);
-  buttonWidth = 145;
-  buttonHeight = 45;
-  buttons[1].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 5.5-buttonHeight, buttonWidth, buttonHeight);
-  buttonWidth = 145;
-  buttonHeight = 45;
-  buttons[2].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 4.5-buttonHeight, buttonWidth, buttonHeight);
-  buttonWidth = 145;
-  buttonHeight = 45;
-  buttons[3].setup(SPACE_X_RESOLUTION/4 + buttonWidth, SPACE_Y_RESOLUTION/10 * 3.5-buttonHeight, buttonWidth, buttonHeight);
-  
+  float buttonWidth = 247;
+  float buttonHeight = 95;
+  for(int i = 0; i < numOfButtons; ++i) {
+    buttons[i].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
+  }
+
   buttons[0].setTexture((char*)"Textures/Menu/Start.png");
   buttons[1].setTexture((char*)"Textures/Menu/Seed.png");
   buttons[2].setTexture((char*)"Textures/Menu/Settings.png");
   buttons[3].setTexture((char*)"Textures/Menu/Quit.png");
-  numOfButtons = 4;
+
   
   //char* txt = "Start";
   //buttons.setText(txt, 5 );
@@ -67,19 +63,19 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
   for(int i = 0; i < numOfButtons; ++i)
     buttons[i].update(mouseX, mouseY, mouseBtnState);
   
-  if(buttons[0].checkIfClicked()) {
+  if(buttons[0].Clicked()) {
     type = GAME;
     ended = true;
   }
-  if(buttons[1].checkIfClicked()) {
+  if(buttons[1].Clicked()) {
     type = SEEDEDGAME;
     ended = true;
   }
-  if(buttons[2].checkIfClicked()) {
+  if(buttons[2].Clicked()) {
     //type = SETTINGS;
     //ended = true;
   }
-  if(buttons[3].checkIfClicked()) {
+  if(buttons[3].Clicked()) {
     type = EXIT;
     ended = true;
   }  

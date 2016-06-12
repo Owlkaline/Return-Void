@@ -19,6 +19,8 @@ void Game::draw() {
   drawCrosshair();
   lbWave.draw();
   lbScore.draw();
+  if(paused)
+    pMenu.draw();
 }
 
 void Game::setup() {
@@ -45,6 +47,8 @@ void Game::setup() {
   ChRadius = 20;
   type = MAINMENU;
   ChTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
+  
+  pMenu.setup();
 }
 
 void Game::clean() {
@@ -88,12 +92,6 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
-    type = MAINMENU;
-    ended = true;
-  }
-  
-  if(keyState['p'] == BUTTON_DOWN && prevKeyState['p'] != BUTTON_DOWN) {
-    prevKeyState['p'] = keyState['p'];
     paused = !paused;
   }
   
@@ -130,8 +128,13 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   
     lbWave.update();
   } else {
-    lbWave.setText("Paused", 6);
-    lbWave.setTimer(1);
+    pMenu.update(mouseX, mouseY, mouseBtnState);
+    if(!pMenu.isPaused())
+      paused = !paused;
+    if(pMenu.hasEnded()) {
+      type = MAINMENU;
+      ended = true;
+    }
   }
 }
 
