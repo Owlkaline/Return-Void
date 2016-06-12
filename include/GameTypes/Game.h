@@ -29,14 +29,17 @@ class Game: public DisplayManager {
     void drawBackground();
     
     bool isNew; //If Game is new
+    bool paused;
     
+    int score;
     int wave, level;
     
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
  
     Ship ship;
-    Label lbWave;
+    Label lbWave, lbScore;
+    std::string strScore;
     GLuint ChTexture; 
     std::vector<Enemy*> enemy;
 

@@ -24,12 +24,15 @@ class Label {
     void setText(const char* str, int length);
     void setColour(float R, float G, float B);
     
+    void setX(float x) { this->x = x; }
+    void setY(float y) { this->y = y; }
+    
     bool timeExpired() {
       if(isTimed) {
         if(ticks <= 0)
           return true;
       }
-      return isTimed;
+      return false;
     }
 
   protected:    

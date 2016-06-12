@@ -22,19 +22,12 @@ void Label::draw() {
     glDisable(GL_TEXTURE_2D);
   }
   
- // switch(isTimed) {
-//    case true:
- //     if(ticks <= 0)
- //       break;
- //   case false:
   if(isTimed) {
     if(ticks > 0)
       drawChar();
   } else {
     drawChar();
   }
- //     break;
- // }
 }
 
 void Label::clean() {
@@ -72,7 +65,7 @@ void Label::drawChar() {
     //glutBitmapCharacter(font, str[i]);//Draw character to screen
     glutStrokeCharacter(GLUT_STROKE_ROMAN , str[i]);
   }
-     
+   
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);//return colours to the full amounts
 
   glPopMatrix();
@@ -86,7 +79,7 @@ void Label::setTexture(char* filename) {
 void Label::setAlignment(int alignment) {
   align = alignment;
 }
- 
+
 void Label::setText(const char* str, int length) {
   for(int i = 0; i < length; ++i)
     this->str[i] = str[i];

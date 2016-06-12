@@ -9,6 +9,10 @@ class CorruptedStarShip: public Enemy {
     void update();
     void reset();
     void draw();
+    void setX(float x);
+    void setY(float y);
+  protected:
+    float startX, startY, amp;
 };
 
 #endif

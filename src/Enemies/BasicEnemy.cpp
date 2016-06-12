@@ -5,10 +5,18 @@ void BasicEnemy::setup() {
   width = 75;
   height = 75;
   health = 10;
+  transparent = 1.0;
   visible = true;
   maxWeaponMounts = 1;
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_X_RESOLUTION;
+  
+  wasKilled = false;
+  
+  score = 10;
+  lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
+  lbScore.setColour( 1.0,  0.1,  0.1);
+  lbScore.setText("+10", 3);
   
   for(int i = 0; i < maxWeaponMounts; ++i) {
     WeaponMount.push_back(new BasicMount);
@@ -18,7 +26,9 @@ void BasicEnemy::setup() {
 }
  
 void BasicEnemy::update() {
-  y-=speed;
+  if(visible)
+    y-=speed;
+    
   if(y <= -height)
     setVisible(false);
   
@@ -52,5 +62,10 @@ void BasicEnemy::draw() {
       glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);  
-  } 
+  } else {
+    lbScore.setX(x);
+    lbScore.setY(y);
+    lbScore.draw();
+    
+  }
 }

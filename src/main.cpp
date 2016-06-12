@@ -148,6 +148,7 @@ void display() {
 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
+  prevKeyState['p'] = keyState['p'];
   
   glEnable (GL_BLEND);
   glBlendFunc (GL_ONE, GL_ONE);

@@ -18,15 +18,26 @@ void Game::draw() {
 
   drawCrosshair();
   lbWave.draw();
+  lbScore.draw();
 }
 
 void Game::setup() {
   srand(seed);
   
+  paused = false;
+  
+  score = 0;
   wave = 0;
   
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
+  
+  lbScore.setup(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
+  lbScore.setColour( 1.0,  1.0,  1.0);
+  std::stringstream ss;
+  ss << score;
+  std::string strScore = "Score: " + ss.str();
+  lbScore.setText(strScore.c_str(), strScore.length() + 1);
 
   level = 1;
   isNew = true;
@@ -72,13 +83,8 @@ void Game::restart() {
 }
 
 void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
-  if(isNew) {
-    ship.setup();
-    isNew = false;
-  }
-  
-  if(enemy.size() == 0) 
-    newWave();
+  ChX = mouseX;
+  ChY = mouseY;
   
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
@@ -86,25 +92,47 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     ended = true;
   }
   
-  ChX = mouseX;
-  ChY = mouseY;
-  ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+  if(keyState['p'] == BUTTON_DOWN && prevKeyState['p'] != BUTTON_DOWN) {
+    prevKeyState['p'] = keyState['p'];
+    paused = !paused;
+  }
   
-  for(unsigned int i = 0; i < enemy.size(); ++i) {
-    enemy[i]->update();
-    if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
+  if(!paused) {
+    if(isNew) {
+      ship.setup();
+      isNew = false;
+    }  
+    if(enemy.size() == 0) 
+      newWave();
+
+    ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+  
+    for(unsigned int i = 0; i < enemy.size(); ++i) {
+      enemy[i]->update();
+      if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
+        if(enemy[i]->getWaskilled()) {
+          score += enemy[i]->getScore();
+          std::stringstream ss;
+          ss << score;
+          std::string str = "Score: " + ss.str();
+          lbScore.setText(str.c_str(), str.length() + 1);        
+        }
         enemy.erase(enemy.begin()+i);
-    } 
+      } 
+    }
+  
+    Collisions::detect(&ship, enemy);
+  
+    if(!ship.getVisible()) {
+      type = MAINMENU;
+      ended = true;    
+    }
+  
+    lbWave.update();
+  } else {
+    lbWave.setText("Paused", 6);
+    lbWave.setTimer(1);
   }
-  
-  Collisions::detect(&ship, enemy);
-  
-  if(!ship.getVisible()) {
-    type = MAINMENU;
-    ended = true;    
-  }
-  
-  lbWave.update();
 }
 
 void Game::drawCrosshair() { 
@@ -135,8 +163,10 @@ void Game::drawCrosshair() {
   
   glColor3f(0.0, 0.0, 0.0f);
   glDisable(GL_TEXTURE_2D);
+  
 }
 
 void Game::drawBackground() {
-
+  // Draw Score
+  
 }

@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "../defines.h"
+#include "../Menus/Label.h"
 #include "../Mounts/BasicMount.h"
 #include "../Namespaces/LoadTexture.h"
 
@@ -15,14 +16,19 @@ class Enemy {
     virtual void setup() = 0;
     virtual void update() = 0;
     
-    void setX(float x) { this->x = x; }
-    void setY(float y) { this->y = y; }
+    virtual void setX(float x) { this->x = x; }
+    virtual void setY(float y) { this->y = y; }
     void clean() { WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }    
     
     void takeDamage(int damage) {
       health -= damage;
-      if(health <= 0)
-        visible = false;
+      if(health <= 0) {
+        if(visible) {
+          lbScore.setTimer(1);
+          wasKilled = true;
+        }
+        setVisible(false);        
+      }
     }
         
     void setVisible(bool visible) { 
@@ -32,8 +38,11 @@ class Enemy {
       } 
     }
     
+    bool getWaskilled() { return wasKilled; }
     bool isVisible() { return visible; }
+    bool timerExpired() { return lbScore.timeExpired(); }
     
+    int getScore() { return score; }
     int getNumOfMounts() { return maxWeaponMounts; }
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
     int bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
@@ -61,12 +70,17 @@ class Enemy {
 
   protected:
     bool visible;
+    bool wasKilled;
     
+    int score;
     int health;
     int maxWeaponMounts;  
    
+    float transparent;
     float x, y, width, height, speed;
-
+   
+    Label lbScore;
+   
     std::vector<Mount*> WeaponMount;
     
     static GLuint getBasicEnemyTexture() {
