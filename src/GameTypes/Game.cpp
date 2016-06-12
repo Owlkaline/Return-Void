@@ -14,7 +14,7 @@ void Game::draw() {
       enemy[i]->draw();
   }
   //Collisions::drawQuadTree(); 
-  // Collisions::drawHitBoxes(&ship, enemy);
+  //Collisions::drawHitBoxes(&ship, enemy);
 
   drawCrosshair();
 }
