@@ -3,7 +3,7 @@
 Game::Game() {
   //glutSetCursor(GLUT_CURSOR_NONE);
   seed = time(NULL);
-  srand (seed);
+  boostRand.newSeed(seed);
 }
 
 void Game::draw() {
@@ -13,8 +13,11 @@ void Game::draw() {
   for(unsigned int i = 0; i < enemy.size(); ++i) {
       enemy[i]->draw();
   }
-  //Collisions::drawQuadTree();
-  //Collisions::drawHitBoxes(&ship, enemy);
+   
+  if(DRAWQUADTREE)
+  Collisions::drawQuadTree();
+  if(DRAWHITBOX)
+    Collisions::drawHitBoxes(&ship, enemy);
 
   drawCrosshair();
   lbWave.draw();
@@ -24,7 +27,7 @@ void Game::draw() {
 }
 
 void Game::setup() {
-  srand(seed);
+  boostRand.newSeed(seed);
 
   paused = false;
 
@@ -57,17 +60,17 @@ void Game::clean() {
 }
 
 void Game::newWave() {
-  //lbWave.setText((char*)"Wave 1", 6);
   wave++;
+  
   std::stringstream ss;
   ss << wave;
   std::string str = "Wave " + ss.str();
   lbWave.setText(str.c_str(), str.length() + 1);
   lbWave.setTimer(40);
 
-  unsigned int numOfEnemies = rand()%(10*wave);
+  unsigned int numOfEnemies = boostRand.Int(0, wave*10);
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
-    switch(rand()%2 +1) {
+    switch(boostRand.Int(1, 2)) {
       case 1:
         enemy.push_back(new BasicEnemy);
         break;
@@ -76,10 +79,10 @@ void Game::newWave() {
         break;
     }
     enemy[i]->setup();
-    enemy[i]->setX(rand()%(int)(SPACE_X_RESOLUTION-enemy[i]->getWidth()) + enemy[i]->getWidth()/2);
-    enemy[i]->setY(rand()%(int)(SPACE_Y_RESOLUTION*(2+wave)) + (enemy[i]->getHeight()+SPACE_Y_RESOLUTION));
+    enemy[i]->setX(boostRand.Int((int)(enemy[i]->getWidth()/2),               SPACE_X_RESOLUTION-enemy[i]->getWidth()));
+    enemy[i]->setY(boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION),  (int)(SPACE_Y_RESOLUTION*(2+wave))));
   }
-  srand (rand()%RAND_MAX);
+  boostRand.newSeed(boostRand.Int(0, 9999999999));
 }
 
 void Game::restart() {
@@ -143,14 +146,17 @@ void Game::drawCrosshair() {
   glBindTexture(GL_TEXTURE_2D, ChTexture);
   // Nice blue #1e00d5
   glColor3f(0.117647059f, 0, 0.835294197f);
-
-  if(ship.getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
+  if(!paused) {
+    if(ship.getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
+      lastChX = ChX;
+      lastChY = ChY;
+    } else {
+      lastChX = ship.getX() +  MINIMUM_DISTANCETOSHIP*ship.getDirectionX();
+      lastChY = ship.getY() + MINIMUM_DISTANCETOSHIP*ship.getDirectionY();
+    }
+  } else {
     lastChX = ChX;
     lastChY = ChY;
-  } else {
-    lastChX = ship.getX() +  MINIMUM_DISTANCETOSHIP*ship.getDirectionX();
-    lastChY = ship.getY() + MINIMUM_DISTANCETOSHIP*ship.getDirectionY();
-
   }
 
   glBegin(GL_QUADS);

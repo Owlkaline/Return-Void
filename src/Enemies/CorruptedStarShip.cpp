@@ -26,6 +26,8 @@ void CorruptedStarShip::setup() {
 }
 
 void CorruptedStarShip::update() {
+  if(tookDamage)
+    tick--;
   if(visible) {
     y-=speed;
     x = amp * sin(((2*M_PI)/800)*(y)) + startX;
@@ -50,8 +52,7 @@ void CorruptedStarShip::draw() {
     WeaponMount[i]->draw();
 
   if(visible) {
-      if(tookDamage) {
-      tick--;
+    if(tookDamage) {
       if(tick <= 0)
         tookDamage = false;
       glColor3f(1.0, 0.0, 0.0);

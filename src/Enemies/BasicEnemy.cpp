@@ -27,6 +27,9 @@ void BasicEnemy::setup() {
 }
 
 void BasicEnemy::update() {
+  if(tookDamage)
+    tick--;
+
   if(visible)
     y-=speed;
 
@@ -50,7 +53,6 @@ void BasicEnemy::draw() {
 
   if(visible) {
     if(tookDamage) {
-      tick--;
       if(tick <= 0)
         tookDamage = false;
       glColor3f(1.0, 0.0, 0.0);

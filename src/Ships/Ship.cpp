@@ -1,32 +1,38 @@
 #include "../../include/Ships/Ship.h"   
   
 Ship::Ship() {
-
+  tick = 0;
 } 
 
 void Ship::draw() {
   if(visible){
-  glPushMatrix();
-  glTranslatef(x, y, 0); // M1 - 2nd translation
-  glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-  glTranslatef(-x, -y, 0); // M1 - 2nd translation
-  glEnable(GL_TEXTURE_2D);
+    if(tookDamage) {
+      tick--;
+        if(tick <= 0)
+          tookDamage = false;
+        glColor3f(1.0, 0.0, 0.0);
+      }
+    glPushMatrix();
+    glTranslatef(x, y, 0); // M1 - 2nd translation
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+    glTranslatef(-x, -y, 0); // M1 - 2nd translation
+    glEnable(GL_TEXTURE_2D);
   
-  glBindTexture(GL_TEXTURE_2D, textures[0]);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
   
- // glColor3f(0.0, 0.0, 1.0);
-  glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x-width/2, y+height/2, 0.0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x+width/2, y-height/2, 0.0);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x-width/2, y-height/2, 0.0);
-  glEnd();
-  glDisable(GL_TEXTURE_2D);
-  glPopMatrix();    
+    // glColor3f(0.0, 0.0, 1.0);
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();    
   }
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->draw(); 
@@ -78,12 +84,17 @@ void Ship::clean() {
     
 void Ship::takeDamage(int damage) {
   health -= damage;
+  if(tookDamage == false) {
+    tick = 5;
+    tookDamage = true;
+  }
   if(health <= 0)
     visible = false;
 }
     
 void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
-    
+  if(tookDamage)
+    tick--;
   float diffx = mouseX - x;
   float diffy = mouseY - y;
   //diffy /= aspectRatio;

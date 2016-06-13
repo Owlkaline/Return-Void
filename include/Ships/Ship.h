@@ -38,12 +38,13 @@ class Ship {
     float getBulletWidth(int mIndex, int bIndex);
     float getBulletHeight(int mIndex, int bIndex);
     
-  protected:           
+  protected:   
+    int tick;        
     int health;
     float x, y;
     float speed;
     float angle;
-    bool visible;
+    bool visible, tookDamage;
     float width, height;
     float directionX, directionY, distanceFromCursor;
   

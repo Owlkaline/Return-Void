@@ -9,6 +9,7 @@
 #include "../Menus/Label.h"
 #include "./DisplayManager.h"
 #include "../Menus/PausedMenu.h"
+#include "../Namespaces/Random.h"
 #include "../Enemies/BasicEnemy.h"
 #include "../Namespaces/Collisions.h"
 #include "../Enemies/CorruptedStarShip.h"
@@ -38,11 +39,13 @@ class Game: public DisplayManager {
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
  
+ 
     Ship ship;
-    Label lbWave, lbScore;
+    Random boostRand;
+    GLuint ChTexture; 
     PausedMenu pMenu;
     std::string strScore;
-    GLuint ChTexture; 
+    Label lbWave, lbScore;
     std::vector<Enemy*> enemy;
 
 };

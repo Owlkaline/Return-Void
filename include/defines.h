@@ -32,6 +32,9 @@
 #define REDPLASMA              1
 #define BLUEPLASMA             2
 
+#define DRAWQUADTREE           0
+#define DRAWHITBOX             0
+
 // Arrow Keys
 #define LEFT_KEY               0
 #define RIGHT_KEY              1

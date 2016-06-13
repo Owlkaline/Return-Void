@@ -40,9 +40,9 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
   int shipQuadBL = getQuadrant(ship->getX(), ship->getY(), 1);
   
   // Ship x, y, width, height 
-  float Sw = ship->getWidth()/2;
-  float Sh = ship->getHeight()/2;
-  float Sx = ship->getX();
+  float Sw = ship->getWidth();
+  float Sh = ship->getHeight();
+  float Sx = ship->getX()-Sw/2;
   float Sy = ship->getY();
   
   // Enemy Number
@@ -132,8 +132,8 @@ void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {
 
   float Sx = ship->getX();
   float Sy = ship->getY();
-  float Sw = ship->getWidth()/2;
-  float Sh = ship->getHeight()/2;
+  float Sw = ship->getWidth();
+  float Sh = ship->getHeight();
   drawBox(Sx, Sy, Sw, Sh);
   for(int i = 0; i < ship->getNumOfMounts(); ++i) {
     for(int j = 0; j < ship->getNumOfBullets(i); ++j) {
