@@ -3,7 +3,7 @@
 #include "../include/defines.h"
 
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <time.h>  /* time */
 #include <iostream>
 #include <fstream>
@@ -113,9 +113,9 @@ void mouse(int x, int y) {
 
 //Draw function
 void display() {
-  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);  
+  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
-  
+
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
 
   //Texture options
@@ -126,15 +126,15 @@ void display() {
 
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
-  
-  if(Display[type]->hasEnded()) {  
+
+  if(Display[type]->hasEnded()) {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
       case EXIT:
         glutLeaveGameMode();
         exit(0);
         break;
-      case SEEDEDGAME: 
+      case SEEDEDGAME:
         newtype = GAME;
         Display[newtype]->setSeed(9847);
         break;
@@ -142,7 +142,7 @@ void display() {
         Display[newtype]->setSeed(time(NULL));
         break;
     }
-    Display[type]->clean(); 
+    Display[type]->clean();
     type = newtype;
     Display[type]->setup();
   }
@@ -150,10 +150,10 @@ void display() {
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
   prevMouseBtnState[GLUT_LEFT_BUTTON] = mouseBtnState[GLUT_LEFT_BUTTON];
-  
+
   glEnable (GL_BLEND);
   glBlendFunc (GL_ONE, GL_ONE);
-  
+
   glutSwapBuffers();
 }
 
@@ -163,18 +163,18 @@ void setup() {
   aspectRatio = (float)screenResX / screenResY;
   aspectW = 100.0f/screenResX;
   aspectH = 100.0f/screenResY;
-   
+
   for(int i = 0; i < 5; ++i) {
     specialKey[i] = BUTTON_UP;
   }
-  
+
   //Display[MAINMENU] = new MainMenu();
   Display[type]->setup();
 }
 
 int main(int argc, char** argv) {
   /* initialize random seed: */
-  srand (time(NULL));
+ // srand (time(NULL));
 
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);     // black background
 
@@ -187,7 +187,7 @@ int main(int argc, char** argv) {
   sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
   glutGet(GLUT_SCREEN_HEIGHT));
   glutGameModeString(mode_string);
-  if(glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+  if(!glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
     printf("GameMode %s is possible\n", mode_string);
 
     // destroys the current graphics window
@@ -215,16 +215,16 @@ int main(int argc, char** argv) {
   glutMouseFunc(mouseBtn);
   glutMotionFunc(mouse);
   glutPassiveMotionFunc(mouse);
-  
+
   setup();
-  
+
   int  screenResX = glutGet(GLUT_SCREEN_WIDTH);
   int  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
-  
+
   const float ratio(static_cast<float>(SPACE_X_RESOLUTION)/static_cast<float>(SPACE_Y_RESOLUTION));
-  
+
   gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
-  
+
   if (static_cast<float>(screenResX)/screenResY > ratio) {
     //  scale_ = static_cast<float>(screenResY)/SPACE_Y_RESOLUTION;
     screenResY = screenResY;

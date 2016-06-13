@@ -15,7 +15,7 @@ void Game::draw() {
   }
    
   if(DRAWQUADTREE)
-  Collisions::drawQuadTree();
+    Collisions::drawQuadTree();
   if(DRAWHITBOX)
     Collisions::drawHitBoxes(&ship, enemy);
 
@@ -134,7 +134,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
     if(!pMenu.isPaused())
       paused = !paused;
-    if(pMenu.hasEnded()) {
+     if(pMenu.hasEnded()) {
       type = MAINMENU;
       ended = true;
     }

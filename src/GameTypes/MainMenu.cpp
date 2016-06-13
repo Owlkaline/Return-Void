@@ -17,8 +17,6 @@ void MainMenu::clean() {
 
 }
 
-
-
 void MainMenu::setup() {
   ended = false;
   cursorRadius = 20;

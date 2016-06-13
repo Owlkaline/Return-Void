@@ -16,8 +16,8 @@ void PausedMenu::setup() {
 
   float width = 247;
   float height = 95;
-  Resume.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, 0.3);
-  Quit.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, 0.3);
+  Resume.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, -1);
+  Quit.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, -1);
   
   lbTitle.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
 
