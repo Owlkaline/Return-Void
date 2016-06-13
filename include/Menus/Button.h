@@ -15,7 +15,7 @@ class Button {
     void draw();
     void clean();
     void setup(float x, float y, float width, float height, float scale);
-    void update(float mouseX, float mouseY, unsigned int* mouseBtnState);
+    void update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
 
     //Draws Text to the screen
     void setTexture(char* filename);

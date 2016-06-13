@@ -51,7 +51,7 @@ void MainMenu::restart() {
 
 }
 
-void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
     type = EXIT;
@@ -61,7 +61,7 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
   cursorY = mouseY;
   
   for(int i = 0; i < numOfButtons; ++i)
-    buttons[i].update(mouseX, mouseY, mouseBtnState);
+    buttons[i].update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   
   if(buttons[0].Clicked()) {
     type = GAME;

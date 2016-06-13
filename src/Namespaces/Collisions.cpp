@@ -74,11 +74,11 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
       float Ex = enemy[i]->getX();
       float Ey = enemy[i]->getY();
     
-      int enemyQuadTL = getQuadrant(enemy[i]->getX(), enemy[i]->getY()+enemy[i]->getHeight()/2, 1);
-      int ememyQuadTR = getQuadrant(enemy[i]->getX()+enemy[i]->getWidth()/2, enemy[i]->getY()+enemy[i]->getHeight()/2, 1);
-      int enemyQuadBR = getQuadrant(enemy[i]->getX()+enemy[i]->getWidth()/2, enemy[i]->getY(), 1);
-      int enemyQuadBL = getQuadrant(enemy[i]->getX(), enemy[i]->getY(), 1);
-      
+      int enemyQuadTL = getQuadrant(Ex-Ew, Ey+Eh, 1);
+      int ememyQuadTR = getQuadrant(Ex+Ew, Ey+Eh, 1);
+      int enemyQuadBR = getQuadrant(Ex+Ew, Ey-Eh, 1);
+      int enemyQuadBL = getQuadrant(Ex-Ew, Ey-Eh, 1);
+       
       int enemyQuad = getQuadrant(enemy[i]->getX(), enemy[i]->getY(), 1);
     
       // Collision between player bullets and enemyship

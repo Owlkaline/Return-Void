@@ -53,13 +53,13 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   lbTitle.setup(x, y, scale);
 }
 
-void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState) {
+void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   hasBeenClicked = false;
   isSelected = false;
   if(!usingCustomHitBox) {
     if(mouseY > y-height/2 && mouseY < y+height/2) {
       isSelected = true;
-      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
         hasBeenClicked = true;
       }
     }

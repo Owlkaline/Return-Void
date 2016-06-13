@@ -86,7 +86,7 @@ void Game::restart() {
   ship.setup();
 }
 
-void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   ChX = mouseX;
   ChY = mouseY;
   
@@ -128,7 +128,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   
     lbWave.update();
   } else {
-    pMenu.update(mouseX, mouseY, mouseBtnState);
+    pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
     if(!pMenu.isPaused())
       paused = !paused;
     if(pMenu.hasEnded()) {

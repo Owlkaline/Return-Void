@@ -38,6 +38,7 @@ int refreshMillis = 20;
 unsigned char keyState[255];
 unsigned char prevKeyState[255];
 unsigned int  mouseBtnState[3];
+unsigned int  prevMouseBtnState[3];
 unsigned int  specialKey[5];
 unsigned int  prevSpeicalKey[5];
 
@@ -123,7 +124,7 @@ void display() {
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
 
-  Display[type]->update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+  Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
   
   if(Display[type]->hasEnded()) {  
@@ -148,6 +149,7 @@ void display() {
 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
+  prevMouseBtnState[GLUT_LEFT_BUTTON] = mouseBtnState[GLUT_LEFT_BUTTON];
   
   glEnable (GL_BLEND);
   glBlendFunc (GL_ONE, GL_ONE);

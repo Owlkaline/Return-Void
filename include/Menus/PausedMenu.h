@@ -13,7 +13,7 @@ class PausedMenu {
     void draw();
     void setup();
     void drawBackground();
-    void update(float mouseX, float mouseY, unsigned int* mouseBtnState);
+    void update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
    
     bool isPaused();
     bool hasEnded();

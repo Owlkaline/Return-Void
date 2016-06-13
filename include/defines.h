@@ -28,11 +28,6 @@
 
 #define MINIMUM_DISTANCETOSHIP 100
 
-// Text Alignment
-#define LEFTHANDED             0
-#define CENTERED               1
-#define RIGHTHANDED            2
-
 // Types of Bullets
 #define REDPLASMA              1
 #define BLUEPLASMA             2
@@ -45,13 +40,5 @@
 
 // Keys
 #define ESC                    27
-#define A                      65
-#define D                      68
-#define S                      83
-#define W                      87
-#define a                      97
-#define d                      100
-#define s                      115
-#define w                      119
 
 #endif
