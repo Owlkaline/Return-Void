@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 CC = g++
-CFLAGS  = -Wall -g -O3
+CFLAGS  = -Wall -g -O3 -lpthread
 PROG = Return-void
 
 SRCS = $(SRCMAIN) $(SRCMENU) $(SRCGAME) $(SRCENEMIES) $(SRCMOUNTS) $(SRCBULLETS)

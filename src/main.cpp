@@ -187,10 +187,11 @@ int main(int argc, char** argv) {
   sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
   glutGet(GLUT_SCREEN_HEIGHT));
   glutGameModeString(mode_string);
-  if(!glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+  
+  if(GAME_MODE_POSSIBLE && !glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
     printf("GameMode %s is possible\n", mode_string);
-
-    // destroys the current graphics window
+ 
+    //destroys the current graphics window
     glutDestroyWindow(0);
     glutEnterGameMode();
   } else {
@@ -198,6 +199,7 @@ int main(int argc, char** argv) {
     glutCreateWindow("Return-Void");
     glutFullScreen();
   }
+  
   // hide the cursor
   glutSetCursor(GLUT_CURSOR_NONE);
 

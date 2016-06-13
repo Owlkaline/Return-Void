@@ -12,6 +12,8 @@
 #include <png.h>
 #endif
 
+#define GAME_MODE_POSSIBLE     0
+
 // key states
 #define BUTTON_UP              0
 #define BUTTON_DOWN            1
