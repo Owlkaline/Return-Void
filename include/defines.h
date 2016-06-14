@@ -20,9 +20,10 @@
 
 // Game States
 #define EXIT                   -1
+#define SEEDEDGAME             -2
 #define MAINMENU               0
 #define GAME                   1
-#define SEEDEDGAME             2
+#define SETTINGS               2
 
 // Game x, y coordinate system
 #define SPACE_X_RESOLUTION     1920 //1440

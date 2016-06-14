@@ -1,39 +1,43 @@
-#include "../../include/GameTypes/MainMenu.h"
+#include "../../include/GameTypes/SettingsMenu.h"
 
-MainMenu::MainMenu() {
+SettingsMenu::SettingsMenu() {
 
 }
 
-void MainMenu::draw() {  
+void SettingsMenu::draw() {  
   drawBackground();
   
   for(int i = 0; i < numOfButtons; ++i)
     buttons[i].draw();
   
+  checkBox.draw();
   drawCursor();
 }
 
-void MainMenu::clean() {
+void SettingsMenu::clean() {
 
 }
 
-void MainMenu::setup() {
+void SettingsMenu::setup() {
   ended = false;
   cursorRadius = 20;
-  type = EXIT;
-  numOfButtons = 4;
+  type = MAINMENU;
+  numOfButtons = 2;
   
   // Buttons
   float buttonWidth = 247;
   float buttonHeight = 95;
-  for(int i = 0; i < numOfButtons; ++i) {
-    buttons[i].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
-  }
+ 
+    buttons[0].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
+  
+   buttonWidth = 267;
+   buttons[1].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (3.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
 
-  buttons[0].setTexture((char*)"Textures/Menu/Start.png");
-  buttons[1].setTexture((char*)"Textures/Menu/Seed.png");
-  buttons[2].setTexture((char*)"Textures/Menu/Settings.png");
-  buttons[3].setTexture((char*)"Textures/Menu/Quit.png");
+  buttons[0].setTexture((char*)"Textures/Menu/GameMode.png");
+
+  buttons[1].setTexture((char*)"Textures/Menu/Return.png");
+  
+  checkBox.setup((SPACE_X_RESOLUTION/4)*3 - 50, SPACE_Y_RESOLUTION/10 * (6.2));
 
   
   //char* txt = "Start";
@@ -45,14 +49,14 @@ void MainMenu::setup() {
   cursorTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
 }
 
-void MainMenu::restart() {
+void SettingsMenu::restart() {
 
 }
 
-void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void SettingsMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
-    type = EXIT;
+    type = MAINMENU;
     ended = true;
   }
   cursorX = mouseX;
@@ -62,24 +66,19 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
     buttons[i].update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   
   if(buttons[0].Clicked()) {
-    type = GAME;
-    ended = true;
+    if(checkBox.getChecked()) {
+      checkBox.uncheck();
+    } else {
+      checkBox.check();
+    }
   }
   if(buttons[1].Clicked()) {
-    type = SEEDEDGAME;
+    type = MAINMENU;
     ended = true;
-  }
-  if(buttons[2].Clicked()) {
-    type = SETTINGS;
-    ended = true;
-  }
-  if(buttons[3].Clicked()) {
-    type = EXIT;
-    ended = true;
-  }  
+  } 
 }
 
-void MainMenu::drawCursor() { 
+void SettingsMenu::drawCursor() { 
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, cursorTexture);
   // Nice blue #1e00d5
@@ -100,7 +99,7 @@ void MainMenu::drawCursor() {
   glDisable(GL_TEXTURE_2D);
 }
 
-void MainMenu::drawBackground() {
+void SettingsMenu::drawBackground() {
   // Background
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, background);

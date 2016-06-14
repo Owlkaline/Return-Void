@@ -6,7 +6,7 @@ Button::Button() {
 
 void Button::draw() {
   if(hasTexture) {
-    if(hasBeenClicked) {
+    if(clicked || hasBeenClicked) {
       glColor3f(0.0f, 0.0f, 0.0f);
     } else if(isSelected) {
       glColor3f(0.5f, 0.5f, 0.5f);
@@ -28,6 +28,7 @@ void Button::draw() {
     glEnd();  
   
     glDisable(GL_TEXTURE_2D);
+    glColor3f(1.0, 1.0, 1.0);
   } 
   if(scale != -1)
     lbTitle.draw();
@@ -42,6 +43,7 @@ void Button::clean() {
 void Button::setup(float x, float y, float width, float height, float scale) {
   isSelected = false;
   hasTexture = false;
+  clicked = false;
   hasBeenClicked = false;
   usingCustomHitBox = false;
   
@@ -56,12 +58,20 @@ void Button::setup(float x, float y, float width, float height, float scale) {
 void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   hasBeenClicked = false;
   isSelected = false;
+  if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP)
+    clicked = false;
+
   if(!usingCustomHitBox) {
     if(mouseY > y-height/2 && mouseY < y+height/2) {
+      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+         clicked = true;
+      } 
       isSelected = true;
       if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
         hasBeenClicked = true;
       }
+    } else {
+      clicked = false;
     }
   } else {
     if(mouseY > customHitBox[2] && mouseY < customHitBox[3]) {

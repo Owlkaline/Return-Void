@@ -67,8 +67,11 @@ void Game::newWave() {
   std::string str = "Wave " + ss.str();
   lbWave.setText(str.c_str(), str.length() + 1);
   lbWave.setTimer(40);
-
-  unsigned int numOfEnemies = boostRand.Int(0, wave*10);
+  
+  unsigned int numOfEnemies = 0;
+  while(numOfEnemies == 0)
+    numOfEnemies = boostRand.Int(0, wave*10);
+    
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
     switch(boostRand.Int(1, 2)) {
       case 1:

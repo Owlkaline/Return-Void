@@ -6,8 +6,6 @@
 #include "./Label.h"
 #include "../Namespaces/LoadTexture.h"
 
-
-
 class Button {
   public:
     Button();
@@ -34,7 +32,7 @@ class Button {
     bool usingCustomHitBox;
     float customHitBox[4];
     float x, y, width, height;
-    bool isSelected, hasTexture, hasBeenClicked;
+    bool isSelected, hasTexture, hasBeenClicked, clicked;
     
     Label lbTitle;
     GLuint Texture;

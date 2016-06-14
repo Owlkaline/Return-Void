@@ -20,6 +20,10 @@
 
 #include "../include/GameTypes/Game.h"
 #include "../include/GameTypes/MainMenu.h"
+#include "../include/GameTypes/SettingsMenu.h"
+
+int screenResX;
+int screenResY;
 
 //Screen grid 100x100
 double gridWidth = 100; //veiwing world x
@@ -47,7 +51,7 @@ float mouseX, mouseY;
 
 int type = MAINMENU;
 
-DisplayManager* Display[2] = { new MainMenu(), new Game() };
+DisplayManager* Display[3] = { new MainMenu(), new Game(), new SettingsMenu() };
 
 //Sets the pace of the game
 void Timer(int value) {
@@ -146,7 +150,7 @@ void display() {
     type = newtype;
     Display[type]->setup();
   }
-
+ 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
   prevMouseBtnState[GLUT_LEFT_BUTTON] = mouseBtnState[GLUT_LEFT_BUTTON];
@@ -161,8 +165,8 @@ void setup() {
   int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
   int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
   aspectRatio = (float)screenResX / screenResY;
-  aspectW = 100.0f/screenResX;
-  aspectH = 100.0f/screenResY;
+  aspectW = SPACE_X_RESOLUTION/screenResX;
+  aspectH = SPACE_Y_RESOLUTION/screenResY;
 
   for(int i = 0; i < 5; ++i) {
     specialKey[i] = BUTTON_UP;
@@ -196,7 +200,11 @@ int main(int argc, char** argv) {
     glutEnterGameMode();
   } else {
     printf("GameMode %s NOT possible\n", mode_string);
-    glutCreateWindow("Return-Void");
+
+   // glutInitWindowPosition(100,100);
+	//glutInitWindowSize(1280,720);
+	
+	glutCreateWindow("Return-Void");
     glutFullScreen();
   }
   
@@ -217,11 +225,11 @@ int main(int argc, char** argv) {
   glutMouseFunc(mouseBtn);
   glutMotionFunc(mouse);
   glutPassiveMotionFunc(mouse);
-
+ 
   setup();
 
-  int  screenResX = glutGet(GLUT_SCREEN_WIDTH);
-  int  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  screenResX = glutGet(GLUT_SCREEN_WIDTH);
+  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
 
   const float ratio(static_cast<float>(SPACE_X_RESOLUTION)/static_cast<float>(SPACE_Y_RESOLUTION));
 

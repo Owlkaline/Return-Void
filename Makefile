@@ -1,13 +1,13 @@
 #!/usr/bin/make -f
 CC = g++
-CFLAGS  = -Wall -g -O3 -lpthread
+CFLAGS  = -Wall -g -O3
 PROG = Return-void
 
 SRCS = $(SRCMAIN) $(SRCMENU) $(SRCGAME) $(SRCENEMIES) $(SRCMOUNTS) $(SRCBULLETS)
 
-SRCMAIN =./src/main.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Namespaces/Random.cpp ./src/Ships/Ship.cpp  
+SRCMAIN =./src/main.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Namespaces/Random.cpp ./src/Namespaces/File.cpp ./src/Ships/Ship.cpp  
 
-SRCMENU =./src/Menus/PausedMenu.cpp ./src/Menus/Button.cpp ./src/Menus/Label.cpp
+SRCMENU =./src/GameTypes/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/Button.cpp ./src/Menus/Label.cpp ./src/Menus/CheckBox.cpp
 
 SRCGAME =./src/GameTypes/Game.cpp ./src/GameTypes/MainMenu.cpp
 
