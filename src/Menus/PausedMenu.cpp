@@ -52,7 +52,7 @@ void PausedMenu::drawBackground() {
     glEnd();    
     glDisable(GL_TEXTURE_2D);
 }
-
+ 
 void PausedMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   paused = true;
   ended = false;

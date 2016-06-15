@@ -18,6 +18,7 @@
 #include <GL/freeglut.h>
 #endif
 
+#include "../include/Namespaces/File.h"
 #include "../include/GameTypes/Game.h"
 #include "../include/GameTypes/MainMenu.h"
 #include "../include/GameTypes/SettingsMenu.h"
@@ -50,6 +51,8 @@ unsigned int  prevSpeicalKey[5];
 float mouseX, mouseY;
 
 int type = MAINMENU;
+
+bool gameMode;
 
 DisplayManager* Display[3] = { new MainMenu(), new Game(), new SettingsMenu() };
 
@@ -114,6 +117,20 @@ void mouse(int x, int y) {
   mouseY = SPACE_Y_RESOLUTION - ((float)y); //* aspectH)) ; // Inverted: SPACE_Y_RESOLUTION - ((((float)y) * aspectH))
 }
 
+void saveGame() {
+   //size_t size = sizeof(float)+sizeof(bool);
+  std::ofstream ofs("data/settings.bin", std::ios::binary);
+  File::SaveFloat(ofs, VERSION);
+
+  File::SaveBool(ofs, gameMode);
+  File::SaveInt(ofs, 67);
+  ofs.close();
+ //  infile.seekp(243, ios::beg);
+  
+ // File::skipData(ifs, size);
+ // printf("Number: %d\n", File::LoadInt(ifs));
+
+}
 
 //Draw function
 void display() {
@@ -135,6 +152,7 @@ void display() {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
       case EXIT:
+        saveGame();
         glutLeaveGameMode();
         exit(0);
         break;
@@ -171,6 +189,9 @@ void setup() {
   for(int i = 0; i < 5; ++i) {
     specialKey[i] = BUTTON_UP;
   }
+  
+
+  
 
   //Display[MAINMENU] = new MainMenu();
   Display[type]->setup();
@@ -186,6 +207,26 @@ int main(int argc, char** argv) {
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
+  gameMode = GAME_MODE_POSSIBLE;
+  if(File::check_if_file_exists("data/settings.bin")) {
+    printf("File data/settings.bin does exist\n");
+    std::ifstream ifs1("data/settings.bin", std::ios::binary);
+    float version = File::LoadFloat(ifs1);
+    
+    if(version == (float)VERSION) {
+      gameMode = File::LoadBool(ifs1);
+     // int a = File::LoadInt(ifs1);
+      //printf("%d\n", a);
+    } else {
+      printf("Incorrect settings verison\n version needed: %f\n", version);
+      gameMode = GAME_MODE_POSSIBLE;
+    }
+    ifs1.close(); 
+  } else {
+    printf("File data/settings.bin does not exist\nUsing defaults");
+
+  }
+  
   char mode_string[24];
 
   sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),

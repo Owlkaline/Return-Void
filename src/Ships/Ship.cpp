@@ -4,15 +4,69 @@ Ship::Ship() {
   tick = 0;
 } 
 
+void Ship::drawHealthBar() {
+  float hx = 10;
+  float hy = SPACE_Y_RESOLUTION - 10;    
+  float hw = 500;
+  float hh = 50;
+  glEnable(GL_TEXTURE_2D);
+  
+  glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
+  
+  glColor4f(1.0, 1.0, 1.0, 0.5f);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(hx, hy, 0.0);
+    glTexCoord2f(1.0f, 1.0f);
+     glVertex3f(hx+hw, hy, 0.0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(hx+hw, hy-hh, 0.0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(hx, hy-hh, 0.0);
+  glEnd();
+  
+  hx+=3;
+  hy-=3;
+  hw-=9;
+  hh-=7;
+  
+  if(health < crntHealth)
+    crntHealth-=0.000000002;
+    
+  hw = hw/maxHealth * crntHealth;
+   
+  glDisable(GL_TEXTURE_2D);
+  glColor4f(1.0, 1.0, 1.0, 0.5);
+  
+  glEnable(GL_TEXTURE_2D);
+  
+  glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
+  
+  //glColor4f(1.0, 1.0, 1.0, 0.5f);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(hx, hy, 0.0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(hx+hw, hy, 0.0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(hx+hw, hy-hh, 0.0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(hx, hy-hh, 0.0);
+  glEnd();
+   
+ glDisable(GL_TEXTURE_2D);
+ glColor4f(1.0, 1.0, 1.0, 1.0);
+}
+
 void Ship::draw() {
   if(visible){
+    glPushMatrix();
     if(tookDamage) {
       tick--;
         if(tick <= 0)
           tookDamage = false;
         glColor3f(1.0, 0.0, 0.0);
-      }
-    glPushMatrix();
+    }
     glTranslatef(x, y, 0); // M1 - 2nd translation
     glRotatef(angle, 0.0f, 0.0f, 1.0f);  
     glTranslatef(-x, -y, 0); // M1 - 2nd translation
@@ -32,7 +86,8 @@ void Ship::draw() {
       glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
-    glPopMatrix();    
+    glPopMatrix();  
+    glColor4f(1.0, 1.0, 1.0, 1.0);      
   }
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->draw(); 
@@ -45,6 +100,8 @@ void Ship::setup() {
   speed = 5;
   angle = 0;
   health = 60;
+  maxHealth = health;
+  crntHealth = health;
   width = 100;
   height = 100;
   visible = true;
@@ -54,6 +111,9 @@ void Ship::setup() {
   textures[0] = txt::LoadTexture("Textures/Game/Ships/Ship.png");
   textures[1] = txt::LoadTexture("Textures/Game/Ships/ShipLeft.png");
   textures[2] = txt::LoadTexture("Textures/Game/Ships/ShipRight.png");
+  
+  healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
+  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
   
   const float mountPosX[MAXWEAPONS] = {18, -22, -2};
   const float mountPosY[MAXWEAPONS] = {0, 0, 50};

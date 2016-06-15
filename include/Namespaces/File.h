@@ -8,6 +8,9 @@ namespace File {
 
     bool check_if_file_exists (const std::string& name);
     
+    void skipData(std::ifstream& inf, size_t a);
+    void skipData(std::ofstream& of, size_t a);
+    
     int LoadInt(std::ifstream& inf);
     float LoadFloat(std::ifstream& inf);
     char LoadChar(std::ifstream& inf);

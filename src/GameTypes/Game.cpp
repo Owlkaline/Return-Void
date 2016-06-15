@@ -14,6 +14,8 @@ void Game::draw() {
       enemy[i]->draw();
   }
    
+  ship.drawHealthBar();
+   
   if(DRAWQUADTREE)
     Collisions::drawQuadTree();
   if(DRAWHITBOX)

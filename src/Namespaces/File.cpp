@@ -5,6 +5,14 @@ bool File::check_if_file_exists (const std::string& name) {
     return f.good();
 }
 
+void File::skipData(std::ifstream& inf, size_t a) {
+  inf.read((char* )&a, sizeof(a));
+}
+
+void File::skipData(std::ofstream& of, size_t a) {
+  of.write((char* )&a, sizeof(a));
+}
+
 int File::LoadInt(std::ifstream& inf) {
   int var;
   inf.read((char* )&var, sizeof(var));

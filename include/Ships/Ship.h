@@ -17,6 +17,7 @@ class Ship {
     void draw();
     void setup();
     void clean();
+    void drawHealthBar();
     void takeDamage(int damage);
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);  
     
@@ -40,7 +41,7 @@ class Ship {
     
   protected:   
     int tick;        
-    int health;
+    int health, maxHealth, crntHealth;
     float x, y;
     float speed;
     float angle;
@@ -49,6 +50,7 @@ class Ship {
     float directionX, directionY, distanceFromCursor;
   
     GLuint textures[3];
+    GLuint healthBarTexture[2];
     Mount* WeaponMount[MAXWEAPONS];
 };
 
