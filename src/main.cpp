@@ -118,18 +118,12 @@ void mouse(int x, int y) {
 }
 
 void saveGame() {
-   //size_t size = sizeof(float)+sizeof(bool);
-  std::ofstream ofs("data/settings.bin", std::ios::binary);
+  std::ofstream ofs("./data/settings.bin", std::ios::binary);
   File::SaveFloat(ofs, VERSION);
 
   File::SaveBool(ofs, gameMode);
   File::SaveInt(ofs, 67);
   ofs.close();
- //  infile.seekp(243, ios::beg);
-  
- // File::skipData(ifs, size);
- // printf("Number: %d\n", File::LoadInt(ifs));
-
 }
 
 //Draw function
@@ -190,9 +184,6 @@ void setup() {
     specialKey[i] = BUTTON_UP;
   }
   
-
-  
-
   //Display[MAINMENU] = new MainMenu();
   Display[type]->setup();
 }
@@ -209,22 +200,22 @@ int main(int argc, char** argv) {
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
   gameMode = GAME_MODE_POSSIBLE;
   if(File::check_if_file_exists("data/settings.bin")) {
-    printf("File data/settings.bin does exist\n");
-    std::ifstream ifs1("data/settings.bin", std::ios::binary);
-    float version = File::LoadFloat(ifs1);
+    printf("Loading Settings...\n");
+    std::ifstream ifs("./data/settings.bin", std::ios::binary);
+    float version = File::LoadFloat(ifs);
     
     if(version == (float)VERSION) {
-      gameMode = File::LoadBool(ifs1);
+      gameMode = File::LoadBool(ifs);
      // int a = File::LoadInt(ifs1);
       //printf("%d\n", a);
     } else {
       printf("Incorrect settings verison\n version needed: %f\n", version);
       gameMode = GAME_MODE_POSSIBLE;
     }
-    ifs1.close(); 
+    ifs.close(); 
   } else {
-    printf("File data/settings.bin does not exist\nUsing defaults");
-
+    printf("Creating settings file\n");
+    std::ofstream ofs("./data/settings.bin", std::ios::binary);
   }
   
   char mode_string[24];

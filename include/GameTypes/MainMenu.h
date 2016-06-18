@@ -25,7 +25,7 @@ class MainMenu: public DisplayManager {
     
     float cursorX, cursorY, cursorRadius;
     
-    Button buttons[4];
+    Button buttons[5];
     GLuint background, cursorTexture;
 };
 

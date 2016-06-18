@@ -21,7 +21,7 @@ void MainMenu::setup() {
   ended = false;
   cursorRadius = 20;
   type = EXIT;
-  numOfButtons = 4;
+  numOfButtons = 5;
   
   // Buttons
   float buttonWidth = 247;
@@ -32,10 +32,10 @@ void MainMenu::setup() {
 
   buttons[0].setTexture((char*)"Textures/Menu/Start.png");
   buttons[1].setTexture((char*)"Textures/Menu/Seed.png");
-  buttons[2].setTexture((char*)"Textures/Menu/Settings.png");
-  buttons[3].setTexture((char*)"Textures/Menu/Quit.png");
+  buttons[2].setTexture((char*)"Textures/Menu/Shop.png");
+  buttons[3].setTexture((char*)"Textures/Menu/Settings.png");
+  buttons[4].setTexture((char*)"Textures/Menu/Quit.png");
 
-  
   //char* txt = "Start";
   //buttons.setText(txt, 5 );
   //19e8ab R 25 G 232 B 171
@@ -70,10 +70,13 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
     ended = true;
   }
   if(buttons[2].Clicked()) {
+
+  }
+  if(buttons[3].Clicked()) {
     type = SETTINGS;
     ended = true;
   }
-  if(buttons[3].Clicked()) {
+  if(buttons[4].Clicked()) {
     type = EXIT;
     ended = true;
   }  
@@ -130,7 +133,6 @@ void MainMenu::drawBackground() {
     glVertex3f(SPACE_X_RESOLUTION/4, 0, 0.0);
   glEnd();
   glColor4f(1.0, 1.0, 1.0f, 1.0f);
-
 }
 
 

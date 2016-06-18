@@ -5,6 +5,7 @@ void CorruptedStarShip::setup() {
   width = 75;
   height = 75;
   health = 10;
+  maxHealth = health;
   tick = 0;
   visible = true;
   maxWeaponMounts = 1;
@@ -49,16 +50,24 @@ void CorruptedStarShip::reset() {
 
 void CorruptedStarShip::draw() {
   for(int i = 0; i < maxWeaponMounts; ++i)
-    WeaponMount[i]->draw();
+    WeaponMount[i]->draw(); 
 
   if(visible) {
     if(tookDamage) {
       if(tick <= 0)
         tookDamage = false;
-      glColor3f(1.0, 0.0, 0.0);
+     // glColor3f(1.0, 0.0, 0.0);
     }
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture());
+    if(health > maxHealth/4.0 *3) {
+      glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(0));
+    } else if(health > maxHealth/2) {
+      glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(1));
+    } else if(health > maxHealth/4) {
+      glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(2));
+    } else {
+      glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(3));
+    }
 
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
@@ -75,7 +84,7 @@ void CorruptedStarShip::draw() {
   } else {
     lbScore.setX(x);
     lbScore.setY(y);
-    lbScore.draw();
+    lbScore.draw(); 
   }
 }
 

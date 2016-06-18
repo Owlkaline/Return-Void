@@ -10,6 +10,7 @@
 #include "./DisplayManager.h"
 #include "../Menus/PausedMenu.h"
 #include "../Namespaces/Random.h"
+#include "../Menus/HighscoreScreen.h"
 #include "../Enemies/BasicEnemy.h"
 #include "../Namespaces/Collisions.h"
 #include "../Enemies/CorruptedStarShip.h"
@@ -32,6 +33,7 @@ class Game: public DisplayManager {
     
     bool isNew; //If Game is new
     bool paused;
+    bool inHighscore;
     
     int score;
     int wave, level;
@@ -39,13 +41,13 @@ class Game: public DisplayManager {
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
  
- 
     Ship ship;
     Random boostRand;
     GLuint ChTexture; 
     PausedMenu pMenu;
     std::string strScore;
     Label lbWave, lbScore;
+    HighscoreScreen highscore;
     std::vector<Enemy*> enemy;
 
 };

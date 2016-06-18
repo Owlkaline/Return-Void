@@ -8,30 +8,36 @@ Game::Game() {
 
 void Game::draw() {
   drawBackground();
-
-  ship.draw();
-  for(unsigned int i = 0; i < enemy.size(); ++i) {
-      enemy[i]->draw();
-  }
-   
-  ship.drawHealthBar();
-   
-  if(DRAWQUADTREE)
-    Collisions::drawQuadTree();
-  if(DRAWHITBOX)
-    Collisions::drawHitBoxes(&ship, enemy);
-
   drawCrosshair();
-  lbWave.draw();
-  lbScore.draw();
-  if(paused)
-    pMenu.draw();
+  if(!inHighscore) {
+    ship.draw();
+    for(unsigned int i = 0; i < enemy.size(); ++i) {
+      enemy[i]->draw();
+    }
+   
+    ship.drawHealthBar();
+   
+    if(DRAWQUADTREE)
+      Collisions::drawQuadTree();
+    if(DRAWHITBOX)
+      Collisions::drawHitBoxes(&ship, enemy);
+
+    
+    lbWave.draw();
+    lbScore.draw();
+    if(paused)
+      pMenu.draw();
+  } else {
+    highscore.draw();
+  }
 }
 
 void Game::setup() {
   boostRand.newSeed(seed);
 
   paused = false;
+  inHighscore = false;
+  highscore.setup();
 
   score = 0;
   wave = 0;
@@ -98,51 +104,64 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   ChX = mouseX;
   ChY = mouseY;
 
-  if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
-    prevKeyState[ESC] = keyState[ESC];
-    paused = !paused;
-  }
-
-  if(!paused) {
-    if(isNew) {
-      ship.setup();
-      isNew = false;
-    }
-    if(enemy.size() == 0)
-      newWave();
-
-    ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
-
-    for(unsigned int i = 0; i < enemy.size(); ++i) {
-      enemy[i]->update();
-      if(enemy[i]->getWaskilled()) {
-        score += enemy[i]->getScore();
-        std::stringstream ss;
-        ss << score;
-        std::string str = "Score: " + ss.str();
-        lbScore.setText(str.c_str(), str.length() + 1);
-      }
-      if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
-        enemy.erase(enemy.begin()+i);
-      }
-    }
-
-    Collisions::detect(&ship, enemy);
-
-    if(!ship.getVisible()) {
-      type = MAINMENU;
-      ended = true;
-    }
-
-    lbWave.update();
-  } else {
-    pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
-    if(!pMenu.isPaused())
+  if(!inHighscore) {
+    if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
+      prevKeyState[ESC] = keyState[ESC];
       paused = !paused;
-     if(pMenu.hasEnded()) {
+    }
+  
+    if(!paused) {
+      if(isNew) {
+        ship.setup();
+        isNew = false;
+      }
+      if(enemy.size() == 0)
+        newWave();
+
+      ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+
+      for(unsigned int i = 0; i < enemy.size(); ++i) {
+        enemy[i]->update();
+        if(enemy[i]->getWaskilled()) {
+          score += enemy[i]->getScore();
+          std::stringstream ss;
+          ss << score;
+          std::string str = "Score: " + ss.str();
+          lbScore.setText(str.c_str(), str.length() + 1);
+        }
+        if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
+          enemy.erase(enemy.begin()+i);
+        }
+      }
+
+      Collisions::detect(&ship, enemy);
+
+      if(!ship.getVisible()) {
+        inHighscore = true;
+        highscore.setScore(score);
+        //type = MAINMENU;
+      //  ended = true;
+      }
+
+      lbWave.update();
+    } else {
+      pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+      if(!pMenu.isPaused())
+        paused = !paused;
+      if(pMenu.hasEnded()) {
+        type = MAINMENU;
+        ended = true;
+      }
+    }
+  } else {
+    if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
+      prevKeyState[ESC] = keyState[ESC];
       type = MAINMENU;
       ended = true;
     }
+    highscore.update( mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+    if(highscore.hasEnded())
+      ended = true;
   }
 }
 
@@ -175,7 +194,7 @@ void Game::drawCrosshair() {
     glVertex3f(lastChX-ChRadius, lastChY-ChRadius, 0.0);
   glEnd();
 
-  glColor3f(0.0, 0.0, 0.0f);
+  glColor3f(1.0, 1.0, 1.0f);
   glDisable(GL_TEXTURE_2D);
 
 }

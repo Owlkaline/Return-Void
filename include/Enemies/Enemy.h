@@ -79,7 +79,7 @@ class Enemy {
 
     int tick;
     int score;
-    int health;
+    int health, maxHealth;
     int maxWeaponMounts;
 
     float transparent;
@@ -93,11 +93,31 @@ class Enemy {
       static GLuint basicEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/BasicEnemy.png");
       return basicEnemyTexture;
     }
-    static GLuint getCorruptedStarShipTexture() {
-      static GLuint corruptedStarShipTexture = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
-      return corruptedStarShipTexture;
+    static GLuint getCorruptedStarShipTexture(int i) {
+      static GLuint corruptedStarShipTexture0 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
+      static GLuint corruptedStarShipTexture1 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg1.png");
+      static GLuint corruptedStarShipTexture2 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg2.png");
+      static GLuint corruptedStarShipTexture3 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg3.png");
+      static GLuint corruptedStarShipTexture4 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg4.png");
+      
+      switch(i) {
+        case 0:
+          return corruptedStarShipTexture0;
+          break;
+        case 1:
+          return corruptedStarShipTexture1;
+          break;
+        case 2:
+          return corruptedStarShipTexture2;
+          break;
+        case 3:
+          return corruptedStarShipTexture3;
+          break;
+        case 4:
+          return corruptedStarShipTexture4;
+          break;
+      }
     }
-
 };
 
 #endif
