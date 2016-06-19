@@ -19,9 +19,14 @@ class HighscoreScreen {
    
     void setScore(int score);
     bool hasEnded();
+    
+    int getType();
   protected:
     void saveDefaults();
     void LoadHighscores(int score);
+    
+    int type;
+    
     int highscores[10];
     std::string names[10];
   

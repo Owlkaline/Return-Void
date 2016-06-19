@@ -49,15 +49,18 @@ void HighscoreScreen::setup() {
   Retry.setYSelected(true);
   Quit.setYSelected(true);
 } 
- 
+
 void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   ended = false;
   Retry.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   Quit.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
 
   if(Retry.Clicked()) {
+    type = GAME;
+    ended = true;
   }
   if(Quit.Clicked()) {
+    type = MAINMENU;
     ended = true;
   }
 }
@@ -137,6 +140,8 @@ void HighscoreScreen::LoadHighscores(int score) {
 }
 
 bool HighscoreScreen::hasEnded() { return ended; }
+int HighscoreScreen::getType() { return type; }
+ 
 
 void HighscoreScreen::saveDefaults() {
   std::ofstream ofs("./data/highscore.bin", std::ios::binary);

@@ -45,6 +45,8 @@ void Game::setup() {
 
   score = 0;
   wave = 0;
+  
+  ship.setup();
 
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
@@ -75,6 +77,7 @@ void Game::setup() {
 void Game::clean() {
   ship.clean();
   enemy.erase(enemy.begin(), enemy.end());
+  powerups.erase(powerups.begin(), powerups.end());
 }
 
 void Game::newWave() {
@@ -107,7 +110,8 @@ void Game::newWave() {
 }
 
 void Game::restart() {
-  ship.setup();
+  clean();
+  setup();  
 }
 
 void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -188,8 +192,17 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       ended = true;
     }
     highscore.update( mouseX, mouseY, mouseBtnState, prevMouseBtnState);
-    if(highscore.hasEnded())
-      ended = true;
+    if(highscore.hasEnded()) {
+      switch(highscore.getType()) {
+        case MAINMENU:
+          type = MAINMENU;
+          ended = true;
+          break;
+        case GAME:
+          restart();
+          break;
+      }
+    }
   } 
 }
 

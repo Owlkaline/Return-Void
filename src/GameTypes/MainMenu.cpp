@@ -27,11 +27,15 @@ void MainMenu::setup() {
   float buttonWidth = 247;
   float buttonHeight = 95;
   for(int i = 0; i < numOfButtons; ++i) {
-    buttons[i].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
+    if(i == 1) {
+      buttons[1].setup(SPACE_X_RESOLUTION/4 + buttonWidth/4*3.4, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - buttonHeight/2, buttonWidth*1.7, buttonHeight, -1);
+    } else {
+      buttons[i].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
+    }
   }
 
-  buttons[0].setTexture((char*)"Textures/Menu/Start.png");
-  buttons[1].setTexture((char*)"Textures/Menu/Seed.png");
+  buttons[0].setTexture((char*)"Textures/Menu/Story.png");
+  buttons[1].setTexture((char*)"Textures/Menu/EndlessMode.png");
   buttons[2].setTexture((char*)"Textures/Menu/Shop.png");
   buttons[3].setTexture((char*)"Textures/Menu/Settings.png");
   buttons[4].setTexture((char*)"Textures/Menu/Quit.png");
