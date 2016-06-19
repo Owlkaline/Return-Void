@@ -26,8 +26,8 @@ class Enemy {
         tick = 5;
         tookDamage = true;
       }
-      if(health <= 0) {
-        if(visible) {
+      if(visible) {
+        if(health <= 0) {
           lbScore.setTimer(1);
           wasKilled = true;
         }

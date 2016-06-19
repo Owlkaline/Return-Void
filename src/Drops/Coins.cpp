@@ -41,4 +41,4 @@ void Coins::update() {
     visible = false;
   if(x > SPACE_X_RESOLUTION+width)
     visible = false;
-}
+} 
