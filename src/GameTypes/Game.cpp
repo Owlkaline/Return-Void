@@ -134,8 +134,8 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
               break;
             case COIN:
               powerups.push_back(new Coins);
-              int i = powerups.size()-1;
-              powerups[i]->setup(enemy[i]->getX(), enemy[i]->getY());
+              int j = powerups.size()-1;
+              powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
               break;
           }
         }

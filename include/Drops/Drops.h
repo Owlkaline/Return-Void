@@ -15,6 +15,7 @@ class Drops {
     float getY() { return y; }
     bool isVisible() { return visible; }
   protected:
+    int tick;
     float x, y, width, height;
     bool visible;
     

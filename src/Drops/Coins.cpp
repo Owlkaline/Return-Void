@@ -1,7 +1,7 @@
 #include "../../include/Drops/Coins.h"
 
 Coins::Coins() {
-
+  tick = 100;
 }
 
 void Coins::draw() {
@@ -22,21 +22,20 @@ void Coins::draw() {
 }
 
 void Coins::setup(float x, float y) {
-
   this->x = x;
   this->y = y;
   width = 50;
   height = 50;
   visible = true;
-
 }
 
 void Coins::update() {
-  y-=3;
+  tick++;
+  y-=3 * tick/100.0;
   if(y < 0 - height)
     visible = false;
- // if(y > SPACE_Y_RESOLUTION+height)
- //   visible = false;
+  if(y > SPACE_Y_RESOLUTION+height)
+    visible = false;
   if(x < -width) 
     visible = false;
   if(x > SPACE_X_RESOLUTION+width)

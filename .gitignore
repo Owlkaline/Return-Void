@@ -39,3 +39,7 @@ obj
 *.depend
 *.layout
 *.bin
+
+/Releases/*
+Textures/Gimp/*
+Textures/Old/*

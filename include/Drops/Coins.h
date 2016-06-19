@@ -10,6 +10,7 @@ class Coins: public Drops {
     void setup(float x, float y);
     void update();
   protected:
+
 };
 
 #endif
