@@ -99,7 +99,7 @@ void Ship::setup() {
   
   speed = 5;
   angle = 0;
-  health = 60;
+  health = 20;
   maxHealth = health;
   crntHealth = health;
   width = 100;

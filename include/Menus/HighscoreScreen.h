@@ -20,12 +20,16 @@ class HighscoreScreen {
     void setScore(int score);
     bool hasEnded();
   protected:
+    void saveDefaults();
     void LoadHighscores(int score);
+    int highscores[10];
+    std::string names[10];
   
     bool ended;
   
     Button Retry, Quit;
-    Label lbTitle, lbScore;  
+    Label lbTitle, lbScore; 
+    Label lbHighscoreNames[10], lbHighscores[10]; 
 };
 
 #endif
