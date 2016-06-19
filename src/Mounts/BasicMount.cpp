@@ -13,7 +13,6 @@ void BasicMount::draw() {
     glTranslatef(x, y, 0); // M1 - 2nd translation
     glRotatef(angle, 0.0f, 0.0f, 1.0f);  
     glTranslatef(-x, -y, 0); // M1 - 2nd translation
-    glEnable(GL_TEXTURE_2D);
 
     glEnable(GL_TEXTURE_2D);  
     if(currentTexture == 1) {

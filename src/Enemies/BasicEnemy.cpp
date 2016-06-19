@@ -1,6 +1,6 @@
 #include "../../include/Enemies/BasicEnemy.h"
 
-void BasicEnemy::setup() {
+void BasicEnemy::setup(float drop) {
   speed = 5;
   width = 75;
   height = 75;
@@ -13,6 +13,8 @@ void BasicEnemy::setup() {
   y = -SPACE_X_RESOLUTION;
 
   wasKilled = false;
+  
+  this->drop = drop;
 
   score = 10;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);

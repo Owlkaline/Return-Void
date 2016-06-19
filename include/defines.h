@@ -16,6 +16,10 @@
 
 #define GAME_MODE_POSSIBLE     0
 
+// Game x, y coordinate system
+#define SPACE_X_RESOLUTION     1920 //1440
+#define SPACE_Y_RESOLUTION     1080 //810
+
 // key states
 #define BUTTON_UP              0
 #define BUTTON_DOWN            1
@@ -27,11 +31,12 @@
 #define GAME                   1
 #define SETTINGS               2
 
-// Game x, y coordinate system
-#define SPACE_X_RESOLUTION     1920 //1440
-#define SPACE_Y_RESOLUTION     1080 //810
-
 #define MINIMUM_DISTANCETOSHIP 100
+
+// Powerups
+#define NUMOFDROPS             1
+#define NOTHING                0
+#define COIN                   1
 
 // Types of Bullets
 #define REDPLASMA              1

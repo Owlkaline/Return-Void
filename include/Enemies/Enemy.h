@@ -13,8 +13,8 @@ class Enemy {
   public:
     virtual void draw() = 0;
     virtual void reset() = 0;
-    virtual void setup() = 0;
-    virtual void update() = 0;
+    virtual void setup(float drop) = 0;
+    virtual void update() = 0;    
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
@@ -38,7 +38,7 @@ class Enemy {
     void setVisible(bool visible) {
       this->visible = visible;
       for(int i = 0; i < maxWeaponMounts; ++i) {
-        WeaponMount[0]->setVisible(visible);
+        WeaponMount[i]->setVisible(visible);
       }
     }
 
@@ -46,6 +46,7 @@ class Enemy {
     bool isVisible() { return visible; }
     bool timerExpired() { return lbScore.timeExpired(); }
 
+    int dropPowerup() { return drop; }
     int getScore() { wasKilled = false; return score; }
     int getNumOfMounts() { return maxWeaponMounts; }
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
@@ -59,8 +60,8 @@ class Enemy {
       return totalBullets;
     }
 
-    float getX() { return x; }
-    float getY() { return y; }
+    float getX() { return this->x; }
+    float getY() { return this->y; }
     float getWidth() { return width; }
     float getHeight() { return height; }
     float getMountX(int index) { return WeaponMount[index]->getX(); }
@@ -78,6 +79,7 @@ class Enemy {
     bool tookDamage;
 
     int tick;
+    int drop;
     int score;
     int health, maxHealth;
     int maxWeaponMounts;

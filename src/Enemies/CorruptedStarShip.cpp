@@ -1,6 +1,6 @@
 #include "../../include/Enemies/CorruptedStarShip.h"
 
-void CorruptedStarShip::setup() {
+void CorruptedStarShip::setup(float drop) {
   speed = 3;
   width = 75;
   height = 75;
@@ -13,6 +13,8 @@ void CorruptedStarShip::setup() {
   y = -SPACE_X_RESOLUTION;
 
   wasKilled = false;
+  
+  this->drop = drop; 
 
   score = 30;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);

@@ -10,6 +10,8 @@ void Game::draw() {
   drawBackground();
   drawCrosshair();
   if(!inHighscore) {
+    for(unsigned int i = 0; i < powerups.size(); ++i) 
+      powerups[i]->draw();
     ship.draw();
     for(unsigned int i = 0; i < enemy.size(); ++i) {
       enemy[i]->draw();
@@ -21,7 +23,6 @@ void Game::draw() {
       Collisions::drawQuadTree();
     if(DRAWHITBOX)
       Collisions::drawHitBoxes(&ship, enemy);
-
     
     lbWave.draw();
     lbScore.draw();
@@ -51,7 +52,7 @@ void Game::setup() {
   ss << score;
   std::string strScore = "Score: " + ss.str();
   lbScore.setText(strScore.c_str(), strScore.length() + 1);
-
+ 
   level = 1;
   isNew = true;
   ended = false;
@@ -89,7 +90,7 @@ void Game::newWave() {
         enemy.push_back(new CorruptedStarShip);
         break;
     }
-    enemy[i]->setup();
+    enemy[i]->setup(boostRand.Int(0, NUMOFDROPS));
     enemy[i]->setX(boostRand.Int((int)(enemy[i]->getWidth()/2),               SPACE_X_RESOLUTION-enemy[i]->getWidth()));
     enemy[i]->setY(boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION),  (int)(SPACE_Y_RESOLUTION*(2+wave))));
   }
@@ -128,9 +129,24 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           ss << score;
           std::string str = "Score: " + ss.str();
           lbScore.setText(str.c_str(), str.length() + 1);
+          switch(enemy[i]->dropPowerup()) {
+            case NOTHING:
+              break;
+            case COIN:
+              powerups.push_back(new Coins);
+              int i = powerups.size()-1;
+              powerups[i]->setup(enemy[i]->getX(), enemy[i]->getY());
+              break;
+          }
         }
         if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
           enemy.erase(enemy.begin()+i);
+        }        
+      }
+      for(unsigned int i = 0; i < powerups.size(); ++i) {
+        powerups[i]->update();
+        if(!powerups[i]->isVisible()) {
+          powerups.erase(powerups.begin()+i);
         }
       }
 

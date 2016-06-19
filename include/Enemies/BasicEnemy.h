@@ -5,7 +5,7 @@
 
 class BasicEnemy: public Enemy {
   public:
-    void setup();
+    void setup(float drop);
     void update();
     void reset();
     void draw();

@@ -7,11 +7,12 @@
 
 #include "../Ships/Ship.h"
 #include "../Menus/Label.h"
+#include "../Drops/Coins.h"
 #include "./DisplayManager.h"
 #include "../Menus/PausedMenu.h"
 #include "../Namespaces/Random.h"
+#include "../Enemies/BasicEnemy.h" 
 #include "../Menus/HighscoreScreen.h"
-#include "../Enemies/BasicEnemy.h"
 #include "../Namespaces/Collisions.h"
 #include "../Enemies/CorruptedStarShip.h"
 
@@ -49,7 +50,7 @@ class Game: public DisplayManager {
     Label lbWave, lbScore;
     HighscoreScreen highscore;
     std::vector<Enemy*> enemy;
-
+    std::vector<Drops*> powerups;
 };
 
 #endif
