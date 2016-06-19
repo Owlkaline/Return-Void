@@ -9,6 +9,7 @@ class Coins: public Drops {
     void draw();
     void setup(float x, float y);
     void update();
+    int getType();
   protected:
 
 };

@@ -31,7 +31,7 @@ void Collisions::drawQuadTree() {
     drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
 }
 
-void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
+void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {
   int shipQuad = getQuadrant(ship->getX(), ship->getY(), 1);
   
   int shipQuadTL = getQuadrant(ship->getX(), ship->getY()+ship->getHeight()/2, 1);
@@ -45,7 +45,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
   float Sx = ship->getX()-Sw/2;
   float Sy = ship->getY();
   
-  // Enemy Number
+  // Enemy
   for(unsigned int i = 0; i < enemy.size(); ++i) {
   
     // Collision Of enemy bullets into player ship
@@ -97,6 +97,23 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy) {
           } 
         }
       }
+      
+      // Enemy into Player
+      if( (Ex + Ew) >= Sx && Ex <= (Sx + Sw) && (Ey + Eh) >= Sy && Ey <= (Sy + Sh) ) {
+        enemy[i]->takeDamage(10000);
+        ship->takeDamage(10);
+      }
+    }
+  }
+  
+  // Powerup collision into player
+  for(unsigned int i = 0; i < powerups.size(); ++i) {
+    float Pw = powerups[i]->getWidth()/2;
+    float Ph = powerups[i]->getHeight()/2;
+    float Px = powerups[i]->getX();
+    float Py = powerups[i]->getY();
+    if( (Sx + Sw) >= Px && Sx <= (Px + Pw) && (Sy + Sh) >= Py && Sy <= (Py + Ph) ) {
+      ship->collect(powerups[i]->getType());
     }
   }
 }

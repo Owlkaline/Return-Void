@@ -47,6 +47,8 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   hasBeenClicked = false;
   usingCustomHitBox = false;
   
+  ySelect = false;
+  
   this->x = x;
   this->y = y;
   this->scale = scale;
@@ -62,7 +64,7 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
     clicked = false;
 
   if(!usingCustomHitBox) {
-    if(mouseY > y-height/2 && mouseY < y+height/2) {
+    if( (!ySelect && mouseY > y-height/2 && mouseY < y+height/2) || (ySelect && mouseX > x-width/2 && mouseX < x+width/2) ) {
       if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
          clicked = true;
       } 
@@ -105,4 +107,6 @@ void Button::setCustomHitBox(float x1, float y1, float x2, float y2) {
   customHitBox[3] = y2;
 }
 
-
+void Button::setYSelected(bool ySelect) {
+  this->ySelect = ySelect;
+}

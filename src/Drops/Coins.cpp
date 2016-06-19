@@ -41,3 +41,8 @@ void Coins::update() {
   if(x > SPACE_X_RESOLUTION+width)
     visible = false;
 } 
+
+int Coins::getType() {
+  visible = false;
+  return COIN;
+}

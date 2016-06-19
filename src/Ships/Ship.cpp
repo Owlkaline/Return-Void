@@ -97,6 +97,7 @@ void Ship::setup() {
   x = SPACE_X_RESOLUTION/2;
   y = 100;
   
+  coins = 0;
   speed = 5;
   angle = 0;
   health = 20;
@@ -148,8 +149,12 @@ void Ship::takeDamage(int damage) {
     tick = 5;
     tookDamage = true;
   }
-  if(health <= 0)
+  if(health <= 0) {
     visible = false;
+    for(int i = 0; i < MAXWEAPONS; ++i) {
+      WeaponMount[i]->setVisible(false);
+    }
+  }
 }
     
 void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -209,6 +214,18 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->update(x, y, directionX, directionY, angle);
 }
+
+void Ship::collect(int powerup) {
+  switch(powerup) {
+    case 0:
+      break;
+    case 1:
+      coins+=10;
+      break;
+  }
+}
+
+int Ship::getCoins() { return coins; }
 
 bool Ship::getVisible() { return visible; }
 

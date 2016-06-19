@@ -21,7 +21,11 @@ class Ship {
     void takeDamage(int damage);
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);  
     
+    void collect(int powerup);
+    
     bool getVisible();
+    
+    int getCoins();
     
     int getNumOfMounts();
     int getNumOfBullets(int index);
@@ -39,8 +43,9 @@ class Ship {
     float getBulletWidth(int mIndex, int bIndex);
     float getBulletHeight(int mIndex, int bIndex);
     
-  protected:   
-    int tick;        
+  protected:      
+    int tick;  
+    int coins;      
     int health, maxHealth, crntHealth;
     float x, y;
     float speed;

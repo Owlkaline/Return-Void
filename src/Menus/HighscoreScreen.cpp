@@ -44,8 +44,10 @@ void HighscoreScreen::setup() {
     lbHighscoreNames[i].setColour(R, G, B);
   }
   
-  Retry.setTexture((char*)"Textures/Menu/Resume.png");
+  Retry.setTexture((char*)"Textures/Menu/Retry.png");
   Quit.setTexture((char*)"Textures/Menu/Quit.png");
+  Retry.setYSelected(true);
+  Quit.setYSelected(true);
 } 
  
 void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
@@ -79,38 +81,47 @@ void HighscoreScreen::LoadHighscores(int score) {
   printf("\nLoading highscore\n");
   std::ifstream ifs("./data/highscore.bin", std::ios::binary);
   bool isHighscore = false;
-  int highscoreplace = -1;
+  bool done = false;
   for(int i = 0; i < 10; ++i) {  
     std::stringstream ss;
     ss << i+1;
     std::string tempname = ss.str() + ". ";   
 
+    for(int j = 0; j < 6; ++j) 
+      names[i] += File::LoadChar(ifs);  
+       
+    highscores[i] = File::LoadInt(ifs);
+     
     if(!isHighscore && score > highscores[i]) {
-      highscoreplace = i;
-      for(int j = 0; j < 6; ++j) {
-        names[i] += '_';      
-        File::LoadChar(ifs);
-      }
-      tempname += names[i];
-      lbHighscoreNames[i].setText(tempname.c_str(), tempname.length());
       isHighscore = true;
-    } else {
-      for(int j = 0; j < 6; ++j) 
-        names[i] += File::LoadChar(ifs);  
-      tempname += names[i];    
-      lbHighscoreNames[i].setText(tempname.c_str(), tempname.length()); 
-    }
-    if(isHighscore && i == highscoreplace) {
+      if(i+1 < 10) {
+        names[i+1] = names[i];
+        highscores[i+1] = highscores[i];
+      }
       highscores[i] = score; 
-      File::LoadInt(ifs);
-    } else {
-      highscores[i] = File::LoadInt(ifs); 
+      names[i] = "You   ";
     }
-    for(int i = 0; i < 10; ++i) {
-      std::stringstream ss;
-      ss << highscores[i];
-      std::string str = ss.str();
-      lbHighscores[i].setText(str.c_str(), str.length());
+    tempname += names[i]; 
+    lbHighscoreNames[i].setText(tempname.c_str(), tempname.length()); 
+    std::stringstream ss1;
+    ss1 << highscores[i];
+    std::string tempscore = ss1.str();
+    lbHighscores[i].setText(tempscore.c_str(), tempscore.length());
+    
+    if(!done && isHighscore) {
+      if(i+1 < 10) {
+        tempname = "";
+        std::stringstream ss3;
+        ss3 << i+2;
+        tempname += ss3.str() +". " + names[i+1]; 
+        lbHighscoreNames[i+1].setText(tempname.c_str(), tempname.length()); 
+        std::stringstream ss2;
+        ss2 << highscores[i+1];
+        std::string tempscore = ss2.str();
+        lbHighscores[i+1].setText(tempscore.c_str(), tempscore.length());
+        i++;
+        done = true;
+      }      
     }
   }
     

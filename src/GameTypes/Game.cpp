@@ -1,7 +1,6 @@
 #include "../../include/GameTypes/Game.h"
 
 Game::Game() {
-  //glutSetCursor(GLUT_CURSOR_NONE);
   seed = time(NULL);
   boostRand.newSeed(seed);
 }
@@ -9,28 +8,32 @@ Game::Game() {
 void Game::draw() {
   drawBackground();
   drawCrosshair();
-  if(!inHighscore) {
-    for(unsigned int i = 0; i < powerups.size(); ++i) 
-      powerups[i]->draw();
-    ship.draw();
-    for(unsigned int i = 0; i < enemy.size(); ++i) {
-      enemy[i]->draw();
-    }
-   
-    ship.drawHealthBar();
-   
-    if(DRAWQUADTREE)
-      Collisions::drawQuadTree();
-    if(DRAWHITBOX)
-      Collisions::drawHitBoxes(&ship, enemy);
+
+  for(unsigned int i = 0; i < powerups.size(); ++i) 
+    powerups[i]->draw();
     
-    lbWave.draw();
-    lbScore.draw();
-    if(paused)
-      pMenu.draw();
-  } else {
-    highscore.draw();
+  ship.draw();
+  
+  for(unsigned int i = 0; i < enemy.size(); ++i) {
+    enemy[i]->draw();
   }
+   
+  ship.drawHealthBar();
+   
+  if(DRAWQUADTREE)
+    Collisions::drawQuadTree();
+  if(DRAWHITBOX)
+    Collisions::drawHitBoxes(&ship, enemy);
+    
+  lbWave.draw();
+  lbScore.draw();
+  lbCoins.draw();
+  if(paused)
+    pMenu.draw();
+
+  if(inHighscore) 
+    highscore.draw();
+
 }
 
 void Game::setup() {
@@ -48,10 +51,16 @@ void Game::setup() {
 
   lbScore.setup(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
+  
+  lbCoins.setup(SPACE_X_RESOLUTION-20, 30, 0.3, false);
+  lbCoins.setColour( 1.0,  1.0,  1.0);
+  
   std::stringstream ss;
   ss << score;
   std::string strScore = "Score: " + ss.str();
   lbScore.setText(strScore.c_str(), strScore.length() + 1);
+  
+  lbCoins.setText("$", 1);
  
   level = 1;
   isNew = true;
@@ -91,8 +100,8 @@ void Game::newWave() {
         break;
     }
     enemy[i]->setup(boostRand.Int(0, NUMOFDROPS));
-    enemy[i]->setX(boostRand.Int((int)(enemy[i]->getWidth()/2),               SPACE_X_RESOLUTION-enemy[i]->getWidth()));
-    enemy[i]->setY(boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION),  (int)(SPACE_Y_RESOLUTION*(2+wave))));
+    enemy[i]->setX(boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth()));
+    enemy[i]->setY(boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave))));
   }
   boostRand.newSeed(boostRand.Int(0, 9999999999));
 }
@@ -110,8 +119,8 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       prevKeyState[ESC] = keyState[ESC];
       paused = !paused;
     }
-  
-    if(!paused) {
+    
+    if(!paused) {      
       if(isNew) {
         ship.setup();
         isNew = false;
@@ -150,13 +159,11 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         }
       }
 
-      Collisions::detect(&ship, enemy);
+      Collisions::detect(&ship, enemy, powerups);
 
       if(!ship.getVisible()) {
         inHighscore = true;
         highscore.setScore(score);
-        //type = MAINMENU;
-      //  ended = true;
       }
 
       lbWave.update();
@@ -169,6 +176,11 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         ended = true;
       }
     }
+    coins = ship.getCoins();
+    std::stringstream ss;
+    ss << coins;
+    std::string str = "$" + ss.str();
+    lbCoins.setText(str.c_str(), str.length());
   } else {
     if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
       prevKeyState[ESC] = keyState[ESC];
@@ -178,7 +190,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     highscore.update( mouseX, mouseY, mouseBtnState, prevMouseBtnState);
     if(highscore.hasEnded())
       ended = true;
-  }
+  } 
 }
 
 void Game::drawCrosshair() {
@@ -217,5 +229,4 @@ void Game::drawCrosshair() {
 
 void Game::drawBackground() {
   // Draw Score
-
 }

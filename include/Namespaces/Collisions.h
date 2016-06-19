@@ -6,12 +6,13 @@
 #include <vector>
 
 #include "../Ships/Ship.h"
+#include "../Drops/Drops.h"
 #include "../Enemies/Enemy.h"
 
 namespace Collisions{
 
     void drawQuadTree();
-    void detect(Ship* ship, std::vector<Enemy*>);
+    void detect(Ship* ship, std::vector<Enemy*>, std::vector<Drops*>);
     void drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy);
     void drawBox(float x, float y, float width, float height);
 

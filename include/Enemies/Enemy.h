@@ -119,6 +119,7 @@ class Enemy {
           return corruptedStarShipTexture4;
           break;
       }
+      return 0;
     }
 };
 

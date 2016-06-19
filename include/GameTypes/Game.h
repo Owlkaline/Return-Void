@@ -37,6 +37,7 @@ class Game: public DisplayManager {
     bool inHighscore;
     
     int score;
+    int coins;
     int wave, level;
     
     // Cross Hair
@@ -47,7 +48,7 @@ class Game: public DisplayManager {
     GLuint ChTexture; 
     PausedMenu pMenu;
     std::string strScore;
-    Label lbWave, lbScore;
+    Label lbWave, lbScore, lbCoins;
     HighscoreScreen highscore;
     std::vector<Enemy*> enemy;
     std::vector<Drops*> powerups;

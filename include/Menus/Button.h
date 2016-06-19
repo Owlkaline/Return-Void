@@ -20,6 +20,8 @@ class Button {
     void setText(const char* str, int length);
     void setColour(float R, float G, float B);
     
+    void setYSelected(bool ySelect);
+    
     void setCustomHitBox(float x1, float y1, float x2, float y2);
 
     bool Clicked();
@@ -33,7 +35,7 @@ class Button {
     float customHitBox[4];
     float x, y, width, height;
     bool isSelected, hasTexture, hasBeenClicked, clicked;
-    
+    bool ySelect;
     Label lbTitle;
     GLuint Texture;
 };
