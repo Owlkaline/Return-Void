@@ -101,7 +101,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
       // Enemy into Player
       if( (Ex + Ew) >= Sx && Ex <= (Sx + Sw) && (Ey + Eh) >= Sy && Ey <= (Sy + Sh) ) {
         enemy[i]->takeDamage(10000);
-        ship->takeDamage(10);
+        ship->takeDamage(5);
       }
     }
   }
