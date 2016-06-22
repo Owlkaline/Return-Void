@@ -4,6 +4,7 @@
 #include <vector>
 #include <math.h>
 
+#include "../Weapons/Spiral.h"
 #include "../Weapons/RedPlasma.h"
 #include "../Weapons/BluePlasma.h"
 #include "../Weapons/GreenPlasma.h"

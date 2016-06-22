@@ -43,7 +43,7 @@ void HypnoMount::setup() {
   width = 75/3.73;
   height = 75/3.73;
   health = 20;
-  timer = 14;
+  timer = 28;
   ticks = 0;
   visible = true;
 } 
@@ -85,7 +85,7 @@ void HypnoMount::update(float x, float y, float directionX, float directionY, fl
 }
 
 void HypnoMount::addBullet() {
-  bullets.push_back(new BluePlasma);
+  bullets.push_back(new Spiral);
 }
 
 

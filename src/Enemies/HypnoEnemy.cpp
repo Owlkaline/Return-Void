@@ -44,7 +44,7 @@ void HypnoEnemy::update(float Px, float Py) {
   float diffx = Px - x;
   float diffy = Py - y;
 
-  float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
+  //float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
   //float directionX = (diffx) / (distance);
   //float directionY = (diffy) / distance;
  
