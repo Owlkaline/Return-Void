@@ -16,7 +16,7 @@ void CorruptedStarShip::setup(float drop) {
   
   this->drop = drop; 
 
-  score = 300;
+  score = 30;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
   lbScore.setColour( 0.0,  1.0,  0.1);
   lbScore.setText("+30", 3);
@@ -28,7 +28,7 @@ void CorruptedStarShip::setup(float drop) {
   }
 }
 
-void CorruptedStarShip::update() {
+void CorruptedStarShip::update(float Px, float Py) {
   if(tookDamage)
     tick--;
   if(visible) {

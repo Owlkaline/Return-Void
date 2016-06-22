@@ -55,7 +55,7 @@ class Ship {
     float directionX, directionY, distanceFromCursor;
   
     GLuint textures[3];
-    GLuint healthBarTexture[2];
+    GLuint healthBarTexture[3];
     Mount* WeaponMount[MAXWEAPONS];
 };
 

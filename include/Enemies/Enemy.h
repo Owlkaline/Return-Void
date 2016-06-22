@@ -7,6 +7,7 @@
 #include "../defines.h"
 #include "../Menus/Label.h"
 #include "../Mounts/BasicMount.h"
+#include "../Mounts/HypnoMount.h"
 #include "../Namespaces/LoadTexture.h"
 
 class Enemy {
@@ -14,7 +15,7 @@ class Enemy {
     virtual void draw() = 0;
     virtual void reset() = 0;
     virtual void setup(float drop) = 0;
-    virtual void update() = 0;    
+    virtual void update(float Px, float Py) = 0;    
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
@@ -95,6 +96,12 @@ class Enemy {
       static GLuint basicEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/BasicEnemy.png");
       return basicEnemyTexture;
     }
+    
+    static GLuint getHypnoEnemyTexture() {
+      static GLuint hypnoEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/HypnoEnemy.png");
+      return hypnoEnemyTexture;
+    }
+    
     static GLuint getCorruptedStarShipTexture(int i) {
       static GLuint corruptedStarShipTexture0 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
       static GLuint corruptedStarShipTexture1 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg1.png");

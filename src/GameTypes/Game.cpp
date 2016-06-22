@@ -94,12 +94,15 @@ void Game::newWave() {
     numOfEnemies = boostRand.Int(0, wave*10);
     
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
-    switch(boostRand.Int(1, 2)) {
+    switch(boostRand.Int(1, 3)) {
       case 1:
         enemy.push_back(new BasicEnemy);
         break;
       case 2:
         enemy.push_back(new CorruptedStarShip);
+        break;
+      case 3:
+        enemy.push_back(new HypnoEnemy);
         break;
     }
     enemy[i]->setup(boostRand.Int(0, NUMOFDROPS));
@@ -135,7 +138,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
 
       for(unsigned int i = 0; i < enemy.size(); ++i) {
-        enemy[i]->update();
+        enemy[i]->update(ship.getX(), ship.getY());
         if(enemy[i]->getWaskilled()) {
           score += enemy[i]->getScore();
           std::stringstream ss;

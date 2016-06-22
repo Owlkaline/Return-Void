@@ -28,7 +28,7 @@ void BasicEnemy::setup(float drop) {
   }
 }
 
-void BasicEnemy::update() {
+void BasicEnemy::update(float Px, float Py) {
   if(tookDamage)
     tick--;
 

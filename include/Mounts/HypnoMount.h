@@ -1,21 +1,20 @@
-#ifndef TRIANGLEMOUNT_H
-#define TRIANGLEMOUNT_H
+#ifndef HYPNOMOUNT_H
+#define HYPNOMOUNT_H
 
 #include "./Mount.h"
 
-class TriangleMount: public Mount {
+class HypnoMount: public Mount {
   public:
-    TriangleMount();
-    
+    HypnoMount();
     void draw();
-    void reset();
     void setup();
+    void reset();
     void setup(int variant);
     void update(float x, float y, float directionX, float directionY, float angle);
     void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py);
-    
   protected:
     void addBullet();
+    int isLeft;
 };
 
 #endif

@@ -12,6 +12,7 @@
 #include "../Menus/PausedMenu.h"
 #include "../Namespaces/Random.h"
 #include "../Enemies/BasicEnemy.h" 
+#include "../Enemies/HypnoEnemy.h" 
 #include "../Menus/HighscoreScreen.h"
 #include "../Namespaces/Collisions.h"
 #include "../Enemies/CorruptedStarShip.h"

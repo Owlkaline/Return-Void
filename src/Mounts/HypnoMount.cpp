@@ -1,10 +1,10 @@
-#include "../../include/Mounts/TriangleMount.h"
+#include "../../include/Mounts/HypnoMount.h"
 
-TriangleMount::TriangleMount() {
+HypnoMount::HypnoMount() {
   ticks=0;
 }
 
-void TriangleMount::draw() {
+void HypnoMount::draw() {
   for(unsigned int i = 0; i < bullets.size(); ++i)
     bullets[i]->draw();
       
@@ -16,54 +16,64 @@ void TriangleMount::draw() {
     glEnable(GL_TEXTURE_2D);
 
     glEnable(GL_TEXTURE_2D);  
-    glBindTexture(GL_TEXTURE_2D, getTriangleMountTexture());
+    glBindTexture(GL_TEXTURE_2D, getHypnoMountTexture(isLeft));
     glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
       glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(x+width/2, y+height/2, 0.0);      
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(x+width/2, y-height/2, 0.0);      
+      glTexCoord2f(0.0f, 1.0f);
       glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
     glPopMatrix(); 
   }
-} 
+}
 
-void TriangleMount::reset() {
+void HypnoMount::reset() {
 
 }
 
-void TriangleMount::setup() { 
+void HypnoMount::setup() { 
   x = -SPACE_X_RESOLUTION;
   y = -SPACE_Y_RESOLUTION;
   angle = 0;
-  width = 32;
-  height = 32;
+  width = 75/3.73;
+  height = 75/3.73;
   health = 20;
   timer = 14;
   ticks = 0;
   visible = true;
-  currentTexture = 0;
 } 
 
-void TriangleMount::setup(int variant) {
+void HypnoMount::setup(int variant) {
+  isLeft = variant;
   setup();
 }
 
-void TriangleMount::update(float x, float y, float directionX, float directionY, float angle) {  
+void HypnoMount::update(float x, float y, float directionX, float directionY, float angle) {  
+
+}
+
+void HypnoMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
+ // dirX = directionX;
+ // dirY = directionY;
+ 
+  float diffx = Px - x;
+  float diffy = Py - y;
+
+  float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
+  dirX = (diffx) / (distance);
+  dirY = (diffy) / distance;
+  
   float rad = angle* (float)M_PI / 180;
   float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
-  
   this->x = x+newX;
   this->y = y+newY;
   this->angle = angle;
-  
-  dirX = directionX;
-  dirY = directionY;
   
   tick();
     
@@ -74,12 +84,8 @@ void TriangleMount::update(float x, float y, float directionX, float directionY,
   }
 }
 
-void TriangleMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
-  update(x, y, directionX, directionY, angle);
-}
-
-void TriangleMount::addBullet() {
-  bullets.push_back(new GreenPlasma);
+void HypnoMount::addBullet() {
+  bullets.push_back(new BluePlasma);
 }
 
 

@@ -5,44 +5,48 @@ Ship::Ship() {
 } 
 
 void Ship::drawHealthBar() {
-  float hx = 10;
+
   float hy = SPACE_Y_RESOLUTION - 10;    
   float hw = 500;
   float hh = 50;
+  float hx = SPACE_X_RESOLUTION/2 - hw/2;//10;
   glEnable(GL_TEXTURE_2D);
   
-  glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
+  glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
   
   glColor4f(1.0, 1.0, 1.0, 0.5f);
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
     glVertex3f(hx, hy, 0.0);
     glTexCoord2f(1.0f, 1.0f);
-     glVertex3f(hx+hw, hy, 0.0);
+    glVertex3f(hx+hw, hy, 0.0);
     glTexCoord2f(1.0f, 0.0f);
     glVertex3f(hx+hw, hy-hh, 0.0);
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(hx, hy-hh, 0.0);
   glEnd();
   
-  hx+=3;
-  hy-=3;
-  hw-=9;
-  hh-=7;
+  glBindTexture(GL_TEXTURE_2D, healthBarTexture[2]);
+  
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(hx, hy, 0.0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(hx+hw, hy, 0.0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(hx+hw, hy-hh, 0.0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(hx, hy-hh, 0.0);
+  glEnd();
   
   if(health < crntHealth)
     crntHealth-=0.000000002;
     
   hw = hw/maxHealth * crntHealth;
-   
-  glDisable(GL_TEXTURE_2D);
-  glColor4f(1.0, 1.0, 1.0, 0.5);
+  hx = SPACE_X_RESOLUTION/2 - hw/2;
   
-  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
   
-  glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
-  
-  //glColor4f(1.0, 1.0, 1.0, 0.5f);
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
     glVertex3f(hx, hy, 0.0);
@@ -113,8 +117,9 @@ void Ship::setup() {
   textures[1] = txt::LoadTexture("Textures/Game/Ships/ShipLeft.png");
   textures[2] = txt::LoadTexture("Textures/Game/Ships/ShipRight.png");
   
-  healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
-  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
+  healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
+  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
+  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/AmourBar.png");
   
   const float mountPosX[MAXWEAPONS] = {18, -22, -2};
   const float mountPosY[MAXWEAPONS] = {0, 0, 50};

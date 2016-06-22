@@ -16,6 +16,7 @@ class Mount {
     virtual void reset() = 0;
     virtual void setup(int variant) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle) = 0;
+    virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) = 0;
    
     void takeDamage(int damage) { health -= damage; }
     void setVisible(bool visible) { this->visible = visible; }
@@ -68,13 +69,29 @@ class Mount {
       static GLuint basicMountTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
       return basicMountTexture;
     }
+    
     static GLuint getBasicMountBrightTexture() {
       static GLuint basicMountBrightTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMountBright.png");
       return basicMountBrightTexture;
     }
+    
     static GLuint getTriangleMountTexture() {
       static GLuint triangleMountTexture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
       return triangleMountTexture;
+    }
+    
+   
+    static GLuint getHypnoMountTexture(int i) {
+      static GLuint hypnoMountLeftTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountLeft.png");
+      static GLuint hypnoMountRightTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountRight.png");
+      
+      switch(i) {
+        case 0:
+          return hypnoMountLeftTexture;
+        case 1:
+          return hypnoMountRightTexture;
+      }
+      return hypnoMountLeftTexture;
     }
 };
 

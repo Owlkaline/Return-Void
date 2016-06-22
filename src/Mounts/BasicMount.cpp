@@ -86,6 +86,10 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   }
 }
 
+void BasicMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
+  update(x, y, directionX, directionY, angle);
+}
+
 void BasicMount::addBullet() {
   switch(variant) {
     case BLUEPLASMA:
