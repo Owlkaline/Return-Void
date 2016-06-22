@@ -92,9 +92,8 @@ void Game::newWave() {
   unsigned int numOfEnemies = 0;
   while(numOfEnemies == 0)
     numOfEnemies = boostRand.Int(0, wave*10);
-    
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
-    switch(boostRand.Int(1, 3)) {
+    switch(boostRand.Int(0.35, 0.35, 0.3)) {
       case 1:
         enemy.push_back(new BasicEnemy);
         break;
@@ -145,12 +144,18 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           ss << score;
           std::string str = "Score: " + ss.str();
           lbScore.setText(str.c_str(), str.length() + 1);
+          int j;
           switch(enemy[i]->dropPowerup()) {
             case NOTHING:
               break;
             case COIN:
               powerups.push_back(new Coins);
-              int j = powerups.size()-1;
+              j = powerups.size()-1;
+              powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
+              break;
+            case HEALTH:
+              powerups.push_back(new Health);
+              j = powerups.size()-1;
               powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
               break;
           }

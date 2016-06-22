@@ -4,7 +4,7 @@ void CorruptedStarShip::setup(float drop) {
   speed = 3;
   width = 75;
   height = 75;
-  health = 10;
+  health = 15;
   maxHealth = health;
   tick = 0;
   visible = true;
@@ -29,8 +29,6 @@ void CorruptedStarShip::setup(float drop) {
 }
 
 void CorruptedStarShip::update(float Px, float Py) {
-  if(tookDamage)
-    tick--;
   if(visible) {
     y-=speed;
     x = amp * sin(((2*M_PI)/800)*(y)) + startX;
@@ -55,11 +53,6 @@ void CorruptedStarShip::draw() {
     WeaponMount[i]->draw(); 
 
   if(visible) {
-    if(tookDamage) {
-      if(tick <= 0)
-        tookDamage = false;
-     // glColor3f(1.0, 0.0, 0.0);
-    }
     glEnable(GL_TEXTURE_2D);
     if(health > maxHealth/4.0 *3) {
       glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(0));

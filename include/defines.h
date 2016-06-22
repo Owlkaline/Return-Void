@@ -34,9 +34,10 @@
 #define MINIMUM_DISTANCETOSHIP 100
 
 // Powerups
-#define NUMOFDROPS             1
+#define NUMOFDROPS             2
 #define NOTHING                0
 #define COIN                   1
+#define HEALTH                 2
 
 // Types of Bullets
 #define REDPLASMA              1

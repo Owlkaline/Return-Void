@@ -13,7 +13,8 @@ class HypnoEnemy: public Enemy {
     void setY(float y);
   protected:
     float startX, startY, amp;
-    float angle;
+    float angle, movementAngle;
+    bool hasFinished, rightSide;
 };
 
 #endif

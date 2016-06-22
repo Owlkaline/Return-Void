@@ -4,7 +4,7 @@ void HypnoEnemy::setup(float drop) {
   speed = 5;
   width = 75;
   height = 75;
-  health = 20;
+  health = 7;
   maxHealth = health;
   tick = 0;
   visible = true;
@@ -15,6 +15,8 @@ void HypnoEnemy::setup(float drop) {
   wasKilled = false;
   
   this->drop = drop; 
+  
+  movementAngle = 180;
 
   score = 70;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
@@ -30,23 +32,30 @@ void HypnoEnemy::setup(float drop) {
   WeaponMount[1]->setOffset(-15, 30);
 }
 
-void HypnoEnemy::update(float Px, float Py) {
-  if(tookDamage)
-    tick--;
+void HypnoEnemy::update(float Px, float Py) {    
   if(visible) {
-    y-=speed;
-    x = amp * sin(((2*M_PI)/800)*(y)) + startX;
+     if(y < SPACE_Y_RESOLUTION+height) {
+      if(!rightSide) {
+        movementAngle+=speed/10;
+        x = SPACE_X_RESOLUTION/2 + cos(movementAngle/ 180.0f * (float)M_PI) * startX;
+        y = SPACE_Y_RESOLUTION + sin(movementAngle/ 180.0f * (float)M_PI) * SPACE_Y_RESOLUTION/2+height;
+      } else {
+        movementAngle-=speed/10;
+        x = SPACE_X_RESOLUTION/2 + cos(movementAngle/ 180.0f * (float)M_PI) * -startX;
+        y = SPACE_Y_RESOLUTION + sin(movementAngle/ 180.0f * (float)M_PI) * -SPACE_Y_RESOLUTION/2+height;
+      }
+      hasFinished = true;
+     } else {
+       if(!hasFinished) {
+         y-=speed;
+       } else {
+         visible = false;
+       }
+     }
   }
-
-  if(y <= -height)
-    setVisible(false);
     
   float diffx = Px - x;
   float diffy = Py - y;
-
-  //float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
-  //float directionX = (diffx) / (distance);
-  //float directionY = (diffy) / distance;
  
   if (diffx > 0.0 && diffy > 0.0) {//Quadrant 1
     angle = (float)atan(diffy/diffx) *180.0f / (float)M_PI ;
@@ -78,7 +87,7 @@ void HypnoEnemy::draw() {
     if(tookDamage) {
       if(tick <= 0)
         tookDamage = false;
-     // glColor3f(1.0, 0.0, 0.0);
+
     }
     glEnable(GL_TEXTURE_2D);
     //if(health > maxHealth/4.0 *3) {
@@ -117,8 +126,8 @@ void HypnoEnemy::draw() {
 }
 
 void HypnoEnemy::setX(float x) {
-  this->x = x;
-  startX = x;
+  //this->x = x;  
+  this->x = 0;
   if(x < width*5) {
     amp = (x-width)/2;//startX-width/2;
   } else if(SPACE_X_RESOLUTION - x < width*5) {
@@ -126,8 +135,17 @@ void HypnoEnemy::setX(float x) {
   } else {
     amp = width/2*5;
   }
+  if(x > SPACE_X_RESOLUTION/2) {
+    startX = x - amp;
+    rightSide = false;
+  } else {
+    startX = x + amp;
+    rightSide = true;
+    angle = 0;
+  }
 }
 
 void HypnoEnemy::setY(float y) {
   this->y = y;
+  startY = y;
 }

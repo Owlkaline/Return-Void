@@ -38,9 +38,6 @@ void Ship::drawHealthBar() {
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(hx, hy-hh, 0.0);
   glEnd();
-  
-  if(health < crntHealth)
-    crntHealth-=0.000000002;
     
   hw = hw/maxHealth * crntHealth;
   hx = SPACE_X_RESOLUTION/2 - hw/2;
@@ -78,7 +75,6 @@ void Ship::draw() {
   
     glBindTexture(GL_TEXTURE_2D, textures[0]);
   
-    // glColor3f(0.0, 0.0, 1.0);
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
       glVertex3f(x-width/2, y+height/2, 0.0);
@@ -218,14 +214,26 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->update(x, y, directionX, directionY, angle);
+    
+  if(health < crntHealth) {
+    crntHealth-=0.000000002;
+  } else if(health > crntHealth) {
+    crntHealth+=0.000000002;
+  }
 }
 
 void Ship::collect(int powerup) {
   switch(powerup) {
-    case 0:
+    case NOTHING:
       break;
-    case 1:
+    case COIN:
       coins+=10;
+      break;
+    case HEALTH:
+      health += 5;
+      crntHealth = health; 
+      if(health >= maxHealth)
+        health = maxHealth;
       break;
   }
 }

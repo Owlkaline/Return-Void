@@ -26,6 +26,11 @@ class Drops {
       static GLuint coinText = txt::LoadTexture("Textures/Game/Powerups/Coin.png");
       return coinText;
     }
+    
+    static GLuint getHealthTexture() {
+      static GLuint healthText = txt::LoadTexture("Textures/Game/Powerups/Health.png");
+      return healthText;
+    }
 };
 
 #endif

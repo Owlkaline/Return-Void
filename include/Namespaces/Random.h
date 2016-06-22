@@ -10,6 +10,8 @@ class Random {
   public:
     void newSeed(unsigned long long _seed);
     int Int(unsigned long long min, unsigned long long max);
+    int Int(double a, double b, double c);
+    int Int(double a, double b, double c, double d);
   private:
     unsigned long long seed;
     boost::mt19937 rng;

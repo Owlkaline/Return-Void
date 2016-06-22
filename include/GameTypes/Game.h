@@ -8,6 +8,7 @@
 #include "../Ships/Ship.h"
 #include "../Menus/Label.h"
 #include "../Drops/Coins.h"
+#include "../Drops/Health.h"
 #include "./DisplayManager.h"
 #include "../Menus/PausedMenu.h"
 #include "../Namespaces/Random.h"

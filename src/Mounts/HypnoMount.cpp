@@ -43,7 +43,7 @@ void HypnoMount::setup() {
   width = 75/3.73;
   height = 75/3.73;
   health = 20;
-  timer = 28;
+  timer = 64;
   ticks = 0;
   visible = true;
 } 

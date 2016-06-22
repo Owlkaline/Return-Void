@@ -32,77 +32,177 @@ void Collisions::drawQuadTree() {
 }
 
 void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {
-  int shipQuad = getQuadrant(ship->getX(), ship->getY(), 1);
+ // int shipQuads[4];
+ // Point* enemyBulletQuads[4];
+ /* 
+  float Sw = ship->getWidth()/2;
+  float Sh = ship->getHeight()/2;
+  float Sx = ship->getX();
+  float Sy = ship->getY();
+ 
+  int index = getQuadrant(Sx-Sw, Sy-Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuads[index] = 1;
+  index = getQuadrant(Sx+Sw, Sy+Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuads[index] = 1;
+  index = getQuadrant(Sx-Sw, Sy+Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuads[index] = 1;
+  index = getQuadrant(Sx+Sw, Sy-Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuads[index] = 1;
   
-  int shipQuadTL = getQuadrant(ship->getX(), ship->getY()+ship->getHeight()/2, 1);
-  int shipQuadTR = getQuadrant(ship->getX()+ship->getWidth()/2, ship->getY()+ship->getHeight()/2, 1);
-  int shipQuadBR = getQuadrant(ship->getX()+ship->getWidth()/2, ship->getY(), 1);
-  int shipQuadBL = getQuadrant(ship->getX(), ship->getY(), 1);
+  for(unsigned int i = 0; i < enemy.size(); ++i) {
+    for(int j = 0; j < enemy[i]->getNumOfMounts(); ++j) {
+      for(int k = 0; k < enemy[i]->getNumOfBullets(j); ++k) {
+        float Bw = enemy[i]->getBulletWidth(j, k)/2;
+        float Bh = enemy[i]->getBulletHeight(j, k)/2;
+        float Bx = enemy[i]->getBulletX(j, k);
+        float By = enemy[i]->getBulletY(j, k);
+        i = getQuadrant(Bx-Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuads[i] = new Point(Bx-Bw, By-Bh, i);
+        i = getQuadrant(Bx+Sw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuads[i] = new Point(Bx+Bw, By+Bh, i);
+        i = getQuadrant(Bx-Bw, By+Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuads[i] = new Point(Bx-Bw, By+Bh, i);
+        i = getQuadrant(Bx+Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuads[i] = new Point(Bx+Bw, By-Bh, i);
+      }
+    }
+  }
   
+  
+  for(int i = 0; i < 4; ++i) {
+    if(shipQuads[i] == 1) {
+      for(unsigned int j = 0; j < enemy.size(); ++j) {
+      //for(int l = 0; l < enemyQuads[i].getSize(); ++l) {
+        int l = enemyBulletQuads[i][4].getPos();
+        if(l != -1) {
+          for(int m = 0; m < enemy[l]->getNumOfMounts(); ++m) {
+            for(int k = 0; k < enemy[l]->getNumOfBullets(m); ++k) {
+              float Bw = enemy[l]->getBulletWidth(l, k)/2;
+              float Bh = enemy[l]->getBulletHeight(l, k)/2;
+              float Bx = enemy[l]->getBulletX(l, k);
+              float By = enemy[l]->getBulletY(l, k);
+              if( (Sx + Sw) >= Bx && Sx <= (Bx + Bw) && (Sy + Sh) >= By && Sy <= (By + Bh) ) {
+                ship->takeDamage(enemy[l]->bulletHit(m, k));
+              }
+            }
+          }
+        }
+      }
+    }
+      //if( (Sx + Sw) >= Bx && Sx <= (Bx + Bw) && (Sy + Sh) >= By && Sy <= (By + Bh) )
+
+  }*/
+  
+  //int x = shipQuads[0][0].getX();
+     
   // Ship x, y, width, height 
   float Sw = ship->getWidth();
   float Sh = ship->getHeight();
+ // float Sx = ship->getX()-Sw/2;
   float Sx = ship->getX()-Sw/2;
   float Sy = ship->getY();
   
+  int shipQuad[4];
+  int shipBulletQuad[4];
+  int enemyQuad[4];
+  int enemyBulletQuad[4];
+  int powerupQuad[4];
+  
+  shipQuad[0] = getQuadrant(Sx-Sw, Sy-Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuad[1] = getQuadrant(Sx+Sw, Sy+Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuad[2] = getQuadrant(Sx-Sw, Sy+Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  shipQuad[3] = getQuadrant(Sx+Sw, Sy-Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+  
   // Enemy
   for(unsigned int i = 0; i < enemy.size(); ++i) {
-  
-    // Collision Of enemy bullets into player ship
-    // The number weapon slot on the enemy
+    // Enemy x, y, width, height 
+    float Ew = enemy[i]->getWidth()/2;
+    float Eh = enemy[i]->getHeight()/2;
+    float Ex = enemy[i]->getX();
+    float Ey = enemy[i]->getY();
+    
+    enemyQuad[0] = getQuadrant(Ex-Ew, Ey-Eh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    enemyQuad[1] = getQuadrant(Ex+Ew, Ey+Eh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    enemyQuad[2] = getQuadrant(Ex-Ew, Ey+Eh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    enemyQuad[3] = getQuadrant(Ex+Ew, Ey-Eh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    
     for(int j = 0; j < enemy[i]->getNumOfMounts(); ++j) {
-      // The bullets number for the weapon
       for(int k = 0; k < enemy[i]->getNumOfBullets(j); ++k) {
-        int enemyQuad = getQuadrant(enemy[i]->getBulletX(j, k), enemy[i]->getBulletY(j, k), 1);
-        if(enemyQuad == shipQuad || enemyQuad == shipQuadTR || enemyQuad == shipQuadTL || enemyQuad == shipQuadBR || enemyQuad == shipQuadBL) {
-          // Enemy bullet x, y, width, height 
-          float Bx = enemy[i]->getBulletX(j, k);
-          float By = enemy[i]->getBulletY(j ,k);
-          float Bw = enemy[i]->getBulletWidth(j, k)/2;
-          float Bh = enemy[i]->getBulletHeight(j, k)/2;
-          if( (Sx + Sw) >= Bx && Sx <= (Bx + Bw) && (Sy + Sh) >= By && Sy <= (By + Bh) ) {
-            ship->takeDamage(enemy[i]->bulletHit(j, k));
+        float Bw = enemy[i]->getBulletWidth(j, k)/2;
+        float Bh = enemy[i]->getBulletHeight(j, k)/2;
+        float Bx = enemy[i]->getBulletX(j, k);
+        float By = enemy[i]->getBulletY(j, k);
+        enemyBulletQuad[0] = getQuadrant(Bx-Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuad[1] = getQuadrant(Bx+Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuad[2] = getQuadrant(Bx-Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        enemyBulletQuad[3] = getQuadrant(Bx+Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        bool isDone = false;
+        for(int l = 0; l < 4; l++) {
+          for(int m = 0; m < 4; ++l) {
+            if(enemyBulletQuad[l] == shipQuad[m]) {
+              if( (Sx + Sw) >= Bx && Sx <= (Bx + Bw) && (Sy + Sh) >= By && Sy <= (By + Bh) ) {
+                ship->takeDamage(enemy[i]->bulletHit(j, k));
+              }
+              isDone = true;
+            }
+            if(isDone)
+              break;
           }
-        }
-      }   
-    }
+          if(isDone)
+            break;
+        }         
+      }
+    }   
+  
     
     if(enemy[i]->isVisible()) {
-      // Enemy x, y, width, height 
-      float Ew = enemy[i]->getWidth()/2;
-      float Eh = enemy[i]->getHeight()/2;
-      float Ex = enemy[i]->getX();
-      float Ey = enemy[i]->getY();
-    
-      int enemyQuadTL = getQuadrant(Ex-Ew, Ey+Eh, 1);
-      int ememyQuadTR = getQuadrant(Ex+Ew, Ey+Eh, 1);
-      int enemyQuadBR = getQuadrant(Ex+Ew, Ey-Eh, 1);
-      int enemyQuadBL = getQuadrant(Ex-Ew, Ey-Eh, 1);
-       
-      int enemyQuad = getQuadrant(enemy[i]->getX(), enemy[i]->getY(), 1);
+
     
       // Collision between player bullets and enemyship
       for(int j = 0; j < ship->getNumOfMounts(); ++j) {
         for(int k = 0; k < ship->getNumOfBullets(j); ++k) {
-          int bulletQuad = getQuadrant(ship->getBulletX(j, k), ship->getBulletY(j, k),1);
-          if(bulletQuad == enemyQuad || bulletQuad == ememyQuadTR || bulletQuad == enemyQuadTL || bulletQuad == enemyQuadBR || bulletQuad == enemyQuadBL) {
-            // Ship bullet x, y, width, height 
-            float Bw = ship->getBulletWidth(j, k)/2;
-            float Bh = ship->getBulletHeight(j, k)/2;
-            float Bx = ship->getBulletX(j, k);
-            float By = ship->getBulletY(j, k);
-            if( (Ex + Ew) >= Bx && Ex <= (Bx + Bw) && (Ey + Eh) >= By && Ey <= (By + Bh) ) {
-              enemy[i]->takeDamage(ship->bulletHit(j, k));
+          float Bw = ship->getBulletWidth(j, k)/2;
+          float Bh = ship->getBulletHeight(j, k)/2;
+          float Bx = ship->getBulletX(j, k);
+          float By = ship->getBulletY(j, k);
+          shipBulletQuad[0] = getQuadrant(Bx-Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+          shipBulletQuad[1] = getQuadrant(Bx+Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+          shipBulletQuad[2] = getQuadrant(Bx-Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+          shipBulletQuad[3] = getQuadrant(Bx+Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+          bool isDone = false;
+          for(int l = 0; l < 4; l++) {
+            for(int m = 0; m < 4; ++l) {
+              if(shipBulletQuad[l] == enemyQuad[m]) {
+                if( (Bx + Bw) >= Ex && Bx <= (Ex + Ew) && (By + Bh) >= Ey && By <= (Ey + Eh) ) {
+                  enemy[i]->takeDamage(ship->bulletHit(j, k));
+                }
+                isDone = true;
+              }
+              if(isDone)
+                break;
             }
-          } 
-        }
-      }
-      
+            if(isDone)
+              break;
+          }   
+        } 
+      }      
       // Enemy into Player
-      if( (Ex + Ew) >= Sx && Ex <= (Sx + Sw) && (Ey + Eh) >= Sy && Ey <= (Sy + Sh) ) {
-        enemy[i]->takeDamage(10000);
-        ship->takeDamage(5);
-      }
+      bool isDone = false;
+      for(int l = 0; l < 4; l++) {
+        for(int m = 0; m < 4; ++l) {
+          if(enemyQuad[l] == shipQuad[m]) {
+            if( (Ex + Ew) >= Sx && Ex <= (Sx + Sw) && (Ey + Eh) >= Sy && Ey <= (Sy + Sh) ) {
+              enemy[i]->takeDamage(10000);
+              ship->takeDamage(5);
+            }
+            isDone = true;
+          }
+          if(isDone)
+            break;
+        }
+        if(isDone)
+          break;
+      } 
     }
   }
   
@@ -112,9 +212,25 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
     float Ph = powerups[i]->getHeight()/2;
     float Px = powerups[i]->getX();
     float Py = powerups[i]->getY();
-    if( (Sx + Sw) >= Px && Sx <= (Px + Pw) && (Sy + Sh) >= Py && Sy <= (Py + Ph) ) {
-      ship->collect(powerups[i]->getType());
-    }
+    powerupQuad[0] = getQuadrant(Px-Pw, Py-Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    powerupQuad[1] = getQuadrant(Px+Pw, Py+Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    powerupQuad[2] = getQuadrant(Px-Pw, Py+Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    powerupQuad[3] = getQuadrant(Px+Pw, Py-Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+    bool isDone = false;
+    for(int l = 0; l < 4; l++) {
+      for(int m = 0; m < 4; ++l) {
+        if(powerupQuad[l] == shipQuad[m]) {
+          if( (Sx + Sw) >= Px && Sx <= (Px + Pw) && (Sy + Sh) >= Py && Sy <= (Py + Ph) ) {
+            ship->collect(powerups[i]->getType());
+          }
+          isDone = true;
+        }
+        if(isDone)
+          break;
+      }
+      if(isDone)
+        break;
+    } 
   }
 }
 
@@ -196,22 +312,23 @@ void Collisions::drawBox(float x, float y, float width, float height) {
   glColor3f(1.0, 1.0, 1.0);
 }
 
-int Collisions::getQuadrant(float x, float y, int level) {
-  float halfX = SPACE_X_RESOLUTION/(2*level);
-  float halfY = SPACE_Y_RESOLUTION/(2*level);
+int Collisions::getQuadrant(float x, float y, int xBoundry, int yBoundry, int level, int quadrant) {
   
-  if(level == MAXLEVEL) {
-    if(x < halfX && y > halfY) {
-      return 1*level;
-    } else if (x < halfX && y < halfY) {
-      return 2*level;
-    } else if (x > halfX && y < halfY) {
-      return 3*level;
-    } else if (x < halfX && y < halfY) {
-      return 4*level;
+  if(level != MAXLEVEL) {
+    if(x < xBoundry && y > yBoundry) {
+      return getQuadrant(x, y, xBoundry/2, yBoundry/2 * 3, level+1, quadrant+0);
+      
+    } else if (x < xBoundry && y < yBoundry) {
+      return getQuadrant(x, y, xBoundry/2, yBoundry/2, level+1, quadrant+1);
+      
+    } else if (x > xBoundry && y > yBoundry) {
+      return getQuadrant(x, y, xBoundry/2 * 3, yBoundry/2 * 3, level+1, quadrant+2);
+      
+    } else if (x > xBoundry && y < yBoundry) {
+      return getQuadrant(x, y, xBoundry/2 * 3, yBoundry/2, level+1, quadrant+3);      
     }  
-  } else { 
-    return getQuadrant(x, y, level+1);
-  }
+  } else {
+    return quadrant;
+  } 
   return 0;
 }
