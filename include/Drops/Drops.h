@@ -18,6 +18,7 @@ class Drops {
     float getWidth() { return width; }
     float getHeight() { return height; }
     bool isVisible() { return visible; }
+    bool getCollected() { return isCollected; }
   protected:
     int tick;
     float x, y, width, height;

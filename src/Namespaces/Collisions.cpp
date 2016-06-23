@@ -96,11 +96,11 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
   //int x = shipQuads[0][0].getX();
      
   // Ship x, y, width, height 
-  float Sw = ship->getWidth();
-  float Sh = ship->getHeight();
+  float Sw = ship->getWidth()/2;
+  float Sh = ship->getHeight()/2;
  // float Sx = ship->getX()-Sw/2;
-  float Sx = ship->getX()-Sw/2;
-  float Sy = ship->getY()-Sh/2;
+  float Sx = ship->getX();//-Sw/2;
+  float Sy = ship->getY();//-Sh/2;
   
   int shipQuad[4];
   int shipBulletQuad[4];
@@ -141,7 +141,8 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
         for(int l = 0; l < 4; l++) {
           for(int m = 0; m < 4; ++l) {
             if(enemyBulletQuad[l] == shipQuad[m]) {
-              if( (Sx + Sw) >= Bx && Sx <= (Bx + Bw) && (Sy + Sh) >= By && Sy <= (By + Bh) ) {
+             // if( (Sx + Sw) >= Bx && Sx <= (Bx + Bw) && (Sy + Sh) >= By && Sy <= (By + Bh) ) {
+              if( (Sx + Sw) >= (Bx-Bw) && (Sx-Sw) <= (Bx + Bw) && (Sy + Sh) >= (By-Bh) && (Sy-Sh) <= (By + Bh) ) {
                 ship->takeDamage(enemy[i]->bulletHit(j, k));
               }
               isDone = true;
@@ -171,7 +172,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
           for(int l = 0; l < 4; l++) {
             for(int m = 0; m < 4; ++l) {
               if(shipBulletQuad[l] == enemyQuad[m]) {
-                if( (Bx + Bw) >= Ex && Bx <= (Ex + Ew) && (By + Bh) >= Ey && By <= (Ey + Eh) ) {
+                if( (Bx + Bw) >= (Ex-Ew) && (Bx-Bw) <= (Ex + Ew) && (By + Bh) >= (Ey-Eh) && (By-Bh) <= (Ey + Eh) ) {
                   enemy[i]->takeDamage(ship->bulletHit(j, k));
                 }
                 isDone = true;
@@ -189,7 +190,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
       for(int l = 0; l < 4; l++) {
         for(int m = 0; m < 4; ++l) {
           if(enemyQuad[l] == shipQuad[m]) {
-            if( (Ex + Ew) >= Sx && Ex <= (Sx + Sw) && (Ey + Eh) >= Sy && Ey <= (Sy + Sh) ) {
+            if( (Ex + Ew) >= (Sx-Sw) && (Ex-Ew) <= (Sx + Sw) && (Ey + Eh) >= (Sy-Sh) && (Ey-Eh) <= (Sy + Sh) ) {
               enemy[i]->takeDamage(10000);
               ship->takeDamage(5);
             }
@@ -203,36 +204,38 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
       } 
     }
   }
-  
+ 
   // Powerup collision into player
   for(unsigned int i = 0; i < powerups.size(); ++i) {
-    float Pw = powerups[i]->getWidth()/2;
-    float Ph = powerups[i]->getHeight()/2;
-    float Px = powerups[i]->getX();
-    float Py = powerups[i]->getY();
-    powerupQuad[0] = getQuadrant(Px-Pw, Py-Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
-    powerupQuad[1] = getQuadrant(Px+Pw, Py+Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
-    powerupQuad[2] = getQuadrant(Px-Pw, Py+Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
-    powerupQuad[3] = getQuadrant(Px+Pw, Py-Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
-    bool isDone = false;
-    for(int l = 0; l < 4; l++) {
-      for(int m = 0; m < 4; ++l) {
-        if(powerupQuad[l] == shipQuad[m]) {
-          if( (Sx + Sw) >= Px && Sx <= (Px + Pw) && (Sy + Sh) >= Py && Sy <= (Py + Ph) ) {
-            ship->collect(powerups[i]->getType());
-          }
-          isDone = true;
+    if(!powerups[i]->getCollected()) {
+      float Pw = powerups[i]->getWidth()/2;
+      float Ph = powerups[i]->getHeight()/2;
+      float Px = powerups[i]->getX();
+      float Py = powerups[i]->getY();
+      powerupQuad[0] = getQuadrant(Px-Pw, Py-Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+      powerupQuad[1] = getQuadrant(Px+Pw, Py+Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+      powerupQuad[2] = getQuadrant(Px-Pw, Py+Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+      powerupQuad[3] = getQuadrant(Px+Pw, Py-Ph, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+      bool isDone = false;
+      for(int l = 0; l < 4; l++) {
+        for(int m = 0; m < 4; ++l) {        
+          if(powerupQuad[l] == shipQuad[m]) {
+            if( (Sx + Sw) >= (Px-Pw) && (Sx-Sw) <= (Px + Pw) && (Sy + Sh) >= (Py-Ph) && (Sy-Sh) <= (Py + Ph) ) {
+              ship->collect(powerups[i]->getType());
+            }
+            isDone = true;
+          }        
+          if(isDone)
+            break;        
         }
         if(isDone)
           break;
-      }
-      if(isDone)
-        break;
-    } 
+      } 
+    }
   }
 }
 
-void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {    
+void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {    
   // Enemy x, y, width, height 
   float Ew;
   float Eh;
@@ -262,8 +265,8 @@ void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {
   }
 
 
-  float Sw = ship->getWidth();
-  float Sh = ship->getHeight();
+  float Sw = ship->getWidth()/2;
+  float Sh = ship->getHeight()/2;
   float Sx = ship->getX();
   float Sy = ship->getY();
   drawBox(Sx, Sy, Sw, Sh);
@@ -276,6 +279,19 @@ void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {
       drawBox(Bx, By, Bw, Bh);
     }
   }
+  
+  float Pw;
+  float Ph;
+  float Px;
+  float Py;  
+  for(unsigned int i = 0; i < powerups.size(); ++i) {  
+    // Enemy x, y, width, height 
+    Pw = powerups[i]->getWidth()/2;
+    Ph = powerups[i]->getHeight()/2;
+    Px = powerups[i]->getX();
+    Py = powerups[i]->getY();
+    drawBox(Px, Py, Pw, Ph);
+  }
 }
 
 void Collisions::drawBox(float x, float y, float width, float height) {
@@ -284,28 +300,28 @@ void Collisions::drawBox(float x, float y, float width, float height) {
   glBegin(GL_QUADS);
   
     // Left
-    glVertex3f(x-width/2, y+height/2, 0.0);
-    glVertex3f(x-width/2+border, y+height/2, 0.0);
-    glVertex3f(x-width/2+border, y-height/2, 0.0);
-    glVertex3f(x-width/2, y-height/2, 0.0);
+    glVertex3f(x-width, y+height, 0.0);
+    glVertex3f(x-width+border, y+height, 0.0);
+    glVertex3f(x-width+border, y-height, 0.0);
+    glVertex3f(x-width, y-height, 0.0);
     
     // Right
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glVertex3f(x+width/2-border, y+height/2, 0.0);
-    glVertex3f(x+width/2-border, y-height/2, 0.0);
-    glVertex3f(x+width/2, y-height/2, 0.0);
+    glVertex3f(x+width, y+height, 0.0);
+    glVertex3f(x+width-border, y+height, 0.0);
+    glVertex3f(x+width-border, y-height, 0.0);
+    glVertex3f(x+width, y-height, 0.0);
     
     // top
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glVertex3f(x+width/2, y+height/2-border, 0.0);
-    glVertex3f(x-width/2, y+height/2-border, 0.0);
-    glVertex3f(x-width/2, y+height/2, 0.0);
+    glVertex3f(x+width, y+height, 0.0);
+    glVertex3f(x+width, y+height-border, 0.0);
+    glVertex3f(x-width, y+height-border, 0.0);
+    glVertex3f(x-width, y+height, 0.0);
         
     // bottom
-    glVertex3f(x+width/2, y-height/2, 0.0);
-    glVertex3f(x+width/2, y-height/2+border, 0.0);
-    glVertex3f(x-width/2, y-height/2+border, 0.0);
-    glVertex3f(x-width/2, y-height/2, 0.0);
+    glVertex3f(x+width, y-height, 0.0);
+    glVertex3f(x+width, y-height+border, 0.0);
+    glVertex3f(x-width, y-height+border, 0.0);
+    glVertex3f(x-width, y-height, 0.0);
   
   glEnd();
   glColor3f(1.0, 1.0, 1.0);

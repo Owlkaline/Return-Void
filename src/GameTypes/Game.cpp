@@ -23,7 +23,7 @@ void Game::draw() {
   if(DRAWQUADTREE)
     Collisions::drawQuadTree();
   if(DRAWHITBOX)
-    Collisions::drawHitBoxes(&ship, enemy);
+    Collisions::drawHitBoxes(&ship, enemy, powerups);
     
   lbWave.draw();
   lbScore.draw();

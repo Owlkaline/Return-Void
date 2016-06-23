@@ -35,7 +35,7 @@ void Ship::drawHealthBar() {
   float hy = SPACE_Y_RESOLUTION - 10;    
   float hw = 500;
   float hh = 50;
-  float hx = SPACE_X_RESOLUTION/2 - hw/2;//10;
+  float hx = SPACE_X_RESOLUTION/2 - hw/2;
   glEnable(GL_TEXTURE_2D);
   
   glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
@@ -213,20 +213,20 @@ void Ship::takeDamage(int damage) {
 void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(boostTimer > 25) {
     if(5+extraSpeed > speed) {
-      speed++;
+      speed+=0.5;
     }
   } else if (boostTimer < 25) {
     if(speed > 5) {
-      speed--;
+      speed-=0.5;
     }
   }
-  //speed = 5 + extraSpeed;
+  
   
   if(tookDamage)
     tick--;
   float diffx = mouseX - x;
   float diffy = mouseY - y;
-  //diffy /= aspectRatio;
+  
   distanceFromCursor = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
   directionX = (diffx) / (distanceFromCursor);
   directionY = (diffy) / distanceFromCursor;//*aspectRatio) / (distance);
@@ -335,7 +335,7 @@ float Ship::getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->get
 float Ship::getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
 float Ship::getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
 float Ship::getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
-void Ship::boost() { hasBoost = true; boostTimer = 50; extraSpeed = 5; }
+void Ship::boost() { hasBoost = true; boostTimer = 50; extraSpeed = 3; }
 
 
 
