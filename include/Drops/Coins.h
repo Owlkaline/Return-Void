@@ -11,7 +11,7 @@ class Coins: public Drops {
     void update();
     int getType();
   protected:
-
+    Label lbTitle;
 };
 
 #endif

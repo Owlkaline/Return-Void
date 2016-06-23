@@ -1,11 +1,11 @@
-#ifndef HEALTH_H
-#define HEALTH_H
+#ifndef SHIELD_H
+#define SHIELD_H
 
 #include "./Drops.h"
 
-class Health: public Drops {
+class Shield: public Drops {
   public:
-    Health();
+    Shield();
     void draw();
     void setup(float x, float y);
     void update();

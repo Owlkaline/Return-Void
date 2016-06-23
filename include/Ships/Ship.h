@@ -17,11 +17,13 @@ class Ship {
     void draw();
     void setup();
     void clean();
+    void drawShield();
     void drawHealthBar();
     void takeDamage(int damage);
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);  
     
     void collect(int powerup);
+    void boost();
     
     bool getVisible();
     
@@ -45,16 +47,21 @@ class Ship {
     
   protected:      
     int tick;  
-    int coins;      
+    int coins;    
+    int boostTimer;  
+    int extraSpeed;
+    int shield, maxShield;
     int health, maxHealth, crntHealth;
     float x, y;
     float speed;
     float angle;
+    bool hasBoost;
     bool visible, tookDamage;
     float width, height;
     float directionX, directionY, distanceFromCursor;
   
     GLuint textures[3];
+    GLuint shieldTexture;
     GLuint healthBarTexture[3];
     Mount* WeaponMount[MAXWEAPONS];
 };

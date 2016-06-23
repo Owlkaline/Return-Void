@@ -100,7 +100,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
   float Sh = ship->getHeight();
  // float Sx = ship->getX()-Sw/2;
   float Sx = ship->getX()-Sw/2;
-  float Sy = ship->getY();
+  float Sy = ship->getY()-Sh/2;
   
   int shipQuad[4];
   int shipBulletQuad[4];
@@ -136,6 +136,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
         enemyBulletQuad[1] = getQuadrant(Bx+Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
         enemyBulletQuad[2] = getQuadrant(Bx-Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
         enemyBulletQuad[3] = getQuadrant(Bx+Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
+        // Collision Between enemy bullets and player
         bool isDone = false;
         for(int l = 0; l < 4; l++) {
           for(int m = 0; m < 4; ++l) {
@@ -153,11 +154,8 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
         }         
       }
     }   
-  
     
-    if(enemy[i]->isVisible()) {
-
-    
+    if(enemy[i]->isVisible()) {    
       // Collision between player bullets and enemyship
       for(int j = 0; j < ship->getNumOfMounts(); ++j) {
         for(int k = 0; k < ship->getNumOfBullets(j); ++k) {
@@ -263,10 +261,11 @@ void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy) {
     }
   }
 
-  float Sx = ship->getX();
-  float Sy = ship->getY();
+
   float Sw = ship->getWidth();
   float Sh = ship->getHeight();
+  float Sx = ship->getX();
+  float Sy = ship->getY();
   drawBox(Sx, Sy, Sw, Sh);
   for(int i = 0; i < ship->getNumOfMounts(); ++i) {
     for(int j = 0; j < ship->getNumOfBullets(i); ++j) {

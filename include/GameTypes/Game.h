@@ -9,6 +9,7 @@
 #include "../Menus/Label.h"
 #include "../Drops/Coins.h"
 #include "../Drops/Health.h"
+#include "../Drops/Shield.h"
 #include "./DisplayManager.h"
 #include "../Menus/PausedMenu.h"
 #include "../Namespaces/Random.h"

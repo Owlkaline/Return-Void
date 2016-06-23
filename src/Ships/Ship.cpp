@@ -4,6 +4,32 @@ Ship::Ship() {
   tick = 0;
 } 
 
+void Ship::drawShield() {
+  glPushMatrix();
+
+  glTranslatef(x, y, 0); // M1 - 2nd translation
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+  glTranslatef(-x, -y, 0); // M1 - 2nd translation
+  
+  glEnable(GL_TEXTURE_2D);
+  glColor4f(1.0, 1.0, 1.0, 0.5);
+  glBindTexture(GL_TEXTURE_2D, shieldTexture);
+  
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x-width, y+height, 0.0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x+width, y+height, 0.0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x+width, y-height, 0.0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x-width, y-height, 0.0);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  glPopMatrix();  
+  glColor4f(1.0, 1.0, 1.0, 1.0);     
+}
+
 void Ship::drawHealthBar() {
 
   float hy = SPACE_Y_RESOLUTION - 10;    
@@ -26,6 +52,10 @@ void Ship::drawHealthBar() {
     glVertex3f(hx, hy-hh, 0.0);
   glEnd();
   
+  hw = hw/maxShield * shield;
+  hx = SPACE_X_RESOLUTION/2 - hw/2;
+  
+  //Shield Bar
   glBindTexture(GL_TEXTURE_2D, healthBarTexture[2]);
   
   glBegin(GL_QUADS);
@@ -37,11 +67,14 @@ void Ship::drawHealthBar() {
     glVertex3f(hx+hw, hy-hh, 0.0);
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(hx, hy-hh, 0.0);
-  glEnd();
+  glEnd(); 
+  
+  hw = 500;
+  hx = SPACE_X_RESOLUTION/2 - hw/2;
     
   hw = hw/maxHealth * crntHealth;
   hx = SPACE_X_RESOLUTION/2 - hw/2;
-  
+  //Health bar
   glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
   
   glBegin(GL_QUADS);
@@ -55,12 +88,14 @@ void Ship::drawHealthBar() {
     glVertex3f(hx, hy-hh, 0.0);
   glEnd();
    
- glDisable(GL_TEXTURE_2D);
- glColor4f(1.0, 1.0, 1.0, 1.0);
+  glDisable(GL_TEXTURE_2D);
+  glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void Ship::draw() {
   if(visible){
+    if(shield > 0)
+      drawShield();
     glPushMatrix();
     if(tookDamage) {
       tick--;
@@ -91,6 +126,8 @@ void Ship::draw() {
   }
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->draw(); 
+    
+ 
 }
 
 void Ship::setup() {
@@ -101,10 +138,14 @@ void Ship::setup() {
   speed = 5;
   angle = 0;
   health = 20;
+  shield = 10;
+  extraSpeed = 0;
+  maxShield = shield;
   maxHealth = health;
   crntHealth = health;
   width = 100;
   height = 100;
+  hasBoost = false;
   visible = true;
   directionX = 1;
   directionY = 1; 
@@ -115,7 +156,9 @@ void Ship::setup() {
   
   healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
   healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
-  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/AmourBar.png");
+  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
+  
+  shieldTexture = txt::LoadTexture("Textures/Game/Ships/Shield.png");
   
   const float mountPosX[MAXWEAPONS] = {18, -22, -2};
   const float mountPosY[MAXWEAPONS] = {0, 0, 50};
@@ -145,11 +188,20 @@ void Ship::clean() {
 }
     
 void Ship::takeDamage(int damage) {
-  health -= damage;
+  if(shield <= 0) {
+    health -= damage;
+  } else {
+    shield -= damage;
+    if(shield < 0) {
+      health += shield;
+      shield = 0;
+    }  
+  }
   if(tookDamage == false) {
     tick = 5;
     tookDamage = true;
   }
+  
   if(health <= 0) {
     visible = false;
     for(int i = 0; i < MAXWEAPONS; ++i) {
@@ -159,6 +211,17 @@ void Ship::takeDamage(int damage) {
 }
     
 void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+  if(boostTimer > 25) {
+    if(5+extraSpeed > speed) {
+      speed++;
+    }
+  } else if (boostTimer < 25) {
+    if(speed > 5) {
+      speed--;
+    }
+  }
+  //speed = 5 + extraSpeed;
+  
   if(tookDamage)
     tick--;
   float diffx = mouseX - x;
@@ -217,8 +280,15 @@ void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;
-  } else if(health > crntHealth) {
-    crntHealth+=0.000000002;
+  }
+  
+  if(hasBoost) {    
+    boostTimer--;
+    if(boostTimer <= 0) {
+      hasBoost = false;
+      extraSpeed = 0;
+      speed = 5;
+    }
   }
 }
 
@@ -232,12 +302,19 @@ void Ship::collect(int powerup) {
     case HEALTH:
       health += 5;
       crntHealth = health; 
-      if(health >= maxHealth)
+      if(health >= maxHealth) {
         health = maxHealth;
+        crntHealth = maxHealth;
+      }
+      break;
+    case SHIELD:
+      shield += 5;
+      if(shield >= maxShield)
+        shield = maxShield;
       break;
   }
 }
-
+ 
 int Ship::getCoins() { return coins; }
 
 bool Ship::getVisible() { return visible; }
@@ -245,7 +322,7 @@ bool Ship::getVisible() { return visible; }
 int Ship::getNumOfMounts() { return MAXWEAPONS; }
 int Ship::getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
 int Ship::bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
-  
+ 
 float Ship::getX() { return x; }
 float Ship::getY() { return y; }   
 float Ship::getWidth() { return width; }
@@ -258,7 +335,7 @@ float Ship::getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->get
 float Ship::getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
 float Ship::getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
 float Ship::getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
-
+void Ship::boost() { hasBoost = true; boostTimer = 50; extraSpeed = 5; }
 
 
 

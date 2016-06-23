@@ -1,6 +1,7 @@
 #ifndef DROPS_H
 #define DROPS_H
 
+#include "../Menus/Label.h"
 #include "../Namespaces/LoadTexture.h"
 
 class Drops {
@@ -20,7 +21,8 @@ class Drops {
   protected:
     int tick;
     float x, y, width, height;
-    bool visible;
+    bool visible, isCollected;
+    Label lbTitle;
     
     static GLuint getCoinTexture() {
       static GLuint coinText = txt::LoadTexture("Textures/Game/Powerups/Coin.png");
@@ -30,6 +32,11 @@ class Drops {
     static GLuint getHealthTexture() {
       static GLuint healthText = txt::LoadTexture("Textures/Game/Powerups/Health.png");
       return healthText;
+    }
+    
+    static GLuint getShieldTexture() {
+      static GLuint shieldText = txt::LoadTexture("Textures/Game/Powerups/Shield.png");
+      return shieldText;
     }
 };
 

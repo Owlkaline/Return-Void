@@ -17,7 +17,7 @@ SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Moun
 
 SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp ./src/Weapons/Spiral.cpp
 
-SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp
+SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp ./src/Drops/Shield.cpp
 
 LIBS = -lglut -lGLU -lGL -lpng
 

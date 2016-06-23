@@ -104,7 +104,9 @@ void Game::newWave() {
         enemy.push_back(new HypnoEnemy);
         break;
     }
-    enemy[i]->setup(boostRand.Int(0, NUMOFDROPS));
+
+    enemy[i]->setup(boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1);
+    
     enemy[i]->setX(boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth()));
     enemy[i]->setY(boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave))));
   }
@@ -144,20 +146,26 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           ss << score;
           std::string str = "Score: " + ss.str();
           lbScore.setText(str.c_str(), str.length() + 1);
-          int j;
+          ship.boost();
+          
+          bool nothing = false;
           switch(enemy[i]->dropPowerup()) {
             case NOTHING:
+              nothing = true;
               break;
             case COIN:
               powerups.push_back(new Coins);
-              j = powerups.size()-1;
-              powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
               break;
             case HEALTH:
               powerups.push_back(new Health);
-              j = powerups.size()-1;
-              powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
               break;
+            case SHIELD:
+              powerups.push_back(new Shield);
+              break;
+          }
+          if(!nothing) {
+            int j = powerups.size()-1;
+            powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
           }
         }
         if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {

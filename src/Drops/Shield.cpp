@@ -1,14 +1,14 @@
-#include "../../include/Drops/Health.h"
+#include "../../include/Drops/Shield.h"
 
-Health::Health() {
+Shield::Shield() {
   tick = 100;
 }
 
-void Health::draw() {
+void Shield::draw() {
   if(!isCollected) {
     glEnable(GL_TEXTURE_2D);  
     
-    glBindTexture(GL_TEXTURE_2D, getHealthTexture());
+    glBindTexture(GL_TEXTURE_2D, getShieldTexture());
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
       glVertex3f(x-width/2, y+height/2, 0.0);
@@ -23,24 +23,26 @@ void Health::draw() {
   } else {
     lbTitle.draw();
   }
+  
 }
 
-void Health::setup(float x, float y) {
+void Shield::setup(float x, float y) {
   this->x = x;
   this->y = y;
-  width = 50;
-  height = 50;
+  width = 35;
+  height = 45;
   visible = true;
+  isCollected = false;
+
   lbTitle.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
   lbTitle.setColour( 0.5,  0.5,  0.1);
-  lbTitle.setText("Health", 6);  
+  lbTitle.setText("Shield", 6);  
 }
 
-void Health::update() {
+void Shield::update() {
   tick++;
-  
   if(!isCollected) {
-    y-=3 * tick/100.0;  
+    y-=3 * tick/100.0;
   } else {
     lbTitle.update();
     if(lbTitle.timeExpired())
@@ -57,10 +59,11 @@ void Health::update() {
     visible = false;
 } 
 
-int Health::getType() {
+int Shield::getType() {
+  //visible = false;
   isCollected = true;
   lbTitle.setX(x);
   lbTitle.setY(y);  
   lbTitle.setTimer(20);
-  return HEALTH;
+  return SHIELD;
 }
