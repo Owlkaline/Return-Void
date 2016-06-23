@@ -56,12 +56,12 @@ class Ship {
     float speed;
     float angle;
     bool hasBoost;
-    bool visible, tookDamage;
+    bool visible, tookDamage, shieldDamaged;
     float width, height;
     float directionX, directionY, distanceFromCursor;
   
     GLuint textures[3];
-    GLuint shieldTexture;
+    GLuint shieldTexture[6];
     GLuint healthBarTexture[3];
     Mount* WeaponMount[MAXWEAPONS];
 };

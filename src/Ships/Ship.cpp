@@ -13,17 +13,38 @@ void Ship::drawShield() {
   
   glEnable(GL_TEXTURE_2D);
   glColor4f(1.0, 1.0, 1.0, 0.5);
-  glBindTexture(GL_TEXTURE_2D, shieldTexture);
+  
+  
+  if(shieldDamaged) {
+    if(tick > 20) {
+      glBindTexture(GL_TEXTURE_2D, shieldTexture[1]); 
+    } else if(tick > 15) {
+      glBindTexture(GL_TEXTURE_2D, shieldTexture[2]);
+    } else if(tick > 10) {
+      glBindTexture(GL_TEXTURE_2D, shieldTexture[3]);
+    } else if(tick > 5) {
+      glBindTexture(GL_TEXTURE_2D, shieldTexture[4]);
+    } else {
+      glBindTexture(GL_TEXTURE_2D, shieldTexture[5]);
+    }
+    
+    tick--;
+    if(tick <= 0)
+      shieldDamaged = false;
+   // glColor3f(0.0, 0.0, 0.3);
+  } else {
+    glBindTexture(GL_TEXTURE_2D, shieldTexture[0]);
+  }
   
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x-width, y+height, 0.0);
+    glVertex3f(x-width*0.7, y+height*0.7, 0.0);
     glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x+width, y+height, 0.0);
+    glVertex3f(x+width*0.7, y+height*0.7, 0.0);
     glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x+width, y-height, 0.0);
+    glVertex3f(x+width*0.7, y-height*0.7, 0.0);
     glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x-width, y-height, 0.0);
+    glVertex3f(x-width*0.7, y-height*0.7, 0.0);
   glEnd();
   glDisable(GL_TEXTURE_2D);
   glPopMatrix();  
@@ -94,8 +115,7 @@ void Ship::drawHealthBar() {
 
 void Ship::draw() {
   if(visible){
-    if(shield > 0)
-      drawShield();
+
     glPushMatrix();
     if(tookDamage) {
       tick--;
@@ -123,6 +143,9 @@ void Ship::draw() {
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();  
     glColor4f(1.0, 1.0, 1.0, 1.0);      
+    
+    if(shield > 0)
+      drawShield();
   }
   for(int i = 0; i < MAXWEAPONS; ++i) 
     WeaponMount[i]->draw(); 
@@ -147,6 +170,8 @@ void Ship::setup() {
   height = 100;
   hasBoost = false;
   visible = true;
+  tookDamage = false;
+  shieldDamaged = false;
   directionX = 1;
   directionY = 1; 
   
@@ -158,9 +183,14 @@ void Ship::setup() {
   healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
   healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
   
-  shieldTexture = txt::LoadTexture("Textures/Game/Ships/Shield.png");
+  shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
+  shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
+  shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
+  shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
+  shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
+  shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
   
-  const float mountPosX[MAXWEAPONS] = {18, -22, -2};
+  const float mountPosX[MAXWEAPONS] = {20, -20, 0};
   const float mountPosY[MAXWEAPONS] = {0, 0, 50};
   
   for(int i = 0; i < MAXWEAPONS; ++i) {
@@ -189,17 +219,21 @@ void Ship::clean() {
     
 void Ship::takeDamage(int damage) {
   if(shield <= 0) {
-    health -= damage;
+    health -= damage;   
+    if(tookDamage == false && shieldDamaged == false) {
+      tick = 5;
+      tookDamage = true;
+    }
   } else {
     shield -= damage;
     if(shield < 0) {
       health += shield;
       shield = 0;
-    }  
-  }
-  if(tookDamage == false) {
-    tick = 5;
-    tookDamage = true;
+    } 
+    if(shieldDamaged == false && tookDamage == false) {
+      tick = 25;
+      shieldDamaged = true;
+    }
   }
   
   if(health <= 0) {
@@ -211,18 +245,17 @@ void Ship::takeDamage(int damage) {
 }
     
 void Ship::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
-  if(boostTimer > 25) {
+  if(boostTimer > 50) {
     if(5+extraSpeed > speed) {
       speed+=0.5;
     }
-  } else if (boostTimer < 25) {
+  } else if (boostTimer < 50) {
     if(speed > 5) {
       speed-=0.5;
     }
   }
   
-  
-  if(tookDamage)
+  if(tookDamage || shieldDamaged)
     tick--;
   float diffx = mouseX - x;
   float diffy = mouseY - y;
@@ -335,7 +368,7 @@ float Ship::getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->get
 float Ship::getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
 float Ship::getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
 float Ship::getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
-void Ship::boost() { hasBoost = true; boostTimer = 50; extraSpeed = 3; }
+void Ship::boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
 
 
 
