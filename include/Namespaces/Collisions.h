@@ -5,7 +5,8 @@
 
 #include <vector>
 
-#include "../Ships/Ship.h"
+#include "../Ships/GalacticShip.h"
+#include "../Ships/FighterShip.h"
 #include "../Drops/Drops.h"
 #include "../Enemies/Enemy.h"
 
@@ -24,8 +25,8 @@ class Point {
 namespace Collisions{
 
     void drawQuadTree();
-    void detect(Ship* ship, std::vector<Enemy*>, std::vector<Drops*>);
-    void drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups);
+    void detect(FighterShip* ship, std::vector<Enemy*>, std::vector<Drops*>);
+    void drawHitBoxes(FighterShip* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups);
     void drawBox(float x, float y, float width, float height);
 
     int getQuadrant(float x, float y, int xBoundry, int yBoundry, int level, int quadrant);

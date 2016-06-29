@@ -1,10 +1,10 @@
-#include "../../include/Mounts/BasicMount.h"
+#include "../../include/Mounts/PurpleMount.h"
 
-BasicMount::BasicMount() {
+PurpleMount::PurpleMount() {
   ticks=0;
 }
 
-void BasicMount::draw() {
+void PurpleMount::draw() {
   for(unsigned int i = 0; i < bullets.size(); ++i)
     bullets[i]->draw();
       
@@ -15,11 +15,12 @@ void BasicMount::draw() {
     glTranslatef(-x, -y, 0); // M1 - 2nd translation
 
     glEnable(GL_TEXTURE_2D);  
-    if(currentTexture == 1) {
-      glBindTexture(GL_TEXTURE_2D, getBasicMountBrightTexture());
+    /*if(currentTexture == 1) {
+      glBindTexture(GL_TEXTURE_2D, getPurpleMountBrightTexture());
     } else {
-      glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
-    }
+      glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
+    }*/
+    glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
       glVertex3f(x-width/2, y+height/2, 0.0);
@@ -36,19 +37,19 @@ void BasicMount::draw() {
   }
 } 
 
-void BasicMount::reset() {
+void PurpleMount::reset() {
 
 }
 
-void BasicMount::setup() { 
-  setup(BLUEPLASMA);
+void PurpleMount::setup() { 
+  setup(PURPLEPLASMA);
 }
 
-void BasicMount::setup(int variant) { 
+void PurpleMount::setup(int variant) { 
   ticks = 0;
   angle = 0;
-  width = 8;
-  height = 64;
+  width = 32;
+  height = 32;
   health = 10;
   visible = true;
   currentTexture = 0;
@@ -62,10 +63,13 @@ void BasicMount::setup(int variant) {
     case REDPLASMA:
       timer = REDPLASMATIMER;
       break;
+    case PURPLEPLASMA:
+      timer = PURPLEPLASMATIMER;
+      break;
   }
 } 
 
-void BasicMount::update(float x, float y, float directionX, float directionY, float angle) {  
+void PurpleMount::update(float x, float y, float directionX, float directionY, float angle) {  
   if(currentTexture == 1)
     currentTexture = 0;
   float rad = angle* (float)M_PI / 180;
@@ -86,17 +90,20 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   }
 }
 
-void BasicMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
+void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
   update(x, y, directionX, directionY, angle);
 }
 
-void BasicMount::addBullet() {
+void PurpleMount::addBullet() {
   switch(variant) {
     case BLUEPLASMA:
       bullets.push_back(new BluePlasma);
       break;
     case REDPLASMA:
       bullets.push_back(new RedPlasma);
+      break;
+    case PURPLEPLASMA:
+      bullets.push_back(new PurplePlasma);
       break;
   }
 }

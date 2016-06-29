@@ -5,7 +5,8 @@
 #include <string>
 #include <sstream>
 
-#include "../Ships/Ship.h"
+#include "../Ships/GalacticShip.h"
+#include "../Ships/FighterShip.h"
 #include "../Menus/Label.h"
 #include "../Drops/Coins.h"
 #include "../Drops/Health.h"
@@ -46,7 +47,7 @@ class Game: public DisplayManager {
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
  
-    Ship ship;
+    FighterShip ship;
     Random boostRand;
     GLuint ChTexture; 
     PausedMenu pMenu;

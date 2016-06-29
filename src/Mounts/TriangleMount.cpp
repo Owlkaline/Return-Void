@@ -43,7 +43,7 @@ void TriangleMount::setup() {
   width = 32;
   height = 32;
   health = 20;
-  timer = 14;
+  timer = GREENPLASMATIMER;
   ticks = 0;
   visible = true;
   currentTexture = 0;

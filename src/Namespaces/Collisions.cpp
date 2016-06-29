@@ -31,7 +31,7 @@ void Collisions::drawQuadTree() {
     drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
 }
 
-void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) { 
+void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) { 
   bool shipQuad[4];
   
   std::vector<unsigned int> shipMountQuad[4];
@@ -226,7 +226,7 @@ void Collisions::detect(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops
   }
 }
 
-void Collisions::drawHitBoxes(Ship* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {    
+void Collisions::drawHitBoxes(FighterShip* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {    
   // Enemy x, y, width, height 
   float Ew;
   float Eh;

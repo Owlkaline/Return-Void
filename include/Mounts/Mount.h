@@ -8,6 +8,7 @@
 #include "../Weapons/RedPlasma.h"
 #include "../Weapons/BluePlasma.h"
 #include "../Weapons/GreenPlasma.h"
+#include "../Weapons/PurplePlasma.h"
 #include "../Namespaces/LoadTexture.h"
 
 class Mount {
@@ -81,7 +82,11 @@ class Mount {
       return triangleMountTexture;
     }
     
-   
+    static GLuint getPurpleMountTexture() {
+      static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Weapons/PurpleMount.png");
+      return purpleMountTexture;
+    }
+    
     static GLuint getHypnoMountTexture(int i) {
       static GLuint hypnoMountLeftTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountLeft.png");
       static GLuint hypnoMountRightTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountRight.png");

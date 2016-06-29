@@ -43,6 +43,14 @@
 // Types of Bullets
 #define REDPLASMA              1
 #define BLUEPLASMA             2
+#define GREENPLASMA            3
+#define PURPLEPLASMA           4
+
+// Types of Bullets
+#define REDPLASMATIMER         20
+#define BLUEPLASMATIMER        10
+#define GREENPLASMATIMER       20
+#define PURPLEPLASMATIMER      15
 
 #define DRAWQUADTREE           0
 #define DRAWHITBOX             0
