@@ -17,20 +17,20 @@ class Mount {
     virtual void setup() = 0;
     virtual void reset() = 0;
     virtual void setup(int variant) = 0;
-    virtual void update(float x, float y, float directionX, float directionY, float angle) = 0;
+    virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) = 0;
    
-    void takeDamage(int damage) { health -= damage; }
+    void takeDamage(float damage) { health -= damage; }
     void setVisible(bool visible) { this->visible = visible; }
     void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }  
-    void clean() {   bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};      
+    void clean() { bullets.clear(); ticks = 0;};      
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
     void fire() { 
       if(visible) {
         currentTexture = 1;
         addBullet();
-        int i = bullets.size()-1;
+        unsigned int i = bullets.size()-1;
         bullets[i]->setup(x, y, dirX, dirY, angle);
         bullets[i]->setVisible(true);
       }
@@ -41,7 +41,7 @@ class Mount {
     bool isVisible() { return visible; }
     
     int getNumBullets() { return bullets.size(); }
-    int bulletHit(int index) { return bullets[index]->hit(); }
+    float bulletHit(int index) { return bullets[index]->hit(); }
 
     float getX() { return x; }
     float getY() { return y; }
@@ -55,7 +55,7 @@ class Mount {
   protected:
     virtual void addBullet()=0;
   
-    int health;
+    float health;
     float angle;   
     bool visible;
     float fireRate;

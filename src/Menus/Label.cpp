@@ -20,18 +20,30 @@ void Label::draw() {
     glEnd();  
   
     glDisable(GL_TEXTURE_2D);
-  }
-  
-  if(isTimed) {
-    if(ticks > 0)
-      drawChar();
   } else {
-    drawChar();
+    if(isTimed) {
+      if(ticks > 0)
+        drawChar();
+    } else {
+      drawChar();
+    }
   }
 }
 
 void Label::clean() {
 
+}
+
+void Label::setup(float x, float y, float width, float height, char* filename) {
+  Texture = txt::LoadTexture(filename);
+  hasTexture = true;
+  isTimed = false;
+  ticks = 0;
+  this->x = x;
+  this->y = y;
+  this->width = width;
+  this->height = height;
+  this->scale = 0;
 }
 
 void Label::setup(float x, float y, float scale) {

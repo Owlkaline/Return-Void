@@ -4,6 +4,10 @@ FighterShip::FighterShip() {
   tick = 0;
 } 
 
+FighterShip::~FighterShip() {
+  clean();
+} 
+
 void FighterShip::draw() {
   if(visible){
 
@@ -48,10 +52,10 @@ void FighterShip::setup() {
   y = 100;
   
   coins = 0;
-  speed = 5;
+  speed = 10;
   angle = 0;
-  health = 20;
-  shield = 10;
+  health = 15;
+  shield = 5;
   extraSpeed = 0;
   maxShield = shield;
   maxHealth = health;
@@ -108,15 +112,6 @@ void FighterShip::clean() {
     
 void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   animate();
-  if(boostTimer > 50) {
-    if(5+extraSpeed > speed) {
-      speed+=0.5;
-    }
-  } else if (boostTimer < 50) {
-    if(speed > 5) {
-      speed-=0.5;
-    }
-  }
   
   if(tookDamage || shieldDamaged)
     tick--;
@@ -168,23 +163,14 @@ void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState
   if(y < height/2) 
     y = height/2;
   if(y > SPACE_Y_RESOLUTION-height/2)
-    y = SPACE_Y_RESOLUTION-height/2;
-    
-    
-  for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-    WeaponMount[i]->update(x, y, directionX, directionY, angle);
+    y = SPACE_Y_RESOLUTION-height/2;  
+ 
+  fire(x, y, directionX, directionY, angle, mouseBtnState);
+ // for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
+  //  WeaponMount[i]->update(x, y, directionX, directionY, angle);
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;
-  }
-  
-  if(hasBoost) {    
-    boostTimer--;
-    if(boostTimer <= 0) {
-      hasBoost = false;
-      extraSpeed = 0;
-      speed = 5;
-    }
   }
 }
 

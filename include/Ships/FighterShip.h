@@ -6,6 +6,7 @@
 class FighterShip: public Ship {
   public:
     FighterShip();
+    ~FighterShip();
 
     void draw();
     void setup();

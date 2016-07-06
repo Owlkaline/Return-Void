@@ -46,8 +46,6 @@ void HighscoreScreen::setup() {
   
   Retry.setTexture((char*)"Textures/Menu/Retry.png");
   Quit.setTexture((char*)"Textures/Menu/Quit.png");
-  Retry.setYSelected(true);
-  Quit.setYSelected(true);
 } 
 
 void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {

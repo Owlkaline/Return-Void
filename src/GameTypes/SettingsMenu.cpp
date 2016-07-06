@@ -6,12 +6,10 @@ SettingsMenu::SettingsMenu() {
 
 void SettingsMenu::draw() {  
   drawBackground();
-  
   for(int i = 0; i < numOfButtons; ++i)
     buttons[i].draw();
-  
-  checkBox.draw();
-  drawCursor();
+  lbIsRelative.draw();
+  lbTrueFalse.draw();
 }
 
 void SettingsMenu::clean() {
@@ -20,25 +18,53 @@ void SettingsMenu::clean() {
 
 void SettingsMenu::setup() {
   ended = false;
-  cursorRadius = 20;
   type = MAINMENU;
-  numOfButtons = 2;
+  isRelative = false;
+  numOfButtons = 3;  
   
-  // Buttons
-  float buttonWidth = 247;
+  float buttonWidth = 267;
   float buttonHeight = 95;
- 
-    buttons[0].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
+  float x, y, width, height;
   
-   buttonWidth = 267;
-   buttons[1].setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (3.5) - buttonHeight/2, buttonWidth, buttonHeight, -1);
-
-  buttons[0].setTexture((char*)"Textures/Menu/GameMode.png");
-
-  buttons[1].setTexture((char*)"Textures/Menu/Return.png");
+  // Return Button
+  x = SPACE_X_RESOLUTION/4 + buttonWidth/2;
+  y = SPACE_Y_RESOLUTION/10 * (3.5) - buttonHeight/2;
+  width = buttonWidth;
+  height = buttonHeight;
+  buttons[0].setup(x, y, width, height, -1);
+  buttons[0].setTexture((char*)"Textures/Menu/Return.png");
   
-  checkBox.setup((SPACE_X_RESOLUTION/4)*3 - 50, SPACE_Y_RESOLUTION/10 * (6.2));
-
+  // Left Arrow button
+  x = SPACE_X_RESOLUTION/4  * 3 - buttonWidth;
+  y = SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2;
+  width = 50;
+  height = buttonHeight;
+  buttons[1].setup(x, y, width, height, -1);
+  buttons[1].setTexture((char*)"Textures/Menu/LeftArrow.png");
+  //buttons[1].setCustomHitBox(x-25, y-buttonHeight/2, x+25, y+buttonHeight/2);
+  
+  // Right Arrow button
+  x = SPACE_X_RESOLUTION/4 * 3 - buttonWidth/4;
+  y = SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2;
+  width = 50;
+  height = buttonHeight;
+  buttons[2].setup(x, y, width,height, -1);
+  buttons[2].setTexture((char*)"Textures/Menu/RightArrow.png");
+  //buttons[2].setCustomHitBox(x-25, y-buttonHeight/2, x+25, y+buttonHeight/2);
+   
+  // RelitiveMovement Label
+  x = SPACE_X_RESOLUTION/4 + buttonWidth;
+  y = SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2;
+  width = buttonWidth*2;
+  height = buttonHeight;
+  lbIsRelative.setup(x, y, width, height, (char*)"Textures/Menu/RelativeMovement.png");
+  
+  buttonWidth = 247;
+  // True - False Label
+  x = SPACE_X_RESOLUTION/4 * 3 - buttonWidth/2;
+  width = buttonWidth;
+  height = buttonHeight;
+  lbTrueFalse.setup(x, y, width, height, (char*)"Textures/Menu/False.png");
   
   //char* txt = "Start";
   //buttons.setText(txt, 5 );
@@ -46,7 +72,6 @@ void SettingsMenu::setup() {
   //buttons.setColour(0.098039216, 0.909804008, 0.670588299);
   
   background = txt::LoadTexture("Textures/Menu/Background.png");
-  cursorTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
 }
 
 void SettingsMenu::restart() {
@@ -59,44 +84,24 @@ void SettingsMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
     type = MAINMENU;
     ended = true;
   }
-  cursorX = mouseX;
-  cursorY = mouseY;
   
   for(int i = 0; i < numOfButtons; ++i)
     buttons[i].update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   
   if(buttons[0].Clicked()) {
-    if(checkBox.getChecked()) {
-      checkBox.uncheck();
-    } else {
-      checkBox.check();
-    }
-  }
-  if(buttons[1].Clicked()) {
     type = MAINMENU;
     ended = true;
   } 
-}
-
-void SettingsMenu::drawCursor() { 
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, cursorTexture);
-  // Nice blue #1e00d5
-  glColor3f(0.117647059f, 0, 0.835294197f);
   
-  glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(cursorX-cursorRadius, cursorY+cursorRadius, 0.0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(cursorX+cursorRadius, cursorY+cursorRadius, 0.0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(cursorX+cursorRadius, cursorY-cursorRadius, 0.0);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(cursorX-cursorRadius, cursorY-cursorRadius, 0.0);
-  glEnd();  
-  
-  glColor3f(0.0, 0.0, 0.0f);
-  glDisable(GL_TEXTURE_2D);
+  if(buttons[1].Clicked() || buttons[2].Clicked()) {
+    if(isRelative) {
+      lbTrueFalse.setTexture((char*)"Textures/Menu/False.png"); 
+      isRelative = false;
+    } else {
+      lbTrueFalse.setTexture((char*)"Textures/Menu/True.png"); 
+      isRelative = true;
+    }
+  }
 }
 
 void SettingsMenu::drawBackground() {

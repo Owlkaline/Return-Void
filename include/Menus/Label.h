@@ -12,6 +12,7 @@ class Label {
     
     void draw();
     void clean();
+    void setup(float x, float y, float width, float height, char* filename);
     void setup(float x, float y, float scale);
     void setup(float x, float y, float scale, bool timer);
     void update();
@@ -26,6 +27,8 @@ class Label {
     
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
+    void setWidth(float width) { this->width = width; }
+    void setHeight(float height) { this->height = height; }
     
     bool timeExpired() {
       if(isTimed) {

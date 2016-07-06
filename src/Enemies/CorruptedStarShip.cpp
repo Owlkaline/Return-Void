@@ -1,5 +1,9 @@
 #include "../../include/Enemies/CorruptedStarShip.h"
 
+CorruptedStarShip::~CorruptedStarShip() {
+  clean();
+}
+
 void CorruptedStarShip::setup(float drop) {
   speed = 3;
   width = 75;
@@ -40,7 +44,7 @@ void CorruptedStarShip::update(float Px, float Py) {
   for(int i = 0; i < maxWeaponMounts; ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
-    WeaponMount[i]->update(x, y, 0, -1, 180);
+    WeaponMount[i]->update(x, y, 0, -1, 180, true);
   }
 }
 

@@ -95,7 +95,7 @@ void Game::newWave() {
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
     switch(boostRand.Int(0.35, 0.35, 0.3)) {
       case 1:
-        enemy.push_back(new BasicEnemy);
+        enemy.push_back(new BasicEnemy); 
         break;
       case 2:
         enemy.push_back(new CorruptedStarShip);

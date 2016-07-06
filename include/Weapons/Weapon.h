@@ -17,8 +17,8 @@ class Weapon {
     
     bool getVisible() { return visible; }
     
-    int getDamage() { return damage; }
-    int hit() { visible = false; return damage; }
+    float getDamage() { return damage; }
+    float hit() { visible = false; return damage; }
     
     float getX() { return x; }
     float getY() { return y; }
@@ -26,7 +26,7 @@ class Weapon {
     float getHeight() { return height; }
     
   protected:
-    int damage;
+    float damage;
     float angle;
     bool visible;
     float directionX, directionY;

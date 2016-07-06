@@ -4,6 +4,11 @@ BasicMount::BasicMount() {
   ticks=0;
 }
 
+BasicMount::~BasicMount() {
+  clean();
+}
+
+
 void BasicMount::draw() {
   for(unsigned int i = 0; i < bullets.size(); ++i)
     bullets[i]->draw();
@@ -65,7 +70,7 @@ void BasicMount::setup(int variant) {
   }
 } 
 
-void BasicMount::update(float x, float y, float directionX, float directionY, float angle) {  
+void BasicMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
   if(currentTexture == 1)
     currentTexture = 0;
   float rad = angle* (float)M_PI / 180;
@@ -77,7 +82,8 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   dirX = directionX;
   dirY = directionY;
   
-  tick();
+  if(isShooting)
+    tick();
     
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
@@ -87,7 +93,7 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
 }
 
 void BasicMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
-  update(x, y, directionX, directionY, angle);
+  update(x, y, directionX, directionY, angle, true);
 }
 
 void BasicMount::addBullet() {

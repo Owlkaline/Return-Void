@@ -13,16 +13,17 @@ class Ship {
   public:    
     virtual void draw()=0;
     virtual void setup()=0;
-    virtual void clean()=0;
     virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
  
+    void clean() { WeaponMount.clear(); }
+  
     int getCoins() { return coins; }
 
     bool getVisible() { return visible; }
 
     int getNumOfMounts() { return WeaponMount.size(); }
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
-    int bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
+    float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
  
     float getX() { return x; }
     float getY() { return y; }   
@@ -37,6 +38,13 @@ class Ship {
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
     void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
+    
+    void fire(float x, float y, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
+    
+    for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
+      WeaponMount[i]->update(x, y, directionX, directionY, angle, mouseBtnState[GLUT_LEFT_BUTTON]);
+
+    }
     
     void animate() {
       crntTexture++;
@@ -68,7 +76,7 @@ class Ship {
     }
     
         
-    void takeDamage(int damage) {
+    void takeDamage(float damage) {
       if(shield <= 0) {
         health -= damage;   
         if(tookDamage == false && shieldDamaged == false) {
@@ -137,7 +145,7 @@ class Ship {
       hw = 500;
       hx = SPACE_X_RESOLUTION/2 - hw/2;
     
-      hw = hw/maxHealth * crntHealth;
+      hw = hw/(float)maxHealth * crntHealth;
       hx = SPACE_X_RESOLUTION/2 - hw/2;
       //Health bar
       glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
@@ -211,8 +219,10 @@ class Ship {
     int extraSpeed;
     int crntTexture;
     int maxNumWeapons;
-    int shield, maxShield;
-    int health, maxHealth, crntHealth;
+    float shield;
+    int maxShield;
+    int maxHealth;
+    int health, crntHealth;
     float x, y;
     float speed;
     float angle;

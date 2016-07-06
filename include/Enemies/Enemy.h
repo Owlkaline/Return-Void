@@ -19,9 +19,9 @@ class Enemy {
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
-    void clean() { WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
+    void clean() { WeaponMount.clear(); }
 
-    void takeDamage(int damage) {
+    void takeDamage(float damage) {
       health -= damage;
       if(tookDamage == false) {
         tick = 5;
@@ -51,7 +51,7 @@ class Enemy {
     int getScore() { wasKilled = false; return score; }
     int getNumOfMounts() { return maxWeaponMounts; }
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
-    int bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
+    float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
 
     int getTotalNumOfBullets() {
       int totalBullets = 0;
@@ -82,7 +82,8 @@ class Enemy {
     int tick;
     int drop;
     int score;
-    int health, maxHealth;
+    float health;
+    int maxHealth;
     int maxWeaponMounts;
 
     float transparent;

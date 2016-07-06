@@ -47,8 +47,8 @@ void PurplePlasma::setup(float x, float y, float dirX, float dirY, float angle) 
   this->y = y;
   width = 28;
   height = 28;
-  speed = 10;
-  damage = 1;
+  speed = 15;
+  damage = 0.5;
   this->angle = angle;
   directionX = dirX;
   directionY = dirY;

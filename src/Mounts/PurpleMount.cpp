@@ -4,6 +4,10 @@ PurpleMount::PurpleMount() {
   ticks=0;
 }
 
+PurpleMount::~PurpleMount() {
+  clean();
+}
+
 void PurpleMount::draw() {
   for(unsigned int i = 0; i < bullets.size(); ++i)
     bullets[i]->draw();
@@ -68,8 +72,8 @@ void PurpleMount::setup(int variant) {
       break;
   }
 } 
-
-void PurpleMount::update(float x, float y, float directionX, float directionY, float angle) {  
+ 
+void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
   if(currentTexture == 1)
     currentTexture = 0;
   float rad = angle* (float)M_PI / 180;
@@ -77,21 +81,21 @@ void PurpleMount::update(float x, float y, float directionX, float directionY, f
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
   this->x = x+newX;
   this->y = y+newY;
-  this->angle = angle;
+  this->angle = angle; 
   dirX = directionX;
   dirY = directionY;
-  
-  tick();
     
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
     if(!bullets[i]->getVisible())
       bullets.erase(bullets.begin() + i);
   }
+    if(isShooting)
+    tick();
 }
 
 void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
-  update(x, y, directionX, directionY, angle);
+  update(x, y, directionX, directionY, angle, true);
 }
 
 void PurpleMount::addBullet() {

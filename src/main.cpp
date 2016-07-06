@@ -7,7 +7,7 @@
 #include <time.h>  /* time */
 #include <iostream>
 #include <fstream>
-
+/*
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
@@ -17,8 +17,9 @@
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 #endif
-
+*/
 #include "../include/Namespaces/File.h"
+#include "../include/Namespaces/LoadTexture.h"
 #include "../include/GameTypes/Game.h"
 #include "../include/GameTypes/MainMenu.h"
 #include "../include/GameTypes/SettingsMenu.h"
@@ -53,6 +54,8 @@ float mouseX, mouseY;
 int type = MAINMENU;
 
 bool gameMode;
+
+GLuint mouseTexture;
 
 DisplayManager* Display[3] = { new MainMenu(), new Game(), new SettingsMenu() };
 
@@ -126,6 +129,29 @@ void saveGame() {
   ofs.close();
 }
 
+void drawCursor() { 
+  if(type != GAME) {
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, mouseTexture);
+    // Nice blue #1e00d5
+    glColor3f(0.117647059f, 0, 0.835294197f);
+  
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(mouseX-20, mouseY+20, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(mouseX+20, mouseY+20, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(mouseX+20, mouseY-20, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(mouseX-20, mouseY-20, 0.0);
+    glEnd();  
+  
+    glColor3f(1.0, 1.0, 1.0f);
+    glDisable(GL_TEXTURE_2D);
+  }
+}
+
 //Draw function
 void display() {
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);
@@ -138,10 +164,11 @@ void display() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
-
+  
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
-
+  drawCursor();
+  
   if(Display[type]->hasEnded()) {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
@@ -162,6 +189,8 @@ void display() {
     type = newtype;
     Display[type]->setup();
   }
+  
+
  
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
@@ -183,7 +212,7 @@ void setup() {
   for(int i = 0; i < 5; ++i) {
     specialKey[i] = BUTTON_UP;
   }
-  
+  mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
   //Display[MAINMENU] = new MainMenu();
   Display[type]->setup();
 }

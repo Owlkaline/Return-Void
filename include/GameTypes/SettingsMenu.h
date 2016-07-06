@@ -19,16 +19,13 @@ class SettingsMenu: public DisplayManager {
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
 
   protected:
-    void drawCursor();
     void drawBackground();
-    
+    bool isRelative;
     int numOfButtons;    
-    
-    float cursorX, cursorY, cursorRadius;
-    
-    CheckBox checkBox;
-    Button buttons[2];
-    GLuint background, cursorTexture;
+    Button buttons[3];
+    Label lbTrueFalse, lbIsRelative;
+
+    GLuint background;
 };
 
 #endif

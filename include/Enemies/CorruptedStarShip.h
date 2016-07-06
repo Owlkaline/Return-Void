@@ -5,6 +5,7 @@
 
 class CorruptedStarShip: public Enemy {
   public:
+    ~CorruptedStarShip();
     void setup(float drop);
     void update(float Px, float Py);
     void reset();

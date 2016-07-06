@@ -6,6 +6,7 @@
 class GalacticShip: public Ship {
   public:
     GalacticShip();
+    ~GalacticShip();
 
     void draw();
     void setup();

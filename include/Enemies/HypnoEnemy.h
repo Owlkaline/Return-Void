@@ -5,6 +5,7 @@
 
 class HypnoEnemy: public Enemy {
   public:
+    ~HypnoEnemy();
     void setup(float drop);
     void update(float Px, float Py);
     void reset();

@@ -1,5 +1,9 @@
 #include "../../include/Enemies/HypnoEnemy.h"
 
+HypnoEnemy::~HypnoEnemy() {
+  clean();
+}
+
 void HypnoEnemy::setup(float drop) {
   speed = 5;
   width = 75;

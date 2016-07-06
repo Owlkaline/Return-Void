@@ -4,6 +4,10 @@ HypnoMount::HypnoMount() {
   ticks=0;
 }
 
+HypnoMount::~HypnoMount() {
+  clean();
+}
+
 void HypnoMount::draw() {
   for(unsigned int i = 0; i < bullets.size(); ++i)
     bullets[i]->draw();
@@ -53,7 +57,7 @@ void HypnoMount::setup(int variant) {
   setup();
 }
 
-void HypnoMount::update(float x, float y, float directionX, float directionY, float angle) {  
+void HypnoMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
 
 }
 

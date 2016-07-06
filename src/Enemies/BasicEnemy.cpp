@@ -1,5 +1,9 @@
 #include "../../include/Enemies/BasicEnemy.h"
 
+BasicEnemy::~BasicEnemy() {
+  clean();
+}
+
 void BasicEnemy::setup(float drop) {
   speed = 5;
   width = 75;
@@ -41,7 +45,7 @@ void BasicEnemy::update(float Px, float Py) {
   for(int i = 0; i < maxWeaponMounts; ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
-    WeaponMount[i]->update(x, y, 0, -1, 180);
+    WeaponMount[i]->update(x, y, 0, -1, 180, true);
   }
 }
 

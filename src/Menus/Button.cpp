@@ -29,15 +29,28 @@ void Button::draw() {
   
     glDisable(GL_TEXTURE_2D);
     glColor3f(1.0, 1.0, 1.0);
-  } 
-  if(scale != -1)
+  } else { 
     lbTitle.draw();
-  
-  //drawChar();
+  }
 }
 
 void Button::clean() {
 
+}
+
+void Button::setup(float x, float y, float width, float height, char* filename) {
+  isSelected = false;
+  hasTexture = true;
+  clicked = false;
+  hasBeenClicked = false;
+  
+  Texture = txt::LoadTexture(filename);
+  
+  this->x = x;
+  this->y = y;
+  this->scale = 0;
+  this->width = width;
+  this->height = height;
 }
 
 void Button::setup(float x, float y, float width, float height, float scale) {
@@ -45,9 +58,6 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   hasTexture = false;
   clicked = false;
   hasBeenClicked = false;
-  usingCustomHitBox = false;
-  
-  ySelect = false;
   
   this->x = x;
   this->y = y;
@@ -62,23 +72,15 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
   isSelected = false;
   if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP)
     clicked = false;
-
-  if(!usingCustomHitBox) {
-    if( (!ySelect && mouseY > y-height/2 && mouseY < y+height/2) || (ySelect && mouseX > x-width/2 && mouseX < x+width/2) ) {
-      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
-         clicked = true;
-      } 
-      isSelected = true;
-      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
-        hasBeenClicked = true;
-      }
-    } else {
-      clicked = false;
-    }
-  } else {
-    if(mouseY > customHitBox[2] && mouseY < customHitBox[3]) {
+ 
+  if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
+    if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+      clicked = true;
+    } 
+    if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
       hasBeenClicked = true;
     }
+    isSelected = true;
   }
 }
 
@@ -97,16 +99,4 @@ void Button::setColour(float R, float G, float B) {
 
 bool Button::Clicked() {
   return hasBeenClicked;
-}
-
-void Button::setCustomHitBox(float x1, float y1, float x2, float y2) {
-  usingCustomHitBox = true;
-  customHitBox[0] = x1;
-  customHitBox[1] = y1;
-  customHitBox[2] = x2;
-  customHitBox[3] = y2;
-}
-
-void Button::setYSelected(bool ySelect) {
-  this->ySelect = ySelect;
 }

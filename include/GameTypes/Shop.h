@@ -1,15 +1,16 @@
-#ifndef MainMenu_H
-#define MainMenu_H
+#ifndef SHOP_H
+#define SHOP_H
 
 #include <vector>
 
 #include "../defines.h"
 #include "../Menus/Button.h"
 #include "./DisplayManager.h"
+#include "../Menus/CheckBox.h"
 
-class MainMenu: public DisplayManager {
+class Shop: public DisplayManager {
   public:
-    MainMenu();
+    Shop();
     
     void draw();
     void clean();
@@ -23,7 +24,6 @@ class MainMenu: public DisplayManager {
     int numOfButtons;    
     
     Button buttons[5];
-    GLuint background;
 };
 
 #endif

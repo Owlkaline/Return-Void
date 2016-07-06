@@ -4,6 +4,10 @@ GalacticShip::GalacticShip() {
   tick = 0;
 } 
 
+GalacticShip::~GalacticShip() {
+  clean();
+} 
+
 void GalacticShip::draw() {
   if(visible){
 
@@ -49,7 +53,7 @@ void GalacticShip::setup() {
   y = 100;
   
   coins = 0;
-  speed = 5;
+  speed = 8;
   angle = 0;
   health = 20;
   shield = 10;
@@ -169,10 +173,10 @@ void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
     y = height/2;
   if(y > SPACE_Y_RESOLUTION-height/2)
     y = SPACE_Y_RESOLUTION-height/2;
-    
-    
-  for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-    WeaponMount[i]->update(x, y, directionX, directionY, angle);
+
+  fire(x, y, directionX, directionY, angle, mouseBtnState);
+//  for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
+ //   WeaponMount[i]->update(x, y, directionX, directionY, angle);
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;
