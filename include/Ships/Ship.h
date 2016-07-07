@@ -15,7 +15,7 @@ class Ship {
     virtual void setup()=0;
     virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
  
-    void clean() { WeaponMount.clear(); }
+    void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
   
     int getCoins() { return coins; }
 

@@ -103,13 +103,6 @@ void GalacticShip::setup() {
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
   }
 }
-
-void GalacticShip::clean() {
-    for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
-      WeaponMount[i]->clean();
-     // delete WeaponMount[i];
-    }
-}
     
 void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(boostTimer > 50) {

@@ -104,6 +104,9 @@ void BasicMount::addBullet() {
     case REDPLASMA:
       bullets.push_back(new RedPlasma);
       break;
+    default:          
+      printf("Error: BasicMount unknown varient: %d\n",variant); 
+      exit(0);
   }
 }
 

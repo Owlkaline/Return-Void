@@ -76,8 +76,10 @@ void Game::setup() {
 
 void Game::clean() {
   ship.clean();
+  enemy.clear();
+  powerups.clear();
   enemy.erase(enemy.begin(), enemy.end());
-  powerups.erase(powerups.begin(), powerups.end());
+  powerups.erase(powerups.begin(), powerups.end()); 
 }
 
 void Game::newWave() {
@@ -129,10 +131,6 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     }
     
     if(!paused) {      
-      if(isNew) {
-        ship.setup();
-        isNew = false;
-      }
       if(enemy.size() == 0)
         newWave();
 

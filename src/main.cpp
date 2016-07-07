@@ -189,8 +189,6 @@ void display() {
     type = newtype;
     Display[type]->setup();
   }
-  
-
  
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];

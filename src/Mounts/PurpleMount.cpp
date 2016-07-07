@@ -90,8 +90,11 @@ void PurpleMount::update(float x, float y, float directionX, float directionY, f
     if(!bullets[i]->getVisible())
       bullets.erase(bullets.begin() + i);
   }
-    if(isShooting)
-    tick();
+    if(isShooting) {
+      tick();
+    } else {
+      ticks = 0;
+    }
 }
 
 void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
@@ -109,6 +112,9 @@ void PurpleMount::addBullet() {
     case PURPLEPLASMA:
       bullets.push_back(new PurplePlasma);
       break;
+    default:          
+      printf("Error: PurpleMount unknown varient: %d\n",variant); 
+      exit(0);
   }
 }
 

@@ -19,7 +19,7 @@ class Enemy {
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
-    void clean() { WeaponMount.clear(); }
+    void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
 
     void takeDamage(float damage) {
       health -= damage;

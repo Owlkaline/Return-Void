@@ -23,7 +23,7 @@ class Mount {
     void takeDamage(float damage) { health -= damage; }
     void setVisible(bool visible) { this->visible = visible; }
     void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }  
-    void clean() { bullets.clear(); ticks = 0;};      
+    void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};      
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
     void fire() { 
@@ -35,8 +35,6 @@ class Mount {
         bullets[i]->setVisible(true);
       }
     }
-    
-
     
     bool isVisible() { return visible; }
     

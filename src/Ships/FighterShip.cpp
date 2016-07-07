@@ -89,7 +89,6 @@ void FighterShip::setup() {
   
   const float mountPosX[maxNumWeapons] = {30, -30};
   const float mountPosY[maxNumWeapons] = {5, 5};
-  
   for(int i = 0; i < maxNumWeapons; ++i) {
     switch(i) {
       case 0:
@@ -97,17 +96,9 @@ void FighterShip::setup() {
         WeaponMount.push_back(new PurpleMount);
         WeaponMount[i]->setup();
         break;
-    }
-    
+    }    
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
   }
-}
-
-void FighterShip::clean() {
-    for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
-      WeaponMount[i]->clean();
-     // delete WeaponMount[i];
-    }
 }
     
 void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
