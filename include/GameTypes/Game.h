@@ -5,20 +5,20 @@
 #include <string>
 #include <sstream>
 
-#include "../Ships/GalacticShip.h"
+#include "./DisplayManager.h"
 #include "../Ships/FighterShip.h"
+#include "../Ships/GalacticShip.h"
 #include "../Menus/Label.h"
+#include "../Menus/PausedMenu.h"
+#include "../Menus/HighscoreScreen.h"
 #include "../Drops/Coins.h"
 #include "../Drops/Health.h"
 #include "../Drops/Shield.h"
-#include "./DisplayManager.h"
-#include "../Menus/PausedMenu.h"
-#include "../Namespaces/Random.h"
 #include "../Enemies/BasicEnemy.h" 
 #include "../Enemies/HypnoEnemy.h" 
-#include "../Menus/HighscoreScreen.h"
-#include "../Namespaces/Collisions.h"
 #include "../Enemies/CorruptedStarShip.h"
+#include "../Namespaces/Random.h"
+#include "../Namespaces/Collisions.h"
 
 
 class Game: public DisplayManager {

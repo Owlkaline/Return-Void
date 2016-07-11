@@ -30,6 +30,7 @@
 #define MAINMENU               0
 #define GAME                   1
 #define SETTINGS               2
+#define SHOP                   3
 
 #define MINIMUM_DISTANCETOSHIP 100
 

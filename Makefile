@@ -5,11 +5,11 @@ PROG = Return-void
 
 SRCS = $(SRCMAIN) $(SRCMENU) $(SRCGAME) $(SRCENEMIES) $(SRCMOUNTS) $(SRCBULLETS) $(SRCDROPS)
 
-SRCMAIN =./src/main.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Namespaces/Random.cpp ./src/Namespaces/File.cpp ./src/Ships/GalacticShip.cpp ./src/Ships/FighterShip.cpp  
+SRCMAIN =./src/main.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Namespaces/Random.cpp ./src/Namespaces/File.cpp ./src/Namespaces/Movement.cpp ./src/Ships/GalacticShip.cpp ./src/Ships/FighterShip.cpp  
 
-SRCMENU =./src/GameTypes/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/Button.cpp ./src/Menus/Label.cpp ./src/Menus/CheckBox.cpp ./src/Menus/HighscoreScreen.cpp
+SRCMENU =./src/Menus/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/Button.cpp ./src/Menus/Label.cpp ./src/Menus/CheckBox.cpp ./src/Menus/HighscoreScreen.cpp ./src/Menus/Shop.cpp
 
-SRCGAME =./src/GameTypes/Game.cpp ./src/GameTypes/MainMenu.cpp
+SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp
 
 SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp
 

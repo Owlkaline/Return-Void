@@ -37,6 +37,7 @@ void Game::draw() {
 }
 
 void Game::setup() {
+  printf("Game Setting up...");
   boostRand.newSeed(seed);
 
   paused = false;
@@ -72,17 +73,21 @@ void Game::setup() {
   ChTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
 
   pMenu.setup();
+  printf(" Game Setup\n");
 }
 
 void Game::clean() {
+  printf("Game Cleaning...");
   ship.clean();
   enemy.clear();
   powerups.clear();
   enemy.erase(enemy.begin(), enemy.end());
   powerups.erase(powerups.begin(), powerups.end()); 
+  printf("Game Clean\n");
 }
 
 void Game::newWave() {
+  printf("New Enemy Wave\n");
   wave++;
   
   std::stringstream ss;
@@ -116,6 +121,7 @@ void Game::newWave() {
 }
 
 void Game::restart() {
+  printf("Game Restarting...\n");
   clean();
   setup();  
 }
@@ -128,6 +134,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
       prevKeyState[ESC] = keyState[ESC];
       paused = !paused;
+      printf("Game pause: %d\n", paused);
     }
     
     if(!paused) {      
@@ -182,16 +189,18 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       if(!ship.getVisible()) {
         inHighscore = true;
         highscore.setScore(score);
+        printf("Player not visible, HighscoreScreen\n");
       }
 
       lbWave.update();
     } else {
-      pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+      pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
       if(!pMenu.isPaused())
         paused = !paused;
       if(pMenu.hasEnded()) {
         type = MAINMENU;
         ended = true;
+        printf("Returning to Menu From pause screen\n");
       }
     }
     coins = ship.getCoins();
@@ -204,13 +213,15 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       prevKeyState[ESC] = keyState[ESC];
       type = MAINMENU;
       ended = true;
+      printf("Returning to Menu, from highscore screen\n");
     }
-    highscore.update( mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+    highscore.update( mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
     if(highscore.hasEnded()) {
-      switch(highscore.getType()) {
+      switch(highscore.getEndType()) {
         case MAINMENU:
           type = MAINMENU;
           ended = true;
+          printf("Return to Menu from Quit Button pressed on highscore screen\n");
           break;
         case GAME:
           restart();

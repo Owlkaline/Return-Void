@@ -1,36 +1,28 @@
 #ifndef HIGHSCORESCREEN_H
 #define HIGHSCORESCREEN_H
 
-#include <string>
 #include <sstream>
 
-#include "./Label.h"
-#include "./Button.h"
-#include "../defines.h"
-#include "../Namespaces/File.h"
-#include "../Namespaces/LoadTexture.h"
+#include "../GameTypes/Menu.h"
 
-class HighscoreScreen {
+#include "../Namespaces/File.h"
+
+
+class HighscoreScreen: public Menu {
   public:
-    void draw();
     void setup();
-    void drawBackground();
-    void update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
+    void restart();
+    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
    
     void setScore(int score);
-    bool hasEnded();
-    
-    int getType();
   protected:
     void saveDefaults();
     void LoadHighscores(int score);
     
-    int type;
+    void drawBackground() {  }
     
     int highscores[10];
     std::string names[10];
-  
-    bool ended;
   
     Button Retry, Quit;
     Label lbTitle, lbScore; 

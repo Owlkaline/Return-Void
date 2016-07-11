@@ -7,22 +7,14 @@
 #include <time.h>  /* time */
 #include <iostream>
 #include <fstream>
-/*
-#ifdef __APPLE__
-#include <OpenGL/gl.h>// Header File For The OpenGL32 Library
-#include <OpenGL/glu.h>// Header File For The GLu32 Library
-#include <GLUT/glut.h>// Header File For The GLut Library
-#else
-#include <GL/glut.h>
-#include <GL/glu.h>
-#include <GL/freeglut.h>
-#endif
-*/
+
 #include "../include/Namespaces/File.h"
 #include "../include/Namespaces/LoadTexture.h"
 #include "../include/GameTypes/Game.h"
-#include "../include/GameTypes/MainMenu.h"
-#include "../include/GameTypes/SettingsMenu.h"
+#include "../include/GameTypes/Menu.h"
+#include "../include/Menus/Shop.h"
+#include "../include/Menus/MainMenu.h"
+#include "../include/Menus/SettingsMenu.h"
 
 int screenResX;
 int screenResY;
@@ -57,7 +49,7 @@ bool gameMode;
 
 GLuint mouseTexture;
 
-DisplayManager* Display[3] = { new MainMenu(), new Game(), new SettingsMenu() };
+DisplayManager* Display[4] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop() };
 
 //Sets the pace of the game
 void Timer(int value) {
@@ -168,7 +160,7 @@ void display() {
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
   drawCursor();
-  
+  //printf("%d: %s - %d\n", type, Display[type]->hasEnded() ? "True":"false", Display[type]->getEndType());
   if(Display[type]->hasEnded()) {
     int newtype = Display[type]->getEndType();
     switch(newtype) {

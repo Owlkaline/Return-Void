@@ -1,22 +1,18 @@
-#ifndef PAUSEDMENU_H
-#define PAUSEDMENU_H
+#ifndef SETTINGSMENU_H
+#define SETTINGSMENU_H
 
 #include "../GameTypes/Menu.h"
 
-class PausedMenu: public Menu {
+class SettingsMenu: public Menu {
   public:
+    SettingsMenu();
+    
     void setup();
     void restart();
-    void drawBackground();
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
-   
-    bool isPaused();
-  protected:
-    bool paused;
-  
-    float x, y, width, height;
-   
-    GLuint Texture;
+
+  protected:    
+    bool isRelative;
 };
 
 #endif

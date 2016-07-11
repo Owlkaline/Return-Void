@@ -1,63 +1,63 @@
 #include "../../include/Menus/HighscoreScreen.h"
 
-void HighscoreScreen::draw() {
-  Quit.draw();
-  Retry.draw();
-  lbScore.draw();
-  lbTitle.draw();
-  for(int i = 0; i < 10; ++i) {
-    lbHighscores[i].draw();
-    lbHighscoreNames[i].draw();
-  }
-}
-
 void HighscoreScreen::setup() {
   float width = 247;
   float height = 95;
-  Retry.setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, width, height, -1);
-  Quit.setup(SPACE_X_RESOLUTION/4 +width/2, SPACE_Y_RESOLUTION/10, width, height, -1);
+  // Retry
+  buttons.push_back(new Button);
+  buttons[0]->setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, width, height, (char*)"Textures/Menu/Retry.png");
+  // Quit
+  buttons.push_back(new Button);
+  buttons[1]->setup(SPACE_X_RESOLUTION/4 +width/2, SPACE_Y_RESOLUTION/10, width, height, (char*)"Textures/Menu/Quit.png");
   
-  lbTitle.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
-  lbScore.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4 + height, 0.4);
+  // Title
+  lb.push_back(new Label);
+  lb[0]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
+  // Score
+  lb.push_back(new Label);
+  lb[1]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4 + height, 0.4);
   
   for(int i = 0; i < 10; ++i) {
-    lbHighscores[i].setup(SPACE_X_RESOLUTION/4*3 - width, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);
-    lbHighscoreNames[i].setup(SPACE_X_RESOLUTION/4 + width, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);
+    // Highscores
+    lb.push_back(new Label);
+    lb[i+2]->setup(SPACE_X_RESOLUTION/4*3 - width, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);    
+  }
+  for(int i = 0; i < 10; ++i) {
+    // Highscores names
+    lb.push_back(new Label);
+    lb[i+12]->setup(SPACE_X_RESOLUTION/4 + width, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);
   }
 
   std::string str = "Highscores";
-  lbTitle.setText(str.c_str(), str.length());
+  lb[0]->setText(str.c_str(), str.length());
   str = "Your Score: ";
-  lbScore.setText(str.c_str(), str.length());
+  lb[1]->setText(str.c_str(), str.length());
   // #f08600 R 240 G 134 B 0
   float R = 0.941176471;
   float G = 0.525490246;
   float B = 0;
 
-  lbTitle.setColour(R, G, B);
-  lbScore.setColour(R, G, B);
+  lb[0]->setColour(R, G, B);
+  lb[1]->setColour(R, G, B);
   R = 0;
   G = 1;
   B = 0;
   for(int i = 0; i < 10; ++i) {
-    lbHighscores[i].setColour(R, G, B);
-    lbHighscoreNames[i].setColour(R, G, B);
+    lb[i+2]->setColour(R, G, B);
+    lb[i+12]->setColour(R, G, B);
   }
-  
-  Retry.setTexture((char*)"Textures/Menu/Retry.png");
-  Quit.setTexture((char*)"Textures/Menu/Quit.png");
 } 
 
-void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
+void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   ended = false;
-  Retry.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
-  Quit.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+  for(unsigned int i = 0; i < buttons.size(); ++i)
+    buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
 
-  if(Retry.Clicked()) {
+  if(buttons[0]->Clicked()) {
     type = GAME;
     ended = true;
   }
-  if(Quit.Clicked()) {
+  if(buttons[1]->Clicked()) {
     type = MAINMENU;
     ended = true;
   }
@@ -67,7 +67,7 @@ void HighscoreScreen::setScore(int score) {
   std::stringstream ss;
   ss << score;
   std::string strScore = "Your score: " + ss.str();
-  lbScore.setText(strScore.c_str(), strScore.length());
+  lb[1]->setText(strScore.c_str(), strScore.length());
   LoadHighscores(score);
 }
 
@@ -103,11 +103,11 @@ void HighscoreScreen::LoadHighscores(int score) {
       names[i] = "You   ";
     }
     tempname += names[i]; 
-    lbHighscoreNames[i].setText(tempname.c_str(), tempname.length()); 
+    lb[i+12]->setText(tempname.c_str(), tempname.length()); 
     std::stringstream ss1;
     ss1 << highscores[i];
     std::string tempscore = ss1.str();
-    lbHighscores[i].setText(tempscore.c_str(), tempscore.length());
+    lb[i+2]->setText(tempscore.c_str(), tempscore.length());
     
     if(!done && isHighscore) {
       if(i+1 < 10) {
@@ -115,11 +115,11 @@ void HighscoreScreen::LoadHighscores(int score) {
         std::stringstream ss3;
         ss3 << i+2;
         tempname += ss3.str() +". " + names[i+1]; 
-        lbHighscoreNames[i+1].setText(tempname.c_str(), tempname.length()); 
+        lb[i+12+1]->setText(tempname.c_str(), tempname.length()); 
         std::stringstream ss2;
         ss2 << highscores[i+1];
         std::string tempscore = ss2.str();
-        lbHighscores[i+1].setText(tempscore.c_str(), tempscore.length());
+        lb[i+2+1]->setText(tempscore.c_str(), tempscore.length());
         i++;
         done = true;
       }      
@@ -135,11 +135,7 @@ void HighscoreScreen::LoadHighscores(int score) {
       File::SaveInt(ofs, highscores[i]);
     }
   }
-}
-
-bool HighscoreScreen::hasEnded() { return ended; }
-int HighscoreScreen::getType() { return type; }
- 
+} 
 
 void HighscoreScreen::saveDefaults() {
   std::ofstream ofs("./data/highscore.bin", std::ios::binary);
@@ -215,3 +211,5 @@ void HighscoreScreen::saveDefaults() {
   File::SaveChar(ofs, ' ');
   File::SaveInt(ofs, 1000);
 }
+
+void HighscoreScreen::restart() {}

@@ -1,12 +1,5 @@
 #include "../../include/Menus/PausedMenu.h"
 
-void PausedMenu::draw() {
-  drawBackground();
-  Resume.draw();
-  Quit.draw();
-  lbTitle.draw();
-}
-
 void PausedMenu::setup() {
 
   x = SPACE_X_RESOLUTION/2;
@@ -16,23 +9,25 @@ void PausedMenu::setup() {
 
   float width = 247;
   float height = 95;
-  Resume.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, -1);
-  Quit.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, -1);
+  // Resume
+  buttons.push_back(new Button);
+  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, (char*)"Textures/Menu/Resume.png");
+  // Quit
+  buttons.push_back(new Button);
+  buttons[1]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, (char*)"Textures/Menu/Quit.png");
   
-  lbTitle.setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
+  lb.push_back(new Label);
+  lb[0]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
 
   std::string str = "Paused";
-  lbTitle.setText(str.c_str(), str.length());
   
   // #f08600 R 240 G 134 B 0
   float R = 0.941176471;
   float G = 0.525490246;
   float B = 0;
 
-  lbTitle.setColour(R, G, B);
-  
-  Resume.setTexture((char*)"Textures/Menu/Resume.png");
-  Quit.setTexture((char*)"Textures/Menu/Quit.png");
+  lb[0]->setColour(R, G, B);
+
   Texture = txt::LoadTexture("Textures/Menu/Window.png");
 }
 
@@ -52,20 +47,23 @@ void PausedMenu::drawBackground() {
     glEnd();    
     glDisable(GL_TEXTURE_2D);
 }
- 
-void PausedMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
+
+void PausedMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   paused = true;
   ended = false;
-  Resume.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
-  Quit.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
-
-  if(Resume.Clicked()) {
+  for(unsigned int i = 0; i < buttons.size(); ++i) {
+    buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+  }
+  // Resume
+  if(buttons[0]->Clicked()) {
     paused = false;
   }
-  if(Quit.Clicked()) {
+  // Quit
+  if(buttons[1]->Clicked()) {
     ended = true;
   }
 }
-
+void PausedMenu::restart() {}
 bool PausedMenu::isPaused() { return paused; }
-bool PausedMenu::hasEnded() { return ended; }
+
+

@@ -5,6 +5,8 @@
 
 class CheckBox {
   public:
+    ~CheckBox();
+  
     void draw();
     void setup(float x, float y);
 

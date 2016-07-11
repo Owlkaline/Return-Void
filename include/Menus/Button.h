@@ -8,6 +8,7 @@
 
 class Button {
   public:
+    ~Button();
     Button();
     
     void draw();

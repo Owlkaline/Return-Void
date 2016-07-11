@@ -1,5 +1,10 @@
 #include "../../include/Menus/CheckBox.h"
 
+CheckBox::~CheckBox() {
+  Texture[0] = 0;
+  Texture[1] = 0;
+}
+
 void CheckBox::draw() {
   glEnable(GL_TEXTURE_2D);
   if(isChecked) {

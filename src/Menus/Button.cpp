@@ -4,6 +4,10 @@ Button::Button() {
 
 }
 
+Button::~Button() {
+  Texture = 0;
+}
+
 void Button::draw() {
   if(hasTexture) {
     if(clicked || hasBeenClicked) {
@@ -81,6 +85,10 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
       hasBeenClicked = true;
     }
     isSelected = true;
+  } else {
+    isSelected = false;
+    clicked = false;
+    hasBeenClicked = false;
   }
 }
 

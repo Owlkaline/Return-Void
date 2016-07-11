@@ -8,6 +8,7 @@
 
 class Label {
   public:
+    ~Label();
     Label();
     
     void draw();

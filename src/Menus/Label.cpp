@@ -4,6 +4,10 @@ Label::Label() {
 
 }
 
+Label::~Label() {
+  Texture = 0;
+}
+
 void Label::draw() {
   if(hasTexture) {  
     glEnable(GL_TEXTURE_2D);
