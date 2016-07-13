@@ -9,12 +9,16 @@ void HypnoEnemy::setup(float drop) {
   width = 75;
   height = 75;
   health = 7;
+  angle = 0;
+  moveType = SEMICIRCLE;
+  tookDamage = false;
   maxHealth = health;
   tick = 0;
   visible = true;
   maxWeaponMounts = 2;
   x = -SPACE_X_RESOLUTION;
-  y = -SPACE_X_RESOLUTION;
+  y = -SPACE_Y_RESOLUTION;
+  hasFinished = false;
 
   wasKilled = false;
   
@@ -86,51 +90,11 @@ void HypnoEnemy::reset() {
 
 }
 
-void HypnoEnemy::draw() {
-  if(visible) {
-    if(tookDamage) {
-      if(tick <= 0)
-        tookDamage = false;
-
-    }
-    glEnable(GL_TEXTURE_2D);
-    //if(health > maxHealth/4.0 *3) {
-      glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture());
-   // } else if(health > maxHealth/2) {
-   //   glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture(1));
-   // } else if(health > maxHealth/4) {
-   //   glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture(2));
-  //  } else {
-   //   glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture(3));
-  //  }
-    glPushMatrix();
-    glTranslatef(x, y, 0); // M1 - 2nd translation
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-    glTranslatef(-x, -y, 0); // M1 - 2nd translation
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
-    glColor3f(1.0, 1.0, 1.0);
-  } else {
-    lbScore.setX(x);
-    lbScore.setY(y);
-    lbScore.draw(); 
-  }
-  for(int i = 0; i < maxWeaponMounts; ++i)
-    WeaponMount[i]->draw(); 
+void HypnoEnemy::setTexture() {
+    glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture());
 }
 
 void HypnoEnemy::setX(float x) {
-  //this->x = x;  
   this->x = 0;
   if(x < width*5) {
     amp = (x-width)/2;//startX-width/2;

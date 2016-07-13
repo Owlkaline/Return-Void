@@ -9,7 +9,7 @@ class CorruptedStarShip: public Enemy {
     void setup(float drop);
     void update(float Px, float Py);
     void reset();
-    void draw();
+    void setTexture();
     void setX(float x);
     void setY(float y);
   protected:

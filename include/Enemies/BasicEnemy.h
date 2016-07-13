@@ -9,7 +9,7 @@ class BasicEnemy: public Enemy {
     void setup(float drop);
     void update(float Px, float Py);
     void reset();
-    void draw();
+    void setTexture();
 };
 
 #endif

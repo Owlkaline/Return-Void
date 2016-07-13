@@ -53,6 +53,10 @@
 #define GREENPLASMATIMER       20
 #define PURPLEPLASMATIMER      7
 
+#define FALL                   0
+#define SEMICIRCLE             1
+#define SINWAVE                2
+
 #define DRAWQUADTREE           0
 #define DRAWHITBOX             0
 

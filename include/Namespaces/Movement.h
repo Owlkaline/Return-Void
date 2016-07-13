@@ -2,9 +2,9 @@
 #define MOVEMENT_H
 
 namespace move {
-  void fall();
-  void semiCircle();
-  void sinWave();
+  void fall(float* y, float speed);
+  void semicircle();
+  void sinwave();
 }
 
 #endif

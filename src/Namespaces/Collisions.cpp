@@ -33,6 +33,8 @@ void Collisions::drawQuadTree() {
 
 void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) { 
   bool shipQuad[4];
+  for(int i = 0; i < 4; ++i) 
+    shipQuad[i] = false;
 
   std::vector<unsigned int> shipMountQuad[4];
   std::vector<unsigned int> shipBulletQuad[4];

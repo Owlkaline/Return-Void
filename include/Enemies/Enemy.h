@@ -8,18 +8,73 @@
 #include "../Menus/Label.h"
 #include "../Mounts/BasicMount.h"
 #include "../Mounts/HypnoMount.h"
+#include "../Namespaces/Movement.h"
 #include "../Namespaces/LoadTexture.h"
 
 class Enemy {
   public:
-    virtual void draw() = 0;
+    
     virtual void reset() = 0;
     virtual void setup(float drop) = 0;
     virtual void update(float Px, float Py) = 0;    
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
+    
+    void draw() {
+      if(visible) {
+        if(tookDamage) {
+          if(tick <= 0)
+            tookDamage = false;
+        }
+        for(int i = 0; i < maxWeaponMounts; ++i)
+          WeaponMount[i]->draw(); 
+          
+        glEnable(GL_TEXTURE_2D);
+        setTexture();
+        glPushMatrix();
+        glTranslatef(x, y, 0); // M1 - 2nd translation
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+        glTranslatef(-x, -y, 0); // M1 - 2nd translation
+      
+        glBegin(GL_QUADS);
+          glTexCoord2f(0.0f, 1.0f);
+          glVertex3f(x-width/2, y+height/2, 0.0);
+          glTexCoord2f(1.0f, 1.0f);
+          glVertex3f(x+width/2, y+height/2, 0.0);
+          glTexCoord2f(1.0f, 0.0f);
+          glVertex3f(x+width/2, y-height/2, 0.0);
+          glTexCoord2f(0.0f, 0.0f);
+          glVertex3f(x-width/2, y-height/2, 0.0);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+       
+        glColor3f(1.0, 1.0, 1.0);
+      } else {
+        lbScore.setX(x);
+        lbScore.setY(y);
+        lbScore.draw(); 
+      }
+    }
+    
     void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
+
+    void move() {
+      if(visible) {
+        switch(moveType) {
+          case FALL:
+            move::fall(&y, speed);//y-=speed;
+            break;
+          case SEMICIRCLE:
+            move::semicircle();
+            break;
+          case SINWAVE:
+            move::sinwave();
+            break;
+        }
+      }
+    }
 
     void takeDamage(float damage) {
       health -= damage;
@@ -75,6 +130,9 @@ class Enemy {
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
 
   protected:
+   
+    virtual void setTexture() = 0; 
+   
     bool visible;
     bool wasKilled;
     bool tookDamage;
@@ -82,8 +140,10 @@ class Enemy {
     int tick;
     int drop;
     int score;
+    float angle;
     float health;
     int maxHealth;
+    int moveType;
     int maxWeaponMounts;
 
     float transparent;

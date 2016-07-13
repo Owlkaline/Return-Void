@@ -10,11 +10,14 @@ void BasicEnemy::setup(float drop) {
   height = 75;
   health = 10;
   tick = 0;
+  angle = 0;
+  moveType = FALL;
+  tookDamage = false;
   transparent = 1.0;
   visible = true;
   maxWeaponMounts = 1;
   x = -SPACE_X_RESOLUTION;
-  y = -SPACE_X_RESOLUTION;
+  y = -SPACE_Y_RESOLUTION;
 
   wasKilled = false;
   
@@ -33,11 +36,10 @@ void BasicEnemy::setup(float drop) {
 }
 
 void BasicEnemy::update(float Px, float Py) {
+  move();
+  
   if(tookDamage)
     tick--;
-
-  if(visible)
-    y-=speed;
 
   if(y <= -height)
     setVisible(false);
@@ -53,35 +55,8 @@ void BasicEnemy::reset() {
 
 }
 
-void BasicEnemy::draw() {
-  for(int i = 0; i < maxWeaponMounts; ++i)
-    WeaponMount[i]->draw();
-
-  if(visible) {
-    if(tookDamage) {
-      if(tick <= 0)
-        tookDamage = false;
+void BasicEnemy::setTexture() {
+    if(tookDamage)
       glColor3f(1.0, 0.0, 0.0);
-    }
-    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, getBasicEnemyTexture());
-
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    glColor3f(1.0,1.0,1.0);
-  } else {
-    lbScore.setX(x);
-    lbScore.setY(y);
-    lbScore.draw();
-
-  }
 }

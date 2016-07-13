@@ -42,6 +42,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   Texture = txt::LoadTexture(filename);
   hasTexture = true;
   isTimed = false;
+  length = 0;
   ticks = 0;
   this->x = x;
   this->y = y;
@@ -53,6 +54,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
 void Label::setup(float x, float y, float scale) {
   hasTexture = false;
   isTimed = false;
+  length = 0;
   ticks = 0;
   this->x = x;
   this->y = y;
@@ -62,6 +64,7 @@ void Label::setup(float x, float y, float scale) {
 void Label::setup(float x, float y, float scale, bool timer) {
   hasTexture = false;
   isTimed = timer;
+  length = 0;
   ticks = 0;
   this->x = x;
   this->y = y;
