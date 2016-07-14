@@ -184,7 +184,7 @@ class Enemy {
             int numOfBullets = 0;
             for(int i = 0; i < maxWeaponMounts; ++i)
               numOfBullets += getNumOfBullets(i);
-            move::semicircle(&x, &y, width, height, speed, startX, startY, &movementAngle, &isOnRightSide, &cycle, &visible, numOfBullets);
+            move::semicircle(&x, &y, width, height, speed, startX, &startY, &movementAngle, &isOnRightSide, &cycle, &visible, numOfBullets);
             break;
             }
           case SINWAVE:

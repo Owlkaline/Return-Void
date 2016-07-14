@@ -7,23 +7,25 @@ void move::fall(float* y, float speed, float* movementAngle, bool* visible) {
     *visible = false;
 }
 
-void move::semicircle(float *x, float *y, float width, float height, float speed, float startX, float startY, float* movementAngle, bool* isOnRightSide, int* cycle, bool* visible, int numOfBullets) {
+void move::semicircle(float *x, float *y, float width, float height, float speed, float startX, float *startY, float* movementAngle, bool* isOnRightSide, int* cycle, bool* visible, int numOfBullets) {
   switch(*cycle) {
     case 0:
       *y-=speed;
-      if(*y < SPACE_Y_RESOLUTION-height)
+      if(*y < SPACE_Y_RESOLUTION-height) {
         *cycle+=1;
+        *startY = *y;
+      }
       break;
     case 1:
       if(*isOnRightSide) {
         *x+=speed;
-        *y-=speed;
-        if(*x > SPACE_X_RESOLUTION/2)
+        *y = 30 * sin(((2*M_PI)/800)*(*x)) + *startY;
+        if(*x > SPACE_X_RESOLUTION-width)
           *cycle+=1;
       } else {
         *x-=speed;
-        *y-=speed;
-        if(*x < SPACE_X_RESOLUTION/2)
+        *y-= 30 * sin(((2*M_PI)/800)*(*x)) + *startY;
+        if(*x < SPACE_X_RESOLUTION+width)
           *cycle+=1;
       }
       break;
