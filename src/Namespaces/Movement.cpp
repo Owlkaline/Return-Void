@@ -11,32 +11,41 @@ void move::semicircle(float *x, float *y, float width, float height, float speed
   switch(*cycle) {
     case 0:
       *y-=speed;
-      if(*y < SPACE_Y_RESOLUTION-height) {
+      if(*y <= (height * cos(((2*M_PI)/800)*(*x)) + SPACE_Y_RESOLUTION-height)) {
         *cycle+=1;
-        *startY = *y;
+        *y = (height * cos(((2*M_PI)/800)*(*x)) + SPACE_Y_RESOLUTION-height);
+        *startY = SPACE_Y_RESOLUTION-height;
       }
       break;
     case 1:
       if(*isOnRightSide) {
-        *x+=speed;
-        *y = 30 * sin(((2*M_PI)/800)*(*x)) + *startY;
-        if(*x > SPACE_X_RESOLUTION-width)
+        *x-=speed;
+        *y = (height * cos(((2*M_PI)/800)*(*x)) + *startY);
+        if(*x < SPACE_X_RESOLUTION/8)
           *cycle+=1;
       } else {
-        *x-=speed;
-        *y-= 30 * sin(((2*M_PI)/800)*(*x)) + *startY;
-        if(*x < SPACE_X_RESOLUTION+width)
+        *x+=speed;
+        *y = (height * cos(((2*M_PI)/800)*(*x)) + *startY);
+        if(*x > SPACE_X_RESOLUTION/8*7)
           *cycle+=1;
       }
+
       break;
     case 2:
       if(*isOnRightSide) {
         *x+=speed;
-        *y+=speed;
+        *y = (height * cos(((2*M_PI)/800)*(*x)) + SPACE_Y_RESOLUTION-height);
+        if(*x > SPACE_X_RESOLUTION/8*7)
+          *cycle+=1;
       } else {
         *x-=speed;
-        *y+=speed;
+        *y = (height * cos(((2*M_PI)/800)*(*x)) + SPACE_Y_RESOLUTION-height);
+        if(*x < SPACE_X_RESOLUTION/8)
+          *cycle+=1;
       }
+      break;
+    case 3:
+      *y+=speed;
       if(*y > SPACE_Y_RESOLUTION+height)
         *visible = false;
       break;

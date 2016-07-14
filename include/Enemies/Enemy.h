@@ -63,10 +63,10 @@ class Enemy {
           }
           if(x > SPACE_X_RESOLUTION/2) {
             startX = x - amp;
-            isOnRightSide = false;
+            isOnRightSide = true;
           } else {
             startX = x + amp;
-            isOnRightSide = true;
+            isOnRightSide = false;
             angle = 0;
           }
           break;
