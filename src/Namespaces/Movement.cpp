@@ -1,7 +1,8 @@
 #include "../../include/Namespaces/Movement.h"
 
-void move::fall(float* y, float speed, bool* visible) {
+void move::fall(float* y, float speed, float* movementAngle, bool* visible) {
   *y-=speed;
+  movementAngle = 0;
   if(*y <= -75)
     *visible = false;
 }
@@ -16,7 +17,7 @@ void move::semicircle(float *x, float *y, float width, float height, float speed
       *movementAngle-=speed/10;
       *x = SPACE_X_RESOLUTION/2 + cos(*movementAngle/ 180.0f * (float)M_PI) * -startX;
       *y = SPACE_Y_RESOLUTION + sin(*movementAngle/ 180.0f * (float)M_PI) * -SPACE_Y_RESOLUTION/2+height;
-    } 
+    }
     *hasFinished = true;
    } else {
      if(!*hasFinished) {
@@ -27,10 +28,10 @@ void move::semicircle(float *x, float *y, float width, float height, float speed
    }
 }
 
-void move::sinwave(float *x, float *y, float height, float speed, float amp, float startX, bool* visible) {
+void move::sinwave(float *x, float *y, float* movementAngle, float height, float speed, float amp, float startX, bool* visible) {
   *y-=speed;
   *x = amp * sin(((2*M_PI)/800)*(*y)) + startX;
-  
+  *movementAngle = 0;
   if(*y <= -height)
     *visible = false;
 }
@@ -48,7 +49,7 @@ void move::sidefall(float* x, float* y, float width, float* startX, float* start
       }
       break;
     case 1:
-      *angle+=1;      
+      *angle+=1;
       float rad = *angle * M_PI/180.0;
       *x = *startX + cos(-rad) * (SPACE_X_RESOLUTION/8);
       *y = *startY + sin(-rad) * (SPACE_X_RESOLUTION/8);

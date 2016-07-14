@@ -2,14 +2,14 @@
 
 CorruptedStarShip::CorruptedStarShip() {
   width = 75;
-  height = 75; 
+  height = 75;
 }
 
 CorruptedStarShip::~CorruptedStarShip() {
   clean();
 }
 
-void CorruptedStarShip::defaults() { 
+void CorruptedStarShip::defaults() {
   printf("Corrupted Star Ship setup\n");
   speed = 3;
   width = 75;
@@ -37,7 +37,6 @@ void CorruptedStarShip::update(float Px, float Py) {
 
   if(y <= -height)
     setVisible(false);
-
   for(int i = 0; i < maxWeaponMounts; ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
@@ -48,7 +47,7 @@ void CorruptedStarShip::update(float Px, float Py) {
     dirx = dirx/distance;
     diry = diry/distance;
     WeaponMount[i]->update(x, y, dirx, diry, angle+180, true);
-  } 
+  }
 }
 
 void CorruptedStarShip::reset() {

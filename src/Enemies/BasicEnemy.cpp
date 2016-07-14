@@ -15,9 +15,9 @@ void BasicEnemy::defaults() {
   width = 75;
   height = 75;
   health = 10;
- 
+
   angle = 0;
-  
+
   transparent = 1.0;
 
   maxWeaponMounts = 1;
@@ -36,14 +36,13 @@ void BasicEnemy::defaults() {
 
 void BasicEnemy::update(float Px, float Py) {
   move();
-  
+
   if(tookDamage)
     tick--;
-
   for(int i = 0; i < maxWeaponMounts; ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
-    
+
     float rad = (movementAngle+90) * M_PI/180.0;
     float dirx = cos(-rad) * width;
     float diry = sin(-rad) * height;

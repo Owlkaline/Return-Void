@@ -4,12 +4,12 @@ PurplePlasma::PurplePlasma() {
 
 }
 
-void PurplePlasma::draw() { 
+void PurplePlasma::draw() {
   glPushMatrix();
   glTranslatef(x, y, 0); // M1 - 2nd translation
-  glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+  glRotatef(angle, 0.0f, 0.0f, 1.0f);
   glTranslatef(-x, -y, 0); // M1 - 2nd translation
-  glEnable(GL_TEXTURE_2D);  
+  glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, getPurplePlasmaTexture());
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
@@ -43,10 +43,10 @@ void PurplePlasma::setup(float x, float y, float dirX, float dirY, float angle) 
   width = 20;
   height = 20;
   speed = 15;
-  damage = 0.5;
+  damage = 0.8;
   this->angle = angle;
   directionX = dirX;
   directionY = dirY;
   visible = false;
-} 
+}
 

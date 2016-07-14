@@ -13,33 +13,33 @@
 
 class Enemy {
   public:
-    
+
     virtual void reset() = 0;
     virtual void defaults() = 0;
-    virtual void update(float Px, float Py) = 0;    
+    virtual void update(float Px, float Py) = 0;
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
-    
+
     void setup(float x, float y, int moveType, int drop) {
       defaults();
       this->x = x;
       this->y = y;
       this->drop = drop;
       this->moveType = moveType;
-      
+
       tick = 0;
       cycle = 0;
-      
+
       visible = true;
       wasKilled = false;
       tookDamage = false;
       hasFinished = false;
-      
+
       startX = x;
       startY = y;
-      maxHealth = health; 
-       
+      maxHealth = health;
+
       switch(moveType) {
         case FALL:
           break;
@@ -76,25 +76,26 @@ class Enemy {
           startX = x;
           break;
       }
+      movementAngle = 0;
     }
-    
+
     void draw() {
       for(int i = 0; i < maxWeaponMounts; ++i)
-        WeaponMount[i]->draw(); 
-        
+        WeaponMount[i]->draw();
+
       if(visible) {
         if(tookDamage) {
           if(tick <= 0)
             tookDamage = false;
         }
-          
+
         glEnable(GL_TEXTURE_2D);
         setTexture();
         glPushMatrix();
         glTranslatef(x, y, 0); // M1 - 2nd translation
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);
         glTranslatef(-x, -y, 0); // M1 - 2nd translation
-      
+
         glBegin(GL_QUADS);
           glTexCoord2f(0.0f, 1.0f);
           glVertex3f(x-width/2, y+height/2, 0.0);
@@ -107,15 +108,15 @@ class Enemy {
         glEnd();
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
-       
+
         glColor3f(1.0, 1.0, 1.0);
       } else {
         lbScore.setX(x);
         lbScore.setY(y);
-        lbScore.draw(); 
+        lbScore.draw();
       }
     }
-    
+
     void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
 
     void takeDamage(float damage) {
@@ -170,14 +171,14 @@ class Enemy {
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
 
   protected:
-   
-    virtual void setTexture() = 0; 
-    
+
+    virtual void setTexture() = 0;
+
     void move() {
       if(visible) {
         switch(moveType) {
           case FALL:
-            move::fall(&y, speed, &visible);//y-=speed;
+            move::fall(&y, speed, &movementAngle, &visible);//y-=speed;
             break;
           case SEMICIRCLE: {
             int numOfBullets = 0;
@@ -187,16 +188,16 @@ class Enemy {
             break;
             }
           case SINWAVE:
-            move::sinwave(&x, &y, height, speed, amp, startX, &visible);
+            move::sinwave(&x, &y, &movementAngle, height, speed, amp, startX, &visible);
             break;
           case RIGHTSIDEFALL:
-            move::sidefall(&x, &y, width, &startX, &startY, speed, &movementAngle, &cycle);            
+            move::sidefall(&x, &y, width, &startX, &startY, speed, &movementAngle, &cycle);
             angle = -movementAngle;
             break;
         }
       }
     }
-   
+
     bool visible;
     bool wasKilled;
     bool tookDamage;
@@ -225,19 +226,19 @@ class Enemy {
       static GLuint basicEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/BasicEnemy.png");
       return basicEnemyTexture;
     }
-    
+
     static GLuint getHypnoEnemyTexture() {
       static GLuint hypnoEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/HypnoEnemy.png");
       return hypnoEnemyTexture;
     }
-    
+
     static GLuint getCorruptedStarShipTexture(int i) {
       static GLuint corruptedStarShipTexture0 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
       static GLuint corruptedStarShipTexture1 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg1.png");
       static GLuint corruptedStarShipTexture2 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg2.png");
       static GLuint corruptedStarShipTexture3 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg3.png");
       static GLuint corruptedStarShipTexture4 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg4.png");
-      
+
       switch(i) {
         case 0:
           return corruptedStarShipTexture0;
