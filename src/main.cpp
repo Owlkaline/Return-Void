@@ -104,7 +104,7 @@ void mouseBtn(int btn, int state, int x, int y) {
   }
 
   mouseBtnState[btn] = state;
-} 
+}
 
 //Updates mouse coords
 void mouse(int x, int y) {
@@ -121,13 +121,13 @@ void saveGame() {
   ofs.close();
 }
 
-void drawCursor() { 
+void drawCursor() {
   if(type != GAME) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mouseTexture);
     // Nice blue #1e00d5
     glColor3f(0.117647059f, 0, 0.835294197f);
-  
+
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
       glVertex3f(mouseX-20, mouseY+20, 0.0);
@@ -137,8 +137,8 @@ void drawCursor() {
       glVertex3f(mouseX+20, mouseY-20, 0.0);
       glTexCoord2f(0.0f, 0.0f);
       glVertex3f(mouseX-20, mouseY-20, 0.0);
-    glEnd();  
-  
+    glEnd();
+
     glColor3f(1.0, 1.0, 1.0f);
     glDisable(GL_TEXTURE_2D);
   }
@@ -156,7 +156,7 @@ void display() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
-  
+
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
   drawCursor();
@@ -174,14 +174,15 @@ void display() {
         Display[newtype]->setSeed(567894);
         break;
       case GAME:
-        Display[newtype]->setSeed(time(NULL));
+        Display[newtype]->setSeed(567894);
+        //Display[newtype]->setSeed(time(NULL));
         break;
     }
     Display[type]->clean();
     type = newtype;
     Display[type]->setup();
   }
- 
+
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
   prevMouseBtnState[GLUT_LEFT_BUTTON] = mouseBtnState[GLUT_LEFT_BUTTON];
@@ -222,7 +223,7 @@ int main(int argc, char** argv) {
     printf("Loading Settings...\n");
     std::ifstream ifs("./data/settings.bin", std::ios::binary);
     float version = File::LoadFloat(ifs);
-    
+
     if(version == (float)VERSION) {
       gameMode = File::LoadBool(ifs);
      // int a = File::LoadInt(ifs1);
@@ -231,21 +232,21 @@ int main(int argc, char** argv) {
       printf("Incorrect settings verison\n version needed: %f\n", version);
       gameMode = GAME_MODE_POSSIBLE;
     }
-    ifs.close(); 
+    ifs.close();
   } else {
     printf("Creating settings file\n");
     std::ofstream ofs("./data/settings.bin", std::ios::binary);
   }
-  
+
   char mode_string[24];
 
   sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
   glutGet(GLUT_SCREEN_HEIGHT));
   glutGameModeString(mode_string);
-  
+
   if(GAME_MODE_POSSIBLE && !glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
     printf("GameMode %s is possible\n", mode_string);
- 
+
     //destroys the current graphics window
     glutDestroyWindow(0);
     glutEnterGameMode();
@@ -254,11 +255,11 @@ int main(int argc, char** argv) {
 
    // glutInitWindowPosition(100,100);
 	//glutInitWindowSize(1280,720);
-	
+
 	glutCreateWindow("Return-Void");
     glutFullScreen();
   }
-  
+
   // hide the cursor
   glutSetCursor(GLUT_CURSOR_NONE);
 
@@ -276,7 +277,7 @@ int main(int argc, char** argv) {
   glutMouseFunc(mouseBtn);
   glutMotionFunc(mouse);
   glutPassiveMotionFunc(mouse);
- 
+
   setup();
 
   screenResX = glutGet(GLUT_SCREEN_WIDTH);
