@@ -5,8 +5,9 @@
 
 class BasicEnemy: public Enemy {
   public:
+    BasicEnemy();
     ~BasicEnemy();
-    void setup(float drop);
+    void defaults();
     void update(float Px, float Py);
     void reset();
     void setTexture();

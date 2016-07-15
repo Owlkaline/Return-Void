@@ -10,7 +10,7 @@ class Spiral: public Weapon {
     void draw();    
     void reset();
     void clean();
-    void update();
+    void tick();
     void setup(float x, float y, float dirX, float dirY, float angle);
 };
 

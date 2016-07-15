@@ -8,17 +8,13 @@ class PurpleMount: public Mount {
     PurpleMount();
     ~PurpleMount();
     
-    void draw();
+    void setTexture();
     void reset();
-    void setup();
-    void setup(int variant);
+    void defaults();
     void update(float x, float y, float directionX, float directionY, float angle, bool isShooting);
     void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py);
 
   protected:   
-    int variant;
-    int maxMounts;
-    void addBullet();
 };
 
 #endif

@@ -1,27 +1,26 @@
 #include "../../include/Enemies/BasicEnemy.h"
 
+BasicEnemy::BasicEnemy() {
+  width = 75;
+  height = 75;
+}
+
 BasicEnemy::~BasicEnemy() {
   clean();
 }
 
-void BasicEnemy::setup(float drop) {
+void BasicEnemy::defaults() {
+  printf("Basic Enemy setup\n");
   speed = 5;
   width = 75;
   height = 75;
   health = 10;
-  tick = 0;
+ 
   angle = 0;
-  moveType = FALL;
-  tookDamage = false;
-  transparent = 1.0;
-  visible = true;
-  maxWeaponMounts = 1;
-  x = -SPACE_X_RESOLUTION;
-  y = -SPACE_Y_RESOLUTION;
-
-  wasKilled = false;
   
-  this->drop = drop;
+  transparent = 1.0;
+
+  maxWeaponMounts = 1;
 
   score = 10;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
@@ -30,7 +29,7 @@ void BasicEnemy::setup(float drop) {
 
   for(int i = 0; i < maxWeaponMounts; ++i) {
     WeaponMount.push_back(new BasicMount);
-    WeaponMount[i]->setup();
+    WeaponMount[i]->setup(BLUEPLASMA);
     WeaponMount[i]->setOffset(0, 20);
   }
 }
@@ -41,13 +40,17 @@ void BasicEnemy::update(float Px, float Py) {
   if(tookDamage)
     tick--;
 
-  if(y <= -height)
-    setVisible(false);
-
   for(int i = 0; i < maxWeaponMounts; ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
-    WeaponMount[i]->update(x, y, 0, -1, 180, true);
+    
+    float rad = (movementAngle+90) * M_PI/180.0;
+    float dirx = cos(-rad) * width;
+    float diry = sin(-rad) * height;
+    float distance = pow(pow(diry,2.0f) + pow(dirx,2.0f), 0.5f);
+    dirx = dirx/distance;
+    diry = diry/distance;
+    WeaponMount[i]->update(x, y, dirx, diry, angle+180, true);
   }
 }
 

@@ -1,27 +1,24 @@
 #include "../../include/Enemies/CorruptedStarShip.h"
 
+CorruptedStarShip::CorruptedStarShip() {
+  width = 75;
+  height = 75; 
+}
+
 CorruptedStarShip::~CorruptedStarShip() {
   clean();
 }
 
-void CorruptedStarShip::setup(float drop) {
+void CorruptedStarShip::defaults() { 
+  printf("Corrupted Star Ship setup\n");
   speed = 3;
   width = 75;
   height = 75;
   health = 15;
-  maxHealth = health;
-  angle = 0;
-  tookDamage = false;
-  moveType = SINWAVE;
-  tick = 0;
-  visible = true;
-  maxWeaponMounts = 1;
-  x = -SPACE_X_RESOLUTION;
-  y = -SPACE_Y_RESOLUTION;
 
-  wasKilled = false;
-  
-  this->drop = drop; 
+  angle = 0;
+
+  maxWeaponMounts = 1;
 
   score = 30;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
@@ -36,10 +33,7 @@ void CorruptedStarShip::setup(float drop) {
 }
 
 void CorruptedStarShip::update(float Px, float Py) {
-  if(visible) {
-    y-=speed;
-    x = amp * sin(((2*M_PI)/800)*(y)) + startX;
-  }
+  move();
 
   if(y <= -height)
     setVisible(false);
@@ -47,7 +41,13 @@ void CorruptedStarShip::update(float Px, float Py) {
   for(int i = 0; i < maxWeaponMounts; ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
-    WeaponMount[i]->update(x, y, 0, -1, 180, true);
+    float rad = (movementAngle+90) * M_PI/180.0;
+    float dirx = cos(-rad) * width;
+    float diry = sin(-rad) * height;
+    float distance = pow(pow(diry,2.0f) + pow(dirx,2.0f), 0.5f);
+    dirx = dirx/distance;
+    diry = diry/distance;
+    WeaponMount[i]->update(x, y, dirx, diry, angle+180, true);
   } 
 }
 

@@ -8,54 +8,19 @@ HypnoMount::~HypnoMount() {
   clean();
 }
 
-void HypnoMount::draw() {
-  for(unsigned int i = 0; i < bullets.size(); ++i)
-    bullets[i]->draw();
-      
-  if(visible) {
-    glPushMatrix();
-    glTranslatef(x, y, 0); // M1 - 2nd translation
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-    glTranslatef(-x, -y, 0); // M1 - 2nd translation
-    glEnable(GL_TEXTURE_2D);
-
-    glEnable(GL_TEXTURE_2D);  
-    glBindTexture(GL_TEXTURE_2D, getHypnoMountTexture(isLeft));
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);      
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);      
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix(); 
-  }
+void HypnoMount::setTexture() {
+  glBindTexture(GL_TEXTURE_2D, getHypnoMountTexture(isLeft));
 }
 
 void HypnoMount::reset() {
 
 }
 
-void HypnoMount::setup() { 
-  x = -SPACE_X_RESOLUTION;
-  y = -SPACE_Y_RESOLUTION;
-  angle = 0;
+void HypnoMount::defaults() { 
   width = 75/3.73;
   height = 75/3.73;
   health = 20;
-  timer = 64;
-  ticks = 0;
-  visible = true;
 } 
-
-void HypnoMount::setup(int variant) {
-  isLeft = variant;
-  setup();
-}
 
 void HypnoMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
 
@@ -86,10 +51,6 @@ void HypnoMount::update(float x, float y, float directionX, float directionY, fl
     if(!bullets[i]->getVisible())
       bullets.erase(bullets.begin() + i);
   }
-}
-
-void HypnoMount::addBullet() {
-  bullets.push_back(new Spiral);
 }
 
 

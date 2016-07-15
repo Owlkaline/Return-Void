@@ -33,13 +33,8 @@ void GreenPlasma::clean() {
 
 }
 
-void GreenPlasma::update() {
-  if(visible) {
-    y+=speed*directionY;
-    x+=speed*directionX;
-  }
-  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
-    visible = false;
+void GreenPlasma::tick() {
+
 }
 
 void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {

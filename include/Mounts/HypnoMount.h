@@ -8,15 +8,14 @@ class HypnoMount: public Mount {
     HypnoMount();
     ~HypnoMount();
     
-    void draw();
-    void setup();
+    void setTexture();
     void reset();
-    void setup(int variant);
+    void defaults();
     void update(float x, float y, float directionX, float directionY, float angle, bool isShooting);
     void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py);
+    
+    void setLeft();
   protected:
-    void addBullet();
-    int isLeft;
 };
 
 #endif

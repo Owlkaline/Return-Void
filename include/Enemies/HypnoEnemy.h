@@ -5,17 +5,15 @@
 
 class HypnoEnemy: public Enemy {
   public:
+    HypnoEnemy();
     ~HypnoEnemy();
-    void setup(float drop);
+    void defaults();
     void update(float Px, float Py);
     void reset();
     void setTexture();
     void setX(float x);
     void setY(float y);
   protected:
-    float startX, startY, amp;
-    float movementAngle;
-    bool hasFinished, rightSide;
 };
 
 #endif

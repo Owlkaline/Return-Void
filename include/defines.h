@@ -46,16 +46,21 @@
 #define BLUEPLASMA             2
 #define GREENPLASMA            3
 #define PURPLEPLASMA           4
+#define SPIRAL                 5
 
 // Types of Bullets
 #define REDPLASMATIMER         20
 #define BLUEPLASMATIMER        10
 #define GREENPLASMATIMER       20
 #define PURPLEPLASMATIMER      7
+#define SPIRALTIMER            64
 
+// Types of Movement
 #define FALL                   0
-#define SEMICIRCLE             1
-#define SINWAVE                2
+#define SINWAVE                1
+#define SEMICIRCLE             2
+#define LEFTSIDEFALL           3
+#define RIGHTSIDEFALL          4
 
 #define DRAWQUADTREE           0
 #define DRAWHITBOX             0

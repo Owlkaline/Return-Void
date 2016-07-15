@@ -15,20 +15,78 @@ class Enemy {
   public:
     
     virtual void reset() = 0;
-    virtual void setup(float drop) = 0;
+    virtual void defaults() = 0;
     virtual void update(float Px, float Py) = 0;    
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
     
+    void setup(float x, float y, int moveType, int drop) {
+      defaults();
+      this->x = x;
+      this->y = y;
+      this->drop = drop;
+      this->moveType = moveType;
+      
+      tick = 0;
+      cycle = 0;
+      
+      visible = true;
+      wasKilled = false;
+      tookDamage = false;
+      hasFinished = false;
+      
+      startX = x;
+      startY = y;
+      maxHealth = health; 
+       
+      switch(moveType) {
+        case FALL:
+          break;
+        case SINWAVE:
+          startX = x;
+          if(x < width*5) {
+            amp = (x-width)/2;//startX-width/2;
+          } else if(SPACE_X_RESOLUTION - x < width*5) {
+            amp = (SPACE_X_RESOLUTION - x - width)/2;
+          } else {
+            amp = width/2*5;
+          }
+          break;
+        case SEMICIRCLE:
+          if(x < width*5) {
+            amp = (x-width)/2;//startX-width/2;
+          } else if(SPACE_X_RESOLUTION - x < width*5) {
+            amp = (SPACE_X_RESOLUTION - x - width)/2;
+          } else {
+            amp = width/2*5;
+          }
+          if(x > SPACE_X_RESOLUTION/2) {
+            startX = x - amp;
+            isOnRightSide = false;
+          } else {
+            startX = x + amp;
+            isOnRightSide = true;
+            angle = 0;
+          }
+          break;
+        case RIGHTSIDEFALL:
+          movementAngle = 0;
+          x = SPACE_X_RESOLUTION - width/2;
+          startX = x;
+          break;
+      }
+    }
+    
     void draw() {
+      for(int i = 0; i < maxWeaponMounts; ++i)
+        WeaponMount[i]->draw(); 
+        
       if(visible) {
         if(tookDamage) {
           if(tick <= 0)
             tookDamage = false;
         }
-        for(int i = 0; i < maxWeaponMounts; ++i)
-          WeaponMount[i]->draw(); 
           
         glEnable(GL_TEXTURE_2D);
         setTexture();
@@ -60,22 +118,6 @@ class Enemy {
     
     void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
 
-    void move() {
-      if(visible) {
-        switch(moveType) {
-          case FALL:
-            move::fall(&y, speed);//y-=speed;
-            break;
-          case SEMICIRCLE:
-            move::semicircle();
-            break;
-          case SINWAVE:
-            move::sinwave();
-            break;
-        }
-      }
-    }
-
     void takeDamage(float damage) {
       health -= damage;
       if(tookDamage == false) {
@@ -93,9 +135,8 @@ class Enemy {
 
     void setVisible(bool visible) {
       this->visible = visible;
-      for(int i = 0; i < maxWeaponMounts; ++i) {
+      for(int i = 0; i < maxWeaponMounts; ++i)
         WeaponMount[i]->setVisible(visible);
-      }
     }
 
     bool getWaskilled() { return wasKilled; }
@@ -110,9 +151,8 @@ class Enemy {
 
     int getTotalNumOfBullets() {
       int totalBullets = 0;
-      for(int i = 0; i < maxWeaponMounts; ++i) {
+      for(int i = 0; i < maxWeaponMounts; ++i)
         totalBullets += WeaponMount[i]->getNumBullets();
-      }
       return totalBullets;
     }
 
@@ -132,6 +172,30 @@ class Enemy {
   protected:
    
     virtual void setTexture() = 0; 
+    
+    void move() {
+      if(visible) {
+        switch(moveType) {
+          case FALL:
+            move::fall(&y, speed, &visible);//y-=speed;
+            break;
+          case SEMICIRCLE: {
+            int numOfBullets = 0;
+            for(int i = 0; i < maxWeaponMounts; ++i)
+              numOfBullets += getNumOfBullets(i);
+            move::semicircle(&x, &y, width, height, speed, startX, startY, &movementAngle, &isOnRightSide, &hasFinished, &visible, numOfBullets);
+            break;
+            }
+          case SINWAVE:
+            move::sinwave(&x, &y, height, speed, amp, startX, &visible);
+            break;
+          case RIGHTSIDEFALL:
+            move::sidefall(&x, &y, width, &startX, &startY, speed, &movementAngle, &cycle);            
+            angle = -movementAngle;
+            break;
+        }
+      }
+    }
    
     bool visible;
     bool wasKilled;
@@ -140,6 +204,7 @@ class Enemy {
     int tick;
     int drop;
     int score;
+    int cycle;
     float angle;
     float health;
     int maxHealth;
@@ -147,6 +212,9 @@ class Enemy {
     int maxWeaponMounts;
 
     float transparent;
+    float movementAngle;
+    bool hasFinished, isOnRightSide;
+    float startX, startY, amp;
     float x, y, width, height, speed;
 
     Label lbScore;

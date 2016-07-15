@@ -8,81 +8,23 @@ GalacticShip::~GalacticShip() {
   clean();
 } 
 
-void GalacticShip::draw() {
-  if(visible){
-
-    glPushMatrix();
-    if(tookDamage) {
-      tick--;
-        if(tick <= 0)
-          tookDamage = false;
-        glColor3f(1.0, 0.0, 0.0);
-    }
-    glTranslatef(x, y, 0); // M1 - 2nd translation
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-    glTranslatef(-x, -y, 0); // M1 - 2nd translation
-    glEnable(GL_TEXTURE_2D);
-  
-    glBindTexture(GL_TEXTURE_2D, textures[0]);
-  
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();  
-    glColor4f(1.0, 1.0, 1.0, 1.0);      
-
-  }
-  
-  for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-    WeaponMount[i]->draw(); 
-    
-  if(shield > 0)
-    drawShield();
+void GalacticShip::setTexture() {  
+  glBindTexture(GL_TEXTURE_2D, textures[0]);
 }
 
-void GalacticShip::setup() {
-  x = SPACE_X_RESOLUTION/2;
-  y = 100;
-  
-  coins = 0;
+void GalacticShip::defaults() {
+  printf("Setting up galatic ship\n");
+ 
   speed = 8;
-  angle = 0;
+ 
   health = 20;
   shield = 10;
-  extraSpeed = 0;
-  maxShield = shield;
-  maxHealth = health;
-  crntHealth = health;
+  
   maxNumWeapons = 3;
   width = 100;
   height = 100;
-  hasBoost = false;
-  visible = true;
-  tookDamage = false;
-  shieldDamaged = false;
-  directionX = 1;
-  directionY = 1; 
   
   textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
-  
-  healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
-  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
-  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
-  
-  shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
-  shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
-  shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
-  shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
-  shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
-  shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
   
   const float mountPosX[maxNumWeapons] = {20, -20, 0};
   const float mountPosY[maxNumWeapons] = {0, 0, 50};
@@ -96,7 +38,7 @@ void GalacticShip::setup() {
         break;
       case 2:
         WeaponMount.push_back(new TriangleMount);
-        WeaponMount[i]->setup();
+        WeaponMount[i]->setup(GREENPLASMA);
         break;
     }
     
@@ -168,8 +110,6 @@ void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
     y = SPACE_Y_RESOLUTION-height/2;
 
   fire(x, y, directionX, directionY, angle, mouseBtnState);
-//  for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
- //   WeaponMount[i]->update(x, y, directionX, directionY, angle);
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;

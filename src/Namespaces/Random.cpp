@@ -10,7 +10,7 @@ int Random::Int(unsigned long long min, unsigned long long max) {
   return dist(rng);
 }
 
-int Random::Int(double a, double b, double c) {
+int Random::Int(double a, double b, double c) { 
   double probabilities[] = {
     a, b, c
   };

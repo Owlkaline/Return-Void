@@ -33,14 +33,9 @@ void RedPlasma::clean() {
 
 } 
 
-void RedPlasma::update() {
-  if(visible) {
-    y+=speed*directionY;
-    x+=speed*directionX;
-  }
-  if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
-    visible = false;
-}
+void RedPlasma::tick() {
+
+} 
 
 void RedPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   this->x = x;

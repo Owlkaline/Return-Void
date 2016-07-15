@@ -13,10 +13,10 @@
 
 class Mount {
   public:
-    virtual void draw() = 0;
-    virtual void setup() = 0;
+    virtual void setTexture() = 0;
+    virtual void defaults() = 0;
     virtual void reset() = 0;
-    virtual void setup(int variant) = 0;
+    //virtual void setup(int variant) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) = 0;
    
@@ -26,6 +26,65 @@ class Mount {
     void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};      
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
+    void draw() {
+      for(unsigned int i = 0; i < bullets.size(); ++i)
+        bullets[i]->draw();
+      
+      if(visible) {
+        glPushMatrix();
+        glTranslatef(x, y, 0); // M1 - 2nd translation
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+        glTranslatef(-x, -y, 0); // M1 - 2nd translation
+
+        glEnable(GL_TEXTURE_2D);  
+        setTexture();
+        glBegin(GL_QUADS);
+          glTexCoord2f(0.0f, 1.0f);
+          glVertex3f(x-width/2, y+height/2, 0.0);
+          glTexCoord2f(1.0f, 1.0f);
+          glVertex3f(x+width/2, y+height/2, 0.0);
+          glTexCoord2f(1.0f, 0.0f);
+          glVertex3f(x+width/2, y-height/2, 0.0);
+          glTexCoord2f(0.0f, 0.0f);
+          glVertex3f(x-width/2, y-height/2, 0.0);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix(); 
+      }
+    }
+
+    void setup(int variant) { 
+      ticks = 0;
+      angle = 0;
+      isLeft = false;
+      visible = true;
+      currentTexture = 0;
+      x = -SPACE_X_RESOLUTION;
+      y = -SPACE_Y_RESOLUTION;
+      this->variant = variant;
+      defaults();
+      switch (variant) {
+        case BLUEPLASMA:
+          timer = BLUEPLASMATIMER;
+          break;
+        case REDPLASMA:
+          timer = REDPLASMATIMER;
+          break;
+        case PURPLEPLASMA:
+          timer = PURPLEPLASMATIMER;
+          break;
+        case GREENPLASMA:
+          timer = GREENPLASMATIMER;
+          break;
+        case SPIRAL:
+          timer = SPIRALTIMER;
+          break;
+        default:          
+          printf("Error: unknown varient in setup: %d\n",variant); 
+          exit(0);
+      }
+    } 
+ 
     void fire() { 
       if(visible) {
         currentTexture = 1;
@@ -35,6 +94,8 @@ class Mount {
         bullets[i]->setVisible(true);
       }
     }
+    
+    void isLeftMount() { isLeft = true; }
     
     bool isVisible() { return visible; }
     
@@ -50,12 +111,36 @@ class Mount {
     float getBulletWidth(int index) { return bullets[index]->getWidth(); }
     float getBulletHeight(int index) { return bullets[index]->getHeight(); }
    
-  protected:
-    virtual void addBullet()=0;
+  protected:    
+    void addBullet() {
+      switch(variant) {
+        case GREENPLASMA:
+          bullets.push_back(new GreenPlasma);
+          break;
+        case BLUEPLASMA:
+          bullets.push_back(new BluePlasma);
+          break;
+        case REDPLASMA:
+          bullets.push_back(new RedPlasma);
+          break;
+        case PURPLEPLASMA:
+          bullets.push_back(new PurplePlasma);
+          break;
+        case SPIRAL:
+          bullets.push_back(new Spiral);
+          break;
+        default:          
+          printf("Error: unknown varient in add bullet: %d\n",variant); 
+          exit(0);
+      }
+    }
   
+    int isLeft;
     float health;
     float angle;   
+    int variant;
     bool visible;
+    int maxMounts;
     float fireRate;
     int ticks, timer;
     float dirX, dirY;

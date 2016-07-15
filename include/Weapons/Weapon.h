@@ -10,9 +10,19 @@ class Weapon {
     virtual void draw() = 0;
     virtual void reset() = 0;
     virtual void clean() = 0;
-    virtual void update() = 0;
+    virtual void tick() = 0;
     virtual void setup(float x, float y, float dirX, float dirY, float angle) = 0;
-
+    
+    virtual void update() { 
+      if(visible) {
+        y+=speed*directionY;
+        x+=speed*directionX;
+      }
+      tick();
+      if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
+        visible = false;
+    }
+    
     void setVisible(bool visible) { this->visible = visible; }
     
     bool getVisible() { return visible; }

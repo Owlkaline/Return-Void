@@ -8,84 +8,26 @@ FighterShip::~FighterShip() {
   clean();
 } 
 
-void FighterShip::draw() {
-  if(visible){
-
-    glPushMatrix();
-    if(tookDamage) {
-      tick--;
-        if(tick <= 0)
-          tookDamage = false;
-        glColor3f(1.0, 0.0, 0.0);
-    }
-    glTranslatef(x, y, 0); // M1 - 2nd translation
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-    glTranslatef(-x, -y, 0); // M1 - 2nd translation
-    glEnable(GL_TEXTURE_2D);
-  
-    glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
-  
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();  
-    glColor4f(1.0, 1.0, 1.0, 1.0);      
-
-  }
-  for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-    WeaponMount[i]->draw(); 
-      
-  if(shield > 0)
-    drawShield();
+void FighterShip::setTexture() {
+  if(tookDamage) 
+    glColor3f(1.0, 0.0, 0.0);
+  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
 }
 
-void FighterShip::setup() {
-  x = SPACE_X_RESOLUTION/2;
-  y = 100;
-  
-  coins = 0;
+void FighterShip::defaults() {
+  printf("Setting up fighter ship\n");  
+ 
   speed = 10;
-  angle = 0;
   health = 15;
   shield = 5;
-  extraSpeed = 0;
-  maxShield = shield;
-  maxHealth = health;
-  crntHealth = health;
+ 
   maxNumWeapons = 2;
   width = 120;
   height = 140;
-  hasBoost = false;
-  visible = true;
-  tookDamage = false;
-  shieldDamaged = false;
-  directionX = 1;
-  directionY = 1; 
-  
-  crntTexture = 0;
   
   textures[0] = txt::LoadTexture("Textures/Game/Ships/FighterShip1.png");
   textures[1] = txt::LoadTexture("Textures/Game/Ships/FighterShip2.png");
   textures[2] = txt::LoadTexture("Textures/Game/Ships/FighterShip3.png");
-  
-  healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
-  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
-  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
-  
-  shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
-  shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
-  shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
-  shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
-  shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
-  shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
   
   const float mountPosX[maxNumWeapons] = {30, -30};
   const float mountPosY[maxNumWeapons] = {5, 5};
@@ -94,7 +36,7 @@ void FighterShip::setup() {
       case 0:
       case 1:   
         WeaponMount.push_back(new PurpleMount);
-        WeaponMount[i]->setup();
+        WeaponMount[i]->setup(PURPLEPLASMA);
         break;
     }    
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
@@ -157,8 +99,6 @@ void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState
     y = SPACE_Y_RESOLUTION-height/2;  
  
   fire(x, y, directionX, directionY, angle, mouseBtnState);
- // for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-  //  WeaponMount[i]->update(x, y, directionX, directionY, angle);
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;

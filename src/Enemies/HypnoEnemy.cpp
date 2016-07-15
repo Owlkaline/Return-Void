@@ -1,28 +1,23 @@
 #include "../../include/Enemies/HypnoEnemy.h"
 
+HypnoEnemy::HypnoEnemy() {
+  width = 75;
+  height = 75;
+}
+
 HypnoEnemy::~HypnoEnemy() {
   clean();
 }
 
-void HypnoEnemy::setup(float drop) {
+void HypnoEnemy::defaults() {
+  printf("Hypno Enemy setup\n");
   speed = 5;
   width = 75;
   height = 75;
   health = 7;
-  angle = 0;
-  moveType = SEMICIRCLE;
-  tookDamage = false;
-  maxHealth = health;
-  tick = 0;
-  visible = true;
+  angle = 0; 
+ 
   maxWeaponMounts = 2;
-  x = -SPACE_X_RESOLUTION;
-  y = -SPACE_Y_RESOLUTION;
-  hasFinished = false;
-
-  wasKilled = false;
-  
-  this->drop = drop; 
   
   movementAngle = 180;
 
@@ -33,34 +28,17 @@ void HypnoEnemy::setup(float drop) {
 
   for(int i = 0; i < maxWeaponMounts; ++i) {
     WeaponMount.push_back(new HypnoMount);
-    WeaponMount[i]->setup(i);
-    
+    WeaponMount[i]->setup(SPIRAL);
   }
+  
+  WeaponMount[0]->isLeftMount();
+  
   WeaponMount[0]->setOffset(15, 30);
   WeaponMount[1]->setOffset(-15, 30);
 }
 
 void HypnoEnemy::update(float Px, float Py) {    
-  if(visible) {
-     if(y < SPACE_Y_RESOLUTION+height) {
-      if(!rightSide) {
-        movementAngle+=speed/10;
-        x = SPACE_X_RESOLUTION/2 + cos(movementAngle/ 180.0f * (float)M_PI) * startX;
-        y = SPACE_Y_RESOLUTION + sin(movementAngle/ 180.0f * (float)M_PI) * SPACE_Y_RESOLUTION/2+height;
-      } else {
-        movementAngle-=speed/10;
-        x = SPACE_X_RESOLUTION/2 + cos(movementAngle/ 180.0f * (float)M_PI) * -startX;
-        y = SPACE_Y_RESOLUTION + sin(movementAngle/ 180.0f * (float)M_PI) * -SPACE_Y_RESOLUTION/2+height;
-      }
-      hasFinished = true;
-     } else {
-       if(!hasFinished) {
-         y-=speed;
-       } else {
-         visible = false;
-       }
-     }
-  }
+  move(); 
     
   float diffx = Px - x;
   float diffy = Py - y;
@@ -85,7 +63,7 @@ void HypnoEnemy::update(float Px, float Py) {
     WeaponMount[i]->update(x, y, 0, -1, angle, Px, Py);
   }
 }
-
+ 
 void HypnoEnemy::reset() {
 
 }
@@ -105,10 +83,10 @@ void HypnoEnemy::setX(float x) {
   }
   if(x > SPACE_X_RESOLUTION/2) {
     startX = x - amp;
-    rightSide = false;
+    isOnRightSide = false;
   } else {
     startX = x + amp;
-    rightSide = true;
+    isOnRightSide = true;
     angle = 0;
   }
 }

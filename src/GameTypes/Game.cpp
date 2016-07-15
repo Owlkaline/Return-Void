@@ -98,25 +98,34 @@ void Game::newWave() {
   
   unsigned int numOfEnemies = 0;
   while(numOfEnemies == 0)
-    numOfEnemies = boostRand.Int(0, wave*10);
+    numOfEnemies = boostRand.Int(wave, wave*10);;//wave*10;//boostRand.Int(0, wave*10);
+    
+//  printf("Enemies: %d\n", numOfEnemies);
   for(unsigned int i = 0; i < numOfEnemies; ++i) {
+    int type = -1;
+   
     switch(boostRand.Int(0.35, 0.35, 0.3)) {
       case 1:
         enemy.push_back(new BasicEnemy); 
+        type = FALL;
         break;
       case 2:
         enemy.push_back(new CorruptedStarShip);
+        type = SINWAVE;
         break;
-      case 3:
+      case 3: 
         enemy.push_back(new HypnoEnemy);
+        type = SEMICIRCLE;
         break;
     }
+    enemy[i]->defaults();
 
-    enemy[i]->setup(boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1);
-    
-    enemy[i]->setX(boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth()));
-    enemy[i]->setY(boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave))));
+    int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
+    float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
+    float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave)));
+    enemy[i]->setup(x, y, type, powerup);
   }
+  printf("New Seed\n"); 
   boostRand.newSeed(boostRand.Int(0, 9999999999));
 }
 
@@ -142,7 +151,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         newWave();
 
       ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
-
+    //  printf("\n%d: ", enemy.size());
       for(unsigned int i = 0; i < enemy.size(); ++i) {
         enemy[i]->update(ship.getX(), ship.getY());
         if(enemy[i]->getWaskilled()) {
@@ -153,7 +162,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           lbScore.setText(str.c_str(), str.length() + 1);
           ship.boost();
           
-          bool nothing = false;
+          bool nothing = false; 
           switch(enemy[i]->dropPowerup()) {
             case NOTHING:
               nothing = true;
@@ -189,7 +198,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       if(!ship.getVisible()) {
         inHighscore = true;
         highscore.setScore(score);
-        printf("Player not visible, HighscoreScreen\n");
+        printf("Player died, HighscoreScreen\n");
       }
 
       lbWave.update();

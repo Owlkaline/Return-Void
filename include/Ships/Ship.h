@@ -11,11 +11,81 @@
 
 class Ship {
   public:    
-    virtual void draw()=0;
-    virtual void setup()=0;
+    virtual void setTexture()=0;
+    virtual void defaults()=0;
     virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
  
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
+ 
+    void setup() {    
+      defaults();
+      x = SPACE_X_RESOLUTION/2;
+      y = 100;
+  
+      coins = 0;
+      angle = 0;
+  
+      extraSpeed = 0;
+      maxShield = shield;
+      maxHealth = health;
+      crntHealth = health;
+  
+      hasBoost = false;
+      visible = true;
+      tookDamage = false;
+      shieldDamaged = false;
+      directionX = 1;
+      directionY = 1; 
+  
+      crntTexture = 0;
+  
+      healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
+      healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
+      healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
+  
+      shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
+      shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
+      shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
+      shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
+      shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
+      shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
+    }
+ 
+    void draw() {
+      if(visible) {
+        glPushMatrix();
+        if(tookDamage) {
+          tick--;
+          if(tick <= 0)
+            tookDamage = false;
+        }
+        glTranslatef(x, y, 0); // M1 - 2nd translation
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+        glTranslatef(-x, -y, 0); // M1 - 2nd translation
+        glEnable(GL_TEXTURE_2D);
+   
+        setTexture();
+  
+        glBegin(GL_QUADS);
+          glTexCoord2f(0.0f, 1.0f);
+          glVertex3f(x-width/2, y+height/2, 0.0);
+          glTexCoord2f(1.0f, 1.0f);
+          glVertex3f(x+width/2, y+height/2, 0.0);
+          glTexCoord2f(1.0f, 0.0f);
+          glVertex3f(x+width/2, y-height/2, 0.0);
+          glTexCoord2f(0.0f, 0.0f);
+          glVertex3f(x-width/2, y-height/2, 0.0);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();  
+        glColor4f(1.0, 1.0, 1.0, 1.0);      
+      }
+      for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
+        WeaponMount[i]->draw(); 
+       
+      if(shield > 0)
+        drawShield();
+    }
   
     int getCoins() { return coins; }
 
@@ -40,10 +110,8 @@ class Ship {
     void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
     
     void fire(float x, float y, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
-    
     for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
       WeaponMount[i]->update(x, y, directionX, directionY, angle, mouseBtnState[GLUT_LEFT_BUTTON]);
-
     }
     
     void animate() {
@@ -96,6 +164,7 @@ class Ship {
       }
   
       if(health <= 0) {
+        crntHealth = 0;
         visible = false;
         for(int i = 0; i < maxNumWeapons; ++i) {
           WeaponMount[i]->setVisible(false);
