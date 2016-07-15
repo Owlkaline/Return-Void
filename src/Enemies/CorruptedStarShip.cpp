@@ -10,7 +10,6 @@ CorruptedStarShip::~CorruptedStarShip() {
 }
 
 void CorruptedStarShip::defaults() {
-  printf("Corrupted Star Ship setup\n");
   speed = 3;
   width = 75;
   height = 75;

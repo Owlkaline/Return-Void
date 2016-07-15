@@ -10,7 +10,6 @@ BasicEnemy::~BasicEnemy() {
 }
 
 void BasicEnemy::defaults() {
-  printf("Basic Enemy setup\n");
   speed = 5;
   width = 75;
   height = 75;

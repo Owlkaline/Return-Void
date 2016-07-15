@@ -11,20 +11,20 @@ void Game::draw() {
 
   for(unsigned int i = 0; i < powerups.size(); ++i) 
     powerups[i]->draw();
-    
+ 
   ship.draw();
-  
+
   for(unsigned int i = 0; i < enemy.size(); ++i) {
     enemy[i]->draw();
   }
-   
+
   ship.drawHealthBar();
-   
+
   if(DRAWQUADTREE)
     Collisions::drawQuadTree();
   if(DRAWHITBOX)
     Collisions::drawHitBoxes(&ship, enemy, powerups);
-    
+
   lbWave.draw();
   lbScore.draw();
   lbCoins.draw();
@@ -33,7 +33,6 @@ void Game::draw() {
 
   if(inHighscore) 
     highscore.draw();
-
 }
 
 void Game::setup() {
@@ -78,6 +77,8 @@ void Game::setup() {
 
 void Game::clean() {
   printf("Game Cleaning...");
+  pMenu.clean();
+  highscore.clean();
   ship.clean();
   enemy.clear();
   powerups.clear();
@@ -106,16 +107,19 @@ void Game::newWave() {
    
     switch(boostRand.Int(0.35, 0.35, 0.3)) {
       case 1:
+        printf("Basic Enemy Spawned\n");
         enemy.push_back(new BasicEnemy); 
         type = FALL;
         break;
       case 2:
+        printf("Corrupted Enemy Spawned\n");
         enemy.push_back(new CorruptedStarShip);
         type = SINWAVE;
         break;
       case 3: 
+        printf("Hypno Enemy Spawned\n");
         enemy.push_back(new HypnoEnemy);
-        type = RIGHTSIDEFALL;
+        type = SEMICIRCLE;
         break;
     }
     enemy[i]->defaults();
@@ -193,6 +197,8 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         }
       }
 
+      lbWave.update();
+
       Collisions::detect(&ship, enemy, powerups);
 
       if(!ship.getVisible()) {
@@ -200,8 +206,6 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         highscore.setScore(score);
         printf("Player died, HighscoreScreen\n");
       }
-
-      lbWave.update();
     } else {
       pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
       if(!pMenu.isPaused())

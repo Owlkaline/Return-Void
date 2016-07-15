@@ -10,7 +10,6 @@ HypnoEnemy::~HypnoEnemy() {
 }
 
 void HypnoEnemy::defaults() {
-  printf("Hypno Enemy setup\n");
   speed = 5;
   width = 75;
   height = 75;

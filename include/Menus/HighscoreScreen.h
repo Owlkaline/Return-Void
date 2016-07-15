@@ -23,10 +23,6 @@ class HighscoreScreen: public Menu {
 
     int highscores[10];
     std::string names[10];
-
-    Button Retry, Quit;
-    Label lbTitle, lbScore;
-    Label lbHighscoreNames[10], lbHighscores[10];
 };
 
 #endif
