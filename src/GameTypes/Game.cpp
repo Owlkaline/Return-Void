@@ -115,7 +115,7 @@ void Game::newWave() {
         break;
       case 3: 
         enemy.push_back(new HypnoEnemy);
-        type = SEMICIRCLE;
+        type = RIGHTSIDEFALL;
         break;
     }
     enemy[i]->defaults();

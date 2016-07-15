@@ -78,7 +78,9 @@ void move::sinwave(float *x, float *y, float* movementAngle, float height, float
     *visible = false;
 }
 
+
 void move::sidefall(float* x, float* y, float width, float* startX, float* startY, float speed, float* angle, int* cycle) {
+  float rad = 0;
   switch(*cycle) {
     case 0:
       if(*y > SPACE_Y_RESOLUTION/2) {
@@ -91,10 +93,23 @@ void move::sidefall(float* x, float* y, float width, float* startX, float* start
       }
       break;
     case 1:
-      *angle+=1;
-      float rad = *angle * M_PI/180.0;
+      *angle+=1;      
+      rad = *angle * M_PI/180.0;
       *x = *startX + cos(-rad) * (SPACE_X_RESOLUTION/8);
       *y = *startY + sin(-rad) * (SPACE_X_RESOLUTION/8);
+      if(*angle == 540) {
+        startX = x - (SPACE_X_RESOLUTION/8);
+        startY = y;
+        *cycle+=1;
+      }
+      break;
+    case 2:
+      *angle+=1;      
+      rad = *angle * M_PI/180.0;
+      *x = *startX + cos(-rad) * (SPACE_X_RESOLUTION/8);
+      *y = *startY + sin(-rad) * (SPACE_X_RESOLUTION/8);
+      //if(*angle == 720)
+        //*cycle+=1;
       break;
   }
 }
