@@ -5,9 +5,14 @@ SettingsMenu::SettingsMenu() {
 }
 
 void SettingsMenu::setup() {
+  settings.Load();
   ended = false;
   type = MAINMENU;
-  isRelative = false; 
+  if(settings.getRelativeMovement() == 1) {
+    isRelative = true;
+  } else {
+    isRelative = false;
+  } 
   
   float buttonWidth = 267; 
   float buttonHeight = 95;
@@ -15,11 +20,19 @@ void SettingsMenu::setup() {
   
   // Return Button
   x = SPACE_X_RESOLUTION/4 + buttonWidth/2;
-  y = SPACE_Y_RESOLUTION/10 * (0.5) - buttonHeight/2;
+  y = SPACE_Y_RESOLUTION/10 * (1.0) - buttonHeight/2;
   width = buttonWidth;
   height = buttonHeight;
   buttons.push_back(new Button);
   buttons[0]->setup(x, y, width, height, (char*)"Textures/Menu/Return.png");
+  
+  // Return Button
+  x = SPACE_X_RESOLUTION/4*2.5 + buttonWidth/2;
+  y = SPACE_Y_RESOLUTION/10 * (1.0) - buttonHeight/2;
+  width = buttonWidth;
+  height = buttonHeight;
+  buttons.push_back(new Button);
+  buttons[1]->setup(x, y, width, height, (char*)"Textures/Menu/Save.png");
   
   // Left Arrow button
   x = SPACE_X_RESOLUTION/4  * 3 - buttonWidth;
@@ -27,7 +40,7 @@ void SettingsMenu::setup() {
   width = 50;
   height = buttonHeight;
   buttons.push_back(new Button);
-  buttons[1]->setup(x, y, width, height, (char*)"Textures/Menu/LeftArrow.png");
+  buttons[2]->setup(x, y, width, height, (char*)"Textures/Menu/LeftArrow.png");
   
   // Right Arrow button
   x = SPACE_X_RESOLUTION/4 * 3 - buttonWidth/4;
@@ -35,7 +48,7 @@ void SettingsMenu::setup() {
   width = 50;
   height = buttonHeight;
   buttons.push_back(new Button);
-  buttons[2]->setup(x, y, width,height, (char*)"Textures/Menu/RightArrow.png");
+  buttons[3]->setup(x, y, width,height, (char*)"Textures/Menu/RightArrow.png");
    
   // RelitiveMovement Label
   x = SPACE_X_RESOLUTION/4 + buttonWidth;
@@ -52,8 +65,11 @@ void SettingsMenu::setup() {
   width = buttonWidth;
   height = buttonHeight;
   lb.push_back(new Label);
-  lb[1]->setup(x, y, width, height, (char*)"Textures/Menu/False.png");
-  
+  if(isRelative) {
+    lb[1]->setup(x, y, width, height, (char*)"Textures/Menu/True.png");
+  } else {
+    lb[1]->setup(x, y, width, height, (char*)"Textures/Menu/False.png");
+  }
   background = txt::LoadTexture("Textures/Menu/Background.png");
 }
 
@@ -76,7 +92,12 @@ void SettingsMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
     ended = true;
   } 
   
-  if(buttons[1]->Clicked() || buttons[2]->Clicked()) {
+  if(buttons[1]->Clicked()) {
+    settings.setRelativeMovement(isRelative);
+    settings.Save();
+  }
+  
+  if(buttons[2]->Clicked() || buttons[3]->Clicked()) {
     if(isRelative) {
       lb[1]->setTexture((char*)"Textures/Menu/False.png"); 
       isRelative = false;

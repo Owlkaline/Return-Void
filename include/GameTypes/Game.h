@@ -18,6 +18,7 @@
 #include "../Enemies/HypnoEnemy.h" 
 #include "../Enemies/CorruptedStarShip.h"
 #include "../Namespaces/Random.h"
+#include "../Namespaces/Settings.h"
 #include "../Namespaces/Collisions.h"
 
 
@@ -52,6 +53,7 @@ class Game: public DisplayManager {
     Random boostRand;
     GLuint ChTexture, background; 
     PausedMenu pMenu;
+    Settings settings;
     std::string strScore;
     Label lbWave, lbScore, lbCoins;
     HighscoreScreen highscore;

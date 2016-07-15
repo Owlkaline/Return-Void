@@ -17,9 +17,9 @@ class Ship {
  
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
  
-    void setup() {    
+    void setup(bool relativeMovement) {    
       defaults();
-      relativeMovement = false;
+      this->relativeMovement = relativeMovement;
       x = SPACE_X_RESOLUTION/2;
       y = 100;
   

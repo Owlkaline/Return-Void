@@ -40,6 +40,8 @@ void Game::setup() {
   printf("Game Setting up...");
   boostRand.newSeed(seed);
 
+  settings.Load();
+
   paused = false;
   inHighscore = false;
   highscore.setup();
@@ -48,7 +50,7 @@ void Game::setup() {
   wave = 0;
   offsetY = 0;
   
-  ship.setup();
+  ship.setup(settings.getRelativeMovement());
 
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);

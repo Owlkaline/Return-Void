@@ -112,15 +112,6 @@ void mouse(int x, int y) {
   mouseY = SPACE_Y_RESOLUTION - ((float)y); //* aspectH)) ; // Inverted: SPACE_Y_RESOLUTION - ((((float)y) * aspectH))
 }
 
-void saveGame() {
-  std::ofstream ofs("./data/settings.bin", std::ios::binary);
-  File::SaveFloat(ofs, VERSION);
-
-  File::SaveBool(ofs, gameMode);
-  File::SaveInt(ofs, 67);
-  ofs.close();
-}
-
 void drawCursor() {
   if(type != GAME) {
     glEnable(GL_TEXTURE_2D);
@@ -166,7 +157,6 @@ void display() {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
       case EXIT:
-        saveGame();
         glutLeaveGameMode();
         exit(0);
         break;
@@ -220,24 +210,6 @@ int main(int argc, char** argv) {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
   gameMode = GAME_MODE_POSSIBLE;
-  if(File::check_if_file_exists("data/settings.bin")) {
-    printf("Loading Settings...\n");
-    std::ifstream ifs("./data/settings.bin", std::ios::binary);
-    float version = File::LoadFloat(ifs);
-
-    if(version == (float)VERSION) {
-      gameMode = File::LoadBool(ifs);
-     // int a = File::LoadInt(ifs1);
-      //printf("%d\n", a);
-    } else {
-      printf("Incorrect settings verison\n version needed: %f\n", version);
-      gameMode = GAME_MODE_POSSIBLE;
-    }
-    ifs.close();
-  } else {
-    printf("Creating settings file\n");
-    std::ofstream ofs("./data/settings.bin", std::ios::binary);
-  }
 
   char mode_string[24];
 
