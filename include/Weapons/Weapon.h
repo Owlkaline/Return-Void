@@ -63,6 +63,11 @@ class Weapon {
       static GLuint spiralTexture = txt::LoadTexture("Textures/Game/Weapons/Spiral.png");
       return spiralTexture;
     }
+    
+    static GLuint getAlphaOnePlasmaTexture() {
+      static GLuint alphaOnePlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/AlphaOnePlasma.png");
+      return alphaOnePlasmaTexture;
+    }
 };
 
 #endif

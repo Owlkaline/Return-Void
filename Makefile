@@ -13,9 +13,9 @@ SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp
 
 SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp ./src/Enemies/AlphaOne.cpp
 
-SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp
+SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp ./src/Mounts/AlphaOneMount.cpp
 
-SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp ./src/Weapons/PurplePlasma.cpp ./src/Weapons/Spiral.cpp
+SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp ./src/Weapons/PurplePlasma.cpp ./src/Weapons/Spiral.cpp ./src/Weapons/AlphaOnePlasma.cpp
 
 SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp ./src/Drops/Shield.cpp
 

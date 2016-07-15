@@ -8,6 +8,7 @@
 #include "../Menus/Label.h"
 #include "../Mounts/BasicMount.h"
 #include "../Mounts/HypnoMount.h"
+#include "../Mounts/AlphaOneMount.h"
 #include "../Namespaces/Movement.h"
 #include "../Namespaces/LoadTexture.h"
 
@@ -74,6 +75,9 @@ class Enemy {
           movementAngle = 0;
           x = SPACE_X_RESOLUTION - width/2;
           startX = x;
+          break;
+        default:
+          printf("Unkown enemy movement type\n");
           break;
       }
       movementAngle = 0;
@@ -196,6 +200,10 @@ class Enemy {
             break;
           case ALPHAONE:
             move::AlphaOne(&x, &y, width, height, speed, &cycle);
+            break;
+          default:
+            printf("Unkown Enemy Movement variant\n");
+            exit(0);
             break;
         }
       }

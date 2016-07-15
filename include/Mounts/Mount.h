@@ -9,6 +9,7 @@
 #include "../Weapons/BluePlasma.h"
 #include "../Weapons/GreenPlasma.h"
 #include "../Weapons/PurplePlasma.h"
+#include "../Weapons/AlphaOnePlasma.h"
 #include "../Namespaces/LoadTexture.h"
 
 class Mount {
@@ -38,6 +39,7 @@ class Mount {
 
         glEnable(GL_TEXTURE_2D);  
         setTexture();
+        if(!isLeft) {
         glBegin(GL_QUADS);
           glTexCoord2f(0.0f, 1.0f);
           glVertex3f(x-width/2, y+height/2, 0.0);
@@ -48,6 +50,18 @@ class Mount {
           glTexCoord2f(0.0f, 0.0f);
           glVertex3f(x-width/2, y-height/2, 0.0);
         glEnd();
+        } else {
+        glBegin(GL_QUADS);
+          glTexCoord2f(1.0f, 1.0f);
+          glVertex3f(x-width/2, y+height/2, 0.0);
+          glTexCoord2f(0.0f, 1.0f);
+          glVertex3f(x+width/2, y+height/2, 0.0);
+          glTexCoord2f(0.0f, 0.0f);
+          glVertex3f(x+width/2, y-height/2, 0.0);
+          glTexCoord2f(1.0f, 0.0f);
+          glVertex3f(x-width/2, y-height/2, 0.0);
+        glEnd();
+        }
         glDisable(GL_TEXTURE_2D);
         glPopMatrix(); 
       }
@@ -79,8 +93,11 @@ class Mount {
         case SPIRAL:
           timer = SPIRALTIMER;
           break;
+        case ALPHAONEPLASMA:
+          timer = ALPHAONETIMER;
+          break;
         default:          
-          printf("Error: unknown varient in setup: %d\n",variant); 
+          printf("Error: unknown varient in mount setup: %d\n",variant); 
           exit(0);
       }
     } 
@@ -129,8 +146,11 @@ class Mount {
         case SPIRAL:
           bullets.push_back(new Spiral);
           break;
+        case ALPHAONEPLASMA:
+          bullets.push_back(new AlphaOnePlasma);
+          break;
         default:          
-          printf("Error: unknown varient in add bullet: %d\n",variant); 
+          printf("Error: unknown varient in mounts add bullet: %d\n",variant); 
           exit(0);
       }
     }
@@ -168,6 +188,11 @@ class Mount {
     static GLuint getPurpleMountTexture() {
       static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Weapons/PurpleMount.png");
       return purpleMountTexture;
+    }
+    
+    static GLuint getAlphaOneMountTexture() {
+      static GLuint alphaOneMountTexture = txt::LoadTexture("Textures/Game/Weapons/AlphaOneMount.png");
+      return alphaOneMountTexture;
     }
     
     static GLuint getHypnoMountTexture(int i) {

@@ -104,7 +104,7 @@ void Game::newWave() {
   
   unsigned int numOfEnemies = 0;
   while(numOfEnemies == 0)
-    numOfEnemies = boostRand.Int(wave, wave*10);;//wave*10;//boostRand.Int(0, wave*10);
+    numOfEnemies = boostRand.Int(wave, wave*10);//wave*10;//boostRand.Int(0, wave*10);
     
 //  printf("Enemies: %d\n", numOfEnemies);
   for(unsigned int i = 0; i < numOfEnemies; ++i) {

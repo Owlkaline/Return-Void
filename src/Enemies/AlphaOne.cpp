@@ -24,13 +24,15 @@ void AlphaOne::defaults() {
   score = 500;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.4, true);
   lbScore.setColour( 1.0,  0.1,  0.1);
-  lbScore.setText("+500", 3);
+  lbScore.setText("+500", 4);
 
-  for(int i = 0; i < maxWeaponMounts; ++i) {
-    WeaponMount.push_back(new BasicMount);
-    WeaponMount[i]->setup(BLUEPLASMA);
-    WeaponMount[i]->setOffset(0, 20);
-  }
+  WeaponMount.push_back(new AlphaOneMount);
+  WeaponMount[0]->setup(ALPHAONEPLASMA);
+  WeaponMount[0]->setOffset(128, 0);
+  WeaponMount.push_back(new AlphaOneMount);
+  WeaponMount[1]->setup(ALPHAONEPLASMA);
+  WeaponMount[1]->setOffset(-128, 0);  
+  WeaponMount[1]->isLeftMount();
 }
 
 void AlphaOne::update(float Px, float Py) {

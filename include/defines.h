@@ -47,6 +47,7 @@
 #define GREENPLASMA            3
 #define PURPLEPLASMA           4
 #define SPIRAL                 5
+#define ALPHAONEPLASMA         6
 
 // Types of Bullets
 #define REDPLASMATIMER         20
@@ -54,7 +55,8 @@
 #define GREENPLASMATIMER       20
 #define PURPLEPLASMATIMER      7
 #define SPIRALTIMER            64
-
+#define ALPHAONETIMER          120
+ 
 // Types of Movement
 #define FALL                   0
 #define SINWAVE                1
