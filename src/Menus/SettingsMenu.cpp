@@ -14,8 +14,8 @@ void SettingsMenu::setup() {
   float x, y, width, height;
   
   // Return Button
-  x = SPACE_X_RESOLUTION/4 + buttonWidth/2;
-  y = SPACE_Y_RESOLUTION/10 * (3.5) - buttonHeight/2;
+  x = SPACE_X_RESOLUTION/8 + buttonWidth/2;
+  y = SPACE_Y_RESOLUTION/10 * (2.5) - buttonHeight/2;
   width = buttonWidth;
   height = buttonHeight;
   buttons.push_back(new Button);

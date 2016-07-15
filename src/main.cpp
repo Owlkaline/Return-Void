@@ -159,6 +159,7 @@ void display() {
 
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
+  
   drawCursor();
   //printf("%d: %s - %d\n", type, Display[type]->hasEnded() ? "True":"false", Display[type]->getEndType());
   if(Display[type]->hasEnded()) {

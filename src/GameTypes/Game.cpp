@@ -6,8 +6,7 @@ Game::Game() {
 }
 
 void Game::draw() {
-  drawBackground();
-  drawCrosshair();
+  drawBackground();  
 
   for(unsigned int i = 0; i < powerups.size(); ++i) 
     powerups[i]->draw();
@@ -33,6 +32,8 @@ void Game::draw() {
 
   if(inHighscore) 
     highscore.draw();
+    
+  drawCrosshair();
 }
 
 void Game::setup() {
@@ -254,7 +255,8 @@ void Game::drawCrosshair() {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, ChTexture);
   // Nice blue #1e00d5
-  glColor3f(0.117647059f, 0, 0.835294197f);
+  //lColor3f(0.117647059f, 0, 0.835294197f);
+  glColor3f(1, 0.643137255, 0);
   if(!paused) {
     if(ship.getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
       lastChX = ChX;
