@@ -40,9 +40,9 @@ void BluePlasma::tick() {
 void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   this->x = x;
   this->y = y;
-  width = 4;
-  height = 32;
-  speed = 25;
+  width = 12;
+  height = 64;
+  speed = 12;
   damage = 1;
   this->angle = angle;
   directionX = dirX;

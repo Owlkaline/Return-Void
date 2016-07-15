@@ -50,7 +50,7 @@
 
 // Types of Bullets
 #define REDPLASMATIMER         20
-#define BLUEPLASMATIMER        10
+#define BLUEPLASMATIMER        25
 #define GREENPLASMATIMER       20
 #define PURPLEPLASMATIMER      7
 #define SPIRALTIMER            64
