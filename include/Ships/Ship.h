@@ -19,6 +19,7 @@ class Ship {
  
     void setup() {    
       defaults();
+      relativeMovement = false;
       x = SPACE_X_RESOLUTION/2;
       y = 100;
   
@@ -58,14 +59,14 @@ class Ship {
           tick--;
           if(tick <= 0)
             tookDamage = false;
-        }
+        }      
         glTranslatef(x, y, 0); // M1 - 2nd translation
         glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-        glTranslatef(-x, -y, 0); // M1 - 2nd translation
+        glTranslatef(-x, -y, 0); // M1 - 2nd translation        
+        
         glEnable(GL_TEXTURE_2D);
-   
         setTexture();
-  
+
         glBegin(GL_QUADS);
           glTexCoord2f(0.0f, 1.0f);
           glVertex3f(x-width/2, y+height/2, 0.0);
@@ -296,6 +297,7 @@ class Ship {
     float speed;
     float angle;
     bool hasBoost;
+    bool relativeMovement;
     bool visible, tookDamage, shieldDamaged;
     float width, height;
     float directionX, directionY, distanceFromCursor;
