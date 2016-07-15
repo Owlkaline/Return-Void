@@ -44,12 +44,13 @@ class Game: public DisplayManager {
     int coins;
     int wave, level;
     
+    float offsetY;
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
  
     FighterShip ship;
     Random boostRand;
-    GLuint ChTexture; 
+    GLuint ChTexture, background; 
     PausedMenu pMenu;
     std::string strScore;
     Label lbWave, lbScore, lbCoins;

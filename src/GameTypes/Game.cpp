@@ -45,6 +45,7 @@ void Game::setup() {
 
   score = 0;
   wave = 0;
+  offsetY = 0;
   
   ship.setup();
 
@@ -70,6 +71,7 @@ void Game::setup() {
   ChRadius = 20;
   type = MAINMENU;
   ChTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
+  background = txt::LoadTexture("Textures/Game/Background.png");
 
   pMenu.setup();
   printf(" Game Setup\n");
@@ -153,7 +155,11 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     if(!paused) {      
       if(enemy.size() == 0)
         newWave();
-
+           
+      offsetY-=2;
+      if(offsetY <= -1080)
+        offsetY=0;
+        
       ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
     //  printf("\n%d: ", enemy.size());
       for(unsigned int i = 0; i < enemy.size(); ++i) {
@@ -279,5 +285,45 @@ void Game::drawCrosshair() {
 }
 
 void Game::drawBackground() {
-  // Draw Score
+    // Background
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, background);
+ 
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(0, SPACE_Y_RESOLUTION*2+offsetY, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION*2+offsetY, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION+offsetY, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(0, SPACE_Y_RESOLUTION+offsetY, 0.0);
+    glEnd();
+    
+    glBindTexture(GL_TEXTURE_2D, background);
+ 
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(0, SPACE_Y_RESOLUTION+offsetY, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION+offsetY, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(SPACE_X_RESOLUTION, 0+offsetY, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(0, 0+offsetY, 0.0);
+    glEnd();
+    
+   /*glBindTexture(GL_TEXTURE_2D, background);
+ 
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(0, SPACE_Y_RESOLUTION+offsetY, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION+offsetY, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(SPACE_X_RESOLUTION, 0+offsetY, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(0, 0+offsetY, 0.0);
+    glEnd();*/
+    glDisable(GL_TEXTURE_2D);
 }
