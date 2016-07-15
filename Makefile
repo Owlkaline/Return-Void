@@ -11,7 +11,7 @@ SRCMENU =./src/Menus/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/But
 
 SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp
 
-SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp
+SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp ./src/Enemies/AlphaOne.cpp
 
 SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp
 

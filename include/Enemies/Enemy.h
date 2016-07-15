@@ -194,10 +194,14 @@ class Enemy {
             move::sidefall(&x, &y, width, &startX, &startY, speed, &movementAngle, &cycle);
             angle = -movementAngle;
             break;
+          case ALPHAONE:
+            move::AlphaOne(&x, &y, width, height, speed, &cycle);
+            break;
         }
       }
     }
 
+    bool isBoss;
     bool visible;
     bool wasKilled;
     bool tookDamage;
@@ -230,6 +234,11 @@ class Enemy {
     static GLuint getHypnoEnemyTexture() {
       static GLuint hypnoEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/HypnoEnemy.png");
       return hypnoEnemyTexture;
+    }
+    
+    static GLuint getAlphaOneTexture() {
+      static GLuint AlphaOneTexture = txt::LoadTexture("Textures/Game/Enemies/AlphaOne.png");
+      return AlphaOneTexture;
     }
 
     static GLuint getCorruptedStarShipTexture(int i) {

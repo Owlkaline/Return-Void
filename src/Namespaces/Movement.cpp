@@ -113,3 +113,24 @@ void move::sidefall(float* x, float* y, float width, float* startX, float* start
       break;
   }
 }
+
+void move::AlphaOne(float* x, float* y, float width, float height, float speed, int* cycle) {
+  switch(*cycle) {
+    case 0:
+      *y -= speed;
+      *x = SPACE_X_RESOLUTION/2;
+      if(*y < SPACE_Y_RESOLUTION-height/2)
+        *cycle += 1;
+      break;
+    case 1:
+      *x-=speed;
+      if(*x <= width/2)
+        *cycle+=1;
+      break;
+    case 2:
+      *x+=speed;
+      if(*x >= SPACE_X_RESOLUTION-width/2)
+        *cycle-=1;
+      break;
+  }
+}

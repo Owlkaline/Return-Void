@@ -1,8 +1,7 @@
 #include "../../include/Enemies/CorruptedStarShip.h"
 
 CorruptedStarShip::CorruptedStarShip() {
-  width = 75;
-  height = 75;
+
 }
 
 CorruptedStarShip::~CorruptedStarShip() {
@@ -16,6 +15,7 @@ void CorruptedStarShip::defaults() {
   health = 15;
 
   angle = 0;
+  isBoss = false;
 
   maxWeaponMounts = 1;
 

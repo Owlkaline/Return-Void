@@ -61,6 +61,7 @@
 #define SEMICIRCLE             2
 #define LEFTSIDEFALL           3
 #define RIGHTSIDEFALL          4
+#define ALPHAONE               5
 
 #define DRAWQUADTREE           0
 #define DRAWHITBOX             0

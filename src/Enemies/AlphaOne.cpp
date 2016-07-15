@@ -1,30 +1,30 @@
-#include "../../include/Enemies/BasicEnemy.h"
+#include "../../include/Enemies/AlphaOne.h"
 
-BasicEnemy::BasicEnemy() {
+AlphaOne::AlphaOne() {
 
 }
 
-BasicEnemy::~BasicEnemy() {
+AlphaOne::~AlphaOne() {
   clean();
 }
 
-void BasicEnemy::defaults() {
+void AlphaOne::defaults() {
   speed = 5;
-  width = 75;
-  height = 75;
-  health = 10;
+  width = 256;
+  height = 128;
+  health = 30;
 
   angle = 0;
-  isBoss = false;
+  isBoss = true;
 
   transparent = 1.0;
 
-  maxWeaponMounts = 1;
+  maxWeaponMounts = 2;
 
-  score = 10;
-  lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
+  score = 500;
+  lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.4, true);
   lbScore.setColour( 1.0,  0.1,  0.1);
-  lbScore.setText("+10", 3);
+  lbScore.setText("+500", 3);
 
   for(int i = 0; i < maxWeaponMounts; ++i) {
     WeaponMount.push_back(new BasicMount);
@@ -33,7 +33,7 @@ void BasicEnemy::defaults() {
   }
 }
 
-void BasicEnemy::update(float Px, float Py) {
+void AlphaOne::update(float Px, float Py) {
   move();
 
   if(tookDamage)
@@ -52,12 +52,12 @@ void BasicEnemy::update(float Px, float Py) {
   }
 }
 
-void BasicEnemy::reset() {
+void AlphaOne::reset() {
 
 }
 
-void BasicEnemy::setTexture() {
+void AlphaOne::setTexture() {
     if(tookDamage)
       glColor3f(1.0, 0.0, 0.0);
-    glBindTexture(GL_TEXTURE_2D, getBasicEnemyTexture());
+    glBindTexture(GL_TEXTURE_2D, getAlphaOneTexture());
 }

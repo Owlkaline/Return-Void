@@ -134,6 +134,10 @@ void Game::newWave() {
     float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave)));
     enemy[i]->setup(x, y, type, powerup);
   }
+  
+  enemy.push_back(new AlphaOne);
+  enemy[numOfEnemies]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION*2, ALPHAONE, NOTHING);
+  
   printf("New Seed\n"); 
   boostRand.newSeed(boostRand.Int(0, 9999999999));
 }

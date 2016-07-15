@@ -1,8 +1,7 @@
 #include "../../include/Enemies/HypnoEnemy.h"
 
 HypnoEnemy::HypnoEnemy() {
-  width = 75;
-  height = 75;
+
 }
 
 HypnoEnemy::~HypnoEnemy() {
@@ -17,6 +16,7 @@ void HypnoEnemy::defaults() {
   angle = 0; 
  
   maxWeaponMounts = 2;
+  isBoss = false;
   
   movementAngle = 180;
 

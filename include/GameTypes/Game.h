@@ -16,6 +16,7 @@
 #include "../Drops/Shield.h"
 #include "../Enemies/BasicEnemy.h" 
 #include "../Enemies/HypnoEnemy.h" 
+#include "../Enemies/AlphaOne.h"
 #include "../Enemies/CorruptedStarShip.h"
 #include "../Namespaces/Random.h"
 #include "../Namespaces/Settings.h"
