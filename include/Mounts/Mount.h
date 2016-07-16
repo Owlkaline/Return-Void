@@ -21,10 +21,13 @@ class Mount {
     virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) = 0;
    
-    void takeDamage(float damage) { health -= damage; }
+    void takeDamage(float damage) { health -= damage; if(!tookDamage) { tookDamage = true; } if(health <= 0) { visible = false; } }
     void setVisible(bool visible) { this->visible = visible; }
-    void tick() { ticks++; if(ticks > timer) { fire(); ticks = 0; } }  
-    void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); ticks = 0;};      
+    void tick() { 
+                  damageTicks++; if(damageTicks > damageTimer) { tookDamage = false; damageTicks = 0; } 
+                  bulletTicks++; if(bulletTicks > bulletTimer) { fire(); bulletTicks = 0; } 
+                }  
+    void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); bulletTicks = 0;};      
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
     void draw() {
@@ -64,37 +67,41 @@ class Mount {
         }
         glDisable(GL_TEXTURE_2D);
         glPopMatrix(); 
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
       }
     }
 
     void setup(int variant) { 
-      ticks = 0;
+      bulletTicks = 0;
+      damageTicks = 0;
       angle = 0;
       isLeft = false;
       visible = true;
+      tookDamage = false;
       currentTexture = 0;
       x = -SPACE_X_RESOLUTION;
       y = -SPACE_Y_RESOLUTION;
       this->variant = variant;
       defaults();
+      damageTimer = DAMAGETIMER;
       switch (variant) {
         case BLUEPLASMA:
-          timer = BLUEPLASMATIMER;
+          bulletTimer = BLUEPLASMATIMER;
           break;
         case REDPLASMA:
-          timer = REDPLASMATIMER;
+          bulletTimer = REDPLASMATIMER;
           break;
         case PURPLEPLASMA:
-          timer = PURPLEPLASMATIMER;
+          bulletTimer = PURPLEPLASMATIMER;
           break;
         case GREENPLASMA:
-          timer = GREENPLASMATIMER;
+          bulletTimer = GREENPLASMATIMER;
           break;
         case SPIRAL:
-          timer = SPIRALTIMER;
+          bulletTimer = SPIRALTIMER;
           break;
         case ALPHAONEPLASMA:
-          timer = ALPHAONETIMER;
+          bulletTimer = ALPHAONETIMER;
           break;
         default:          
           printf("Error: unknown varient in mount setup: %d\n",variant); 
@@ -167,9 +174,10 @@ class Mount {
     float angle;   
     int variant;
     bool visible;
+    bool tookDamage;
     int maxMounts;
     float fireRate;
-    int ticks, timer;
+    int bulletTicks, bulletTimer, damageTicks, damageTimer;
     float dirX, dirY;
     int currentTexture;
     float offsetX, offsetY;

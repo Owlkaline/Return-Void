@@ -1,7 +1,7 @@
 #include "../../include/Mounts/AlphaOneMount.h"
 
 AlphaOneMount::AlphaOneMount() {
-  ticks=0;
+
 }
 
 AlphaOneMount::~AlphaOneMount() {
@@ -10,6 +10,8 @@ AlphaOneMount::~AlphaOneMount() {
 
 
 void AlphaOneMount::setTexture() {
+    if(tookDamage) 
+      glColor4f(1.0, 0.1, 0.1, 0.5f);
     glBindTexture(GL_TEXTURE_2D, getAlphaOneMountTexture());
 } 
 
@@ -20,7 +22,7 @@ void AlphaOneMount::reset() {
 void AlphaOneMount::defaults() { 
   width = 25;
   height = 128;
-  health = 20;
+  health = 45;
 } 
 
 void AlphaOneMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
@@ -50,9 +52,14 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
   
   int size = bullets.size();
   for(unsigned int i = 0; i < cycle.size(); ++i) {
-    if(cycle[i] % 20 == 0) {
-      angle = 0 + cycle[i];
-      for(unsigned int j = 0; j < 18; ++j) {
+    if(cycle[i] > 40) {
+      cycle.erase(cycle.begin() + i);
+      Nx.erase(Nx.begin() + i);
+      Ny.erase(Ny.begin() + i);
+    }
+    if(cycle[i] % 5 == 0) {
+      angle = 0 + 5*cycle[i]/5;
+      for(unsigned int j = 0; j < 8; ++j) {
         bullets.push_back(new AlphaOnePlasma);
         bullets[size+j]->setup(0, 0, 0, 0, 0);
         float rad = (angle) * M_PI/180.0;
@@ -64,26 +71,10 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
       
         bullets[size+j]->setIsBoss(false);       
         bullets[size+j]->setup(Nx[i], Ny[i], dirX, dirY, angle);
-        angle+=20;
+        angle+=45;
       }
     }
     cycle[i]++;
-
-    /*angle = 0;
-    for(unsigned int i = 0; i < 18; ++i) {     
-        bullets.push_back(new AlphaOnePlasma);
-        bullets[size+i]->setup(0, 0, 0, 0, 0);
-        float rad = (angle) * M_PI/180.0;
-        float dirX = cos(-rad) * bullets[size+i]->getWidth();
-        float dirY = sin(-rad) * bullets[size+i]->getHeight();
-        float distance = pow(pow(dirY,2.0f) + pow(dirX,2.0f), 0.5f);
-        dirX = dirX/distance;
-        dirY = dirY/distance;
-      
-        bullets[size+i]->setIsBoss(false);
-        bullets[size+i]->setup(Nx[0], Ny[0], dirX, dirY, angle);
-        angle += 20;
-    }*/
   }
 }
 

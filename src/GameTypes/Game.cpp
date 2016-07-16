@@ -102,41 +102,43 @@ void Game::newWave() {
   lbWave.setText(str.c_str(), str.length() + 1);
   lbWave.setTimer(40);
   
-  unsigned int numOfEnemies = 0;
-  while(numOfEnemies == 0)
-    numOfEnemies = boostRand.Int(wave, wave*10);//wave*10;//boostRand.Int(0, wave*10);
+  if(wave%10 == 0) {
+    enemy.push_back(new AlphaOne);
+    enemy[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION*2, ALPHAONE, NOTHING);
+  } else {
+    unsigned int numOfEnemies = 0;
+    while(numOfEnemies == 0)
+      numOfEnemies = boostRand.Int(wave, wave*10);//wave*10;//boostRand.Int(0, wave*10);
     
-//  printf("Enemies: %d\n", numOfEnemies);
-  for(unsigned int i = 0; i < numOfEnemies; ++i) {
-    int type = -1;
+    //  printf("Enemies: %d\n", numOfEnemies);
+    for(unsigned int i = 0; i < numOfEnemies; ++i) {
+      int type = -1;
    
-    switch(boostRand.Int(0.35, 0.35, 0.3)) {
-      case 1:
-        printf("Basic Enemy Spawned\n");
-        enemy.push_back(new BasicEnemy); 
-        type = FALL;
-        break;
-      case 2:
-        printf("Corrupted Enemy Spawned\n");
-        enemy.push_back(new CorruptedStarShip);
-        type = SINWAVE;
-        break;
-      case 3: 
-        printf("Hypno Enemy Spawned\n");
-        enemy.push_back(new HypnoEnemy);
-        type = SEMICIRCLE;
-        break;
-    }
-    enemy[i]->defaults();
+      switch(boostRand.Int(0.35, 0.35, 0.3)) {
+        case 1:
+          printf("Basic Enemy Spawned\n");
+          enemy.push_back(new BasicEnemy); 
+          type = FALL;
+          break;
+        case 2:
+          printf("Corrupted Enemy Spawned\n");
+          enemy.push_back(new CorruptedStarShip);
+          type = SINWAVE;
+          break;
+        case 3: 
+          printf("Hypno Enemy Spawned\n");
+          enemy.push_back(new HypnoEnemy);
+          type = SEMICIRCLE;
+          break;
+      }
+      enemy[i]->defaults();
 
-    int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
-    float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
-    float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave)));
-    enemy[i]->setup(x, y, type, powerup);
+      int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
+      float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
+      float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave)));
+      enemy[i]->setup(x, y, type, powerup);
+    }
   }
-  
-  enemy.push_back(new AlphaOne);
-  enemy[numOfEnemies]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION*2, ALPHAONE, NOTHING);
   
   printf("New Seed\n"); 
   boostRand.newSeed(boostRand.Int(0, 9999999999));

@@ -96,6 +96,9 @@ class Ship {
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
     float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
  
+    void setX(float x) { this->x = x; }
+    void setY(float y) { this->y = y; }
+ 
     float getX() { return x; }
     float getY() { return y; }   
     float getWidth() { return width; }

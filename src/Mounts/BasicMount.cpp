@@ -1,7 +1,7 @@
 #include "../../include/Mounts/BasicMount.h"
 
 BasicMount::BasicMount() {
-  ticks=0;
+  
 }
 
 BasicMount::~BasicMount() {

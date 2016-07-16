@@ -88,7 +88,7 @@ class Enemy {
     }
 
     void draw() {
-      for(int i = 0; i < maxWeaponMounts; ++i)
+      for(unsigned int i = 0; i < WeaponMount.size(); ++i)
         WeaponMount[i]->draw();
 
       if(visible) {
@@ -141,13 +141,23 @@ class Enemy {
         setVisible(false);
       }
     }
-
+    
+    void mountTakeDamage(int mount, float damage) { WeaponMount[mount]->takeDamage(damage); }
+    bool checkMountsVisible() { 
+      for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
+        if(WeaponMount[i]->isVisible())
+          return false;
+      }
+      return true;
+    }
+    
     void setVisible(bool visible) {
       this->visible = visible;
       for(int i = 0; i < maxWeaponMounts; ++i)
         WeaponMount[i]->setVisible(visible);
     }
 
+    bool getIsBoss() { return isBoss; }
     bool getWaskilled() { return wasKilled; }
     bool isVisible() { return visible; }
     bool timerExpired() { return lbScore.timeExpired(); }
@@ -160,7 +170,7 @@ class Enemy {
 
     int getTotalNumOfBullets() {
       int totalBullets = 0;
-      for(int i = 0; i < maxWeaponMounts; ++i)
+      for(unsigned int i = 0; i < WeaponMount.size(); ++i)
         totalBullets += WeaponMount[i]->getNumBullets();
       return totalBullets;
     }
@@ -190,7 +200,7 @@ class Enemy {
             break;
           case SEMICIRCLE: {
             int numOfBullets = 0;
-            for(int i = 0; i < maxWeaponMounts; ++i)
+            for(unsigned int i = 0; i < WeaponMount.size(); ++i)
               numOfBullets += getNumOfBullets(i);
             move::semicircle(&x, &y, width, height, speed, startX, &startY, &movementAngle, &isOnRightSide, &cycle, &visible, numOfBullets);
             break;

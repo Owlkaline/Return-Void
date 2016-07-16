@@ -18,7 +18,7 @@ void FighterShip::defaults() {
   printf("Setting up fighter ship\n");
 
   speed = 10;
-  health = 30;//15;
+  health = 20;//15;
   shield = 5;
 
   maxNumWeapons = 2;

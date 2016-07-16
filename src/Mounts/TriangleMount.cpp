@@ -1,7 +1,7 @@
 #include "../../include/Mounts/TriangleMount.h"
 
 TriangleMount::TriangleMount() {
-  ticks=0;
+
 }
 
 TriangleMount::~TriangleMount() {

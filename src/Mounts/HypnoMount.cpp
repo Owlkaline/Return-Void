@@ -1,7 +1,7 @@
 #include "../../include/Mounts/HypnoMount.h"
 
 HypnoMount::HypnoMount() {
-  ticks=0;
+  
 }
 
 HypnoMount::~HypnoMount() {

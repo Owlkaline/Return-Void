@@ -1,7 +1,7 @@
 #include "../../include/Mounts/PurpleMount.h"
 
 PurpleMount::PurpleMount() {
-  ticks=0;
+ 
 }
 
 PurpleMount::~PurpleMount() {
@@ -42,7 +42,7 @@ void PurpleMount::update(float x, float y, float directionX, float directionY, f
     if(isShooting) {
       tick();
     } else {
-      ticks = PURPLEPLASMATIMER;
+      bulletTicks = PURPLEPLASMATIMER;
     }
 }
 

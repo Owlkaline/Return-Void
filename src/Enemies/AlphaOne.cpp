@@ -19,7 +19,7 @@ void AlphaOne::defaults() {
 
   transparent = 1.0;
 
-  maxWeaponMounts = 1;
+  maxWeaponMounts = 2;
 
   score = 500;
   lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.4, true);
@@ -30,13 +30,12 @@ void AlphaOne::defaults() {
   WeaponMount[0]->setIsBoss();
   WeaponMount[0]->setup(ALPHAONEPLASMA);
   WeaponMount[0]->setOffset(128, 0);
-/*
+
   WeaponMount.push_back(new AlphaOneMount);
   WeaponMount[1]->setIsBoss();
   WeaponMount[1]->setup(ALPHAONEPLASMA);
   WeaponMount[1]->setOffset(-128, 0);  
-  WeaponMount[1]->isLeftMount();*/
-
+  WeaponMount[1]->isLeftMount();
 }
 
 void AlphaOne::update(float Px, float Py) {

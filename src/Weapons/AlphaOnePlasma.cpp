@@ -54,14 +54,16 @@ void AlphaOnePlasma::setup(float x, float y, float dirX, float dirY, float angle
     height = 76;
     offsetX = 0;
     offsetY = 76;
+    damage = 10;
   } else {
     offsetX = 0;
     offsetY = 0;
     width = 32;
     height = 32;
+    damage = 2;
   }
   speed = 12;
-  damage = 1;
+  
   y+=offsetY;
   x+=offsetX;
   this->angle = angle;

@@ -49,13 +49,15 @@
 #define SPIRAL                 5
 #define ALPHAONEPLASMA         6
 
+#define DAMAGETIMER            5
+
 // Bullet timer
 #define REDPLASMATIMER         20
 #define BLUEPLASMATIMER        25
 #define GREENPLASMATIMER       20
 #define PURPLEPLASMATIMER      7
 #define SPIRALTIMER            64
-#define ALPHAONETIMER          120
+#define ALPHAONETIMER          180
  
 // Types of Movement
 #define FALL                   0
