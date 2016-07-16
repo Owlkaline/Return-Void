@@ -13,12 +13,72 @@ void Shop::setup() {
   float buttonHeight = 95;
 
   buttons.push_back(new Button);
-  buttons[0]->setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (3.5) - buttonHeight/2, buttonWidth, buttonHeight, (char*)"Textures/Menu/Return.png");
+  buttons[0]->setup(buttonWidth/2+50, 100, buttonWidth, buttonHeight, (char*)"Textures/Menu/Return.png");
   
-  background = txt::LoadTexture("Textures/Menu/Background.png");
+  //background = txt::LoadTexture("Textures/Menu/Background.png");
 }
 
 void Shop::restart() {
+
+}
+
+void Shop::drawBackground() {
+  glColor3f(0.5f, 0.5f, 0.5f);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(0, SPACE_Y_RESOLUTION, 0.0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, 0.0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(SPACE_X_RESOLUTION, 0, 0.0);   
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(0, 0, 0.0);
+  glEnd();
+  
+  // Return Box
+  drawBox(buttons[0]->getX(), buttons[0]->getY(), buttons[0]->getWidth()/2, buttons[0]->getHeight()/2);
+  
+  // Top Left Name Box
+  drawBox(267, SPACE_Y_RESOLUTION - 100, 230, 50);
+  
+   // 1st Ship box
+  float width = 456;
+  float height = 400;
+  float x = 267;
+  float y = (SPACE_Y_RESOLUTION/3*2);
+  drawBox(x, y, width/2, height/2);
+  
+  // 2st Ship box
+  x += width;
+  drawBox(x, y, width/2, height/2); 
+  
+  // 3st Ship box
+  x += width;
+  drawBox(x, y, width/2, height/2); 
+  
+  // Left arrow box
+  width /= 8;
+  height /= 3;
+  x = 267/3;
+  y = (SPACE_Y_RESOLUTION/3*2);
+  drawBox(x, y, width/2, height/2);
+  
+  // Right arrow box
+  x *= 3 * 5;
+  drawBox(x, y, width/2, height/2);
+ /* // Left arrow Box
+  width = 30;
+  height = 70;
+  x = 100;
+  y = (SPACE_Y_RESOLUTION-360);
+  drawBox(x, y, width, height);
+  
+  // Right arrow Box
+  width = 30;
+  height = 70;
+  x = 1200;
+  y = (SPACE_Y_RESOLUTION-360);
+  drawBox(x, y, width, height);*/
 
 }
 
@@ -38,7 +98,38 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   } 
 }
 
+void Shop::drawBox(float x, float y, float width, float height) {
+  float border = 5;
+  glColor3f(0.0, 0.0, 0.0);
+  glBegin(GL_QUADS);
 
+    // Left
+    glVertex3f(x-width, y+height, 0.0);
+    glVertex3f(x-width+border, y+height, 0.0);
+    glVertex3f(x-width+border, y-height, 0.0);
+    glVertex3f(x-width, y-height, 0.0);
+
+    // Right
+    glVertex3f(x+width, y+height, 0.0);
+    glVertex3f(x+width-border, y+height, 0.0);
+    glVertex3f(x+width-border, y-height, 0.0);
+    glVertex3f(x+width, y-height, 0.0);
+
+    // top
+    glVertex3f(x+width, y+height, 0.0);
+    glVertex3f(x+width, y+height-border, 0.0);
+    glVertex3f(x-width, y+height-border, 0.0);
+    glVertex3f(x-width, y+height, 0.0);
+
+    // bottom
+    glVertex3f(x+width, y-height, 0.0);
+    glVertex3f(x+width, y-height+border, 0.0);
+    glVertex3f(x-width, y-height+border, 0.0);
+    glVertex3f(x-width, y-height, 0.0);
+
+  glEnd();
+  glColor3f(1.0, 1.0, 1.0);
+}
 
 
  

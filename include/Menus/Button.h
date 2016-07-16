@@ -21,6 +21,11 @@ class Button {
     void setTexture(char* filename);
     void setText(const char* str, int length);
     void setColour(float R, float G, float B);
+    
+    float getX() { return x; }
+    float getY() { return y; }
+    float getWidth() { return width; }
+    float getHeight() { return height; }
 
     bool Clicked();
 

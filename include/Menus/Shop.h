@@ -10,8 +10,10 @@ class Shop: public Menu {
     void setup();
     void restart();
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
-
+    void drawBackground();
+    
   protected:
+    void drawBox(float x, float y, float width, float height);
 };
 
 #endif
