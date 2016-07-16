@@ -132,13 +132,14 @@ void Game::newWave() {
           break;
       }
       enemy[i]->defaults();
-
       int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
       float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
       float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave)));
       enemy[i]->setup(x, y, type, powerup);
     }
   }
+  
+
   
   printf("New Seed\n"); 
   boostRand.newSeed(boostRand.Int(0, 9999999999));
@@ -172,6 +173,9 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
     //  printf("\n%d: ", enemy.size());
       for(unsigned int i = 0; i < enemy.size(); ++i) {
+
+    printf("E: %d, X: %f, Y: %f\n", i, enemy[i]->getMountX(0), enemy[i]->getMountY(0));
+
         enemy[i]->update(ship.getX(), ship.getY());
         if(enemy[i]->getWaskilled()) {
           score += enemy[i]->getScore();

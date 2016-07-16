@@ -33,7 +33,7 @@ class Mount {
     void draw() {
       for(unsigned int i = 0; i < bullets.size(); ++i)
         bullets[i]->draw();
-      
+        
       if(visible) {
         glPushMatrix();
         glTranslatef(x, y, 0); // M1 - 2nd translation
