@@ -20,27 +20,30 @@ class Mount {
     //virtual void setup(int variant) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) = 0;
     virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) = 0;
-   
+
     void takeDamage(float damage) { health -= damage; if(!tookDamage) { tookDamage = true; } if(health <= 0) { visible = false; } }
     void setVisible(bool visible) { this->visible = visible; }
-    void tick() { 
-                  damageTicks++; if(damageTicks > damageTimer) { tookDamage = false; damageTicks = 0; } 
-                  bulletTicks++; if(bulletTicks > bulletTimer) { fire(); bulletTicks = 0; } 
-                }  
-    void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); bulletTicks = 0;};      
+    void tick(bool isShooting) {
+                  damageTicks++; if(damageTicks > damageTimer) { tookDamage = false; damageTicks = 0; }
+                  if(isShooting)
+                    bulletTicks++; if(bulletTicks > bulletTimer) { fire(); bulletTicks = 0; }
+                  if(x < 0)
+                    visible = false;
+                }
+    void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); bulletTicks = 0;};
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
 
     void draw() {
       for(unsigned int i = 0; i < bullets.size(); ++i)
         bullets[i]->draw();
-        
+
       if(visible) {
         glPushMatrix();
         glTranslatef(x, y, 0); // M1 - 2nd translation
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);
         glTranslatef(-x, -y, 0); // M1 - 2nd translation
 
-        glEnable(GL_TEXTURE_2D);  
+        glEnable(GL_TEXTURE_2D);
         setTexture();
         if(!isLeft) {
           glBegin(GL_QUADS);
@@ -66,12 +69,12 @@ class Mount {
           glEnd();
         }
         glDisable(GL_TEXTURE_2D);
-        glPopMatrix(); 
+        glPopMatrix();
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
       }
     }
 
-    void setup(int variant) { 
+    void setup(int variant) {
       bulletTicks = 0;
       damageTicks = 0;
       angle = 0;
@@ -103,13 +106,13 @@ class Mount {
         case ALPHAONEPLASMA:
           bulletTimer = ALPHAONETIMER;
           break;
-        default:          
-          printf("Error: unknown varient in mount setup: %d\n",variant); 
+        default:
+          printf("Error: unknown varient in mount setup: %d\n",variant);
           exit(0);
       }
-    } 
- 
-    void fire() { 
+    }
+
+    void fire() {
       if(visible) {
         currentTexture = 1;
         addBullet();
@@ -118,13 +121,13 @@ class Mount {
         bullets[i]->setVisible(true);
       }
     }
-    
+
     void setIsBoss() { isBoss = true; }
-    
+
     void isLeftMount() { isLeft = true; }
-    
+
     bool isVisible() { return visible; }
-    
+
     int getNumBullets() { return bullets.size(); }
     float bulletHit(int index) { return bullets[index]->hit(); }
 
@@ -136,8 +139,8 @@ class Mount {
     float getBulletY(int index) { return bullets[index]->getY(); }
     float getBulletWidth(int index) { return bullets[index]->getWidth(); }
     float getBulletHeight(int index) { return bullets[index]->getHeight(); }
-   
-  protected:    
+
+  protected:
     void addBullet() {
       switch(variant) {
         case GREENPLASMA:
@@ -158,20 +161,20 @@ class Mount {
         case ALPHAONEPLASMA:
           bullets.push_back(new AlphaOnePlasma);
           if(isBoss) {
-            int size = bullets.size() - 1;            
-            bullets[size]->setIsBoss(true);           
+            int size = bullets.size() - 1;
+            bullets[size]->setIsBoss(true);
           }
           break;
-        default:          
-          printf("Error: unknown varient in mounts add bullet: %d\n",variant); 
+        default:
+          printf("Error: unknown varient in mounts add bullet: %d\n",variant);
           exit(0);
       }
     }
-  
+
     bool isBoss;
     int isLeft;
     float health;
-    float angle;   
+    float angle;
     int variant;
     bool visible;
     bool tookDamage;
@@ -183,37 +186,37 @@ class Mount {
     float offsetX, offsetY;
     float x,y, width, height;
 
-    std::vector<Weapon*> bullets; 
-    
+    std::vector<Weapon*> bullets;
+
     static GLuint getBasicMountTexture() {
       static GLuint basicMountTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
       return basicMountTexture;
     }
-    
+
     static GLuint getBasicMountBrightTexture() {
       static GLuint basicMountBrightTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMountBright.png");
       return basicMountBrightTexture;
     }
-    
+
     static GLuint getTriangleMountTexture() {
       static GLuint triangleMountTexture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
       return triangleMountTexture;
     }
-    
+
     static GLuint getPurpleMountTexture() {
       static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Weapons/PurpleMount.png");
       return purpleMountTexture;
     }
-    
+
     static GLuint getAlphaOneMountTexture() {
       static GLuint alphaOneMountTexture = txt::LoadTexture("Textures/Game/Weapons/AlphaOneMount.png");
       return alphaOneMountTexture;
     }
-    
+
     static GLuint getHypnoMountTexture(int i) {
       static GLuint hypnoMountLeftTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountLeft.png");
       static GLuint hypnoMountRightTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountRight.png");
-      
+
       switch(i) {
         case 0:
           return hypnoMountLeftTexture;

@@ -16,19 +16,19 @@ void BasicMount::setTexture() {
   } else {
     glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
   }
-} 
+}
 
 void BasicMount::reset() {
 
 }
 
-void BasicMount::defaults() { 
+void BasicMount::defaults() {
   width = 8;
   height = 64;
   health = 10;
-} 
+}
 
-void BasicMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
+void BasicMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   if(currentTexture == 1)
     currentTexture = 0;
   float rad = angle* (float)M_PI / 180;
@@ -39,10 +39,10 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   this->angle = angle;
   dirX = directionX;
   dirY = directionY;
-  
-  if(isShooting)
-    tick();
-    
+
+
+  tick(isShooting);
+
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
     if(!bullets[i]->getVisible())
