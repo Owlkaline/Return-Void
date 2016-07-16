@@ -174,7 +174,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     //  printf("\n%d: ", enemy.size());
       for(unsigned int i = 0; i < enemy.size(); ++i) {
 
-    printf("E: %d, X: %f, Y: %f\n", i, enemy[i]->getMountX(0), enemy[i]->getMountY(0));
+    printf("E: %d, X: %f, Y: %f, Width: %f, Height: %f\n", i, enemy[i]->getMountX(0), enemy[i]->getMountY(0), enemy[i]->getMountWidth(0), enemy[i]->getMountHeight(0));
 
         enemy[i]->update(ship.getX(), ship.getY());
         if(enemy[i]->getWaskilled()) {
