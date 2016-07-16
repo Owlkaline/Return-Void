@@ -10,22 +10,22 @@ AlphaOneMount::~AlphaOneMount() {
 
 
 void AlphaOneMount::setTexture() {
-    if(tookDamage) 
+    if(tookDamage)
       glColor4f(1.0, 0.1, 0.1, 0.5f);
     glBindTexture(GL_TEXTURE_2D, getAlphaOneMountTexture());
-} 
+}
 
 void AlphaOneMount::reset() {
 
 }
 
-void AlphaOneMount::defaults() { 
+void AlphaOneMount::defaults() {
   width = 25;
   height = 128;
   health = 45;
-} 
+}
 
-void AlphaOneMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
+void AlphaOneMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   float rad = angle* (float)M_PI / 180;
   float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
@@ -34,10 +34,10 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
   this->angle = angle;
   dirX = directionX;
   dirY = directionY;
-  
-  if(isShooting)
-    tick();
-    
+
+
+  tick(isShooting);
+
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
     if(!bullets[i]->getVisible()) {
@@ -49,7 +49,7 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
       bullets.erase(bullets.begin() + i);
     }
   }
-  
+
   int size = bullets.size();
   for(unsigned int i = 0; i < cycle.size(); ++i) {
     if(cycle[i] > 40) {
@@ -68,8 +68,8 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
         float distance = pow(pow(dirY,2.0f) + pow(dirX,2.0f), 0.5f);
         dirX = dirX/distance;
         dirY = dirY/distance;
-      
-        bullets[size+j]->setIsBoss(false);       
+
+        bullets[size+j]->setIsBoss(false);
         bullets[size+j]->setup(Nx[i], Ny[i], dirX, dirY, angle);
         angle+=45;
       }

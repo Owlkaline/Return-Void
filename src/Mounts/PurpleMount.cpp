@@ -1,7 +1,7 @@
 #include "../../include/Mounts/PurpleMount.h"
 
 PurpleMount::PurpleMount() {
- 
+
 }
 
 PurpleMount::~PurpleMount() {
@@ -10,19 +10,19 @@ PurpleMount::~PurpleMount() {
 
 void PurpleMount::setTexture() {
   glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
-} 
+}
 
 void PurpleMount::reset() {
 
 }
 
-void PurpleMount::defaults() { 
+void PurpleMount::defaults() {
   width = 32;
   height = 32;
   health = 10;
-} 
- 
-void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  
+}
+
+void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   if(currentTexture == 1)
     currentTexture = 0;
   float rad = angle* (float)M_PI / 180;
@@ -30,17 +30,17 @@ void PurpleMount::update(float x, float y, float directionX, float directionY, f
   float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
   this->x = x+newX;
   this->y = y+newY;
-  this->angle = angle; 
+  this->angle = angle;
   dirX = directionX;
   dirY = directionY;
-    
+
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
     if(!bullets[i]->getVisible())
       bullets.erase(bullets.begin() + i);
   }
     if(isShooting) {
-      tick();
+      tick(isShooting);
     } else {
       bulletTicks = PURPLEPLASMATIMER;
     }
