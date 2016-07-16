@@ -1,12 +1,7 @@
 #ifndef SHOP_H
 #define SHOP_H
 
-#include <vector>
-
-#include "../defines.h"
-#include "../Menus/Button.h"
 #include "../GameTypes/Menu.h"
-#include "../Menus/CheckBox.h"
 
 class Shop: public Menu {
   public:

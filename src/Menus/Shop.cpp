@@ -13,7 +13,7 @@ void Shop::setup() {
   float buttonHeight = 95;
  
    buttons.push_back(new Button);
-  // buttons[0]->setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2, buttonWidth, buttonHeight, (char*)"Textures/Menu/GameMode.png");
+   buttons[0]->setup(SPACE_X_RESOLUTION/4 + buttonWidth/2, SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2, buttonWidth, buttonHeight, (char*)"Textures/Menu/GameMode.png");
   
    buttonWidth = 267;
    buttons.push_back(new Button);
