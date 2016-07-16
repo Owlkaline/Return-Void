@@ -34,7 +34,8 @@ void GreenPlasma::clean() {
 }
 
 void GreenPlasma::tick() {
-
+  y+=speed*directionY;
+  x+=speed*directionX;
 }
 
 void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {

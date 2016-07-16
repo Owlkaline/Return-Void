@@ -47,8 +47,8 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
   std::vector<unsigned int> bulletEnemyQuad[4];
 
   // Ship x, y, width, height
-  float Sw = ship->getWidth()/2;
-  float Sh = ship->getHeight()/2;
+  float Sw = ship->getWidth()/2 - 10;
+  float Sh = ship->getHeight()/2 - 20;
   float Sx = ship->getX();
   float Sy = ship->getY();
 
@@ -270,8 +270,8 @@ void Collisions::drawHitBoxes(FighterShip* ship, std::vector<Enemy*> enemy, std:
   }
 
 
-  float Sw = ship->getWidth()/2;
-  float Sh = ship->getHeight()/2;
+  float Sw = ship->getWidth()/2-10;
+  float Sh = ship->getHeight()/2-20;
   float Sx = ship->getX();
   float Sy = ship->getY();
   drawBox(Sx, Sy, Sw, Sh);

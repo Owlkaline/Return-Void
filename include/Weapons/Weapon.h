@@ -14,16 +14,16 @@ class Weapon {
     virtual void setup(float x, float y, float dirX, float dirY, float angle) = 0;
     
     virtual void update() { 
-      if(visible) {
-        y+=speed*directionY;
-        x+=speed*directionX;
-      }
-      tick();
-      if(y > SPACE_Y_RESOLUTION || y < 0 || x < 0 || x > SPACE_X_RESOLUTION)
+      if(visible)
+        tick();
+      if(y > SPACE_Y_RESOLUTION+height || y < -height || x < -width || x > SPACE_X_RESOLUTION+width)
         visible = false;
     }
     
     void setVisible(bool visible) { this->visible = visible; }
+    void setIsBoss(bool boss) { isBoss = boss; }
+    bool getIsBoss() { return isBoss; }
+    void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }    
     
     bool getVisible() { return visible; }
     
@@ -36,11 +36,13 @@ class Weapon {
     float getHeight() { return height; }
     
   protected:
+    bool isBoss;
     float damage;
     float angle;
     bool visible;
+    float offsetX, offsetY;
     float directionX, directionY;
-    float x,y, width, height, speed;
+    float x, y, width, height, speed;
     
     static GLuint getBluePlasmaTexture() {
       static GLuint bluePlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/BluePlasma.png");

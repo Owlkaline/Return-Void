@@ -34,6 +34,8 @@ void Spiral::clean() {
 }
 
 void Spiral::tick() {
+  y+=speed*directionY;
+  x+=speed*directionX;
   angle+=10;
 }
 

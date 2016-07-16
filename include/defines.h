@@ -49,7 +49,7 @@
 #define SPIRAL                 5
 #define ALPHAONEPLASMA         6
 
-// Types of Bullets
+// Bullet timer
 #define REDPLASMATIMER         20
 #define BLUEPLASMATIMER        25
 #define GREENPLASMATIMER       20

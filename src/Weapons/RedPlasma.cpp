@@ -34,7 +34,8 @@ void RedPlasma::clean() {
 } 
 
 void RedPlasma::tick() {
-
+  y+=speed*directionY;
+  x+=speed*directionX;
 } 
 
 void RedPlasma::setup(float x, float y, float dirX, float dirY, float angle) {

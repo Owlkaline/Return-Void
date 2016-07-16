@@ -262,8 +262,8 @@ void Game::drawCrosshair() {
   glBindTexture(GL_TEXTURE_2D, ChTexture);
   // Nice blue #1e00d5
   //lColor3f(0.117647059f, 0, 0.835294197f);
-  glColor3f(1, 0.643137255, 0);
-  if(!paused) {
+  glColor4f(1, 0.643137255, 0, 1.0f);
+  if(!paused && !inHighscore) {
     if(ship.getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
       lastChX = ChX;
       lastChY = ChY;
@@ -321,17 +321,5 @@ void Game::drawBackground() {
       glVertex3f(0, 0+offsetY, 0.0);
     glEnd();
     
-   /*glBindTexture(GL_TEXTURE_2D, background);
- 
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(0, SPACE_Y_RESOLUTION+offsetY, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION+offsetY, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(SPACE_X_RESOLUTION, 0+offsetY, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(0, 0+offsetY, 0.0);
-    glEnd();*/
     glDisable(GL_TEXTURE_2D);
 }

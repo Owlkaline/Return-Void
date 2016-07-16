@@ -76,8 +76,12 @@ class Enemy {
           x = SPACE_X_RESOLUTION - width/2;
           startX = x;
           break;
+        case ALPHAONE:
+          movementAngle = 0;
+          break;
         default:
-          printf("Unkown enemy movement type\n");
+          printf("Unkown enemy movement type: %d\n", moveType);
+          exit(0);
           break;
       }
       movementAngle = 0;
@@ -202,7 +206,7 @@ class Enemy {
             move::AlphaOne(&x, &y, width, height, speed, &cycle);
             break;
           default:
-            printf("Unkown Enemy Movement variant\n");
+            printf("Unkown Enemy Movement variant: %d\n", moveType);
             exit(0);
             break;
         }

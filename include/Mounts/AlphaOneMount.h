@@ -15,7 +15,9 @@ class AlphaOneMount: public Mount {
     void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py);
 
   protected:   
-   
-};
+    std::vector<int> cycle;
+    std::vector<float> Nx;
+    std::vector<float> Ny;
+}; 
 
 #endif

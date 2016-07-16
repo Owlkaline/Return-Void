@@ -112,6 +112,8 @@ class Mount {
       }
     }
     
+    void setIsBoss() { isBoss = true; }
+    
     void isLeftMount() { isLeft = true; }
     
     bool isVisible() { return visible; }
@@ -148,6 +150,10 @@ class Mount {
           break;
         case ALPHAONEPLASMA:
           bullets.push_back(new AlphaOnePlasma);
+          if(isBoss) {
+            int size = bullets.size() - 1;            
+            bullets[size]->setIsBoss(true);           
+          }
           break;
         default:          
           printf("Error: unknown varient in mounts add bullet: %d\n",variant); 
@@ -155,6 +161,7 @@ class Mount {
       }
     }
   
+    bool isBoss;
     int isLeft;
     float health;
     float angle;   

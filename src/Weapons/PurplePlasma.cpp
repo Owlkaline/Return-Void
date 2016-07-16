@@ -34,7 +34,8 @@ void PurplePlasma::clean() {
 }
 
 void PurplePlasma::tick() {
-
+  y+=speed*directionY;
+  x+=speed*directionX;
 }
 
 void PurplePlasma::setup(float x, float y, float dirX, float dirY, float angle) {

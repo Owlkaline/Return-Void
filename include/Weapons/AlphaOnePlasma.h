@@ -1,6 +1,8 @@
 #ifndef AlphaOnePlasma_H
 #define AlphaOnePlasma_H
 
+#include <vector>
+
 #include "./Weapon.h"
 
 class AlphaOnePlasma: public Weapon {
@@ -12,6 +14,7 @@ class AlphaOnePlasma: public Weapon {
     void clean();
     void tick();
     void setup(float x, float y, float dirX, float dirY, float angle);  
+  protected: 
 };
 
 #endif
