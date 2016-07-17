@@ -11,10 +11,10 @@ void PausedMenu::setup() {
   float height = 95;
   // Resume
   buttons.push_back(new Button);
-  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, (char*)"Textures/Menu/Resume.png");
+  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, (char*)"Textures/Menu/GameMenus/Resume.png");
   // Quit
   buttons.push_back(new Button);
-  buttons[1]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, (char*)"Textures/Menu/Quit.png");
+  buttons[1]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, (char*)"Textures/Menu/Misc/Quit.png");
   
   lb.push_back(new Label);
   lb[0]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
@@ -28,7 +28,7 @@ void PausedMenu::setup() {
 
   lb[0]->setColour(R, G, B);
 
-  Texture = txt::LoadTexture("Textures/Menu/Window.png");
+  Texture = txt::LoadTexture("Textures/Menu/GameMenus/Window.png");
 }
 
 void PausedMenu::drawBackground() {

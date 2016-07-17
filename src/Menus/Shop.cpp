@@ -13,17 +13,17 @@ void Shop::setup() {
   float buttonHeight = 95;
 
   buttons.push_back(new Button);
-  buttons[0]->setup(buttonWidth/2+50, 100, buttonWidth, buttonHeight, (char*)"Textures/Menu/Return.png");
+  buttons[0]->setup(buttonWidth/2+50, 100, buttonWidth, buttonHeight, (char*)"Textures/Menu/Misc/Return.png");
   buttons[0]->drawBorder(true);
   
   // Left Arrow button
   buttons.push_back(new Button);
-  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/LeftArrow.png");
+  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
   buttons[1]->drawBorder(true);
   
   // Right Arrow button
   buttons.push_back(new Button);
-  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/RightArrow.png");
+  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
   buttons[2]->drawBorder(true);  
   
   // 1st Ship Button

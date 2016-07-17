@@ -190,33 +190,33 @@ class Mount {
     std::vector<Weapon*> bullets;
 
     static GLuint getBasicMountTexture() {
-      static GLuint basicMountTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMount.png");
+      static GLuint basicMountTexture = txt::LoadTexture("Textures/Game/Mounts/BasicMount.png");
       return basicMountTexture;
     }
 
     static GLuint getBasicMountBrightTexture() {
-      static GLuint basicMountBrightTexture = txt::LoadTexture("Textures/Game/Weapons/BasicMountBright.png");
+      static GLuint basicMountBrightTexture = txt::LoadTexture("Textures/Game/Mounts/BasicMountBright.png");
       return basicMountBrightTexture;
     }
 
     static GLuint getTriangleMountTexture() {
-      static GLuint triangleMountTexture = txt::LoadTexture("Textures/Game/Weapons/TriangleMount.png");
+      static GLuint triangleMountTexture = txt::LoadTexture("Textures/Game/Mounts/TriangleMount.png");
       return triangleMountTexture;
     }
 
     static GLuint getPurpleMountTexture() {
-      static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Weapons/PurpleMount.png");
+      static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Mounts/PurpleMount.png");
       return purpleMountTexture;
     }
 
     static GLuint getAlphaOneMountTexture() {
-      static GLuint alphaOneMountTexture = txt::LoadTexture("Textures/Game/Weapons/AlphaOneMount.png");
+      static GLuint alphaOneMountTexture = txt::LoadTexture("Textures/Game/Mounts/AlphaOneMount.png");
       return alphaOneMountTexture;
     }
 
     static GLuint getHypnoMountTexture(int i) {
-      static GLuint hypnoMountLeftTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountLeft.png");
-      static GLuint hypnoMountRightTexture = txt::LoadTexture("Textures/Game/Weapons/HypnoMountRight.png");
+      static GLuint hypnoMountLeftTexture = txt::LoadTexture("Textures/Game/Mounts/HypnoMountLeft.png");
+      static GLuint hypnoMountRightTexture = txt::LoadTexture("Textures/Game/Mounts/HypnoMountRight.png");
 
       switch(i) {
         case 0:

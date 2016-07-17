@@ -20,11 +20,11 @@ void MainMenu::setup() {
     }
   }
 
-  buttons[0]->setTexture((char*)"Textures/Menu/Story.png");
-  buttons[1]->setTexture((char*)"Textures/Menu/EndlessMode.png");
-  buttons[2]->setTexture((char*)"Textures/Menu/Shop.png");
-  buttons[3]->setTexture((char*)"Textures/Menu/Settings.png");
-  buttons[4]->setTexture((char*)"Textures/Menu/Quit.png");
+  buttons[0]->setTexture((char*)"Textures/Menu/MainMenu/Story.png");
+  buttons[1]->setTexture((char*)"Textures/Menu/MainMenu/EndlessMode.png");
+  buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Shop.png");
+  buttons[3]->setTexture((char*)"Textures/Menu/MainMenu/Settings.png");
+  buttons[4]->setTexture((char*)"Textures/Menu/Misc/Quit.png");
 
   //char* txt = "Start";
   //buttons.setText(txt, 5 );
