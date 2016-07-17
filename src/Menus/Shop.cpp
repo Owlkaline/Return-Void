@@ -16,6 +16,16 @@ void Shop::setup() {
   buttons[0]->setup(buttonWidth/2+50, 100, buttonWidth, buttonHeight, (char*)"Textures/Menu/Return.png");
   buttons[0]->drawBorder(true);
   
+  // Left Arrow button
+  buttons.push_back(new Button);
+  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/LeftArrow.png");
+  buttons[1]->drawBorder(true);
+  
+  // Right Arrow button
+  buttons.push_back(new Button);
+  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/RightArrow.png");
+  buttons[2]->drawBorder(true);  
+  
   // Top Left Name Box
   lb.push_back(new Label);
   lb[0]->setup(190, SPACE_Y_RESOLUTION - 100, 0.3);
@@ -40,7 +50,18 @@ void Shop::setup() {
   GShip.VisualSetup(267, SPACE_Y_RESOLUTION/3*2);
   
   // 2nd Ship Box
+  lb.push_back(new Label);
+  lb[3]->setup(720, SPACE_Y_RESOLUTION/3*2, 456, 400, (char*)"Textures/Game/Ships/FighterShip1.png");
+  lb[3]->setTextureVisiable(false);
+  lb[3]->drawBorder(true);
   FShip.VisualSetup(720, SPACE_Y_RESOLUTION/3*2);
+  
+  // 3rd Ship Box
+  lb.push_back(new Label);
+  lb[4]->setup(1173, SPACE_Y_RESOLUTION/3*2, 456, 400, (char*)"Textures/Game/Ships/FighterShip1.png");
+  lb[4]->setTextureVisiable(false);
+  lb[4]->drawBorder(true);
+  //FShip.VisualSetup(1173, SPACE_Y_RESOLUTION/3*2);
 }
 
 void Shop::restart() {
@@ -59,63 +80,10 @@ void Shop::drawBackground() {
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(0, 0, 0.0);
   glEnd();
-  
-  // Return Box
-  
-  //drawBox(buttons[0]->getX(), buttons[0]->getY(), buttons[0]->getWidth()/2, buttons[0]->getHeight()/2);
-  
-  // Top Left Name Box
- // drawBox(267, SPACE_Y_RESOLUTION - 100, 230, 50);
-  
-   // 1st Ship box
-  float width = 456;
-  float height = 400;
-  float x = 267;
-  float y = (SPACE_Y_RESOLUTION/3*2);
-  drawBox(x, y, width/2, height/2);
-  
-  // 2st Ship box
-  x += width;
-  drawBox(x, y, width/2, height/2); 
-  
-  // 3st Ship box
-  x += width;
-  drawBox(x, y, width/2, height/2); 
-  
+  glColor3f(1.0f, 1.0f, 1.0f);
+
   GShip.draw();
   FShip.draw();
-  
-  // Left arrow box
-  width /= 8;
-  height /= 3;
-  x = 267/3;
-  y = (SPACE_Y_RESOLUTION/3*2);
-  drawBox(x, y, width/2, height/2);
-  
-  // Right arrow box
-  x *= 3 * 5;
-  drawBox(x, y, width/2, height/2);
-  
-  // Description Box
- /* width = 1000;
-  height = 300; 
-  x = 540;
-  y = SPACE_Y_RESOLUTION/3;
-  drawBox(x, y, width/2, height/2);*/
-  
- /* // Left arrow Box
-  width = 30;
-  height = 70;
-  x = 100;
-  y = (SPACE_Y_RESOLUTION-360);
-  drawBox(x, y, width, height);
-  
-  // Right arrow Box
-  width = 30;
-  height = 70;
-  x = 1200;
-  y = (SPACE_Y_RESOLUTION-360);
-  drawBox(x, y, width, height);*/
 
 }
 

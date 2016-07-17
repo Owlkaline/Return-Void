@@ -31,14 +31,14 @@ void Button::draw() {
       glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();  
   
-    glDisable(GL_TEXTURE_2D);
-    glColor3f(1.0, 1.0, 1.0);
+    glDisable(GL_TEXTURE_2D);    
     
     if(hasBorder)
       drawBox();
   } else { 
     lbTitle.draw();
   }
+  glColor3f(1.0, 1.0, 1.0);
 }
 
 void Button::clean() {

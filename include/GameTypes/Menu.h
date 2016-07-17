@@ -64,7 +64,7 @@ class Menu: public DisplayManager {
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(SPACE_X_RESOLUTION/4, 0, 0.0);
       glEnd();
-      glColor4f(0.0, 0.0, 0.0f, 1.0f);
+      glColor4f(1.0, 1.0, 1.0f, 1.0f);
     }
     
     float x, y, width, height;

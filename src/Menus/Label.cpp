@@ -34,6 +34,7 @@ void Label::draw() {
   }
   if(hasBorder)
     drawBox();
+  glColor3f(1.0, 1.0f, 1.0);
 }
 
 void Label::clean() {

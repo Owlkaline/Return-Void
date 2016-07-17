@@ -40,7 +40,6 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   dirX = directionX;
   dirY = directionY;
 
-
   tick(isShooting);
 
   for(unsigned int i = 0; i < bullets.size(); ++i) {

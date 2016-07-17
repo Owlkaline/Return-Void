@@ -25,8 +25,9 @@ class Mount {
     void setVisible(bool visible) { this->visible = visible; }
     void tick(bool isShooting) {
                   damageTicks++; if(damageTicks > damageTimer) { tookDamage = false; damageTicks = 0; }
-                  if(isShooting)
+                  if(isShooting) {
                     bulletTicks++; if(bulletTicks > bulletTimer) { fire(); bulletTicks = 0; }
+                  }
                   if(x < 0)
                     visible = false;
                 }
