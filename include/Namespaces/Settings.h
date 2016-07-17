@@ -16,6 +16,7 @@ class Settings {
     bool getRelativeMovement() { return relativeMovement; }
     void setRelativeMovement(bool relativeMovement) { this->relativeMovement = relativeMovement; }
   protected:
+    void createNewSettings();
     std::ifstream ifs;
     std::ofstream ofs;
     float version;

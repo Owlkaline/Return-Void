@@ -9,6 +9,19 @@ Button::~Button() {
 }
 
 void Button::draw() {
+  if(isFilled) {
+    glColor3f(fillR, fillG, fillB);
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
+    glEnd(); 
+  }
   if(hasTexture) {
     if(clicked || hasBeenClicked) {
       glColor3f(0.0f, 0.0f, 0.0f);
@@ -50,6 +63,7 @@ void Button::setup(float x, float y, float width, float height, char* filename) 
   clicked = false;
   hasBeenClicked = false;
   hasBorder = false;
+  isFilled = false;
   
   Texture = txt::LoadTexture(filename);
   
@@ -66,6 +80,7 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   clicked = false;
   hasBeenClicked = false;
   hasBorder = false;
+  isFilled = false;
   
   this->x = x;
   this->y = y;

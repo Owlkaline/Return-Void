@@ -13,13 +13,14 @@ void Settings::Load() {
     printf("Loading Settings\n");
     ifs.open("./data/settings.bin", std::ios::binary);
     version = File::LoadFloat(ifs);
-    relativeMovement = File::LoadBool(ifs);
-    ifs.close();
+    if(version != (float)VERSION) {
+      createNewSettings();
+    } else {
+      relativeMovement = File::LoadBool(ifs);
+      ifs.close();
+    }
   } else {
-    printf("Creating settings file\n");
-    version = VERSION;
-    relativeMovement = false;
-    Save();
+    createNewSettings();
   }
 }
 
@@ -30,3 +31,11 @@ void Settings::Save() {
   File::SaveBool(ofs, relativeMovement);
   ofs.close();
 }
+
+void Settings::createNewSettings() {
+  printf("Creating settings file\n");
+  version = VERSION;   
+  relativeMovement = false;
+  Save();
+}
+

@@ -99,7 +99,9 @@ class Ship {
       visible = true;
       
       for(unsigned int i = 0; i < WeaponMount.size(); ++i)
-        WeaponMount[i]->update(x, y, 0, 0, 0, false);            
+        WeaponMount[i]->update(x, y, 0, 0, 0, false);  
+        
+      angle = 0;          
     }
   
     int getCoins() { return coins; }
@@ -110,7 +112,7 @@ class Ship {
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
     float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
  
-    void setX(float x) { this->x = x; }
+    void setX(float x) { this->x = x; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[i]->setX(x); }}
     void setY(float y) { this->y = y; }
     void setVisible(bool visible) { this->visible = visible; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[0]->setVisible(visible); } }
  

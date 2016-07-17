@@ -24,6 +24,10 @@
 #define BUTTON_UP              0
 #define BUTTON_DOWN            1
 
+#define BUTTONWIDTH            247
+#define BUTTONHEIGHT           95
+#define ARROWWIDTH             59
+
 // Game States
 #define EXIT                   -1
 #define SEEDEDGAME             -2
@@ -33,6 +37,10 @@
 #define SHOP                   3
 
 #define MINIMUM_DISTANCETOSHIP 100
+
+// Ship Types
+#define FIGHTERSHIP            1
+#define GALACTICSHIP           2
 
 // Powerups
 #define NUMOFDROPS             3

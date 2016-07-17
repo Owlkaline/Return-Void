@@ -14,61 +14,43 @@ void SettingsMenu::setup() {
     isRelative = false;
   } 
   
-  float buttonWidth = 267; 
-  float buttonHeight = 95;
-  float x, y, width, height;
-  
   // Return Button
-  x = SPACE_X_RESOLUTION/4 + buttonWidth/2;
-  y = SPACE_Y_RESOLUTION/10 * (1.0) - buttonHeight/2;
-  width = buttonWidth;
-  height = buttonHeight;
+  x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH/2;
+  y = SPACE_Y_RESOLUTION/10 * (1.0) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[0]->setup(x, y, width, height, (char*)"Textures/Menu/Misc/Return.png");
+  buttons[0]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/Return.png");
   
-  // Return Button
-  x = SPACE_X_RESOLUTION/4*2.5 + buttonWidth/2;
-  y = SPACE_Y_RESOLUTION/10 * (1.0) - buttonHeight/2;
-  width = buttonWidth;
-  height = buttonHeight;
+  // Save Button
+  x = SPACE_X_RESOLUTION/4*2.5 + BUTTONWIDTH/2;
+  y = SPACE_Y_RESOLUTION/10 * (1.0) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[1]->setup(x, y, width, height, (char*)"Textures/Menu/SettingsMenu/Save.png");
+  buttons[1]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/Save.png");
   
   // Left Arrow button
-  x = SPACE_X_RESOLUTION/4  * 3 - buttonWidth;
-  y = SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2;
-  width = 50;
-  height = buttonHeight;
+  x = SPACE_X_RESOLUTION/4  * 3 - BUTTONWIDTH - ARROWWIDTH/2;
+  y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[2]->setup(x, y, width, height, (char*)"Textures/Menu/Misc/LeftArrow.png");
+  buttons[2]->setup(x, y, ARROWWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/LeftArrow.png");
   
   // Right Arrow button
-  x = SPACE_X_RESOLUTION/4 * 3 - buttonWidth/4;
-  y = SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2;
-  width = 50;
-  height = buttonHeight;
+  x = SPACE_X_RESOLUTION/4 * 3 - ARROWWIDTH/2;
+  y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[3]->setup(x, y, width,height, (char*)"Textures/Menu/Misc/RightArrow.png");
+  buttons[3]->setup(x, y, ARROWWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/RightArrow.png");
    
   // RelitiveMovement Label
-  x = SPACE_X_RESOLUTION/4 + buttonWidth;
-  y = SPACE_Y_RESOLUTION/10 * (6.5) - buttonHeight/2;
-  width = buttonWidth*2;
-  height = buttonHeight;
+  x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH*1.25;
+  y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   lb.push_back(new Label);
-  lb[0]->setup(x, y, width, height, (char*)"Textures/Menu/SettingsMenu/RelativeMovement.png");
-  
-  buttonWidth = 247;
-  
+  lb[0]->setup(x, y, BUTTONWIDTH*2.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/RelativeMovement.png");
+
   // True - False Label
-  x = SPACE_X_RESOLUTION/4 * 3 - buttonWidth/2;
-  width = buttonWidth;
-  height = buttonHeight;
+  x = SPACE_X_RESOLUTION/4 * 3 - BUTTONWIDTH/2 - ARROWWIDTH/2;
   lb.push_back(new Label);
   if(isRelative) {
-    lb[1]->setup(x, y, width, height, (char*)"Textures/Menu/Misc/True.png");
+    lb[1]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/True.png");
   } else {
-    lb[1]->setup(x, y, width, height, (char*)"Textures/Menu/Misc/False.png");
+    lb[1]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/False.png");
   }
   background = txt::LoadTexture("Textures/Menu/Background.png");
 }

@@ -1,31 +1,29 @@
 #include "../../include/Menus/HighscoreScreen.h"
 
 void HighscoreScreen::setup() {
-  float width = 247;
-  float height = 95;
   // Retry
   buttons.push_back(new Button);
-  buttons[0]->setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, width, height, (char*)"Textures/Menu/GameMenus/Retry.png");
+  buttons[0]->setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Retry.png");
   // Quit
   buttons.push_back(new Button);
-  buttons[1]->setup(SPACE_X_RESOLUTION/4 +width/2, SPACE_Y_RESOLUTION/10, width, height, (char*)"Textures/Menu/Misc/Quit.png");
+  buttons[1]->setup(SPACE_X_RESOLUTION/4 +width/2, SPACE_Y_RESOLUTION/10, BUTTONWIDTH, BUTTONHEIGHT,  (char*)"Textures/Menu/Misc/Quit.png");
   
   // Title
   lb.push_back(new Label);
-  lb[0]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
+  lb[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 0.4);
   // Score
   lb.push_back(new Label);
-  lb[1]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4 + height, 0.4);
+  lb[1]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4 + BUTTONHEIGHT, 0.4);
   
   for(int i = 0; i < 10; ++i) {
     // Highscores
     lb.push_back(new Label);
-    lb[i+2]->setup(SPACE_X_RESOLUTION/4*3 - width, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);    
+    lb[i+2]->setup(SPACE_X_RESOLUTION/4*3-BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);    
   }
   for(int i = 0; i < 10; ++i) {
     // Highscores names
     lb.push_back(new Label);
-    lb[i+12]->setup(SPACE_X_RESOLUTION/4 + width, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);
+    lb[i+12]->setup(SPACE_X_RESOLUTION/4 + BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i*0.5)) + 0.5) - height/2, 0.3);
   }
 
   std::string str = "Highscores";

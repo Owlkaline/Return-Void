@@ -7,26 +7,15 @@ void PausedMenu::setup() {
   width = SPACE_X_RESOLUTION/5;
   height = SPACE_Y_RESOLUTION/3 * 3;
 
-  float width = 247;
-  float height = 95;
   // Resume
   buttons.push_back(new Button);
-  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, width, height, (char*)"Textures/Menu/GameMenus/Resume.png");
+  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Resume.png");
   // Quit
   buttons.push_back(new Button);
-  buttons[1]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5 * 2, width, height, (char*)"Textures/Menu/Misc/Quit.png");
+  buttons[1]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 2, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/Quit.png");
   
   lb.push_back(new Label);
-  lb[0]->setup(SPACE_X_RESOLUTION/2+width/6, SPACE_Y_RESOLUTION/5*4, 0.4);
-
-  std::string str = "Paused";
-  
-  // #f08600 R 240 G 134 B 0
-  float R = 0.941176471;
-  float G = 0.525490246;
-  float B = 0;
-
-  lb[0]->setColour(R, G, B);
+  lb[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Paused.png");
 
   Texture = txt::LoadTexture("Textures/Menu/GameMenus/Window.png");
 }
@@ -46,6 +35,7 @@ void PausedMenu::drawBackground() {
       glVertex3f(x-width, y-height, 0.0);
     glEnd();    
     glDisable(GL_TEXTURE_2D);
+    glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void PausedMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {

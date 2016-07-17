@@ -9,6 +9,19 @@ Label::~Label() {
 }
 
 void Label::draw() {
+  if(isFilled) {
+    glColor3f(fillR, fillG, fillB);
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(x-width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(x+width/2, y+height/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(x+width/2, y-height/2, 0.0);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(x-width/2, y-height/2, 0.0);
+    glEnd(); 
+  }
   if(hasTexture) {  
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, Texture);
@@ -34,6 +47,7 @@ void Label::draw() {
   }
   if(hasBorder)
     drawBox();
+    
   glColor3f(1.0, 1.0f, 1.0);
 }
 
@@ -46,6 +60,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   hasTexture = true;
   isTimed = false;
   hasBorder = false;
+  isFilled = false;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -59,6 +74,7 @@ void Label::setup(float x, float y, float scale) {
   hasTexture = false;
   isTimed = false;
   hasBorder = false;
+  isFilled = false;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -69,6 +85,7 @@ void Label::setup(float x, float y, float scale) {
 void Label::setup(float x, float y, float scale, bool timer) {
   hasTexture = false;
   hasBorder = false;
+  isFilled = false;
   isTimed = timer;
   length = 0;
   ticks = 0;
@@ -88,13 +105,11 @@ void Label::update() {
 //Draws Text to the screen
 void Label::drawChar() {
   glPushMatrix();
+  
   glColor3f(R, G, B); // Text Colour
-  //glRasterPos2i(x, y); //coordinates of text
   glTranslatef(x-length*10, y-10, 0);//*20, y, 0);
-
-  // void * font = GLUT_BITMAP_TIMES_ROMAN_24;
-  //GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
   glScalef(scale,scale,scale);
+  
   for(int i = 0; i < length; i++) {
     //glutBitmapCharacter(font, str[i]);//Draw character to screen
     glutStrokeCharacter(GLUT_STROKE_ROMAN , str[i]);

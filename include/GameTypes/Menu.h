@@ -15,16 +15,19 @@ class Menu: public DisplayManager {
     
     void draw() {
       drawBackground();
+            for(unsigned int i = 0; i < lb.size(); ++i) 
+        lb[i]->draw();
       for(unsigned int i = 0; i < buttons.size(); ++i)
         buttons[i]->draw();
-      for(unsigned int i = 0; i < lb.size(); ++i) 
-        lb[i]->draw();
+      drawAfter();
+
     }
     virtual void setup()=0;
     virtual void restart()=0;
+    virtual void drawAfter() {  }
     virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0;
     
-    void clean() { buttons.clear(); lb.clear(); checkbox.clear(); 
+    virtual void clean() { buttons.clear(); lb.clear(); checkbox.clear(); 
                    buttons.erase(buttons.begin(), buttons.end());
                    lb.erase(lb.begin(), lb.end());
                    checkbox.erase(checkbox.begin(), checkbox.end());

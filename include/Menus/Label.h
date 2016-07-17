@@ -31,6 +31,8 @@ class Label {
     void setWidth(float width) { this->width = width; }
     void setHeight(float height) { this->height = height; }
     
+    void fill(float fR, float fG, float fB) { this->fillR = fR; this->fillG = fG; this->fillB = fB; isFilled = true; }
+    
     bool timeExpired() {
       if(isTimed) {
         if(ticks <= 0)
@@ -44,9 +46,12 @@ class Label {
 
   protected:    
     void drawBox();
+    
+    bool isFilled;
     bool hasBorder;
     char str[50];
     float R, G, B;
+    float fillR, fillG, fillB;
     int length;
     int ticks;
     float x, y, width, height;

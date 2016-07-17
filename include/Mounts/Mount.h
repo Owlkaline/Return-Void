@@ -131,6 +131,8 @@ class Mount {
 
     int getNumBullets() { return bullets.size(); }
     float bulletHit(int index) { return bullets[index]->hit(); }
+ 
+    void setX(float x) { this->x = x+offsetX; }
 
     float getX() { return x; }
     float getY() { return y; }

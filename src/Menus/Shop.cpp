@@ -7,49 +7,30 @@ Shop::Shop() {
 void Shop::setup() {
   ended = false;
   type = MAINMENU;
+  pos = 0;
+  
+  profile.Load();
   
   // Buttons
-  float buttonWidth = 267;
-  float buttonHeight = 95;
 
   buttons.push_back(new Button);
-  buttons[0]->setup(buttonWidth/2+50, 100, buttonWidth, buttonHeight, (char*)"Textures/Menu/Misc/Return.png");
-  buttons[0]->drawBorder(true);
+  buttons[0]->setup(BUTTONWIDTH/2+50, 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/Return.png");
+  buttons[0]->drawBorder(false);
   
   // Left Arrow button
   buttons.push_back(new Button);
-  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
+  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
   buttons[1]->drawBorder(true);
   
   // Right Arrow button
   buttons.push_back(new Button);
-  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
+  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
   buttons[2]->drawBorder(true);  
-  
-  // 1st Ship Button
-  buttons.push_back(new Button);
-  buttons[3]->setup(267, SPACE_Y_RESOLUTION/3*2 - 150, 200, 60, 0.3);
-  buttons[3]->setText((char*)"Upgrade", 7);
-  buttons[3]->drawBorder(true);
-  
-  // 2nd Ship Button
-  buttons.push_back(new Button);
-  buttons[4]->setup(720, SPACE_Y_RESOLUTION/3*2 - 150, 200, 60, 0.3);
-  buttons[4]->setText((char*)"Buy", 3);
-  buttons[4]->drawBorder(true);  
-  
-  // 3rd Ship Button
-  buttons.push_back(new Button);
-  buttons[5]->setup(1173, SPACE_Y_RESOLUTION/3*2 - 150, 200, 60, 0.3);
-  buttons[5]->setText((char*)"Locked", 6);
-  buttons[5]->drawBorder(true);
   
   // Top Left Name Box
   lb.push_back(new Label);
-  lb[0]->setup(190, SPACE_Y_RESOLUTION - 100, 0.3);
-  lb[0]->setText((char*)"Shop", 4);
-  lb[0]->setWidth(300);
-  lb[0]->setHeight(70);
+  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/MainMenu/Shop.png");
+  lb[0]->fill(1.0, 1.0, 1.0f);
   lb[0]->drawBorder(true);
   
   // Description Box
@@ -58,36 +39,23 @@ void Shop::setup() {
   lb[1]->setText((char*)"Desciption dark delicous duck dick for din", 42);
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
+  lb[1]->fill(0.6, 0.6, 0.6);
   lb[1]->drawBorder(true);
   
-  // 1st Ship Box
-  lb.push_back(new Label);
-  lb[2]->setup(267, SPACE_Y_RESOLUTION/3*2, 456, 400, (char*)"Textures/Game/Ships/GalacticShip.png");
-  lb[2]->setTextureVisiable(false);
-  lb[2]->drawBorder(true);
+  bool unlocked;
+  bool bought;
+
+  for(int i = 0; i < 6; ++i) {
+    unlocked = profile.getShipsUnlocked(i);
+    bought = profile.getShipsBought(i);
+    box.push_back(new Shipbox); 
+    box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, GALACTICSHIP);
+  }
+
   GShip.VisualSetup(267, SPACE_Y_RESOLUTION/3*2);
-  
-  // 2nd Ship Box
-  lb.push_back(new Label);
-  lb[3]->setup(720, SPACE_Y_RESOLUTION/3*2, 456, 400, (char*)"Textures/Game/Ships/FighterShip1.png");
-  lb[3]->setTextureVisiable(false);
-  lb[3]->drawBorder(true);
   FShip.VisualSetup(720, SPACE_Y_RESOLUTION/3*2);
   
-  // 3rd Ship Box
-  lb.push_back(new Label);
-  lb[4]->setup(1173, SPACE_Y_RESOLUTION/3*2, 456, 400, (char*)"Textures/Game/Ships/FighterShip1.png");
-  lb[4]->setTextureVisiable(false);
-  lb[4]->drawBorder(true);
-  //FShip.VisualSetup(1173, SPACE_Y_RESOLUTION/3*2);
-  
-  // 2nd Ship Cost Label
-  lb.push_back(new Label);
-  lb[5]->setup(720, SPACE_Y_RESOLUTION/3*2 + 150, 0.3);
-  lb[5]->setWidth(200);
-  lb[5]->setHeight(60);
-  lb[5]->setText((char*)"$1000", 5);
-  lb[5]->drawBorder(false);
+  background = txt::LoadTexture((char*)"Textures/Menu/ShopMenu/Background.png");
 }
 
 void Shop::restart() {
@@ -95,7 +63,10 @@ void Shop::restart() {
 }
 
 void Shop::drawBackground() {
-  glColor3f(0.5f, 0.5f, 0.5f);
+  
+  glColor3f(1.0f, 1.0f, 1.0f);
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, background);
   glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f);
     glVertex3f(0, SPACE_Y_RESOLUTION, 0.0);
@@ -107,10 +78,10 @@ void Shop::drawBackground() {
     glVertex3f(0, 0, 0.0);
   glEnd();
   glColor3f(1.0f, 1.0f, 1.0f);
-
-  GShip.draw();
-  FShip.draw();
-
+  glDisable(GL_TEXTURE_2D);
+  
+  for(unsigned int i = 0; i < box.size(); ++i)
+    box[i]->draw();
 }
 
 void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -127,6 +98,33 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     type = MAINMENU;
     ended = true;
   } 
+  
+  for(unsigned int i = 0; i < box.size(); ++i)
+    box[i]->update();
+  
+  if(!box[0]->checkIfMoving()) {
+    //Left Arrow
+    if(buttons[1]->Clicked()) {
+      if(pos != 5) {
+        pos++;
+        for(unsigned int i = 0; i < box.size(); ++i)
+          box[i]->moveLeft();
+      }    
+    }
+  
+    if(buttons[2]->Clicked()) {
+      if(pos != 0) {
+        pos--;
+        for(unsigned int i = 0; i < box.size(); ++i)
+          box[i]->moveRight();
+      }
+    }
+  }
+}
+
+void Shop::drawAfter() {
+ // GShip.draw();
+ // FShip.draw();
 }
 
 void Shop::drawBox(float x, float y, float width, float height) {
