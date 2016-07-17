@@ -42,7 +42,7 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
     buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   
   if(buttons[0]->Clicked()) {
-    type = SEEDEDGAME;
+    type = GAME;
     ended = true;
   }
   if(buttons[1]->Clicked()) {
