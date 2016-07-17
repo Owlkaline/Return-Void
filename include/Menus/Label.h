@@ -38,9 +38,14 @@ class Label {
       }
       return false;
     }
+    
+    void drawBorder(bool border) { this->hasBorder = border; }
+    void setTextureVisiable(bool visible) { hasTexture = visible; }
 
   protected:    
-    char str[25];
+    void drawBox();
+    bool hasBorder;
+    char str[50];
     float R, G, B;
     int length;
     int ticks;

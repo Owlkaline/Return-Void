@@ -32,6 +32,8 @@ void Label::draw() {
       drawChar();
     }
   }
+  if(hasBorder)
+    drawBox();
 }
 
 void Label::clean() {
@@ -42,6 +44,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   Texture = txt::LoadTexture(filename);
   hasTexture = true;
   isTimed = false;
+  hasBorder = false;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -54,6 +57,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
 void Label::setup(float x, float y, float scale) {
   hasTexture = false;
   isTimed = false;
+  hasBorder = false;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -63,6 +67,7 @@ void Label::setup(float x, float y, float scale) {
 
 void Label::setup(float x, float y, float scale, bool timer) {
   hasTexture = false;
+  hasBorder = false;
   isTimed = timer;
   length = 0;
   ticks = 0;
@@ -84,7 +89,7 @@ void Label::drawChar() {
   glPushMatrix();
   glColor3f(R, G, B); // Text Colour
   //glRasterPos2i(x, y); //coordinates of text
-  glTranslatef(x-length*20, y, 0);
+  glTranslatef(x-length*10, y-10, 0);//*20, y, 0);
 
   // void * font = GLUT_BITMAP_TIMES_ROMAN_24;
   //GLUT_BITMAP_HELVETICA_18;//set font http://www.opengl.org/documentation/specs/glut/spec3/node76.html#SECTION000111000000000000000
@@ -118,5 +123,38 @@ void Label::setColour(float R, float G, float B) {
   this->R = R;
   this->G = G;
   this->B = B;
+}
+
+void Label::drawBox() {
+  float border = 5;
+  glColor3f(0.0, 0.0, 0.0);
+  glBegin(GL_QUADS);
+
+    // Left
+    glVertex3f(x-width/2, y+height/2, 0.0);
+    glVertex3f(x-width/2+border, y+height/2, 0.0);
+    glVertex3f(x-width/2+border, y-height/2, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
+
+    // Right
+    glVertex3f(x+width/2, y+height/2, 0.0);
+    glVertex3f(x+width/2-border, y+height/2, 0.0);
+    glVertex3f(x+width/2-border, y-height/2, 0.0);
+    glVertex3f(x+width/2, y-height/2, 0.0);
+
+    // top
+    glVertex3f(x+width/2, y+height/2, 0.0);
+    glVertex3f(x+width/2, y+height/2-border, 0.0);
+    glVertex3f(x-width/2, y+height/2-border, 0.0);
+    glVertex3f(x-width/2, y+height/2, 0.0);
+
+    // bottom
+    glVertex3f(x+width/2, y-height/2, 0.0);
+    glVertex3f(x+width/2, y-height/2+border, 0.0);
+    glVertex3f(x-width/2, y-height/2+border, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
+
+  glEnd();
+  glColor3f(1.0, 1.0, 1.0);
 }
 

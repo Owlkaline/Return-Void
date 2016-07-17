@@ -81,11 +81,25 @@ class Ship {
         glPopMatrix();  
         glColor4f(1.0, 1.0, 1.0, 1.0);      
       }
+      
       for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
         WeaponMount[i]->draw(); 
        
       if(shield > 0)
         drawShield();
+    }
+    
+    void VisualSetup(float x, float y) {
+      //setup(true);
+      defaults();
+      crntTexture = 0;
+      this->x = x;
+      this->y = y;
+      shield = 0;
+      visible = true;
+      
+      for(unsigned int i = 0; i < WeaponMount.size(); ++i)
+        WeaponMount[i]->update(x, y, 0, 0, 0, false);            
     }
   
     int getCoins() { return coins; }
@@ -98,6 +112,7 @@ class Ship {
  
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
+    void setVisible(bool visible) { this->visible = visible; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[0]->setVisible(visible); } }
  
     float getX() { return x; }
     float getY() { return y; }   

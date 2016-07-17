@@ -14,8 +14,33 @@ void Shop::setup() {
 
   buttons.push_back(new Button);
   buttons[0]->setup(buttonWidth/2+50, 100, buttonWidth, buttonHeight, (char*)"Textures/Menu/Return.png");
+  buttons[0]->drawBorder(true);
   
-  //background = txt::LoadTexture("Textures/Menu/Background.png");
+  // Top Left Name Box
+  lb.push_back(new Label);
+  lb[0]->setup(190, SPACE_Y_RESOLUTION - 100, 0.3);
+  lb[0]->setText((char*)"Shop", 4);
+  lb[0]->setWidth(300);
+  lb[0]->setHeight(70);
+  lb[0]->drawBorder(true);
+  
+  // Description Box
+  lb.push_back(new Label);
+  lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 0.3);
+  lb[1]->setText((char*)"Desciption dark delicous duck dick for din", 42);
+  lb[1]->setWidth(1000);
+  lb[1]->setHeight(300);
+  lb[1]->drawBorder(true);
+  
+  // 1st Ship Box
+  lb.push_back(new Label);
+  lb[2]->setup(267, SPACE_Y_RESOLUTION/3*2, 456, 400, (char*)"Textures/Game/Ships/GalacticShip.png");
+  lb[2]->setTextureVisiable(false);
+  lb[2]->drawBorder(true);
+  GShip.VisualSetup(267, SPACE_Y_RESOLUTION/3*2);
+  
+  // 2nd Ship Box
+  FShip.VisualSetup(720, SPACE_Y_RESOLUTION/3*2);
 }
 
 void Shop::restart() {
@@ -36,10 +61,11 @@ void Shop::drawBackground() {
   glEnd();
   
   // Return Box
-  drawBox(buttons[0]->getX(), buttons[0]->getY(), buttons[0]->getWidth()/2, buttons[0]->getHeight()/2);
+  
+  //drawBox(buttons[0]->getX(), buttons[0]->getY(), buttons[0]->getWidth()/2, buttons[0]->getHeight()/2);
   
   // Top Left Name Box
-  drawBox(267, SPACE_Y_RESOLUTION - 100, 230, 50);
+ // drawBox(267, SPACE_Y_RESOLUTION - 100, 230, 50);
   
    // 1st Ship box
   float width = 456;
@@ -56,6 +82,9 @@ void Shop::drawBackground() {
   x += width;
   drawBox(x, y, width/2, height/2); 
   
+  GShip.draw();
+  FShip.draw();
+  
   // Left arrow box
   width /= 8;
   height /= 3;
@@ -66,6 +95,14 @@ void Shop::drawBackground() {
   // Right arrow box
   x *= 3 * 5;
   drawBox(x, y, width/2, height/2);
+  
+  // Description Box
+ /* width = 1000;
+  height = 300; 
+  x = 540;
+  y = SPACE_Y_RESOLUTION/3;
+  drawBox(x, y, width/2, height/2);*/
+  
  /* // Left arrow Box
   width = 30;
   height = 70;

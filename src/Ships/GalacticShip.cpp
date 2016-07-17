@@ -29,7 +29,7 @@ void GalacticShip::defaults() {
   const float mountPosX[maxNumWeapons] = {20, -20, 0};
   const float mountPosY[maxNumWeapons] = {0, 0, 50};
   
-  for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
+  for(unsigned int i = 0; i < maxNumWeapons; ++i) {
     switch(i) {
       case 0:
       case 1:   

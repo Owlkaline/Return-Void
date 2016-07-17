@@ -3,6 +3,9 @@
 
 #include "../GameTypes/Menu.h"
 
+#include "../Ships/FighterShip.h"
+#include "../Ships/GalacticShip.h"
+
 class Shop: public Menu {
   public:
     Shop();
@@ -14,6 +17,8 @@ class Shop: public Menu {
     
   protected:
     void drawBox(float x, float y, float width, float height);
+    FighterShip FShip;
+    GalacticShip GShip;
 };
 
 #endif

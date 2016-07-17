@@ -82,8 +82,8 @@ class Mount {
       visible = true;
       tookDamage = false;
       currentTexture = 0;
-      x = -SPACE_X_RESOLUTION;
-      y = -SPACE_Y_RESOLUTION;
+      x = SPACE_X_RESOLUTION/2;
+      y = SPACE_Y_RESOLUTION/2;
       this->variant = variant;
       defaults();
       damageTimer = DAMAGETIMER;

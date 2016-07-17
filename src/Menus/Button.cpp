@@ -33,6 +33,9 @@ void Button::draw() {
   
     glDisable(GL_TEXTURE_2D);
     glColor3f(1.0, 1.0, 1.0);
+    
+    if(hasBorder)
+      drawBox();
   } else { 
     lbTitle.draw();
   }
@@ -47,6 +50,7 @@ void Button::setup(float x, float y, float width, float height, char* filename) 
   hasTexture = true;
   clicked = false;
   hasBeenClicked = false;
+  hasBorder = false;
   
   Texture = txt::LoadTexture(filename);
   
@@ -62,6 +66,7 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   hasTexture = false;
   clicked = false;
   hasBeenClicked = false;
+  hasBorder = false;
   
   this->x = x;
   this->y = y;
@@ -108,3 +113,37 @@ void Button::setColour(float R, float G, float B) {
 bool Button::Clicked() {
   return hasBeenClicked;
 }
+
+void Button::drawBox() {
+  float border = 5;
+  glColor3f(0.0, 0.0, 0.0);
+  glBegin(GL_QUADS);
+
+    // Left
+    glVertex3f(x-width/2, y+height/2, 0.0);
+    glVertex3f(x-width/2+border, y+height/2, 0.0);
+    glVertex3f(x-width/2+border, y-height/2, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
+
+    // Right
+    glVertex3f(x+width/2, y+height/2, 0.0);
+    glVertex3f(x+width/2-border, y+height/2, 0.0);
+    glVertex3f(x+width/2-border, y-height/2, 0.0);
+    glVertex3f(x+width/2, y-height/2, 0.0);
+
+    // top
+    glVertex3f(x+width/2, y+height/2, 0.0);
+    glVertex3f(x+width/2, y+height/2-border, 0.0);
+    glVertex3f(x-width/2, y+height/2-border, 0.0);
+    glVertex3f(x-width/2, y+height/2, 0.0);
+
+    // bottom
+    glVertex3f(x+width/2, y-height/2, 0.0);
+    glVertex3f(x+width/2, y-height/2+border, 0.0);
+    glVertex3f(x-width/2, y-height/2+border, 0.0);
+    glVertex3f(x-width/2, y-height/2, 0.0);
+
+  glEnd();
+  glColor3f(1.0, 1.0, 1.0);
+}
+

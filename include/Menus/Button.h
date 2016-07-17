@@ -28,8 +28,12 @@ class Button {
     float getHeight() { return height; }
 
     bool Clicked();
+    
+    void drawBorder(bool border) { this->hasBorder = border; }
 
   protected: 
+    void drawBox();
+    bool hasBorder;
     float scale;   
     char str[25];
     float R, G, B;
