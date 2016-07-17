@@ -1,7 +1,9 @@
 #include "../../include/Enemies/BasicEnemy.h"
 
 BasicEnemy::BasicEnemy() {
-
+  visible = false;
+  width = 75;
+  height = 75;
 }
 
 BasicEnemy::~BasicEnemy() {

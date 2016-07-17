@@ -1,7 +1,9 @@
 #include "../../include/Enemies/AlphaOne.h"
 
 AlphaOne::AlphaOne() {
-
+  visible = false;
+  width = 256;
+  height = 30;
 }
 
 AlphaOne::~AlphaOne() {

@@ -1,7 +1,9 @@
 #include "../../include/Enemies/CorruptedStarShip.h"
 
 CorruptedStarShip::CorruptedStarShip() {
-
+  visible = false;
+  width = 75;
+  height = 75;
 }
 
 CorruptedStarShip::~CorruptedStarShip() {

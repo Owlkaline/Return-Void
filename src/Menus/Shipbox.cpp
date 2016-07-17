@@ -88,7 +88,7 @@ void Shipbox::update() {
   if(isMovingLeft) {
     x-=10;    
     setX(); 
-    if(x < (oldX-444)) {
+    if(x < (oldX-446)) {
       isMovingLeft = false;
       oldX = x;
     }
@@ -97,7 +97,7 @@ void Shipbox::update() {
   if(isMovingRight) {
     x+=10;
     setX();
-    if(x > (oldX+444)) {
+    if(x > (oldX+446)) {
       isMovingRight = false;
       oldX = x;
     }

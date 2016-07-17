@@ -1,7 +1,9 @@
 #include "../../include/Mounts/PurpleMount.h"
 
 PurpleMount::PurpleMount() {
-
+  visible = false;
+  width = 32;
+  height = 32;
 }
 
 PurpleMount::~PurpleMount() {

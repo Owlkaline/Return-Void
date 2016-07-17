@@ -1,8 +1,9 @@
 #include "../../include/Mounts/BasicMount.h"
 
 BasicMount::BasicMount() {
- // width = 8;
- // height = 64;
+  visible = false;
+  width = 8;
+  height = 64;
 }
 
 BasicMount::~BasicMount() {

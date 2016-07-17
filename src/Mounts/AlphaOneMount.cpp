@@ -1,7 +1,9 @@
 #include "../../include/Mounts/AlphaOneMount.h"
 
 AlphaOneMount::AlphaOneMount() {
-
+  visible = false;
+  width = 25;
+  height = 45;
 }
 
 AlphaOneMount::~AlphaOneMount() {

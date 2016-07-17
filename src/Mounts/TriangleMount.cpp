@@ -1,7 +1,9 @@
 #include "../../include/Mounts/TriangleMount.h"
 
 TriangleMount::TriangleMount() {
-
+  visible = false;
+  width = 32;
+  height = 32;
 }
 
 TriangleMount::~TriangleMount() {

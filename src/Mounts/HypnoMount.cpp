@@ -1,7 +1,9 @@
 #include "../../include/Mounts/HypnoMount.h"
 
 HypnoMount::HypnoMount() {
-
+  visible = false;
+  width = 75/3.73;
+  height = 75/3.73;
 }
 
 HypnoMount::~HypnoMount() {

@@ -105,18 +105,18 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   if(!box[0]->checkIfMoving()) {
     //Left Arrow
     if(buttons[1]->Clicked()) {
-      if(pos != 5) {
-        pos++;
-        for(unsigned int i = 0; i < box.size(); ++i)
-          box[i]->moveLeft();
-      }    
-    }
-  
-    if(buttons[2]->Clicked()) {
       if(pos != 0) {
         pos--;
         for(unsigned int i = 0; i < box.size(); ++i)
           box[i]->moveRight();
+      }    
+    }
+  
+    if(buttons[2]->Clicked()) {
+      if(pos != 5) {
+        pos++;
+        for(unsigned int i = 0; i < box.size(); ++i)
+          box[i]->moveLeft();
       }
     }
   }

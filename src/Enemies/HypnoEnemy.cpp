@@ -1,7 +1,9 @@
 #include "../../include/Enemies/HypnoEnemy.h"
 
 HypnoEnemy::HypnoEnemy() {
-
+  visible = false;
+  width = 75;
+  height = 75;
 }
 
 HypnoEnemy::~HypnoEnemy() {
