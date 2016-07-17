@@ -162,7 +162,7 @@ void display() {
         break;
       case SEEDEDGAME:
         newtype = GAME;
-        Display[newtype]->setSeed(567894);
+        Display[newtype]->setSeed(time(NULL));
         break;
       case GAME:
         Display[newtype]->setSeed(567894);

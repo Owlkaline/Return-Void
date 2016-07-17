@@ -55,10 +55,10 @@ void Game::setup() {
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
 
-  lbScore.setup(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
+  lbScore.setup(SPACE_X_RESOLUTION-100, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
   
-  lbCoins.setup(SPACE_X_RESOLUTION-20, 30, 0.3, false);
+  lbCoins.setup(SPACE_X_RESOLUTION-60, 30, 0.3, false);
   lbCoins.setColour( 1.0,  1.0,  1.0);
   
   std::stringstream ss;
@@ -174,7 +174,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     //  printf("\n%d: ", enemy.size());
       for(unsigned int i = 0; i < enemy.size(); ++i) {
 
-    printf("E: %d, X: %f, Y: %f, Width: %f, Height: %f\n", i, enemy[i]->getMountX(0), enemy[i]->getMountY(0), enemy[i]->getMountWidth(0), enemy[i]->getMountHeight(0));
+   // printf("E: %d, X: %f, Y: %f, Width: %f, Height: %f\n", i, enemy[i]->getMountX(0), enemy[i]->getMountY(0), enemy[i]->getMountWidth(0), enemy[i]->getMountHeight(0));
 
         enemy[i]->update(ship.getX(), ship.getY());
         if(enemy[i]->getWaskilled()) {
