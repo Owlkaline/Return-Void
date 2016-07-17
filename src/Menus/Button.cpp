@@ -32,12 +32,11 @@ void Button::draw() {
     glEnd();  
   
     glDisable(GL_TEXTURE_2D);    
-    
-    if(hasBorder)
-      drawBox();
   } else { 
     lbTitle.draw();
   }
+  if(hasBorder)
+    drawBox();
   glColor3f(1.0, 1.0, 1.0);
 }
 

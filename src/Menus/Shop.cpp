@@ -26,6 +26,24 @@ void Shop::setup() {
   buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), 57, 133, (char*)"Textures/Menu/RightArrow.png");
   buttons[2]->drawBorder(true);  
   
+  // 1st Ship Button
+  buttons.push_back(new Button);
+  buttons[3]->setup(267, SPACE_Y_RESOLUTION/3*2 - 150, 200, 60, 0.3);
+  buttons[3]->setText((char*)"Upgrade", 7);
+  buttons[3]->drawBorder(true);
+  
+  // 2nd Ship Button
+  buttons.push_back(new Button);
+  buttons[4]->setup(720, SPACE_Y_RESOLUTION/3*2 - 150, 200, 60, 0.3);
+  buttons[4]->setText((char*)"Buy", 3);
+  buttons[4]->drawBorder(true);  
+  
+  // 3rd Ship Button
+  buttons.push_back(new Button);
+  buttons[5]->setup(1173, SPACE_Y_RESOLUTION/3*2 - 150, 200, 60, 0.3);
+  buttons[5]->setText((char*)"Locked", 6);
+  buttons[5]->drawBorder(true);
+  
   // Top Left Name Box
   lb.push_back(new Label);
   lb[0]->setup(190, SPACE_Y_RESOLUTION - 100, 0.3);
@@ -62,6 +80,14 @@ void Shop::setup() {
   lb[4]->setTextureVisiable(false);
   lb[4]->drawBorder(true);
   //FShip.VisualSetup(1173, SPACE_Y_RESOLUTION/3*2);
+  
+  // 2nd Ship Cost Label
+  lb.push_back(new Label);
+  lb[5]->setup(720, SPACE_Y_RESOLUTION/3*2 + 150, 0.3);
+  lb[5]->setWidth(200);
+  lb[5]->setHeight(60);
+  lb[5]->setText((char*)"$1000", 5);
+  lb[5]->drawBorder(false);
 }
 
 void Shop::restart() {
