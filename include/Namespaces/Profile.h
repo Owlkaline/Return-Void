@@ -18,6 +18,8 @@ class Profile {
     bool getShipsUnlocked(int index) { return shipsUnlocked[index]; }
     bool getShipsBought(int index) { return shipsBought[index]; }
     
+    void addCoins(int coins) { this->coins += coins; }
+    
     void setCoins(int coins) { this->coins = coins; }
     void setSelectedShip(int selectedShip) { this->selectedShip = selectedShip; }
     void setShipsUnlocked(int index, bool unlocked) { this->shipsUnlocked[index] = unlocked; }

@@ -19,6 +19,7 @@
 #include "../Enemies/AlphaOne.h"
 #include "../Enemies/CorruptedStarShip.h"
 #include "../Namespaces/Random.h"
+#include "../Namespaces/Profile.h"
 #include "../Namespaces/Settings.h"
 #include "../Namespaces/Collisions.h"
 
@@ -37,6 +38,8 @@ class Game: public DisplayManager {
   protected:
     void drawCrosshair();
     void drawBackground();
+    
+    Profile profile;
     
     bool isNew; //If Game is new
     bool paused;

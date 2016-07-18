@@ -22,6 +22,7 @@ void Button::draw() {
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x-width/2, y-height/2, 0.0);
       glEnd(); 
+      glColor3f(1.0f, 1.0f, 1.0f);
     }
     if(hasTexture) {
       if(disabled) {
@@ -45,7 +46,7 @@ void Button::draw() {
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x-width/2, y-height/2, 0.0);
       glEnd();  
-  
+      glColor3f(1.0f, 1.0f, 1.0f);
       glDisable(GL_TEXTURE_2D);    
     } else { 
       lbTitle.draw();

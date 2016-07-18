@@ -48,7 +48,7 @@ void Profile::Save() {
 void Profile::createNewProfile() {
   printf("Creating Profile file\n");
   version = VERSION;   
-  coins = 5000;
+  coins = 0;
   selectedShip = 0;
   shipsUnlocked[0] = true;
   shipsBought[0] = true;

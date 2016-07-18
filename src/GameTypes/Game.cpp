@@ -40,6 +40,7 @@ void Game::setup() {
   printf("Game Setting up...");
   boostRand.newSeed(seed);
 
+  profile.Load();
   settings.Load();
 
   paused = false;
@@ -147,6 +148,7 @@ void Game::newWave() {
 
 void Game::restart() {
   printf("Game Restarting...\n");
+  profile.Save();
   clean();
   setup();  
 }
@@ -224,6 +226,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         inHighscore = true;
         highscore.setScore(score);
         printf("Player died, HighscoreScreen\n");
+        profile.addCoins(coins);
       }
     } else {
       pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
@@ -253,6 +256,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         case MAINMENU:
           type = MAINMENU;
           ended = true;
+          profile.Save();
           printf("Return to Menu from Quit Button pressed on highscore screen\n");
           break;
         case GAME:
