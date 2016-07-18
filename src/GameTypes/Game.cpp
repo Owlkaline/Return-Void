@@ -27,6 +27,7 @@ void Game::draw() {
     Collisions::drawHitBoxes(&ship, enemy, powerups);
 
   lbWave.draw();
+  lbWaveStatic.draw();
   lbScore.draw();
   lbCoins.draw();
   if(paused)
@@ -57,6 +58,9 @@ void Game::setup() {
 
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
+  
+  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-50, 0.3, false);
+  lbWaveStatic.setColour(1.0, 1.0, 1.0);
 
   lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
@@ -85,13 +89,18 @@ void Game::setup() {
 
 void Game::clean() {
   printf("Game Cleaning...");
+  
   pMenu.clean();
   highscore.clean();
   ship.clean();
+  
   enemy.clear();
   powerups.clear();
+  Ftext.clear();
+  
   enemy.erase(enemy.begin(), enemy.end());
   powerups.erase(powerups.begin(), powerups.end()); 
+  Ftext.erase(Ftext.begin(), Ftext.end());
   printf("Game Clean\n");
 }
 
@@ -104,6 +113,8 @@ void Game::newWave() {
   std::string str = "Wave " + ss.str();
   lbWave.setText(str.c_str(), str.length() + 1);
   lbWave.setTimer(40);
+  
+  lbWaveStatic.setText(str.c_str(), str.length() + 1);
   
   if(wave%10 == 0) {
     enemy.push_back(new AlphaOne);

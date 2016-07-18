@@ -61,7 +61,7 @@ class Game: public DisplayManager {
     Settings settings;
     std::string strScore;
     
-    Label lbWave, lbScore, lbCoins;
+    Label lbWave, lbWaveStatic, lbScore, lbCoins;
     HighscoreScreen highscore;
     
     std::vector<Enemy*> enemy;
