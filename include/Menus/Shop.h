@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "../GameTypes/Menu.h"
+#include "../Ships/Ship.h"
 
 #include "./Shipbox.h"
 
@@ -31,13 +32,15 @@ class Shop: public Menu {
       
     }
     
-  protected:
-    void drawBox(float x, float y, float width, float height);
-    
+  protected:    
     Profile profile;
     
+    std::vector<Ship*> ship;
     std::vector<Shipbox*> box;
     
+    bool shipType[6];
+    int numShips;
+    int selected;
     int coins;
     int pos;
 };

@@ -49,12 +49,12 @@ class Game: public DisplayManager {
     int score;
     int coins;
     int wave, level;
+    int selected;
     
     float offsetY;
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius;
  
-    FighterShip ship;
     Random boostRand;
     GLuint ChTexture, background; 
     PausedMenu pMenu;
@@ -64,6 +64,7 @@ class Game: public DisplayManager {
     Label lbWave, lbWaveStatic, lbScore, lbCoins;
     HighscoreScreen highscore;
     
+    std::vector<Ship*> ship;
     std::vector<Enemy*> enemy;
     std::vector<Drops*> powerups;
     std::vector<FloatingText*> Ftext;

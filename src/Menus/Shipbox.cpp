@@ -4,11 +4,55 @@ Shipbox::~Shipbox() {
   clean();
 }
 
+void Shipbox::setup(float x, float y, int shipType) {
+  this->x = x;
+  this->y = y;
+  this->shipType = shipType;
+  isMovingLeft = false;
+  isMovingRight = false;
+  visible = true;
+  selected = true;
+  switch(shipType) {
+    case GALACTICSHIP:
+      ship.push_back(new GalacticShip);
+      break;
+    case FIGHTERSHIP:
+      ship.push_back(new FighterShip);
+      break;
+    case NOTHING:
+      break;
+    default:
+      printf("Error in Shipbox.cpp: Unkown ship varient: %d", shipType);
+      exit(0);
+      break;
+  }
+  for(unsigned int i = 0; i < ship.size(); ++i)
+    ship[i]->VisualSetup(x, y);
+    
+  // Select Ship Box
+  lb.push_back(new Label);
+  lb[0]->setup(x, y, 400, 400, (char*)"Textures/Menu/ShopMenu/Boxbackground.png");
+  lb[0]->drawBorder(true);
+  
+  // Selected Ship Name
+  lb.push_back(new Label);
+  lb[1]->setup(x, y+135, 0.3);
+  lb[1]->setText("Select Ship", 11);
+  lb[1]->setColour(0.0, 0.0, 0.0);
+  lb[1]->setWidth(350);
+  lb[1]->setHeight(70);
+  lb[1]->fill(0.6, 0.6, 0.6);
+  lb[1]->drawBorder(true);
+  
+}
+
 void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) {
   this->x = x;
   this->y = y;
+  this->shipType = shipType;
   this->unlocked = unlocked;
   this->bought = bought;
+  selected = false;
   isMovingLeft = false;
   isMovingRight = false;
   attemptBuy = false;
@@ -18,23 +62,22 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
 
   oldX = x;
   switch(shipType) {
-    case 0:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
     case GALACTICSHIP:
       ship.push_back(new GalacticShip);
       break;
     case FIGHTERSHIP:
       ship.push_back(new FighterShip);
       break;
+    case NOTHING:
+      break;
     default:
-      printf("Error in Shipbox.cpp: Unkown ship varient");
+      printf("Error in Shipbox.cpp: Unkown ship varient: %d", shipType);
       exit(0);
       break;
   }
-  ship[0]->VisualSetup(x, y);
+  
+  for(unsigned int i = 0; i < ship.size(); ++i)
+    ship[i]->VisualSetup(x, y);
   
   // 1st Ship Box
   lb.push_back(new Label);
@@ -58,24 +101,25 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
       lb[1]->setHeight(60);
         
       switch(shipType) {
-        case 0:
-        case 1:
+        case GALACTICSHIP:
+          break;
+        case FIGHTERSHIP:
           lb[1]->setText((char*)"1000coins", 10);
           cost = 1000;
           break;
-        case 2:
+        case 3:
           lb[1]->setText((char*)"1500coins", 10);
           cost = 1500;
           break;
-        case 3:
+        case 4:
           lb[1]->setText((char*)"2000coins", 10);
           cost = 2000;
           break;
-        case 4:
+        case 5:
           lb[1]->setText((char*)"2500coins", 10);
           cost = 2500;
           break;
-        case 5:
+        case 6:
           lb[1]->setText((char*)"3000coins", 10);
           cost = 3000;
           break;
@@ -84,9 +128,10 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
       lb[1]->drawBorder(true);        
     }
   } else {
-      buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Locked.png");
-      buttons[0]->fill(0.6f, 0.6f, 0.6f);
-      buttons[0]->disable();
+    bought = false;
+    buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Locked.png");
+    buttons[0]->fill(0.6f, 0.6f, 0.6f);
+    buttons[0]->disable();
   }  
   buttons[0]->drawBorder(true);
 }
@@ -97,47 +142,52 @@ void Shipbox::draw() {
       lb[i]->draw();
     for(unsigned int i = 0; i < buttons.size(); ++i)
       buttons[i]->draw();
-    ship[0]->draw();
+    for(unsigned int i = 0; i < ship.size(); ++i)
+      ship[i]->draw();      
   }  
 }
 
 void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
-  if(isMovingLeft) {
-    x-=10;  
-    if(x < (oldX-448)) {
-      x = oldX - 453;
-      isMovingLeft = false;
-      oldX = x;
+  if(!selected) {
+    if(isMovingLeft) {
+      x-=10;  
+      if(x < (oldX-448)) {
+        x = oldX - 453;
+        isMovingLeft = false;
+        oldX = x;
+      }
+      setX(); 
     }
-    setX(); 
-  }
   
-  if(isMovingRight) {
-    x+=10;
-    if(x > (oldX+448)) {
-      x = oldX + 453;
-      isMovingRight = false;
-      oldX = x;
+    if(isMovingRight) {
+      x+=10;
+      if(x > (oldX+448)) {
+        x = oldX + 453;
+        isMovingRight = false;
+        oldX = x;
+      }
+      setX();
     }
-    setX();
-  }
   
-  if(x < 0 || x > 267+453*2.5) {
-    visible = false;
+    if(x < 0 || x > 267+453*2.5) {
+      visible = false;
+    } else {
+      visible = true;
+    }  
+   
+    if(!checkIfMoving()) {
+      for(unsigned int i = 0; i < buttons.size(); ++i)
+        buttons[i]->update(mX, mY, mouseBtnState, prevMouseBtnState);
+    }
+  
+    // Buy button clicked
+    if(!bought && unlocked) {
+      if(buttons[0]->Clicked()) {
+        attemptBuy = true;
+      }
+    }
   } else {
-    visible = true;
-  }  
   
-  if(!checkIfMoving()) {
-    for(unsigned int i = 0; i < buttons.size(); ++i)
-      buttons[i]->update(mX, mY, mouseBtnState, prevMouseBtnState);
-  }
-  
-  // Buy button clicked
-  if(!bought && unlocked) {
-    if(buttons[0]->Clicked()) {
-      attemptBuy = true;
-    }
   }
 }
 
@@ -153,7 +203,8 @@ void Shipbox::setX() {
     lb[i]->setX(x);
   for(unsigned int i = 0; i < buttons.size(); ++i)
     buttons[i]->setX(x);
-  ship[0]->setX(x);
+  for(unsigned int i = 0; i < ship.size(); ++i)
+    ship[i]->setX(x);
 }
 
 void Shipbox::moveLeft() {

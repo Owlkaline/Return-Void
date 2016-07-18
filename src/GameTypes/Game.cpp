@@ -11,7 +11,7 @@ void Game::draw() {
   for(unsigned int i = 0; i < powerups.size(); ++i) 
     powerups[i]->draw();
  
-  ship.draw();
+  ship[0]->draw();
 
   for(unsigned int i = 0; i < enemy.size(); ++i) 
     enemy[i]->draw();
@@ -19,12 +19,12 @@ void Game::draw() {
   for(unsigned int i = 0; i < Ftext.size(); ++i)
     Ftext[i]->draw();
   
-  ship.drawHealthBar();
+  ship[0]->drawHealthBar();
 
   if(DRAWQUADTREE)
     Collisions::drawQuadTree();
   if(DRAWHITBOX)
-    Collisions::drawHitBoxes(&ship, enemy, powerups);
+    Collisions::drawHitBoxes(ship, enemy, powerups);
 
   lbWave.draw();
   lbWaveStatic.draw();
@@ -53,8 +53,22 @@ void Game::setup() {
   score = 0;
   wave = 0;
   offsetY = 0;
+  selected = profile.getSelectedShip();
   
-  ship.setup(settings.getRelativeMovement());
+  switch(selected) {
+    case 0:
+      ship.push_back(new GalacticShip);
+      break;
+    case 1:
+      ship.push_back(new FighterShip);
+      break;
+    default:
+      printf("Error in Game.cpp: Unkown ship selected");
+      exit(0);
+      break;
+  }
+  
+  ship[0]->setup(settings.getRelativeMovement());
 
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
@@ -92,12 +106,13 @@ void Game::clean() {
   
   pMenu.clean();
   highscore.clean();
-  ship.clean();
+  ship.clear();
   
   enemy.clear();
   powerups.clear();
   Ftext.clear();
   
+  ship.erase(ship.begin(), ship.end());
   enemy.erase(enemy.begin(), enemy.end());
   powerups.erase(powerups.begin(), powerups.end()); 
   Ftext.erase(Ftext.begin(), Ftext.end());
@@ -185,10 +200,10 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       if(offsetY <= -1080)
         offsetY=0;
         
-      ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+      ship[0]->update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
 
       for(unsigned int i = 0; i < enemy.size(); ++i) {
-        enemy[i]->update(ship.getX(), ship.getY());
+        enemy[i]->update(ship[0]->getX(), ship[0]->getY());
         if(enemy[i]->getWaskilled()) {
           score += enemy[i]->getScore();
           std::stringstream ss;
@@ -203,7 +218,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), str1.length(), 0.2);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
-          ship.boost();
+          ship[0]->boost();
           
           bool nothing = false; 
           switch(enemy[i]->dropPowerup()) {
@@ -249,9 +264,9 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         
       lbWave.update();
 
-      Collisions::detect(&ship, enemy, powerups);
+      Collisions::detect(ship, enemy, powerups);
 
-      if(!ship.getVisible()) {
+      if(!ship[0]->getVisible()) {
         inHighscore = true;
         highscore.setScore(score);
         printf("Player died, HighscoreScreen\n");
@@ -267,7 +282,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         printf("Returning to Menu From pause screen\n");
       }
     }
-    coins = ship.getCoins();
+    coins = ship[0]->getCoins();
     std::stringstream ss;
     ss << coins;
     std::string str = "Coins: " + ss.str();
@@ -303,12 +318,12 @@ void Game::drawCrosshair() {
   //lColor3f(0.117647059f, 0, 0.835294197f);
   glColor4f(1, 0.643137255, 0, 1.0f);
   if(!paused && !inHighscore) {
-    if(ship.getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
+    if(ship[0]->getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
       lastChX = ChX;
       lastChY = ChY;
     } else {
-      lastChX = ship.getX() +  MINIMUM_DISTANCETOSHIP*ship.getDirectionX();
-      lastChY = ship.getY() + MINIMUM_DISTANCETOSHIP*ship.getDirectionY();
+      lastChX = ship[0]->getX() +  MINIMUM_DISTANCETOSHIP*ship[0]->getDirectionX();
+      lastChY = ship[0]->getY() + MINIMUM_DISTANCETOSHIP*ship[0]->getDirectionY();
     }
   } else {
     lastChX = ChX;

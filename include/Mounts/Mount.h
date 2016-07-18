@@ -133,6 +133,8 @@ class Mount {
     float bulletHit(int index) { return bullets[index]->hit(); }
  
     void setX(float x) { this->x = x+offsetX; }
+    
+    void setTimer(float bulletTimer) { this->bulletTimer = bulletTimer; }
 
     float getX() { return x; }
     float getY() { return y; }

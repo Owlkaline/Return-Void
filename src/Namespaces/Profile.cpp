@@ -56,7 +56,7 @@ void Profile::createNewProfile() {
   shipsBought[1] = false;
   
   for(int i = 2; i < 6; ++i) {
-    shipsUnlocked[i] = true; 
+    shipsUnlocked[i] = false; 
     shipsBought[i] = false;
   }  
   Save();

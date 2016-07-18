@@ -31,7 +31,7 @@ void Collisions::drawQuadTree() {
     drawBox(SPACE_X_RESOLUTION/8, SPACE_Y_RESOLUTION/8, SPACE_X_RESOLUTION/4, SPACE_Y_RESOLUTION/4);
 }
 
-void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) { 
+void Collisions::detect(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) { 
   bool shipQuad[4];
   for(int i = 0; i < 4; ++i) 
     shipQuad[i] = false;
@@ -51,10 +51,10 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
   std::vector<unsigned int> bulletEnemyQuad[4];
 
   // Ship x, y, width, height
-  float Sw = ship->getWidth()/2 - 20;
-  float Sh = ship->getHeight()/2 - 30;
-  float Sx = ship->getX();
-  float Sy = ship->getY();
+  float Sw = ship[0]->getWidth()/2 - ship[0]->getWidth()/6;
+  float Sh = ship[0]->getHeight()/2 - ship[0]->getHeight()/4.66;
+  float Sx = ship[0]->getX();
+  float Sy = ship[0]->getY();
 
   shipQuad[getQuadrant(Sx-Sw, Sy-Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0)] = true;
   shipQuad[getQuadrant(Sx+Sw, Sy+Sh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0)] = true;
@@ -82,12 +82,12 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
       powerupQuad[j[3]].push_back(i);
   }
   // Player bullet Quadrants
-  for(int i = 0; i < ship->getNumOfMounts(); ++i) {
-    for(int j = 0; j < ship->getNumOfBullets(i); ++j) {
-      float Bw = ship->getBulletWidth(i, j)/2;
-      float Bh = ship->getBulletHeight(i, j)/2;
-      float Bx = ship->getBulletX(i, j);
-      float By = ship->getBulletY(i, j);
+  for(int i = 0; i < ship[0]->getNumOfMounts(); ++i) {
+    for(int j = 0; j < ship[0]->getNumOfBullets(i); ++j) {
+      float Bw = ship[0]->getBulletWidth(i, j)/2;
+      float Bh = ship[0]->getBulletHeight(i, j)/2;
+      float Bx = ship[0]->getBulletX(i, j);
+      float By = ship[0]->getBulletY(i, j);
       int k[4];
       k[0] = getQuadrant(Bx-Bw, By-Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
       k[1] = getQuadrant(Bx+Bw, By+Bh, SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1, 0);
@@ -211,18 +211,18 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
         int m = shipMountQuad[i][l];
         int n = shipBulletQuad[i][l];
 
-        float Bw = ship->getBulletWidth(m, n)/2;
-        float Bh = ship->getBulletHeight(m, n)/2;
-        float Bx = ship->getBulletX(m, n);
-        float By = ship->getBulletY(m, n);
+        float Bw = ship[0]->getBulletWidth(m, n)/2;
+        float Bh = ship[0]->getBulletHeight(m, n)/2;
+        float Bx = ship[0]->getBulletX(m, n);
+        float By = ship[0]->getBulletY(m, n);
         if( (Bx + Bw) >= (Ex-Ew) && (Bx-Bw) <= (Ex + Ew) && (By + Bh) >= (Ey-Eh) && (By-Bh) <= (Ey + Eh) ) {
           if(!enemy[k]->getIsBoss()) {
-            enemy[k]->takeDamage(ship->bulletHit(m, n));
+            enemy[k]->takeDamage(ship[0]->bulletHit(m, n));
           } else {
             if(!enemy[k]->checkMountsVisible()) {
-              ship->bulletHit(m, n);
+              ship[0]->bulletHit(m, n);
             } else {
-              enemy[k]->takeDamage(ship->bulletHit(m, n));
+              enemy[k]->takeDamage(ship[0]->bulletHit(m, n));
             }
           }
         }
@@ -233,11 +233,11 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
         if( (Ex + Ew) >= (Sx-Sw) && (Ex-Ew) <= (Sx + Sw) && (Ey + Eh) >= (Sy-Sh) && (Ey-Eh) <= (Sy + Sh) ) {
           if(!enemy[k]->getIsBoss()) {
             enemy[k]->takeDamage(10000);
-            ship->takeDamage(5);
+            ship[0]->takeDamage(5);
           } else {
-            ship->takeDamage(10);
-            ship->setX(SPACE_X_RESOLUTION/2);
-            ship->setY(200);
+            ship[0]->takeDamage(10);
+            ship[0]->setX(SPACE_X_RESOLUTION/2);
+            ship[0]->setY(200);
           }
         }
       }
@@ -253,12 +253,12 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
       for(unsigned int l = 0; l < shipMountQuad[i].size(); ++l) {
         int Sm = shipMountQuad[i][l];
         int Sn = shipBulletQuad[i][l];
-        float Bw = ship->getBulletWidth(Sm, Sn)/2;
-        float Bh = ship->getBulletHeight(Sm, Sn)/2;
-        float Bx = ship->getBulletX(Sm, Sn);
-        float By = ship->getBulletY(Sm, Sn);
+        float Bw = ship[0]->getBulletWidth(Sm, Sn)/2;
+        float Bh = ship[0]->getBulletHeight(Sm, Sn)/2;
+        float Bx = ship[0]->getBulletX(Sm, Sn);
+        float By = ship[0]->getBulletY(Sm, Sn);
         if( (Mx + Mw) >= (Bx-Bw) && (Mx-Mw) <= (Bx + Bw) && (My + Mh) >= (By-Bh) && (My-Mh) <= (By + Bh) ) {
-          enemy[e]->mountTakeDamage(m, ship->bulletHit(Sm, Sn));
+          enemy[e]->mountTakeDamage(m, ship[0]->bulletHit(Sm, Sn));
         }
       }
     }
@@ -276,7 +276,7 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
         float Bx = enemy[k]->getBulletX(l, m);
         float By = enemy[k]->getBulletY(l, m);
         if( (Sx + Sw) >= (Bx-Bw) && (Sx-Sw) <= (Bx + Bw) && (Sy + Sh) >= (By-Bh) && (Sy-Sh) <= (By + Bh) ) {
-          ship->takeDamage(enemy[k]->bulletHit(l, m));
+          ship[0]->takeDamage(enemy[k]->bulletHit(l, m));
         }        
       }
 
@@ -289,7 +289,7 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
           float Px = powerups[k]->getX();
           float Py = powerups[k]->getY();
           if( (Sx + Sw) >= (Px-Pw) && (Sx-Sw) <= (Px + Pw) && (Sy + Sh) >= (Py-Ph) && (Sy-Sh) <= (Py + Ph) ) {
-            ship->collect(powerups[k]->getType());
+            ship[0]->collect(powerups[k]->getType());
           }
         }
       }
@@ -307,7 +307,7 @@ void Collisions::detect(FighterShip* ship, std::vector<Enemy*> enemy, std::vecto
   }
 }
 
-void Collisions::drawHitBoxes(FighterShip* ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {    
+void Collisions::drawHitBoxes(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) {    
   // Enemy x, y, width, height 
   float Ew;
   float Eh;
@@ -346,17 +346,17 @@ void Collisions::drawHitBoxes(FighterShip* ship, std::vector<Enemy*> enemy, std:
   }
 
 
-  float Sw = ship->getWidth()/2-20;
-  float Sh = ship->getHeight()/2-30;
-  float Sx = ship->getX();
-  float Sy = ship->getY();
+  float Sw = ship[0]->getWidth()/2-ship[0]->getWidth()/6;
+  float Sh = ship[0]->getHeight()/2-30;
+  float Sx = ship[0]->getX();
+  float Sy = ship[0]->getY();
   drawBox(Sx, Sy, Sw, Sh);
-  for(int i = 0; i < ship->getNumOfMounts(); ++i) {
-    for(int j = 0; j < ship->getNumOfBullets(i); ++j) {
-      Bw = ship->getBulletWidth(i, j)/2;
-      Bh = ship->getBulletHeight(i, j)/2;
-      Bx = ship->getBulletX(i, j);
-      By = ship->getBulletY(i, j);
+  for(int i = 0; i < ship[0]->getNumOfMounts(); ++i) {
+    for(int j = 0; j < ship[0]->getNumOfBullets(i); ++j) {
+      Bw = ship[0]->getBulletWidth(i, j)/2;
+      Bh = ship[0]->getBulletHeight(i, j)/2;
+      Bx = ship[0]->getBulletX(i, j);
+      By = ship[0]->getBulletY(i, j);
       drawBox(Bx, By, Bw, Bh);
     }
   }

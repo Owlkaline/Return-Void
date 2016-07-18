@@ -8,6 +8,8 @@ void Shop::setup() {
   ended = false;
   type = MAINMENU;
   pos = 0;
+  numShips = 0;
+  selected = profile.getSelectedShip();
   
   profile.Load();
   
@@ -38,7 +40,7 @@ void Shop::setup() {
   // Description Box
   lb.push_back(new Label);
   lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 0.3);
-  lb[1]->setText((char*)"Desciption", 42);
+  lb[1]->setText((char*)"Desciption", 10);
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
   lb[1]->fill(0.6, 0.6, 0.6);
@@ -59,16 +61,79 @@ void Shop::setup() {
   lb[2]->fill(0.6, 0.6, 0.6);
   lb[2]->drawBorder(true);
   
+  // Left Arrow button Selected Ship
+  buttons.push_back(new Button);
+  buttons[3]->setup(1676-200+ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
+  buttons[3]->drawBorder(true);
+  if(selected == 0) {
+    buttons[3]->disable();
+    buttons[3]->setVisible(false);
+  }
+  
+  // Right Arrow button Selected Ship
+  buttons.push_back(new Button);
+  buttons[4]->setup(1676+200-ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
+  buttons[4]->drawBorder(true);  
+
+  for(int i = 0; i < 6; ++i) {
+    if(profile.getShipsBought(i) == true)
+      numShips++;
+  }
+  
   bool unlocked;
   bool bought;
 
   for(int i = 0; i < 6; ++i) {
+    
     unlocked = profile.getShipsUnlocked(i);
     bought = profile.getShipsBought(i);
+    if(unlocked && bought) {
+      shipType[i] = true;
+    } else {
+      shipType[i] = false;
+    }
     box.push_back(new Shipbox); 
-    box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, i);
+    switch(i) {
+      case 0:
+        box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, GALACTICSHIP);
+        break;
+      case 1:
+        box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, FIGHTERSHIP);
+        break;
+      case 2: 
+      case 3:
+      case 4:
+      case 5:
+       box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, NOTHING);
+       break;
+    }
   }
   
+  int more = false;
+  for(int i = selected+1; i < 6; ++i) {
+    if(shipType[i])
+      more = true;
+  }
+  if(!more) { 
+    buttons[4]->disable();
+    buttons[4]->setVisible(false);  
+  }      
+  
+  box.push_back(new Shipbox);
+  switch(selected) {
+    case 0:
+      box[box.size()-1]->setup(1676, 390, GALACTICSHIP);
+      break;
+    case 1:
+      box[box.size()-1]->setup(1676, 390, FIGHTERSHIP);
+      break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      box[box.size()-1]->setup(1676, 390, GALACTICSHIP);
+      break;
+  }
   background = txt::LoadTexture((char*)"Textures/Menu/ShopMenu/Background.png");
 }
 
@@ -115,9 +180,9 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   
   for(unsigned int i = 0; i < box.size(); ++i)
     box[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
- 
+  
   if(!box[0]->checkIfMoving()) {
-    for(unsigned int i = 0; i < box.size(); ++i) {
+    for(unsigned int i = 0; i < 6; ++i) {
       if(box[i]->AttemptBuy()) {
         if(coins >= box[i]->getCost()) {
           box[i]->buy();
@@ -126,10 +191,15 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           ss << coins;
           std::string strCoins = "Coins: " + ss.str();
           lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
+          numShips++;
+          buttons[4]->enable();
+          buttons[4]->setVisible(true);
+          shipType[i] = true;
         }
       }
     }
-    //Left Arrow
+    
+    //Left Arrow Shop
     if(buttons[1]->Clicked()) {
       if(pos != 0) {
         pos--;
@@ -139,29 +209,94 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           buttons[1]->disable();
           buttons[1]->setVisible(false);
         }
-        for(unsigned int i = 0; i < box.size(); ++i)
+        for(unsigned int i = 0; i < 6; ++i)
           box[i]->moveRight();
       } else {
         buttons[1]->disable();
         buttons[1]->setVisible(false);
       }   
     }
-    //Right Arrow
+    
+    //Right Arrow Shop
     if(buttons[2]->Clicked()) {
       if(pos != 5) {
         pos++;
         buttons[1]->enable();
-        buttons[1]->setVisible(true);
-        
+        buttons[1]->setVisible(true);        
         if(pos == 5) {          
           buttons[2]->disable();
           buttons[2]->setVisible(false);
         }
-        for(unsigned int i = 0; i < box.size(); ++i)
+        for(unsigned int i = 0; i < 6; ++i)
           box[i]->moveLeft();
       } else {        
         buttons[2]->disable();
         buttons[2]->setVisible(false);
+      }
+    }
+    
+    // Left Arrow Selection
+    if(buttons[3]->Clicked()) {
+      if(selected != 0) {
+        for(int i = selected-1; i >= 0; --i) {
+          if(shipType[i]) {
+            selected = i;
+            switch(selected) {              
+              case 0:
+                box[box.size()-1]->setShip(GALACTICSHIP);
+                buttons[3]->disable();
+                buttons[3]->setVisible(false);
+                break;
+              case 1:
+                box[box.size()-1]->setShip(FIGHTERSHIP);
+                break;
+              case 2:
+              case 3:
+              case 4:
+                box[box.size()-1]->setShip(GALACTICSHIP);
+                break;
+            }
+            break;
+          }
+        }
+      }
+      buttons[4]->enable();
+      buttons[4]->setVisible(true);
+    }
+    
+    // Right Arrow Selection
+    if(buttons[4]->Clicked()) {
+      if(selected != 5) {
+        for(int i = selected+1; i < 6; ++i) {
+          if(shipType[i]) {
+            selected = i;
+            switch(selected) {              
+              case 1:
+                box[box.size()-1]->setShip(FIGHTERSHIP);
+                break;
+              case 2:
+              case 3:
+              case 4:
+              case 5:
+                box[box.size()-1]->setShip(GALACTICSHIP);
+                buttons[4]->disable();
+                buttons[4]->setVisible(false);  
+                break;
+            }
+            break;
+          }
+        }
+        int more = false;
+        for(int i = selected+1; i < 6; ++i) {
+          if(shipType[i])
+            more = true;
+        }
+        if(!more) { 
+          buttons[4]->disable();
+          buttons[4]->setVisible(false);  
+        }        
+        buttons[3]->enable();
+        buttons[3]->setVisible(true);
       }
     }
   }
@@ -172,48 +307,13 @@ void Shop::drawAfter() {
 }
 
 void Shop::save() {
-  for(unsigned int i = 0; i < box.size(); ++i) {
+  for(unsigned int i = 0; i < 6; ++i) {
     profile.setShipsUnlocked(i, box[i]->getUnlocked());
     profile.setShipsBought(i, box[i]->getBought());
   }
+  profile.setSelectedShip(selected);
   profile.setCoins(coins);
   profile.Save();
-}
-
-void Shop::drawBox(float x, float y, float width, float height) {
-  float border = 5;
-  glColor3f(0.0, 0.0, 0.0);
-  glBegin(GL_QUADS);
-
-    // Left
-    glVertex3f(x-width, y+height, 0.0);
-    glVertex3f(x-width+border, y+height, 0.0);
-    glVertex3f(x-width+border, y-height, 0.0);
-    glVertex3f(x-width, y-height, 0.0);
-
-    // Right
-    glVertex3f(x+width, y+height, 0.0);
-    glVertex3f(x+width-border, y+height, 0.0);
-    glVertex3f(x+width-border, y-height, 0.0);
-    glVertex3f(x+width, y-height, 0.0);
-
-    // top
-    glVertex3f(x+width, y+height, 0.0);
-    glVertex3f(x+width, y+height-border, 0.0);
-    glVertex3f(x-width, y+height-border, 0.0);
-    glVertex3f(x-width, y+height, 0.0);
-
-    // bottom
-    glVertex3f(x+width, y-height, 0.0);
-    glVertex3f(x+width, y-height+border, 0.0);
-    glVertex3f(x-width, y-height+border, 0.0);
-    glVertex3f(x-width, y-height, 0.0);
-
-  glEnd();
-  glColor3f(1.0, 1.0, 1.0);
-}
-
-
- 
+} 
 
 
