@@ -1,12 +1,11 @@
 #ifndef SHOP_H
 #define SHOP_H
 
+#include <sstream>
+
 #include "../GameTypes/Menu.h"
 
 #include "./Shipbox.h"
-
-#include "../Ships/FighterShip.h"
-#include "../Ships/GalacticShip.h"
 
 #include "../Namespaces/Profile.h"
 

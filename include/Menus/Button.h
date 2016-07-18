@@ -35,9 +35,11 @@ class Button {
 
     void disable() { disabled = true;  }
     void enable() { disabled = false; }
+    void setVisible(bool visible) { this->visible = visible; }
 
   protected:  
     bool disabled;
+    bool visible;
     bool isFilled;
     void drawBox();
     bool hasBorder;

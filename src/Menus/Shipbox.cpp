@@ -61,6 +61,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
           lb[1]->setText((char*)"$2000", 5);
           break;
         case 5:
+          lb[1]->setText((char*)"$2500", 6);
           break;
       }
       lb[1]->fill(0.6f, 0.6f, 0.6f);
@@ -69,6 +70,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   } else {
       buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Locked.png");
       buttons[0]->fill(0.6f, 0.6f, 0.6f);
+      buttons[0]->disable();
   }  
   buttons[0]->drawBorder(true);
 }

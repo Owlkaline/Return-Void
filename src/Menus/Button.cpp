@@ -9,49 +9,50 @@ Button::~Button() {
 }
 
 void Button::draw() {
-
-  if(isFilled) {
-    glColor3f(fillR, fillG, fillB);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd(); 
-  }
-  if(hasTexture) {
-    if(disabled) {
-      glColor4f(1.0, 1.0, 1.0, 0.0);
-    } else if(clicked || hasBeenClicked) {
-      glColor3f(0.0f, 0.0f, 0.0f);
-    } else if(isSelected) {
-      glColor3f(0.5f, 0.5f, 0.5f);
-    } else {
-      glColor3f(1.0, 1.0, 1.0);
+  if(visible) {
+    if(isFilled) {
+      glColor3f(fillR, fillG, fillB);
+      glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(x-width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(x+width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(x+width/2, y-height/2, 0.0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(x-width/2, y-height/2, 0.0);
+      glEnd(); 
     }
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, Texture);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();  
+    if(hasTexture) {
+      if(disabled) {
+        glColor4f(1.0, 1.0, 1.0, 0.5);
+      } else if(clicked || hasBeenClicked) {
+        glColor3f(0.0f, 0.0f, 0.0f);
+      } else if(isSelected) {
+        glColor3f(0.5f, 0.5f, 0.5f);
+      } else {
+        glColor3f(1.0, 1.0, 1.0);
+      }
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, Texture);
+      glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(x-width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(x+width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(x+width/2, y-height/2, 0.0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(x-width/2, y-height/2, 0.0);
+      glEnd();  
   
-    glDisable(GL_TEXTURE_2D);    
-  } else { 
-    lbTitle.draw();
+      glDisable(GL_TEXTURE_2D);    
+    } else { 
+      lbTitle.draw();
+    }
+    if(hasBorder)
+      drawBox();
   }
-  if(hasBorder)
-    drawBox();
   glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
@@ -67,6 +68,7 @@ void Button::setup(float x, float y, float width, float height, char* filename) 
   hasBorder = false;
   isFilled = false;
   disabled = false;
+  visible = true;
   
   Texture = txt::LoadTexture(filename);
   
@@ -85,6 +87,7 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   hasBorder = false;
   isFilled = false;
   disabled = false;
+  visible = true;
   
   this->x = x;
   this->y = y;
