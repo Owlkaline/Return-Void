@@ -48,12 +48,14 @@ void Profile::Save() {
 void Profile::createNewProfile() {
   printf("Creating Profile file\n");
   version = VERSION;   
-  coins = 0;
+  coins = 5000;
   selectedShip = 0;
   shipsUnlocked[0] = true;
   shipsBought[0] = true;
+  shipsUnlocked[1] = true;
+  shipsBought[1] = false;
   
-  for(int i = 1; i < 6; ++i) {
+  for(int i = 2; i < 6; ++i) {
     shipsUnlocked[i] = true; 
     shipsBought[i] = false;
   }  

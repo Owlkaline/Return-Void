@@ -24,14 +24,17 @@ class Shop: public Menu {
     void clean() {
       box.clear();
       box.erase(box.begin(), box.end());
+      buttons.clear();
+      buttons.erase(buttons.begin(), buttons.end());
+      lb.clear();
+      lb.erase(lb.begin(), lb.end());
+      
     }
     
   protected:
     void drawBox(float x, float y, float width, float height);
     
     Profile profile;
-    FighterShip FShip;
-    GalacticShip GShip;
     
     std::vector<Shipbox*> box;
     

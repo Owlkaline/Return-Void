@@ -11,7 +11,10 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   this->bought = bought;
   isMovingLeft = false;
   isMovingRight = false;
+  attemptBuy = false;
   visible = true;
+  
+  cost = 0;
 
   oldX = x;
   switch(shipType) {
@@ -58,18 +61,23 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
         case 0:
         case 1:
           lb[1]->setText((char*)"$1000", 5);
+          cost = 1000;
           break;
         case 2:
           lb[1]->setText((char*)"$1500", 5);
+          cost = 1500;
           break;
         case 3:
           lb[1]->setText((char*)"$2000", 5);
+          cost = 2000;
           break;
         case 4:
           lb[1]->setText((char*)"$2500", 5);
+          cost = 2500;
           break;
         case 5:
           lb[1]->setText((char*)"$3000", 5);
+          cost = 3000;
           break;
       }
       lb[1]->fill(0.6f, 0.6f, 0.6f);
@@ -83,8 +91,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   buttons[0]->drawBorder(true);
 }
 
-void Shipbox::draw() {
-  
+void Shipbox::draw() {  
   if(visible) {
     for(unsigned int i = 0; i < lb.size(); ++i)
       lb[i]->draw();
@@ -129,12 +136,16 @@ void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned i
   // Buy button clicked
   if(!bought && unlocked) {
     if(buttons[0]->Clicked()) {
-      bought = true;
-      buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Upgrade.png");
-      buttons[0]->fill(0.8f, 0.0f, 0.0f);
-      lb[1]->setVisible(false);
+      attemptBuy = true;
     }
   }
+}
+
+void Shipbox::buy() {
+  bought = true;
+  buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Upgrade.png");
+  buttons[0]->fill(0.8f, 0.0f, 0.0f);
+  lb[1]->setVisible(false);
 }
 
 void Shipbox::setX() {

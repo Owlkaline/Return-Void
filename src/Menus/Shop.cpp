@@ -117,6 +117,18 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     box[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
  
   if(!box[0]->checkIfMoving()) {
+    for(unsigned int i = 0; i < box.size(); ++i) {
+      if(box[i]->AttemptBuy()) {
+        if(coins > box[i]->getCost()) {
+          box[i]->buy();
+          coins-=box[i]->getCost();
+          std::stringstream ss;
+          ss << coins;
+          std::string strCoins = "Coins: $" + ss.str();
+          lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
+        }
+      }
+    }
     //Left Arrow
     if(buttons[1]->Clicked()) {
       if(pos != 0) {
