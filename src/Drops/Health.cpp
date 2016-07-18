@@ -20,8 +20,6 @@ void Health::draw() {
       glVertex3f(x-width/2, y-height/2, 0.0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
-  } else {
-    lbTitle.draw();
   }
 }
 
@@ -31,9 +29,8 @@ void Health::setup(float x, float y) {
   width = 50;
   height = 50;
   visible = true;
-  lbTitle.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
-  lbTitle.setColour( 0.5,  0.5,  0.1);
-  lbTitle.setText("Health", 6);  
+  isCollected = false;
+  name = "Health";
 }
 
 void Health::update() {
@@ -41,10 +38,6 @@ void Health::update() {
   
   if(!isCollected) {
     y-=3 * tick/100.0;  
-  } else {
-    lbTitle.update();
-    if(lbTitle.timeExpired())
-      visible = false;
   }
   
   if(y < 0 - height)
@@ -59,8 +52,5 @@ void Health::update() {
 
 int Health::getType() {
   isCollected = true;
-  lbTitle.setX(x);
-  lbTitle.setY(y);  
-  lbTitle.setTimer(20);
   return HEALTH;
 }

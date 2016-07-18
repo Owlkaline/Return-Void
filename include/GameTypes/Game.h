@@ -10,6 +10,7 @@
 #include "../Ships/GalacticShip.h"
 #include "../Menus/Label.h"
 #include "../Menus/PausedMenu.h"
+#include "../Menus/FloatingText.h"
 #include "../Menus/HighscoreScreen.h"
 #include "../Drops/Coins.h"
 #include "../Drops/Health.h"
@@ -59,10 +60,13 @@ class Game: public DisplayManager {
     PausedMenu pMenu;
     Settings settings;
     std::string strScore;
+    
     Label lbWave, lbScore, lbCoins;
     HighscoreScreen highscore;
+    
     std::vector<Enemy*> enemy;
     std::vector<Drops*> powerups;
+    std::vector<FloatingText*> Ftext;
 };
 
 #endif

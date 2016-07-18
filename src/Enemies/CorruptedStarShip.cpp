@@ -22,9 +22,9 @@ void CorruptedStarShip::defaults() {
   maxWeaponMounts = 1;
 
   score = 30;
-  lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
-  lbScore.setColour( 0.0,  1.0,  0.1);
-  lbScore.setText("+30", 3);
+ // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
+ // lbScore.setColour( 0.0,  1.0,  0.1);
+//  lbScore.setText("+30", 3);
 
   for(int i = 0; i < maxWeaponMounts; ++i) {
     WeaponMount.push_back(new BasicMount);

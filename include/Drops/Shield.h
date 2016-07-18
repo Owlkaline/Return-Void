@@ -11,7 +11,6 @@ class Shield: public Drops {
     void update();
     int getType();
   protected:
-    Label lbTitle;
 };
 
 #endif

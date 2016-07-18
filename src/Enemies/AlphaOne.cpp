@@ -24,9 +24,9 @@ void AlphaOne::defaults() {
   maxWeaponMounts = 2;
 
   score = 500;
-  lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.4, true);
-  lbScore.setColour( 1.0,  0.1,  0.1);
-  lbScore.setText("+500", 4);
+ // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.4, true);
+ // lbScore.setColour( 1.0,  0.1,  0.1);
+ // lbScore.setText("+500", 4);
 
   WeaponMount.push_back(new AlphaOneMount);
   WeaponMount[0]->setIsBoss();

@@ -29,16 +29,16 @@ void Shop::setup() {
   buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
   buttons[2]->drawBorder(true);  
   
-  // Top Left Name Box
+  // Top Left Shop Name Box
   lb.push_back(new Label);
   lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/MainMenu/Shop.png");
-  lb[0]->fill(1.0, 1.0, 1.0f);
+  lb[0]->fill(0.0, 0.0, 1.0f);
   lb[0]->drawBorder(true);
   
   // Description Box
   lb.push_back(new Label);
   lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 0.3);
-  lb[1]->setText((char*)"Desciption dark delicous duck dick for din", 42);
+  lb[1]->setText((char*)"Desciption", 42);
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
   lb[1]->fill(0.6, 0.6, 0.6);
@@ -48,7 +48,7 @@ void Shop::setup() {
   
   std::stringstream ss;
   ss << coins;
-  std::string strCoins = "Coins: $" + ss.str();
+  std::string strCoins = "Coins: " + ss.str();
   
   // Coin Box
   lb.push_back(new Label);
@@ -56,7 +56,7 @@ void Shop::setup() {
   lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
   lb[2]->setWidth(350);
   lb[2]->setHeight(70);
-  lb[2]->fill(1.0, 1.0, 1.0);
+  lb[2]->fill(0.6, 0.6, 0.6);
   lb[2]->drawBorder(true);
   
   bool unlocked;
@@ -124,7 +124,7 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
           coins-=box[i]->getCost();
           std::stringstream ss;
           ss << coins;
-          std::string strCoins = "Coins: $" + ss.str();
+          std::string strCoins = "Coins: " + ss.str();
           lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
         }
       }

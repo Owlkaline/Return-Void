@@ -13,10 +13,12 @@ void Game::draw() {
  
   ship.draw();
 
-  for(unsigned int i = 0; i < enemy.size(); ++i) {
+  for(unsigned int i = 0; i < enemy.size(); ++i) 
     enemy[i]->draw();
-  }
-
+  
+  for(unsigned int i = 0; i < Ftext.size(); ++i)
+    Ftext[i]->draw();
+  
   ship.drawHealthBar();
 
   if(DRAWQUADTREE)
@@ -67,7 +69,7 @@ void Game::setup() {
   std::string strScore = "Score: " + ss.str();
   lbScore.setText(strScore.c_str(), strScore.length() + 1);
   
-  lbCoins.setText("$", 1);
+  lbCoins.setText("Coins: ", 7);
  
   level = 1;
   isNew = true;
@@ -173,18 +175,23 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         offsetY=0;
         
       ship.update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
-    //  printf("\n%d: ", enemy.size());
+
       for(unsigned int i = 0; i < enemy.size(); ++i) {
-
-   // printf("E: %d, X: %f, Y: %f, Width: %f, Height: %f\n", i, enemy[i]->getMountX(0), enemy[i]->getMountY(0), enemy[i]->getMountWidth(0), enemy[i]->getMountHeight(0));
-
         enemy[i]->update(ship.getX(), ship.getY());
         if(enemy[i]->getWaskilled()) {
           score += enemy[i]->getScore();
           std::stringstream ss;
           ss << score;
           std::string str = "Score: " + ss.str();
-          lbScore.setText(str.c_str(), str.length() + 1);
+          lbScore.setText(str.c_str(), str.length() + 1);          
+          
+          std::stringstream sf;
+          sf << enemy[i]->getScore();;
+          std::string str1 = "+" + sf.str();
+          Ftext.push_back(new FloatingText);
+          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), str1.length(), 0.2);
+          Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
+          
           ship.boost();
           
           bool nothing = false; 
@@ -213,11 +220,22 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       }
       for(unsigned int i = 0; i < powerups.size(); ++i) {
         powerups[i]->update();
-        if(!powerups[i]->isVisible()) {
+        if(powerups[i]->getCollected()) {
+          std::string str = powerups[i]->getName();
+          Ftext.push_back(new FloatingText);
+          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), str.length(), 0.2);
+          Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
+          
           powerups.erase(powerups.begin()+i);
         }
       }
-
+      for(unsigned int i = 0; i < Ftext.size(); ++i) {
+        Ftext[i]->update();
+        if(!Ftext[i]->getVisible()) {
+          Ftext.erase(Ftext.begin()+i);
+        }
+      }
+        
       lbWave.update();
 
       Collisions::detect(&ship, enemy, powerups);
@@ -241,7 +259,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     coins = ship.getCoins();
     std::stringstream ss;
     ss << coins;
-    std::string str = "$" + ss.str();
+    std::string str = "Coins: " + ss.str();
     lbCoins.setText(str.c_str(), str.length());
   } else {
     if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {

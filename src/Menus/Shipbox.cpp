@@ -54,29 +54,29 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
 
       lb.push_back(new Label);
       lb[1]->setup(x, y + 150, 0.3);
-      lb[1]->setWidth(200);
+      lb[1]->setWidth(250);
       lb[1]->setHeight(60);
         
       switch(shipType) {
         case 0:
         case 1:
-          lb[1]->setText((char*)"$1000", 5);
+          lb[1]->setText((char*)"1000coins", 10);
           cost = 1000;
           break;
         case 2:
-          lb[1]->setText((char*)"$1500", 5);
+          lb[1]->setText((char*)"1500coins", 10);
           cost = 1500;
           break;
         case 3:
-          lb[1]->setText((char*)"$2000", 5);
+          lb[1]->setText((char*)"2000coins", 10);
           cost = 2000;
           break;
         case 4:
-          lb[1]->setText((char*)"$2500", 5);
+          lb[1]->setText((char*)"2500coins", 10);
           cost = 2500;
           break;
         case 5:
-          lb[1]->setText((char*)"$3000", 5);
+          lb[1]->setText((char*)"3000coins", 10);
           cost = 3000;
           break;
       }

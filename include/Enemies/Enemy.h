@@ -118,10 +118,6 @@ class Enemy {
         glPopMatrix();
 
         glColor3f(1.0, 1.0, 1.0);
-      } else {
-        lbScore.setX(x);
-        lbScore.setY(y);
-        lbScore.draw();
       }
     }
 
@@ -135,7 +131,6 @@ class Enemy {
       }
       if(health <= 0) {
         if(visible) {
-          lbScore.setTimer(1);
           wasKilled = true;
         }
         setVisible(false);
@@ -160,7 +155,6 @@ class Enemy {
     bool getIsBoss() { return isBoss; }
     bool getWaskilled() { return wasKilled; }
     bool isVisible() { return visible; }
-    bool timerExpired() { return lbScore.timeExpired(); }
 
     int dropPowerup() { return drop; }
     int getScore() { wasKilled = false; return score; }
@@ -243,8 +237,6 @@ class Enemy {
     bool hasFinished, isOnRightSide;
     float startX, startY, amp;
     float x, y, width, height, speed;
-
-    Label lbScore;
 
     std::vector<Mount*> WeaponMount;
 

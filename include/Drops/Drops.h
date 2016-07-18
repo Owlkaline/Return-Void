@@ -1,6 +1,8 @@
 #ifndef DROPS_H
 #define DROPS_H
 
+#include <string>
+
 #include "../Menus/Label.h"
 #include "../Namespaces/LoadTexture.h"
 
@@ -11,6 +13,7 @@ class Drops {
     virtual void update() = 0;
     virtual int getType() = 0;
     
+    std::string getName() { return name; }
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
     float getX() { return x; }
@@ -21,9 +24,9 @@ class Drops {
     bool getCollected() { return isCollected; }
   protected:
     int tick;
+    std::string name;
     float x, y, width, height;
     bool visible, isCollected;
-    Label lbTitle;
     
     static GLuint getCoinTexture() {
       static GLuint coinText = txt::LoadTexture("Textures/Game/Powerups/Coin.png");
