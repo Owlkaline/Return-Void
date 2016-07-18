@@ -12,7 +12,7 @@ void Shop::setup() {
   profile.Load();
   
   // Buttons
-
+  // Return button
   buttons.push_back(new Button);
   buttons[0]->setup(BUTTONWIDTH/2+50, 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/Return.png");
   buttons[0]->drawBorder(false);
@@ -20,7 +20,8 @@ void Shop::setup() {
   // Left Arrow button
   buttons.push_back(new Button);
   buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
-  buttons[1]->drawBorder(true);
+  buttons[1]->drawBorder(false);
+  buttons[1]->disable();
   
   // Right Arrow button
   buttons.push_back(new Button);
@@ -42,6 +43,15 @@ void Shop::setup() {
   lb[1]->fill(0.6, 0.6, 0.6);
   lb[1]->drawBorder(true);
   
+  // Coin Box
+  lb.push_back(new Label);
+  lb[2]->setup(SPACE_X_RESOLUTION - 200, SPACE_Y_RESOLUTION-100, 0.3);
+  lb[2]->setText((char*)"Coins: $1000", 12);
+  lb[2]->setWidth(350);
+  lb[2]->setHeight(70);
+  lb[2]->fill(1.0, 1.0, 1.0);
+  lb[2]->drawBorder(true);
+  
   bool unlocked;
   bool bought;
 
@@ -62,8 +72,7 @@ void Shop::restart() {
 
 }
 
-void Shop::drawBackground() {
-  
+void Shop::drawBackground() {  
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, background);
@@ -100,23 +109,41 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   } 
   
   for(unsigned int i = 0; i < box.size(); ++i)
-    box[i]->update();
-  
+    box[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+ 
   if(!box[0]->checkIfMoving()) {
     //Left Arrow
     if(buttons[1]->Clicked()) {
       if(pos != 0) {
         pos--;
+        buttons[2]->enable();
+        buttons[2]->drawBorder(true);
+        if(pos == 0) {
+          buttons[1]->drawBorder(false);
+          buttons[1]->disable();
+        }
         for(unsigned int i = 0; i < box.size(); ++i)
           box[i]->moveRight();
-      }    
+      } else {
+        buttons[1]->disable();
+        buttons[1]->drawBorder(false);
+      }   
     }
-  
+    //Right Arrow
     if(buttons[2]->Clicked()) {
       if(pos != 5) {
         pos++;
+        buttons[1]->enable();
+        buttons[1]->drawBorder(true);
+        if(pos == 5) {
+          buttons[2]->drawBorder(false);
+          buttons[2]->disable();
+        }
         for(unsigned int i = 0; i < box.size(); ++i)
           box[i]->moveLeft();
+      } else {
+        buttons[2]->drawBorder(false);
+        buttons[2]->disable();
       }
     }
   }

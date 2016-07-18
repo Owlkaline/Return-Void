@@ -13,7 +13,7 @@ class Shipbox {
     void moveLeft();
     void moveRight();
     void draw();
-    void update();
+    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
     void clean() { ship.clear();  ship.erase(ship.begin(), ship.end());
                    buttons.clear();  buttons.erase(buttons.begin(), buttons.end());
                    lb.clear();  lb.erase(lb.begin(), lb.end()); 

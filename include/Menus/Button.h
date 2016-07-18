@@ -33,7 +33,11 @@ class Button {
     void fill(float fR, float fG, float fB) { this->fillR = fR; this->fillG = fG; this->fillB = fB; isFilled = true; }
     void drawBorder(bool border) { this->hasBorder = border; }
 
-  protected: 
+    void disable() { disabled = true;  }
+    void enable() { disabled = false; }
+
+  protected:  
+    bool disabled;
     bool isFilled;
     void drawBox();
     bool hasBorder;

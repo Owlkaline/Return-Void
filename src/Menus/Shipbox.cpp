@@ -84,29 +84,37 @@ void Shipbox::draw() {
   }  
 }
 
-void Shipbox::update() {
+void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   if(isMovingLeft) {
     x-=10;    
-    setX(); 
-    if(x < (oldX-446)) {
+    
+    if(x < (oldX-448)) {
+      x = oldX - 453;
       isMovingLeft = false;
       oldX = x;
     }
+    setX(); 
   }
   
   if(isMovingRight) {
     x+=10;
-    setX();
-    if(x > (oldX+446)) {
+    
+    if(x > (oldX+448)) {
+      x = oldX + 453;
       isMovingRight = false;
       oldX = x;
     }
+    setX();
   }
   if(x < 0 || x > 267+453*2.5) {
     visible = false;
   } else {
     visible = true;
   }  
+  if(!checkIfMoving()) {
+    for(unsigned int i = 0; i < buttons.size(); ++i)
+      buttons[i]->update(mX, mY, mouseBtnState, prevMouseBtnState);
+  }
 }
 
 void Shipbox::setX() {

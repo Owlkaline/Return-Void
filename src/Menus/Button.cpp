@@ -9,6 +9,7 @@ Button::~Button() {
 }
 
 void Button::draw() {
+
   if(isFilled) {
     glColor3f(fillR, fillG, fillB);
     glBegin(GL_QUADS);
@@ -23,14 +24,15 @@ void Button::draw() {
     glEnd(); 
   }
   if(hasTexture) {
-    if(clicked || hasBeenClicked) {
+    if(disabled) {
+      glColor4f(1.0, 1.0, 1.0, 0.0);
+    } else if(clicked || hasBeenClicked) {
       glColor3f(0.0f, 0.0f, 0.0f);
     } else if(isSelected) {
       glColor3f(0.5f, 0.5f, 0.5f);
     } else {
       glColor3f(1.0, 1.0, 1.0);
     }
-  
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, Texture);
     glBegin(GL_QUADS);
@@ -50,7 +52,7 @@ void Button::draw() {
   }
   if(hasBorder)
     drawBox();
-  glColor3f(1.0, 1.0, 1.0);
+  glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void Button::clean() {
@@ -64,6 +66,7 @@ void Button::setup(float x, float y, float width, float height, char* filename) 
   hasBeenClicked = false;
   hasBorder = false;
   isFilled = false;
+  disabled = false;
   
   Texture = txt::LoadTexture(filename);
   
@@ -81,6 +84,7 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   hasBeenClicked = false;
   hasBorder = false;
   isFilled = false;
+  disabled = false;
   
   this->x = x;
   this->y = y;
@@ -93,21 +97,23 @@ void Button::setup(float x, float y, float width, float height, float scale) {
 void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   hasBeenClicked = false;
   isSelected = false;
-  if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP)
-    clicked = false;
+  if(!disabled) {
+    if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP)
+      clicked = false;
  
-  if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
-    if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
-      clicked = true;
-    } 
-    if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
-      hasBeenClicked = true;
+    if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
+      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+        clicked = true;
+      } 
+      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+        hasBeenClicked = true;
+      }
+      isSelected = true;
+    } else {
+      isSelected = false;
+      clicked = false;
+      hasBeenClicked = false;
     }
-    isSelected = true;
-  } else {
-    isSelected = false;
-    clicked = false;
-    hasBeenClicked = false;
   }
 }
 
