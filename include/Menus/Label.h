@@ -41,12 +41,15 @@ class Label {
       return false;
     }
     
+    void setVisible(bool visible) { this->visible = visible; }
+    
     void drawBorder(bool border) { this->hasBorder = border; }
     void setTextureVisiable(bool visible) { hasTexture = visible; }
 
   protected:    
     void drawBox();
     
+    bool visible;
     bool isFilled;
     bool hasBorder;
     char str[50];

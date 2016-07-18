@@ -9,45 +9,46 @@ Label::~Label() {
 }
 
 void Label::draw() {
-  if(isFilled) {
-    glColor3f(fillR, fillG, fillB);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd(); 
-  }
-  if(hasTexture) {  
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, Texture);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width/2, y+height/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width/2, y-height/2, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width/2, y-height/2, 0.0);
-    glEnd();  
-  
-    glDisable(GL_TEXTURE_2D);
-  } else {
-    if(isTimed) {
-      if(ticks > 0)
-        drawChar();
-    } else {
-      drawChar();
+  if(visible) {
+    if(isFilled) {
+      glColor3f(fillR, fillG, fillB);
+      glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(x-width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(x+width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(x+width/2, y-height/2, 0.0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(x-width/2, y-height/2, 0.0);
+      glEnd(); 
     }
+    if(hasTexture) {  
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, Texture);
+      glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(x-width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(x+width/2, y+height/2, 0.0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(x+width/2, y-height/2, 0.0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(x-width/2, y-height/2, 0.0);
+      glEnd();  
+  
+      glDisable(GL_TEXTURE_2D);
+    } else {
+      if(isTimed) {
+        if(ticks > 0)
+          drawChar();
+      } else {
+        drawChar();
+      }
+    }
+    if(hasBorder)
+      drawBox();
   }
-  if(hasBorder)
-    drawBox();
-    
   glColor3f(1.0, 1.0f, 1.0);
 }
 
@@ -61,6 +62,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   isTimed = false;
   hasBorder = false;
   isFilled = false;
+  visible = true;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -75,6 +77,7 @@ void Label::setup(float x, float y, float scale) {
   isTimed = false;
   hasBorder = false;
   isFilled = false;
+  visible = true;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -86,6 +89,7 @@ void Label::setup(float x, float y, float scale, bool timer) {
   hasTexture = false;
   hasBorder = false;
   isFilled = false;
+  visible = true;
   isTimed = timer;
   length = 0;
   ticks = 0;

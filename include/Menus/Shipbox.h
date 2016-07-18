@@ -19,6 +19,8 @@ class Shipbox {
                    lb.clear();  lb.erase(lb.begin(), lb.end()); 
                  }
     bool checkIfMoving() { if(isMovingRight || isMovingLeft) { return true; } return false; }
+    bool getUnlocked() { return unlocked; }
+    bool getBought() { return bought; }
   protected:
     void setX();
    

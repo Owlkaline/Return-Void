@@ -15,6 +15,11 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
 
   oldX = x;
   switch(shipType) {
+    case 0:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
     case GALACTICSHIP:
       ship.push_back(new GalacticShip);
       break;
@@ -51,17 +56,20 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
         
       switch(shipType) {
         case 0:
-        case FIGHTERSHIP:
+        case 1:
           lb[1]->setText((char*)"$1000", 5);
           break;
         case 2:
           lb[1]->setText((char*)"$1500", 5);
           break;
-        case 4:
+        case 3:
           lb[1]->setText((char*)"$2000", 5);
           break;
+        case 4:
+          lb[1]->setText((char*)"$2500", 5);
+          break;
         case 5:
-          lb[1]->setText((char*)"$2500", 6);
+          lb[1]->setText((char*)"$3000", 5);
           break;
       }
       lb[1]->fill(0.6f, 0.6f, 0.6f);
@@ -88,8 +96,7 @@ void Shipbox::draw() {
 
 void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   if(isMovingLeft) {
-    x-=10;    
-    
+    x-=10;  
     if(x < (oldX-448)) {
       x = oldX - 453;
       isMovingLeft = false;
@@ -100,7 +107,6 @@ void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned i
   
   if(isMovingRight) {
     x+=10;
-    
     if(x > (oldX+448)) {
       x = oldX + 453;
       isMovingRight = false;
@@ -108,14 +114,26 @@ void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned i
     }
     setX();
   }
+  
   if(x < 0 || x > 267+453*2.5) {
     visible = false;
   } else {
     visible = true;
   }  
+  
   if(!checkIfMoving()) {
     for(unsigned int i = 0; i < buttons.size(); ++i)
       buttons[i]->update(mX, mY, mouseBtnState, prevMouseBtnState);
+  }
+  
+  // Buy button clicked
+  if(!bought && unlocked) {
+    if(buttons[0]->Clicked()) {
+      bought = true;
+      buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Upgrade.png");
+      buttons[0]->fill(0.8f, 0.0f, 0.0f);
+      lb[1]->setVisible(false);
+    }
   }
 }
 

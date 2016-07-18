@@ -44,7 +44,6 @@ void Shop::setup() {
   lb[1]->fill(0.6, 0.6, 0.6);
   lb[1]->drawBorder(true);
   
-  int coins = 0;
   coins = profile.getCoins();
   
   std::stringstream ss;
@@ -67,7 +66,7 @@ void Shop::setup() {
     unlocked = profile.getShipsUnlocked(i);
     bought = profile.getShipsBought(i);
     box.push_back(new Shipbox); 
-    box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, GALACTICSHIP);
+    box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, i);
   }
   
   background = txt::LoadTexture((char*)"Textures/Menu/ShopMenu/Background.png");
@@ -109,6 +108,7 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   
   if(buttons[0]->Clicked()) {
+    save();
     type = MAINMENU;
     ended = true;
   } 
@@ -157,6 +157,15 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
 
 void Shop::drawAfter() {
 
+}
+
+void Shop::save() {
+  for(unsigned int i = 0; i < box.size(); ++i) {
+    profile.setShipsUnlocked(i, box[i]->getUnlocked());
+    profile.setShipsBought(i, box[i]->getBought());
+  }
+  profile.setCoins(coins);
+  profile.Save();
 }
 
 void Shop::drawBox(float x, float y, float width, float height) {

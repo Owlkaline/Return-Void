@@ -19,6 +19,8 @@ class Shop: public Menu {
     void drawBackground();
     void drawAfter();
     
+    void save();
+    
     void clean() {
       box.clear();
       box.erase(box.begin(), box.end());
@@ -33,6 +35,7 @@ class Shop: public Menu {
     
     std::vector<Shipbox*> box;
     
+    int coins;
     int pos;
 };
 
