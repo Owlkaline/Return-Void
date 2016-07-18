@@ -55,10 +55,10 @@ void Game::setup() {
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
 
-  lbScore.setup(SPACE_X_RESOLUTION-100, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
+  lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
   
-  lbCoins.setup(SPACE_X_RESOLUTION-60, 30, 0.3, false);
+  lbCoins.setup(SPACE_X_RESOLUTION-100, 30, 0.3, false);
   lbCoins.setColour( 1.0,  1.0,  1.0);
   
   std::stringstream ss;

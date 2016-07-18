@@ -119,7 +119,7 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   if(!box[0]->checkIfMoving()) {
     for(unsigned int i = 0; i < box.size(); ++i) {
       if(box[i]->AttemptBuy()) {
-        if(coins > box[i]->getCost()) {
+        if(coins >= box[i]->getCost()) {
           box[i]->buy();
           coins-=box[i]->getCost();
           std::stringstream ss;
