@@ -151,6 +151,12 @@ class Enemy {
       for(int i = 0; i < maxWeaponMounts; ++i)
         WeaponMount[i]->setVisible(visible);
     }
+    
+    float getHealth() { return health; };
+    float getMountHealth(int i) { return WeaponMount[i]->getHealth(); }
+    
+    void setHealth(float health) { this->health = health; maxHealth = health; }
+    void setMountHealth(int i, float health) { WeaponMount[i]->setHealth(health); }
 
     bool getIsBoss() { return isBoss; }
     bool getWaskilled() { return wasKilled; }

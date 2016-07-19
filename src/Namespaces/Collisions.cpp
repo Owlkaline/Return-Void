@@ -243,6 +243,7 @@ void Collisions::detect(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std:
       }
     }
     
+    //Collision between player bullets and enemy mounts
     for(unsigned int j = 0; j < enemyMountQuad[i].size(); ++j) {      
       int e = enemyMountEnemy[i][j];
       int m = enemyMountQuad[i][j];

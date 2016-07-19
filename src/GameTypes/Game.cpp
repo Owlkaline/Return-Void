@@ -134,12 +134,14 @@ void Game::newWave() {
   if(wave%10 == 0) {
     enemy.push_back(new AlphaOne);
     enemy[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION*2, ALPHAONE, NOTHING);
+    enemy[0]->setHealth(enemy[0]->getHealth() * (wave/10));
+    for(int i = 0; i < enemy[0]->getNumOfMounts(); ++i)
+      enemy[0]->setMountHealth(i, enemy[0]->getMountHealth(i) * ((wave/10)*2));
   } else {
     unsigned int numOfEnemies = 0;
     while(numOfEnemies == 0)
-      numOfEnemies = boostRand.Int(wave, wave*10);//wave*10;//boostRand.Int(0, wave*10);
+      numOfEnemies = boostRand.Int(wave, wave*10);
     
-    //  printf("Enemies: %d\n", numOfEnemies);
     for(unsigned int i = 0; i < numOfEnemies; ++i) {
       int type = -1;
    

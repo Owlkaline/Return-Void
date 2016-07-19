@@ -50,24 +50,6 @@ void move::semicircle(float *x, float *y, float width, float height, float speed
         *visible = false;
       break;
   }
-  /*if(*y < SPACE_Y_RESOLUTION+height) {
-    if(!*isOnRightSide) {
-      *movementAngle+=speed/10;
-      *x = SPACE_X_RESOLUTION/2 + cos(*movementAngle/ 180.0f * (float)M_PI) * startX;
-      *y = SPACE_Y_RESOLUTION + sin(*movementAngle/ 180.0f * (float)M_PI) * SPACE_Y_RESOLUTION/2+height;
-    } else {
-      *movementAngle-=speed/10;
-      *x = SPACE_X_RESOLUTION/2 + cos(*movementAngle/ 180.0f * (float)M_PI) * -startX;
-      *y = SPACE_Y_RESOLUTION + sin(*movementAngle/ 180.0f * (float)M_PI) * -SPACE_Y_RESOLUTION/2+height;
-    }
-    *hasFinished = true;
-   } else {
-     if(!*hasFinished) {
-       *y-=speed;
-     } else if(numOfBullets <= 0) {
-       *visible = false;
-     }
-   }*/
 }
 
 void move::sinwave(float *x, float *y, float* movementAngle, float height, float speed, float amp, float startX, bool* visible) {
@@ -124,7 +106,7 @@ void move::AlphaOne(float* x, float* y, float width, float height, float speed, 
       break;
     case 1:
       *x-=speed;
-      if(*x <= width/2)
+      if(*x <= width/2+2)
         *cycle+=1;
       break;
     case 2:

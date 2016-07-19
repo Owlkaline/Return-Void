@@ -40,7 +40,7 @@ void Shop::setup() {
   // Description Box
   lb.push_back(new Label);
   lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 0.3);
-  lb[1]->setText((char*)"Desciption", 10);
+  lb[1]->setText((char*)"Description", 11);
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
   lb[1]->fill(0.6, 0.6, 0.6);

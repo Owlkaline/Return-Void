@@ -24,7 +24,7 @@ void AlphaOneMount::reset() {
 void AlphaOneMount::defaults() {
   width = 25;
   height = 128;
-  health = 45;
+  health = 90;//45;
 }
 
 void AlphaOneMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {

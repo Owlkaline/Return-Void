@@ -136,6 +136,9 @@ class Mount {
     
     void setTimer(float bulletTimer) { this->bulletTimer = bulletTimer; }
 
+    void setHealth(float health) { this->health = health; };
+    float getHealth() { return health; }
+  
     float getX() { return x; }
     float getY() { return y; }
     float getWidth() { return width; }
