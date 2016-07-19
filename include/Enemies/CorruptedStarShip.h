@@ -7,12 +7,13 @@ class CorruptedStarShip: public Enemy {
   public:
     CorruptedStarShip();
     ~CorruptedStarShip();
-    void defaults();
-    void update(float Px, float Py);
+    
     void reset();
+    void defaults();
     void setTexture();
     void setX(float x);
     void setY(float y);
+    void update(float Px, float Py);
   protected:
 };
 

@@ -6,11 +6,14 @@
 class Coins: public Drops {
   public:
     Coins();
-    void draw();
-    void setup(float x, float y);
+    
+    void draw();    
     void update();
+    void setup(float x, float y);
+    
     int getType();
   protected:
+  
 };
 
 #endif

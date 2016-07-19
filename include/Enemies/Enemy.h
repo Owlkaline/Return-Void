@@ -5,10 +5,12 @@
 #include <math.h>
 
 #include "../defines.h"
+
 #include "../Menus/Label.h"
 #include "../Mounts/BasicMount.h"
 #include "../Mounts/HypnoMount.h"
 #include "../Mounts/AlphaOneMount.h"
+
 #include "../Namespaces/Movement.h"
 #include "../Namespaces/LoadTexture.h"
 
@@ -21,6 +23,39 @@ class Enemy {
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
+    
+    void setHealth(float health) { this->health = health; maxHealth = health; }
+    void setMountHealth(int i, float health) { WeaponMount[i]->setHealth(health); }
+    void mountTakeDamage(int mount, float damage) { WeaponMount[mount]->takeDamage(damage); }
+    void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
+    
+    int dropPowerup() { return drop; }
+    
+    bool isVisible() { return visible; }
+    
+    float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
+        
+    int getNumOfMounts() { return maxWeaponMounts; }
+    int getScore() { wasKilled = false; return score; }
+    int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
+    
+    bool getIsBoss() { return isBoss; }    
+    bool getWaskilled() { return wasKilled; }     
+        
+    float getX() { return this->x; }
+    float getY() { return this->y; }
+    float getWidth() { return width; }
+    float getHeight() { return height; }
+    float getHealth() { return health; }
+    float getMountX(int index) { return WeaponMount[index]->getX(); }
+    float getMountY(int index) { return WeaponMount[index]->getY(); }
+    float getMountHealth(int i) { return WeaponMount[i]->getHealth(); }
+    float getMountWidth(int index) { return WeaponMount[index]->getWidth(); }
+    float getMountHeight(int index) { return WeaponMount[index]->getHeight(); }
+    float getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
+    float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
+    float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
+    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
 
     void setup(float x, float y, int moveType, int drop) {
       defaults();
@@ -121,8 +156,6 @@ class Enemy {
       }
     }
 
-    void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
-
     void takeDamage(float damage) {
       health -= damage;
       if(tookDamage == false) {
@@ -137,7 +170,6 @@ class Enemy {
       }
     }
     
-    void mountTakeDamage(int mount, float damage) { WeaponMount[mount]->takeDamage(damage); }
     bool checkMountsVisible() { 
       for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
         if(WeaponMount[i]->isVisible())
@@ -151,22 +183,6 @@ class Enemy {
       for(int i = 0; i < maxWeaponMounts; ++i)
         WeaponMount[i]->setVisible(visible);
     }
-    
-    float getHealth() { return health; };
-    float getMountHealth(int i) { return WeaponMount[i]->getHealth(); }
-    
-    void setHealth(float health) { this->health = health; maxHealth = health; }
-    void setMountHealth(int i, float health) { WeaponMount[i]->setHealth(health); }
-
-    bool getIsBoss() { return isBoss; }
-    bool getWaskilled() { return wasKilled; }
-    bool isVisible() { return visible; }
-
-    int dropPowerup() { return drop; }
-    int getScore() { wasKilled = false; return score; }
-    int getNumOfMounts() { return maxWeaponMounts; }
-    int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
-    float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
 
     int getTotalNumOfBullets() {
       int totalBullets = 0;
@@ -174,22 +190,7 @@ class Enemy {
         totalBullets += WeaponMount[i]->getNumBullets();
       return totalBullets;
     }
-
-    float getX() { return this->x; }
-    float getY() { return this->y; }
-    float getWidth() { return width; }
-    float getHeight() { return height; }
-    float getMountX(int index) { return WeaponMount[index]->getX(); }
-    float getMountY(int index) { return WeaponMount[index]->getY(); }
-    float getMountWidth(int index) { return WeaponMount[index]->getWidth(); }
-    float getMountHeight(int index) { return WeaponMount[index]->getHeight(); }
-    float getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
-    float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
-    float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
-    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
-
   protected:
-
     virtual void setTexture() = 0;
 
     void move() {
@@ -227,20 +228,20 @@ class Enemy {
     bool visible;
     bool wasKilled;
     bool tookDamage;
+    bool hasFinished, isOnRightSide;
 
     int tick;
     int drop;
     int score;
-    int cycle;
+    int cycle;    
+    int moveType;
+    int maxHealth;
+    int maxWeaponMounts;
+    
     float angle;
     float health;
-    int maxHealth;
-    int moveType;
-    int maxWeaponMounts;
-
     float transparent;
-    float movementAngle;
-    bool hasFinished, isOnRightSide;
+    float movementAngle;    
     float startX, startY, amp;
     float x, y, width, height, speed;
 

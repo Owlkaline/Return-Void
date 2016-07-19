@@ -28,7 +28,7 @@ void BasicMount::defaults() {
   height = 64;
   health = 10;
 }
-
+/*
 void BasicMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   if(currentTexture == 1)
     currentTexture = 0;
@@ -41,8 +41,12 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
   dirX = directionX;
   dirY = directionY;
 
-  tick(isShooting);
-
+  if(isShooting) {
+    tick(isShooting);
+  } else {
+    bulletTicks = BLUEPLASMATIMER;
+  }
+  
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
     if(!bullets[i]->getVisible())
@@ -52,5 +56,5 @@ void BasicMount::update(float x, float y, float directionX, float directionY, fl
 
 void BasicMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
   update(x, y, directionX, directionY, angle, true);
-}
+}*/
 

@@ -2,16 +2,32 @@
 #define WEAPON
 
 #include "../defines.h"
+
 #include "../Namespaces/LoadTexture.h"
 
 class Weapon {
   public:
-
+    virtual void tick() = 0;
     virtual void draw() = 0;
     virtual void reset() = 0;
     virtual void clean() = 0;
-    virtual void tick() = 0;
+    
     virtual void setup(float x, float y, float dirX, float dirY, float angle) = 0;
+       
+    void setIsBoss(bool boss) { isBoss = boss; }
+    void setDamage(float damage) { this->damage = damage; }
+    void setVisible(bool visible) { this->visible = visible; }
+    void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }  
+      
+    bool getIsBoss() { return isBoss; }
+    bool getVisible() { return visible; }    
+        
+    float getX() { return x; }
+    float getY() { return y; }
+    float getWidth() { return width; }
+    float getHeight() { return height; }
+    float getDamage() { return damage; }
+    float hit() { visible = false; return damage; }    
     
     virtual void update() { 
       if(visible)
@@ -19,27 +35,13 @@ class Weapon {
       if(y > SPACE_Y_RESOLUTION+height || y < -height || x < -width || x > SPACE_X_RESOLUTION+width)
         visible = false;
     }
-    
-    void setVisible(bool visible) { this->visible = visible; }
-    void setIsBoss(bool boss) { isBoss = boss; }
-    bool getIsBoss() { return isBoss; }
-    void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }    
-    
-    bool getVisible() { return visible; }
-    
-    float getDamage() { return damage; }
-    float hit() { visible = false; return damage; }
-    
-    float getX() { return x; }
-    float getY() { return y; }
-    float getWidth() { return width; }
-    float getHeight() { return height; }
-    
+       
   protected:
     bool isBoss;
-    float damage;
-    float angle;
     bool visible;
+     
+    float angle; 
+    float damage;  
     float offsetX, offsetY;
     float directionX, directionY;
     float x, y, width, height, speed;

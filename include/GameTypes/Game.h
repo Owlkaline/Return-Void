@@ -6,19 +6,24 @@
 #include <sstream>
 
 #include "./DisplayManager.h"
+
 #include "../Ships/FighterShip.h"
 #include "../Ships/GalacticShip.h"
+
 #include "../Menus/Label.h"
 #include "../Menus/PausedMenu.h"
 #include "../Menus/FloatingText.h"
 #include "../Menus/HighscoreScreen.h"
+
 #include "../Drops/Coins.h"
 #include "../Drops/Health.h"
 #include "../Drops/Shield.h"
+
+#include "../Enemies/AlphaOne.h"
 #include "../Enemies/BasicEnemy.h" 
 #include "../Enemies/HypnoEnemy.h" 
-#include "../Enemies/AlphaOne.h"
 #include "../Enemies/CorruptedStarShip.h"
+
 #include "../Namespaces/Random.h"
 #include "../Namespaces/Profile.h"
 #include "../Namespaces/Settings.h"
@@ -39,9 +44,7 @@ class Game: public DisplayManager {
   protected:
     void drawCrosshair();
     void drawBackground();
-    
-    Profile profile;
-    
+  
     bool isNew; //If Game is new
     bool paused;
     bool inHighscore;
@@ -53,16 +56,16 @@ class Game: public DisplayManager {
     
     float offsetY;
     // Cross Hair
-    float lastChX, lastChY, ChX, ChY, ChRadius;
+    float lastChX, lastChY, ChX, ChY, ChRadius; 
  
-    Random boostRand;
-    GLuint ChTexture, background; 
+    Profile profile;
+    Random boostRand;     
     PausedMenu pMenu;
     Settings settings;
     std::string strScore;
-    
-    Label lbWave, lbWaveStatic, lbScore, lbCoins;
     HighscoreScreen highscore;
+    GLuint ChTexture, background;    
+    Label lbWave, lbWaveStatic, lbScore, lbCoins;    
     
     std::vector<Ship*> ship;
     std::vector<Enemy*> enemy;

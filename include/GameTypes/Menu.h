@@ -5,14 +5,32 @@
 #include <string> 
 
 #include "../defines.h"
-#include "../Menus/Button.h"
+
 #include "../Menus/Label.h"
+#include "../Menus/Button.h"
 #include "../Menus/CheckBox.h"
+
 #include "./DisplayManager.h"
 
 class Menu: public DisplayManager {
   public:
+    virtual void setup()=0;
+    virtual void restart()=0;
+    virtual void drawAfter() {  }
+    virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0;
     
+    float getX() { return x; }
+    float getY() { return y; }
+    float getWidth() { return width; }
+    float getHeight() { return height; }
+    
+    virtual void clean() { 
+      buttons.clear(); lb.clear(); checkbox.clear(); 
+      buttons.erase(buttons.begin(), buttons.end());
+      lb.erase(lb.begin(), lb.end());
+      checkbox.erase(checkbox.begin(), checkbox.end());
+    }
+                 
     void draw() {
       drawBackground();
             for(unsigned int i = 0; i < lb.size(); ++i) 
@@ -20,23 +38,8 @@ class Menu: public DisplayManager {
       for(unsigned int i = 0; i < buttons.size(); ++i)
         buttons[i]->draw();
       drawAfter();
-
     }
-    virtual void setup()=0;
-    virtual void restart()=0;
-    virtual void drawAfter() {  }
-    virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0;
     
-    virtual void clean() { buttons.clear(); lb.clear(); checkbox.clear(); 
-                   buttons.erase(buttons.begin(), buttons.end());
-                   lb.erase(lb.begin(), lb.end());
-                   checkbox.erase(checkbox.begin(), checkbox.end());
-                 }
-       
-    float getX() { return x; }
-    float getY() { return y; }
-    float getWidth() { return width; }
-    float getHeight() { return height; }
   protected:
     virtual void drawBackground() {
       // Background
@@ -71,9 +74,11 @@ class Menu: public DisplayManager {
     }
     
     float x, y, width, height;
-    std::vector<Button*> buttons;
+    
     std::vector<Label*> lb;
+    std::vector<Button*> buttons;    
     std::vector<CheckBox*> checkbox;
+    
     GLuint background;
 };
 

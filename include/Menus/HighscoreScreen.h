@@ -18,10 +18,10 @@ class HighscoreScreen: public Menu {
   protected:
     void saveDefaults();
     void LoadHighscores(int score);
-
     void drawBackground() { glColor4f(0.0, 0.0,0.0,0.0f); }
 
     int highscores[10];
+    
     std::string names[10];
 };
 

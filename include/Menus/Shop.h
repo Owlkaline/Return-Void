@@ -14,13 +14,12 @@ class Shop: public Menu {
   public:
     Shop();
     
+    void save();
     void setup();
     void restart();
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
     void drawBackground();
     void drawAfter();
-    
-    void save();
     
     void clean() {
       box.clear();
@@ -28,21 +27,21 @@ class Shop: public Menu {
       buttons.clear();
       buttons.erase(buttons.begin(), buttons.end());
       lb.clear();
-      lb.erase(lb.begin(), lb.end());
-      
+      lb.erase(lb.begin(), lb.end());    
     }
     
-  protected:    
+  protected:       
+    bool shipType[6];
+    
+    int pos;
+    int coins;
+    int numShips;
+    int selected;
+    
     Profile profile;
     
     std::vector<Ship*> ship;
     std::vector<Shipbox*> box;
-    
-    bool shipType[6];
-    int numShips;
-    int selected;
-    int coins;
-    int pos;
 };
 
 #endif

@@ -7,10 +7,11 @@ class AlphaOne: public Enemy {
   public:
     AlphaOne();
     ~AlphaOne();
-    void defaults();
-    void update(float Px, float Py);
+    
     void reset();
+    void defaults();
     void setTexture();
+    void update(float Px, float Py);
 };
 
 #endif

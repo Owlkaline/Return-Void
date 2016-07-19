@@ -8,11 +8,12 @@ class AlphaOneMount: public Mount {
     AlphaOneMount();
     ~AlphaOneMount();
     
-    void setTexture();
-    void reset();
+    void reset();    
+    void erase();
     void defaults();
-    void update(float x, float y, float directionX, float directionY, float angle, bool isShooting);
-    void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py);
+    void setTexture();
+    void individualClean();
+    void tick(float x, float y, float directionX, float directionY, float angle, bool isShooting);
 
   protected:   
     std::vector<int> cycle;

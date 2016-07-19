@@ -7,9 +7,9 @@ class FighterShip: public Ship {
   public:
     FighterShip();
     ~FighterShip();
-
-    void setTexture();
+    
     void defaults();
+    void setTexture();    
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
     
   protected:      

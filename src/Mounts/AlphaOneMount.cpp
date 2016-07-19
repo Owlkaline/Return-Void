@@ -21,25 +21,36 @@ void AlphaOneMount::reset() {
 
 }
 
+void AlphaOneMount::individualClean() {
+  cycle.clear();  
+  cycle.erase(cycle.begin(), cycle.end());
+  Nx.clear();  
+  Nx.erase(Nx.begin(), Nx.end());
+  Ny.clear();  
+  Ny.erase(Ny.begin(), Ny.end());
+}
+
 void AlphaOneMount::defaults() {
   width = 25;
   height = 128;
-  health = 90;//45;
+  health = 45;//45;
 }
 
-void AlphaOneMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
-  float rad = angle* (float)M_PI / 180;
-  float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
-  float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
-  this->x = x+newX;
-  this->y = y+newY;
-  this->angle = angle;
-  dirX = directionX;
-  dirY = directionY;
+void AlphaOneMount::erase() {
+  for(unsigned int i = 0; i < cycle.size(); ++i) {
+    if(cycle[i] > 40) {
+      cycle.erase(cycle.begin() + i);
+      Nx.erase(Nx.begin() + i);
+      Ny.erase(Ny.begin() + i);
+    }
+  }
+  for(unsigned int i = 0; i < bullets.size(); ++i) {
+    if(!bullets[i]->getVisible())
+      bullets.erase(bullets.begin() + i);
+  }
+}
 
-
-  tick(isShooting);
-
+void AlphaOneMount::tick(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update();
     if(!bullets[i]->getVisible()) {
@@ -48,17 +59,11 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
         Ny.push_back(bullets[i]->getY());
         cycle.push_back(0);
       }
-      bullets.erase(bullets.begin() + i);
     }
   }
 
   int size = bullets.size();
   for(unsigned int i = 0; i < cycle.size(); ++i) {
-    if(cycle[i] > 40) {
-      cycle.erase(cycle.begin() + i);
-      Nx.erase(Nx.begin() + i);
-      Ny.erase(Ny.begin() + i);
-    }
     if(cycle[i] % 5 == 0) {
       angle = 0 + 5*cycle[i]/5;
       for(unsigned int j = 0; j < 8; ++j) {
@@ -78,9 +83,5 @@ void AlphaOneMount::update(float x, float y, float directionX, float directionY,
     }
     cycle[i]++;
   }
-}
-
-void AlphaOneMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
-  update(x, y, directionX, directionY, angle, true);
 }
 

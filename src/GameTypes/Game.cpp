@@ -73,7 +73,7 @@ void Game::setup() {
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
   
-  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-50, 0.3, false);
+  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-80, 0.3, false);
   lbWaveStatic.setColour(1.0, 1.0, 1.0);
 
   lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
@@ -140,7 +140,7 @@ void Game::newWave() {
   } else {
     unsigned int numOfEnemies = 0;
     while(numOfEnemies == 0)
-      numOfEnemies = boostRand.Int(wave, wave*10);
+      numOfEnemies = boostRand.Int(wave+wave, wave*wave+wave);
     
     for(unsigned int i = 0; i < numOfEnemies; ++i) {
       int type = -1;
@@ -191,7 +191,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
       prevKeyState[ESC] = keyState[ESC];
       paused = !paused;
-      printf("Game pause: %d\n", paused);
+      printf("Game pause: %s\n", paused ? "True" : "False");
     }
     
     if(!paused) {      

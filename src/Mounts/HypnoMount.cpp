@@ -23,14 +23,12 @@ void HypnoMount::defaults() {
   height = 75/3.73;
   health = 20;
 }
-
+/*
 void HypnoMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
 
 }
 
 void HypnoMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
- // dirX = directionX;
- // dirY = directionY;
 
   float diffx = Px - x;
   float diffy = Py - y;
@@ -53,6 +51,6 @@ void HypnoMount::update(float x, float y, float directionX, float directionY, fl
     if(!bullets[i]->getVisible())
       bullets.erase(bullets.begin() + i);
   }
-}
+}*/
 
 

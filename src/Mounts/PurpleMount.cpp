@@ -23,7 +23,7 @@ void PurpleMount::defaults() {
   height = 32;
   health = 10;
 }
-
+/*
 void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   if(currentTexture == 1)
     currentTexture = 0;
@@ -50,5 +50,5 @@ void PurpleMount::update(float x, float y, float directionX, float directionY, f
 
 void PurpleMount::update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
   update(x, y, directionX, directionY, angle, true);
-}
+}*/
 

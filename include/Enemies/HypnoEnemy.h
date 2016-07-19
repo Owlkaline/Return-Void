@@ -7,12 +7,13 @@ class HypnoEnemy: public Enemy {
   public:
     HypnoEnemy();
     ~HypnoEnemy();
-    void defaults();
-    void update(float Px, float Py);
+        
     void reset();
+    void defaults();
     void setTexture();
     void setX(float x);
     void setY(float y);
+    void update(float Px, float Py);
   protected:
 };
 

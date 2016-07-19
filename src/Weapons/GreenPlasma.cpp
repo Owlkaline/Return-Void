@@ -41,8 +41,8 @@ void GreenPlasma::tick() {
 void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   this->x = x;
   this->y = y;
-  width = 12;
-  height = 32;
+  width = 24;
+  height = 64;
   speed = 12;
   damage = 2;
   this->angle = angle;

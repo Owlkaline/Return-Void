@@ -2,22 +2,28 @@
 
 #include "../include/defines.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>  /* time */
-#include <iostream>
+#include <stdio.h>
 #include <fstream>
+#include <stdlib.h>
+#include <iostream>
 
-#include "../include/Namespaces/File.h"
-#include "../include/Namespaces/LoadTexture.h"
-#include "../include/GameTypes/Game.h"
-#include "../include/GameTypes/Menu.h"
 #include "../include/Menus/Shop.h"
 #include "../include/Menus/MainMenu.h"
 #include "../include/Menus/SettingsMenu.h"
 
+#include "../include/GameTypes/Game.h"
+#include "../include/GameTypes/Menu.h"
+
+#include "../include/Namespaces/File.h"
+#include "../include/Namespaces/LoadTexture.h"
+
 int screenResX;
 int screenResY;
+
+int type = MAINMENU;
+
+int refreshMillis = 20;
 
 //Screen grid 100x100
 double gridWidth = 100; //veiwing world x
@@ -30,22 +36,20 @@ float aspectRatio;
 float aspectW;
 float aspectH;
 
-int refreshMillis = 20;
-
-//Keeps the current key state, keeps the key state of the previous key state
-unsigned char keyState[255];
-unsigned char prevKeyState[255];
-unsigned int  mouseBtnState[3];
-unsigned int  prevMouseBtnState[3];
-unsigned int  specialKey[5];
-unsigned int  prevSpeicalKey[5];
-
 //Current coords of the mouse
 float mouseX, mouseY;
 
-int type = MAINMENU;
-
+//Unused currently, For setting game into gamemode when fullscreen
 bool gameMode;
+
+//Keeps the current key state, keeps the key state of the previous key state
+unsigned int  specialKey[5];
+unsigned int  mouseBtnState[3];
+unsigned int  prevSpeicalKey[5];
+unsigned int  prevMouseBtnState[3];
+
+unsigned char keyState[255];
+unsigned char prevKeyState[255];
 
 GLuint mouseTexture;
 
@@ -108,8 +112,8 @@ void mouseBtn(int btn, int state, int x, int y) {
 
 //Updates mouse coords
 void mouse(int x, int y) {
-  mouseX = ((float)x); //* aspectW;
-  mouseY = SPACE_Y_RESOLUTION - ((float)y); //* aspectH)) ; // Inverted: SPACE_Y_RESOLUTION - ((((float)y) * aspectH))
+  mouseX = ((float)x);
+  mouseY = SPACE_Y_RESOLUTION - ((float)y); 
 }
 
 void drawCursor() {
@@ -152,7 +156,7 @@ void display() {
   Display[type]->draw();
   
   drawCursor();
-  //printf("%d: %s - %d\n", type, Display[type]->hasEnded() ? "True":"false", Display[type]->getEndType());
+  
   if(Display[type]->hasEnded()) {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
@@ -195,13 +199,10 @@ void setup() {
     specialKey[i] = BUTTON_UP;
   }
   mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
-  //Display[MAINMENU] = new MainMenu();
   Display[type]->setup();
 }
 
 int main(int argc, char** argv) {
-  /* initialize random seed: */
- // srand (time(NULL));
 
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);     // black background
 

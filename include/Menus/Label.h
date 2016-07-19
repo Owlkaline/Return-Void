@@ -13,24 +13,26 @@ class Label {
     
     void draw();
     void clean();
+    void update();
     void setup(float x, float y, float width, float height, char* filename);
     void setup(float x, float y, float scale);
     void setup(float x, float y, float scale, bool timer);
-    void update();
-
     
     //Draws Text to the screen
-    void drawChar();
-    void setTexture(char* filename);
+    void drawChar();    
     void setTimer(int time);
+    void setTexture(char* filename);
     void setText(const char* str, int length);
     void setColour(float R, float G, float B);
     
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
     void setWidth(float width) { this->width = width; }
-    void setHeight(float height) { this->height = height; }
+    void setHeight(float height) { this->height = height; }       
+    void setVisible(bool visible) { this->visible = visible; }
+    void setTextureVisiable(bool visible) { hasTexture = visible; }
     
+    void drawBorder(bool border) { this->hasBorder = border; }
     void fill(float fR, float fG, float fB) { this->fillR = fR; this->fillG = fG; this->fillB = fB; isFilled = true; }
     
     bool timeExpired() {
@@ -40,26 +42,25 @@ class Label {
       }
       return false;
     }
-    
-    void setVisible(bool visible) { this->visible = visible; }
-    
-    void drawBorder(bool border) { this->hasBorder = border; }
-    void setTextureVisiable(bool visible) { hasTexture = visible; }
 
   protected:    
     void drawBox();
     
+    int length;
+    int ticks;
+    
     bool visible;
     bool isFilled;
     bool hasBorder;
-    char str[50];
+    bool hasTexture, isTimed;
+    
+    float scale;
     float R, G, B;
     float fillR, fillG, fillB;
-    int length;
-    int ticks;
     float x, y, width, height;
-    bool hasTexture, isTimed;
-    float scale;
+    
+    char str[50];
+ 
     GLuint Texture;
 };
 

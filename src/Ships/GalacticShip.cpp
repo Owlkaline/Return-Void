@@ -31,17 +31,18 @@ void GalacticShip::defaults() {
   const float mountPosX[maxNumWeapons] = {20, -20, 0};
   const float mountPosY[maxNumWeapons] = {0, 0, 50};
   
-  for(int i = 0; i < maxNumWeapons; ++i) {
+  for(int i = 0; i < 2; ++i) {
     switch(i) {
       case 0:
       case 1:   
         WeaponMount.push_back(new BasicMount);
         WeaponMount[i]->setup(BLUEPLASMA);
-        WeaponMount[i]->setTimer(20);
+        WeaponMount[i]->setTimer(BLUEPLASMATIMER - BLUEPLASMATIMER/4);
+        WeaponMount[i]->setDamage(2);
         break;
       case 2:
-        WeaponMount.push_back(new TriangleMount);
-        WeaponMount[i]->setup(GREENPLASMA);
+       // WeaponMount.push_back(new TriangleMount);
+       // WeaponMount[i]->setup(GREENPLASMA);
         break;
     }    
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);

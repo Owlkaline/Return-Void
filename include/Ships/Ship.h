@@ -4,9 +4,11 @@
 #include <math.h>
 
 #include "../defines.h"
+
 #include "../Mounts/BasicMount.h"
 #include "../Mounts/TriangleMount.h"
 #include "../Mounts/PurpleMount.h"
+
 #include "../Namespaces/LoadTexture.h"
 
 class Ship {
@@ -14,8 +16,36 @@ class Ship {
     virtual void setTexture()=0;
     virtual void defaults()=0;
     virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
- 
+    
+    void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
+    
+    void setY(float y) { this->y = y; }
+    void setX(float x) { this->x = x; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[i]->setX(x); }}    
+    void setVisible(bool visible) { this->visible = visible; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[0]->setVisible(visible); } }
+    
+ 
+    int getCoins() { return coins; }
+    int getNumOfMounts() { return WeaponMount.size(); }
+    int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
+
+    bool getVisible() { return visible; }
+
+    float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
+
+    float getX() { return x; }
+    float getY() { return y; }   
+    float getWidth() { return width; }
+    float getHeight() { return height; }   
+    float getDirectionX() { return directionX; }
+    float getDirectionY() { return directionY; }    
+    float getDistanceFromCursor() { return distanceFromCursor; }
+
+    float getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
+    float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
+    float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
+    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
+    
  
     void setup(bool relativeMovement) {    
       defaults();
@@ -90,7 +120,6 @@ class Ship {
     }
     
     void VisualSetup(float x, float y) {
-      //setup(true);
       defaults();
       crntTexture = 0;
       this->x = x;
@@ -103,32 +132,6 @@ class Ship {
         
       angle = 0;          
     }
-  
-    int getCoins() { return coins; }
-
-    bool getVisible() { return visible; }
-
-    int getNumOfMounts() { return WeaponMount.size(); }
-    int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
-    float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
- 
-    void setX(float x) { this->x = x; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[i]->setX(x); }}
-    void setY(float y) { this->y = y; }
-    void setVisible(bool visible) { this->visible = visible; for(unsigned int i = 0; i < WeaponMount.size(); ++i) { WeaponMount[0]->setVisible(visible); } }
- 
-    float getX() { return x; }
-    float getY() { return y; }   
-    float getWidth() { return width; }
-    float getHeight() { return height; }   
-    float getDirectionX() { return directionX; }
-    float getDirectionY() { return directionY; }    
-    float getDistanceFromCursor() { return distanceFromCursor; }
-
-    float getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
-    float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
-    float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
-    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
-    void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
     
     void fire(float x, float y, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
     for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
@@ -163,7 +166,6 @@ class Ship {
         break;
       }
     }
-    
         
     void takeDamage(float damage) {
       if(shield <= 0) {
@@ -282,7 +284,6 @@ class Ship {
         tick--;
         if(tick <= 0)
           shieldDamaged = false;
-        // glColor3f(0.0, 0.0, 0.3);
       } else {
         glBindTexture(GL_TEXTURE_2D, shieldTexture[0]);
       }
@@ -305,23 +306,26 @@ class Ship {
   protected:      
     int tick;  
     int coins;    
+    int maxShield;
+    int maxHealth;    
     int boostTimer;  
     int extraSpeed;
     int crntTexture;
     int maxNumWeapons;
-    float shield;
-    int maxShield;
-    int maxHealth;
     int health, crntHealth;
+    
+        
     float x, y;
     float speed;
     float angle;
+    float shield;
+    float width, height;
+    float directionX, directionY, distanceFromCursor;
+    
     bool hasBoost;
     bool relativeMovement;
     bool visible, tookDamage, shieldDamaged;
-    float width, height;
-    float directionX, directionY, distanceFromCursor;
-  
+    
     GLuint textures[3];
     GLuint shieldTexture[6];
     GLuint healthBarTexture[3];

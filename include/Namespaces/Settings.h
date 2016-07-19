@@ -12,15 +12,20 @@ class Settings {
     ~Settings();
     void Load();
     void Save();
-    float getVersion() { return version; }
-    bool getRelativeMovement() { return relativeMovement; }
     void setRelativeMovement(bool relativeMovement) { this->relativeMovement = relativeMovement; }
+    
+    float getVersion() { return version; }
+    
+    bool getRelativeMovement() { return relativeMovement; }    
   protected:
     void createNewSettings();
+
+    float version;
+    
+    bool relativeMovement;
+    
     std::ifstream ifs;
     std::ofstream ofs;
-    float version;
-    bool relativeMovement;
 };
 
 #endif

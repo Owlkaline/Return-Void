@@ -10,29 +10,159 @@
 #include "../Weapons/GreenPlasma.h"
 #include "../Weapons/PurplePlasma.h"
 #include "../Weapons/AlphaOnePlasma.h"
+
 #include "../Namespaces/LoadTexture.h"
 
 class Mount {
   public:
-    virtual void setTexture() = 0;
-    virtual void defaults() = 0;
     virtual void reset() = 0;
-    //virtual void setup(int variant) = 0;
-    virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) = 0;
-    virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) = 0;
-
-    void takeDamage(float damage) { health -= damage; if(!tookDamage) { tookDamage = true; } if(health <= 0) { visible = false; } }
+    virtual void defaults() = 0;
+    virtual void setTexture() = 0;  
+      
+    virtual void individualClean() {  }
+    virtual void tick(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  }
+    
+    void setIsBoss() { isBoss = true; }
+    void isLeftMount() { isLeft = true; }
+    void setX(float x) { this->x = x+offsetX; }
+    void setHealth(float health) { this->health = health; };
     void setVisible(bool visible) { this->visible = visible; }
-    void tick(bool isShooting) {
-                  damageTicks++; if(damageTicks > damageTimer) { tookDamage = false; damageTicks = 0; }
-                  if(isShooting) {
-                    bulletTicks++; if(bulletTicks > bulletTimer) { fire(); bulletTicks = 0; }
-                  }
-                  if(x < 0)
-                    visible = false;
-                }
-    void clean() { bullets.clear();  bullets.erase(bullets.begin(), bullets.end()); bulletTicks = 0;};
+    void setTimer(float bulletTimer) { this->bulletTimer = bulletTimer; }
+    void setDamage(float damage) { customDamage = true; this->damage = damage; }
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
+    
+    bool isVisible() { return visible; }
+    int getNumBullets() { return bullets.size(); }    
+    float bulletHit(int index) { return bullets[index]->hit(); }    
+    
+    float getX() { return x; }
+    float getY() { return y; }
+    float getWidth() { return width; }
+    float getHeight() { return height; }
+    float getBulletX(int index) { return bullets[index]->getX(); }
+    float getBulletY(int index) { return bullets[index]->getY(); }
+    float getBulletWidth(int index) { return bullets[index]->getWidth(); }
+    float getBulletHeight(int index) { return bullets[index]->getHeight(); }
+    
+    float getHealth() { return health; } 
+    
+    virtual void erase() {
+      for(unsigned int i = 0; i < bullets.size(); ++i) {
+        bullets[i]->update();
+        if(!bullets[i]->getVisible())
+          bullets.erase(bullets.begin() + i);
+      }
+    }
+    
+    virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
+      if(currentTexture == 1)
+        currentTexture = 0;
+      float rad = angle* (float)M_PI / 180;
+      float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
+      float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
+      this->x = x+newX;
+      this->y = y+newY;
+      this->angle = angle;
+      dirX = directionX;
+      dirY = directionY;
+     
+      tick(x, y, directionX, directionY, angle, isShooting);
+      
+      if(isShooting) {
+        increment(isShooting);
+      } else {
+        switch(variant) {
+        case GREENPLASMA:
+          bulletTicks = GREENPLASMATIMER;
+          break;
+        case BLUEPLASMA:
+          bulletTicks = BLUEPLASMATIMER;
+          break;
+        case REDPLASMA:
+          bulletTicks = REDPLASMATIMER;
+          break;
+        case PURPLEPLASMA:
+          bulletTicks = PURPLEPLASMATIMER;
+          break;
+        case SPIRAL:
+          bulletTicks = SPIRALTIMER;
+          break;
+        case ALPHAONEPLASMA:
+          bulletTicks = ALPHAONETIMER;
+          break;
+        }
+      }  
+      erase();
+    }
+    
+    virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
+
+      float diffx = Px - x;
+      float diffy = Py - y;
+
+      float distance = pow(pow(diffy,2.0f) + pow(diffx,2.0f), 0.5f);
+      dirX = (diffx) / (distance);
+      dirY = (diffy) / distance;
+
+      float rad = angle* (float)M_PI / 180;
+      float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
+      float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
+      this->x = x+newX;
+      this->y = y+newY;
+      this->angle = angle;
+
+      increment(true);
+ 
+      for(unsigned int i = 0; i < bullets.size(); ++i) {
+        bullets[i]->update();
+        if(!bullets[i]->getVisible())
+          bullets.erase(bullets.begin() + i);
+      }
+    } 
+
+    void takeDamage(float damage) { 
+      health -= damage; 
+      if(!tookDamage) 
+        tookDamage = true; 
+      if(health <= 0) 
+        visible = false;
+    }
+    
+    void increment(bool isShooting) {
+      damageTicks++; 
+      if(damageTicks > damageTimer) { 
+        tookDamage = false; 
+        damageTicks = 0; 
+      }
+      if(isShooting) {   
+        bulletTicks++; 
+        if(bulletTicks > bulletTimer) { 
+          fire(); 
+          bulletTicks = 0; 
+        }
+      }
+      if(x < 0)
+        visible = false;
+    }
+    
+    void fire() {
+      if(visible) {
+        currentTexture = 1;
+        addBullet();
+        unsigned int i = bullets.size()-1;
+        bullets[i]->setup(x, y, dirX, dirY, angle);
+        bullets[i]->setVisible(true);
+        if(customDamage)
+          bullets[i]->setDamage(damage);
+      }
+    }
+    
+    void clean() { 
+      bullets.clear();  
+      bullets.erase(bullets.begin(), bullets.end()); 
+      bulletTicks = 0;
+      individualClean();
+    }   
 
     void draw() {
       for(unsigned int i = 0; i < bullets.size(); ++i)
@@ -81,6 +211,7 @@ class Mount {
       angle = 0;
       isLeft = false;
       visible = true;
+      customDamage = false;
       tookDamage = false;
       currentTexture = 0;
       x = SPACE_X_RESOLUTION/2;
@@ -113,41 +244,6 @@ class Mount {
       }
     }
 
-    void fire() {
-      if(visible) {
-        currentTexture = 1;
-        addBullet();
-        unsigned int i = bullets.size()-1;
-        bullets[i]->setup(x, y, dirX, dirY, angle);
-        bullets[i]->setVisible(true);
-      }
-    }
-
-    void setIsBoss() { isBoss = true; }
-
-    void isLeftMount() { isLeft = true; }
-
-    bool isVisible() { return visible; }
-
-    int getNumBullets() { return bullets.size(); }
-    float bulletHit(int index) { return bullets[index]->hit(); }
- 
-    void setX(float x) { this->x = x+offsetX; }
-    
-    void setTimer(float bulletTimer) { this->bulletTimer = bulletTimer; }
-
-    void setHealth(float health) { this->health = health; };
-    float getHealth() { return health; }
-  
-    float getX() { return x; }
-    float getY() { return y; }
-    float getWidth() { return width; }
-    float getHeight() { return height; }
-    float getBulletX(int index) { return bullets[index]->getX(); }
-    float getBulletY(int index) { return bullets[index]->getY(); }
-    float getBulletWidth(int index) { return bullets[index]->getWidth(); }
-    float getBulletHeight(int index) { return bullets[index]->getHeight(); }
-
   protected:
     void addBullet() {
       switch(variant) {
@@ -178,19 +274,23 @@ class Mount {
           exit(0);
       }
     }
-
-    bool isBoss;
+    
     int isLeft;
-    float health;
-    float angle;
+    int damage;
     int variant;
+    int maxMounts;
+    int currentTexture;
+    int bulletTicks, bulletTimer, damageTicks, damageTimer;
+       
+    bool isBoss;
     bool visible;
     bool tookDamage;
-    int maxMounts;
-    float fireRate;
-    int bulletTicks, bulletTimer, damageTicks, damageTimer;
-    float dirX, dirY;
-    int currentTexture;
+    bool customDamage;
+    
+    float angle;
+    float health; 
+    float fireRate;  
+    float dirX, dirY;  
     float offsetX, offsetY;
     float x,y, width, height;
 

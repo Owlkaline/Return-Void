@@ -14,9 +14,11 @@ class CheckBox {
     void uncheck();
     
     bool getChecked();
-  protected:
-    float width, height, x, y;
+  protected:    
     bool isChecked;
+    
+    float width, height, x, y;
+    
     GLuint Texture[2];
 };
 
