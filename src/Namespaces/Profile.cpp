@@ -1,19 +1,23 @@
 #include "../../include/Namespaces/Profile.h"
 
 Profile::Profile() {
-  Load();
+
 }
 
 Profile::~Profile() {
 
 }
 
-void Profile::Load() {
-  if(File::check_if_file_exists("data/Profile.save")) {
+void Profile::Load(char* filename) {
+  this->filename = filename;  
+  str = "data/";
+  str += filename;
+  str += ".save";
+  if(File::check_if_file_exists(str)) {
     printf("Loading Profile\n");
-    ifs.open("./data/Profile.save", std::ios::binary);
+    ifs.open(str.c_str(), std::ios::binary);
     version = File::LoadFloat(ifs);
-    if(version != (float)VERSION) {
+    if(version != (float)1.2) {
       ifs.close();
       createNewProfile();
     } else {    
@@ -30,24 +34,9 @@ void Profile::Load() {
   }
 }
 
-void Profile::Save() {
-  printf("Saving Profile\n");
-  std::ofstream ofs("./data/Profile.save", std::ios::binary);
-  File::SaveFloat(ofs, version);
-  File::SaveInt(ofs, coins);
-  File::SaveInt(ofs, selectedShip);
-  
-  for(int i = 0; i < 6; ++i)
-    File::SaveBool(ofs, shipsUnlocked[i]);  
-    
-  for(int i = 0; i < 6; ++i)
-    File::SaveBool(ofs, shipsBought[i]);  
-  ofs.close();
-}
-
 void Profile::createNewProfile() {
   printf("Creating Profile file\n");
-  version = VERSION;   
+  version = 1.2;   
   coins = 0;
   selectedShip = 0;
   shipsUnlocked[0] = true;
@@ -60,4 +49,19 @@ void Profile::createNewProfile() {
     shipsBought[i] = false;
   }  
   Save();
+}
+
+void Profile::Save() {
+  printf("Saving Profile\n");
+  std::ofstream ofs(str.c_str(), std::ios::binary);
+  File::SaveFloat(ofs, version);
+  File::SaveInt(ofs, coins);
+  File::SaveInt(ofs, selectedShip);
+  
+  for(int i = 0; i < 6; ++i)
+    File::SaveBool(ofs, shipsUnlocked[i]);  
+    
+  for(int i = 0; i < 6; ++i)
+    File::SaveBool(ofs, shipsBought[i]);  
+  ofs.close();
 }

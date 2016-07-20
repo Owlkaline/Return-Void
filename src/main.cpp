@@ -53,7 +53,7 @@ unsigned char prevKeyState[255];
 
 GLuint mouseTexture;
 
-DisplayManager* Display[4] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop() };
+DisplayManager* Display[5] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen() };
 
 //Sets the pace of the game
 void Timer(int value) {

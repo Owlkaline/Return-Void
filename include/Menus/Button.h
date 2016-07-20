@@ -25,6 +25,8 @@ class Button {
     void setColour(float R, float G, float B);
     
     void setX(float x) { this->x = x; }
+    void setY(float y) { this->y = y; }
+    void setWidth(float width) { this->width = width; }
     void setVisible(bool visible) { this->visible = visible; }
      
     void enable() { disabled = false; }

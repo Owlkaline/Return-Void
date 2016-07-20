@@ -68,10 +68,10 @@ class Mount {
      
       tick(x, y, directionX, directionY, angle, isShooting);
       
-      if(isShooting) {
+     // if(isShooting) {
         increment(isShooting);
-      } else {
-        switch(variant) {
+     // } else {
+        /*switch(variant) {
         case GREENPLASMA:
           bulletTicks = GREENPLASMATIMER;
           break;
@@ -90,8 +90,8 @@ class Mount {
         case ALPHAONEPLASMA:
           bulletTicks = ALPHAONETIMER;
           break;
-        }
-      }  
+        }*/
+      //}  
       erase();
     }
     
@@ -130,12 +130,15 @@ class Mount {
     
     void increment(bool isShooting) {
       damageTicks++; 
+      bulletTicks++; 
+      
       if(damageTicks > damageTimer) { 
         tookDamage = false; 
         damageTicks = 0; 
       }
+      
       if(isShooting) {   
-        bulletTicks++; 
+        
         if(bulletTicks > bulletTimer) { 
           fire(); 
           bulletTicks = 0; 

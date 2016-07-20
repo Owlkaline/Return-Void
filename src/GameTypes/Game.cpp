@@ -43,16 +43,17 @@ void Game::setup() {
   printf("Game Setting up...");
   boostRand.newSeed(seed);
 
-  profile.Load();
+  profile.Load((char*)"Akuma");
   settings.Load();
 
   paused = false;
   inHighscore = false;
-  highscore.setup();
+  highscore.setup(profile.getUsername());
 
   score = 0;
   wave = 0;
   offsetY = 0;
+  
   selected = profile.getSelectedShip();
   
   switch(selected) {

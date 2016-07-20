@@ -9,6 +9,7 @@ Highscore::~Highscore() {
 }
 
 void Highscore::Load() {
+  isNewHighscore = false;
   if(File::check_if_file_exists("data/Highscore.bin")) {
     printf("Loading Highscore\n");
     ifs.open("./data/Highscore.bin", std::ios::binary);

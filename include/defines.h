@@ -35,6 +35,7 @@
 #define GAME                   1
 #define SETTINGS               2
 #define SHOP                   3
+#define HIGHSCORE              4
 
 #define MINIMUM_DISTANCETOSHIP 100
 

@@ -9,11 +9,13 @@ void MainMenu::setup() {
   type = EXIT;
   
   // Buttons 
-  for(int i = 0; i < 5; ++i) {
+  for(int i = 0; i < 6; ++i) {
     buttons.push_back(new Button);
     if(i == 1) {
       buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*2, BUTTONHEIGHT, -1);
-    } else {
+    } else if (i == 3) {
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*1.5, BUTTONHEIGHT, -1);
+    }  else {
       buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH, BUTTONHEIGHT, -1);
     }
   }
@@ -21,8 +23,9 @@ void MainMenu::setup() {
   buttons[0]->setTexture((char*)"Textures/Menu/MainMenu/Story.png");
   buttons[1]->setTexture((char*)"Textures/Menu/MainMenu/EndlessMode.png");
   buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Shop.png");
-  buttons[3]->setTexture((char*)"Textures/Menu/MainMenu/Settings.png");
-  buttons[4]->setTexture((char*)"Textures/Menu/Misc/Quit.png");
+  buttons[3]->setTexture((char*)"Textures/Menu/MainMenu/Highscore.png");
+  buttons[4]->setTexture((char*)"Textures/Menu/MainMenu/Settings.png");
+  buttons[5]->setTexture((char*)"Textures/Menu/Misc/Quit.png");
   
   background = txt::LoadTexture("Textures/Menu/Background.png");
 }
@@ -54,10 +57,14 @@ void MainMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, u
     ended = true;
   }
   if(buttons[3]->Clicked()) {
-    type = SETTINGS;
+    type = HIGHSCORE;
     ended = true;
   }
   if(buttons[4]->Clicked()) {
+    type = SETTINGS;
+    ended = true;
+  }
+  if(buttons[5]->Clicked()) {
     type = EXIT;
     ended = true;
   }  

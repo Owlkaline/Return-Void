@@ -2,17 +2,18 @@
 #define PROFILE_H
 
 #include <fstream>
+#include <string>
 
 #include "./File.h"
-#include "../defines.h"
 
 class Profile {
   public:
     Profile();
     ~Profile();
     
-    void Load();
-    void Save();    
+    void Load(char* filename);
+    void Save();   
+    
     void addCoins(int coins) { this->coins += coins; }
     
     void setCoins(int coins) { this->coins = coins; }
@@ -23,6 +24,8 @@ class Profile {
     int getCoins() { return coins; }
     int getSelectedShip() { return selectedShip; }
     
+    char* getUsername() { return filename; }
+    
     float getVersion() { return version; }
     
     bool getShipsBought(int index) { return shipsBought[index]; }
@@ -30,6 +33,8 @@ class Profile {
     
   protected:
     void createNewProfile();
+    char* filename;
+    std::string str;
     
     int coins;
     int selectedShip;

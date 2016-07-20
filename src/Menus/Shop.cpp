@@ -11,7 +11,7 @@ void Shop::setup() {
   numShips = 0;
   selected = profile.getSelectedShip();
   
-  profile.Load();
+  profile.Load((char*)"Akuma");
   
   // Buttons
   // Return button
