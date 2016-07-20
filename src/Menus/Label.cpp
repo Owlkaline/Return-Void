@@ -44,6 +44,7 @@ void Label::draw() {
         if(ticks > 0)
           drawChar();
       } else {
+        //text.draw();
         drawChar();
       }
     }
@@ -71,6 +72,9 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   this->width = width;
   this->height = height;
   this->scale = 0;
+  R = 0;
+  B = 0;
+  G = 0;
 }
 
 void Label::setup(float x, float y, float scale) {
@@ -84,6 +88,9 @@ void Label::setup(float x, float y, float scale) {
   this->x = x;
   this->y = y;
   this->scale = scale;
+  R = 0;
+  B = 0;
+  G = 0;
 }
 
 void Label::setup(float x, float y, float scale, bool timer) {
@@ -97,6 +104,9 @@ void Label::setup(float x, float y, float scale, bool timer) {
   this->x = x;
   this->y = y;
   this->scale = scale;
+  R = 0;
+  B = 0;
+  G = 0;
 }
 
 void Label::update() {
@@ -133,7 +143,8 @@ void Label::setTexture(char* filename) {
 void Label::setText(const char* str, int length) {
   for(int i = 0; i < length; ++i)
     this->str[i] = str[i];
-  this->length = length;
+   this->length = length;
+  //text.setup(x, y, (char*)str);
 }
 
 void Label::setTimer(int time) {

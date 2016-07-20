@@ -48,6 +48,7 @@ class Ship {
     
  
     void setup(bool relativeMovement) {    
+      maxNumWeapons = 0;
       defaults();
       this->relativeMovement = relativeMovement;
       x = SPACE_X_RESOLUTION/2;
@@ -126,6 +127,7 @@ class Ship {
       this->y = y;
       shield = 0;
       visible = true;
+      tookDamage = false;
       
       for(unsigned int i = 0; i < WeaponMount.size(); ++i)
         WeaponMount[i]->update(x, y, 0, 0, 0, false);  
@@ -189,7 +191,7 @@ class Ship {
       if(health <= 0) {
         crntHealth = 0;
         visible = false;
-        for(int i = 0; i < maxNumWeapons; ++i) {
+        for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
           WeaponMount[i]->setVisible(false);
         }
       }

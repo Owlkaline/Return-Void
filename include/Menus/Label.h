@@ -3,7 +3,7 @@
 
 #include "../defines.h"
 #include "../Namespaces/LoadTexture.h"
-
+#include "./Text.h"
 
 
 class Label {
@@ -61,6 +61,7 @@ class Label {
     
     char str[50];
  
+    //Text text;
     GLuint Texture;
 };
 

@@ -104,7 +104,7 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
   if(!disabled) {
     if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP)
       clicked = false;
- 
+      
     if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
       if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
         clicked = true;

@@ -26,6 +26,8 @@ void GalacticShip::defaults() {
   width = 100;
   height = 100;
   
+  boostTimer = 0;
+  
   textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
   
   const float mountPosX[maxNumWeapons] = {20, -20, 0};

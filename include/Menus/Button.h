@@ -4,6 +4,7 @@
 #include "../defines.h"
 
 #include "./Label.h"
+#include "./Text.h"
 
 #include "../Namespaces/LoadTexture.h"
 
@@ -56,7 +57,7 @@ class Button {
     float x, y, width, height;
     
     char str[25];
-    
+
     Label lbTitle;
     GLuint Texture;
 };
