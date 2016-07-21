@@ -9,7 +9,6 @@ class DotMount: public Mount {
     ~DotMount();
       
     void reset();
-    void setLeft();
     void defaults();
     void setTexture();
     void draw() {      

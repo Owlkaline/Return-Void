@@ -11,7 +11,7 @@ DotEnemy::~DotEnemy() {
 }
 
 void DotEnemy::defaults() {
-  speed = 10;
+  speed = 8;
   width = 30;
   height = 30;
   health = 3;

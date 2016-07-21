@@ -1,7 +1,7 @@
 #include "../../include/Namespaces/Highscore.h"
 
 Highscore::Highscore() {
-  Load();
+//  Load();
 }
 
 Highscore::~Highscore() {

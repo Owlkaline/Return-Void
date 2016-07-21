@@ -22,7 +22,7 @@ void HypnoEnemy::defaults() {
   
   movementAngle = 180;
 
-  score = 70;
+  score = 50;
  // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
  // lbScore.setColour( 0.0,  1.0,  0.1);
  // lbScore.setText("+70", 3);

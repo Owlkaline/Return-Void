@@ -1,7 +1,7 @@
 #include "../../include/Namespaces/Settings.h"
 
 Settings::Settings() {
-  Load();
+//  Load();
 }
 
 Settings::~Settings() {

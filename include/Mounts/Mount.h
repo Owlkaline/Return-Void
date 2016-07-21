@@ -116,8 +116,7 @@ class Mount {
         damageTicks = 0; 
       }
       
-      if(isShooting) {   
-        
+      if(isShooting) {
         if(bulletTicks > bulletTimer) { 
           fire(); 
           bulletTicks = 0; 

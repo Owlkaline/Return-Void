@@ -177,7 +177,7 @@ void Game::newWave() {
       enemy[i]->defaults();
       int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
       float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
-      float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION*(2+wave)));
+      float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION+(wave*SPACE_Y_RESOLUTION)));
       enemy[i]->setup(x, y, type, powerup);
     }
   }

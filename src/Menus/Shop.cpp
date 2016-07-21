@@ -5,13 +5,13 @@ Shop::Shop() {
 }
 
 void Shop::setup() {
+  profile.Load((char*)"Akuma");
+
   ended = false;
   type = MAINMENU;
   pos = 0;
   numShips = 0;
   selected = profile.getSelectedShip();
-  
-  profile.Load((char*)"Akuma");
   
   // Buttons
   // Return button
