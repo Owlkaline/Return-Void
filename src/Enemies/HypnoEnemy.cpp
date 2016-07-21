@@ -58,7 +58,7 @@ void HypnoEnemy::update(float Px, float Py) {
      angle = angle - 90.0f;
   }
 
-  for(int i = 0; i < maxWeaponMounts; ++i) {
+  for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
     WeaponMount[i]->update(x, y, 0, -1, angle, Px, Py);

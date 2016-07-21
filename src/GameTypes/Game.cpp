@@ -53,6 +53,8 @@ void Game::setup() {
   score = 0;
   wave = 0;
   offsetY = 0;
+  numOfEnemiesKilled = 0;
+  numOfPowerupsCollected = 0;
   
   selected = profile.getSelectedShip();
   
@@ -140,13 +142,18 @@ void Game::newWave() {
       enemy[0]->setMountHealth(i, enemy[0]->getMountHealth(i) * ((wave/10)*2));
   } else {
     unsigned int numOfEnemies = 0;
-    while(numOfEnemies == 0)
-      numOfEnemies = boostRand.Int(wave+wave, wave*wave+wave);
-    
+    while(numOfEnemies == 0) {
+      if(wave < 10) {
+        numOfEnemies = boostRand.Int(5, wave*5);
+      } else {
+        numOfEnemies = boostRand.Int(wave+wave, wave*wave+wave);
+      }
+    }
     for(unsigned int i = 0; i < numOfEnemies; ++i) {
       int type = -1;
    
-      switch(boostRand.Int(0.35, 0.35, 0.3)) {
+     switch(boostRand.Int(0.4, 0.4, 0.05, 0.15)) {
+    // switch(boostRand.Int(0.1, 0.1, 0.1, 0.7)) {
         case 1:
           printf("Basic Enemy Spawned\n");
           enemy.push_back(new BasicEnemy); 
@@ -162,6 +169,10 @@ void Game::newWave() {
           enemy.push_back(new HypnoEnemy);
           type = SEMICIRCLE;
           break;
+        case 4:
+          printf("Dot enemy spawned\n");
+          enemy.push_back(new DotEnemy);
+          type = RIGHTSIDEFALL;
       }
       enemy[i]->defaults();
       int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
@@ -170,8 +181,6 @@ void Game::newWave() {
       enemy[i]->setup(x, y, type, powerup);
     }
   }
-  
-
   
   printf("New Seed\n"); 
   boostRand.newSeed(boostRand.Int(0, 9999999999));
@@ -198,16 +207,19 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
     if(!paused) {      
       if(enemy.size() == 0)
         newWave();
-           
+        
+      // Background sccrolling   
       offsetY-=2;
       if(offsetY <= -1080)
         offsetY=0;
         
       ship[0]->update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
-
+      
+      // Updated enemy and checked if it was killed
       for(unsigned int i = 0; i < enemy.size(); ++i) {
         enemy[i]->update(ship[0]->getX(), ship[0]->getY());
         if(enemy[i]->getWaskilled()) {
+          numOfEnemiesKilled++;
           score += enemy[i]->getScore();
           std::stringstream ss;
           ss << score;
@@ -250,13 +262,17 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       for(unsigned int i = 0; i < powerups.size(); ++i) {
         powerups[i]->update();
         if(powerups[i]->getCollected()) {
+          numOfPowerupsCollected++;
           std::string str = powerups[i]->getName();
           Ftext.push_back(new FloatingText);
           Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), str.length(), 0.2);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           powerups.erase(powerups.begin()+i);
+        } else if (!powerups[i]->getVisible()) {
+          powerups.erase(powerups.begin()+i);
         }
+        
       }
       for(unsigned int i = 0; i < Ftext.size(); ++i) {
         Ftext[i]->update();
@@ -272,6 +288,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       if(!ship[0]->getVisible()) {
         inHighscore = true;
         highscore.setScore(score);
+        highscore.setStats(coins, numOfEnemiesKilled);
         printf("Player died, HighscoreScreen\n");
         profile.addCoins(coins);
       }

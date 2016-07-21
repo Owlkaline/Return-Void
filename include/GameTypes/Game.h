@@ -19,6 +19,7 @@
 #include "../Drops/Health.h"
 #include "../Drops/Shield.h"
 
+#include "../Enemies/DotEnemy.h"
 #include "../Enemies/AlphaOne.h"
 #include "../Enemies/BasicEnemy.h" 
 #include "../Enemies/HypnoEnemy.h" 
@@ -53,6 +54,8 @@ class Game: public DisplayManager {
     int coins;
     int wave, level;
     int selected;
+    int numOfEnemiesKilled;
+    int numOfPowerupsCollected;
     
     float offsetY;
     // Cross Hair

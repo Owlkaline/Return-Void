@@ -18,7 +18,7 @@ class Drops {
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
     
-    bool isVisible() { return visible; }
+    bool getVisible() { return visible; }
     
     bool getCollected() { return isCollected; }
     

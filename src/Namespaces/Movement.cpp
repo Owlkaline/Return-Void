@@ -61,10 +61,10 @@ void move::sinwave(float *x, float *y, float* movementAngle, float height, float
 }
 
 
-void move::sidefall(float* x, float* y, float width, float* startX, float* startY, float speed, float* angle, int* cycle) {
+void move::sidefall(float* x, float* y, float width, float height, float* startX, float* startY, float speed, float* angle, int* cycle, bool* visible) {
   float rad = 0;
   switch(*cycle) {
-    case 0:
+    case 0: // Fall Down Right side
       if(*y > SPACE_Y_RESOLUTION/2) {
         *y-=speed;
         *x = SPACE_X_RESOLUTION-width/2;
@@ -74,24 +74,43 @@ void move::sidefall(float* x, float* y, float width, float* startX, float* start
         *cycle+=1;
       }
       break;
-    case 1:
-      *angle+=1;      
+    case 1: // Big Semi circle a cross screen right to left
+      *angle+=speed/5.0;      
       rad = *angle * M_PI/180.0;
       *x = *startX + cos(-rad) * (SPACE_X_RESOLUTION/8);
       *y = *startY + sin(-rad) * (SPACE_X_RESOLUTION/8);
-      if(*angle == 540) {
-        startX = x - (SPACE_X_RESOLUTION/8);
-        startY = y;
+      if(*angle >= 170 && *y >= SPACE_Y_RESOLUTION/2) {
         *cycle+=1;
+        *angle = 0;
+        *startX = *x - SPACE_X_RESOLUTION/4 - width*2;
+        *startY = SPACE_Y_RESOLUTION/2;
       }
       break;
-    case 2:
-      *angle+=1;      
+    case 2: // Small Semi circle on left side
+      *angle+=speed/10;//0.5;//speed/5;      
       rad = *angle * M_PI/180.0;
-      *x = *startX + cos(-rad) * (SPACE_X_RESOLUTION/8);
-      *y = *startY + sin(-rad) * (SPACE_X_RESOLUTION/8);
-      //if(*angle == 720)
-        //*cycle+=1;
+      *x = *startX + cos(rad) * (SPACE_Y_RESOLUTION/2);
+      *y = *startY + sin(rad) * (SPACE_Y_RESOLUTION/2);
+      if(*angle >= 150 && *y <= SPACE_Y_RESOLUTION/2) {
+        *angle = 0;
+        *startX = *x - SPACE_X_RESOLUTION/10 + width*2;
+        *startY = SPACE_Y_RESOLUTION/2;
+        *cycle += 1;
+      }
+      break;
+    case 3:
+      *angle+=speed/5.0*2; //1.5;//speed/5;      
+      rad = *angle * M_PI/180.0;
+      *x = *startX + cos(-rad) * (SPACE_X_RESOLUTION/14);
+      *y = *startY + sin(-rad) * (SPACE_X_RESOLUTION/14);
+      if(*angle >= 170) {
+        *cycle += 1;
+      }
+      break;
+    case 4:
+      *y+=speed;
+      if(*y > SPACE_Y_RESOLUTION+height)
+        *visible = false;
       break;
   }
 }

@@ -33,7 +33,7 @@ void AlphaOneMount::individualClean() {
 void AlphaOneMount::defaults() {
   width = 25;
   height = 128;
-  health = 45;//45;
+  health = 35;//45;
 }
 
 void AlphaOneMount::erase() {

@@ -7,6 +7,7 @@
 #include "../defines.h"
 
 #include "../Menus/Label.h"
+#include "../Mounts/DotMount.h"
 #include "../Mounts/BasicMount.h"
 #include "../Mounts/HypnoMount.h"
 #include "../Mounts/AlphaOneMount.h"
@@ -26,6 +27,7 @@ class Enemy {
     
     void setHealth(float health) { this->health = health; maxHealth = health; }
     void setMountHealth(int i, float health) { WeaponMount[i]->setHealth(health); }
+    
     void mountTakeDamage(int mount, float damage) { WeaponMount[mount]->takeDamage(damage); }
     void clean() { WeaponMount.clear(); WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
     
@@ -35,7 +37,7 @@ class Enemy {
     
     float bulletHit(int mIndex, int bIndex) { return WeaponMount[mIndex]->bulletHit(bIndex); }
         
-    int getNumOfMounts() { return maxWeaponMounts; }
+    int getNumOfMounts() { return WeaponMount.size(); }
     int getScore() { wasKilled = false; return score; }
     int getNumOfBullets(int index) { return WeaponMount[index]->getNumBullets(); }
     
@@ -180,7 +182,7 @@ class Enemy {
     
     void setVisible(bool visible) {
       this->visible = visible;
-      for(int i = 0; i < maxWeaponMounts; ++i)
+      for(unsigned int i = 0; i < WeaponMount.size(); ++i)
         WeaponMount[i]->setVisible(visible);
     }
 
@@ -210,7 +212,7 @@ class Enemy {
             move::sinwave(&x, &y, &movementAngle, height, speed, amp, startX, &visible);
             break;
           case RIGHTSIDEFALL:
-            move::sidefall(&x, &y, width, &startX, &startY, speed, &movementAngle, &cycle);
+            move::sidefall(&x, &y, width, height, &startX, &startY, speed, &movementAngle, &cycle, &visible);
             angle = -movementAngle;
             break;
           case ALPHAONE:
@@ -260,6 +262,11 @@ class Enemy {
     static GLuint getAlphaOneTexture() {
       static GLuint AlphaOneTexture = txt::LoadTexture("Textures/Game/Enemies/AlphaOne.png");
       return AlphaOneTexture;
+    }
+    
+    static GLuint getDotEnemyTexture() {
+      static GLuint dotEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/DotEnemy.png");
+      return dotEnemyTexture;
     }
 
     static GLuint getCorruptedStarShipTexture(int i) {

@@ -1,5 +1,26 @@
 #include "../../include/Menus/HighscoreScreen.h"
 
+void HighscoreScreen::setStats(int coinsCollected, int numOfEnemiesKilled) {
+  std::stringstream ss;
+  ss << coinsCollected;
+  std::string str = "Coins Collected: " + ss.str();
+  lb[23]->setText(str.c_str(), str.length());
+  lb[23]->setVisible(true);
+  
+  std::stringstream ss1;
+  ss1 << numOfEnemiesKilled;
+  str = "Enemies Killed: " + ss1.str();
+  lb[24]->setText(str.c_str(), str.length());
+  lb[24]->setVisible(true);
+  
+  std::stringstream ss2;
+  ss2 << numOfEnemiesKilled;
+  str = "Powerups Picked up: " + ss2.str();
+  lb[25]->setText(str.c_str(), str.length());
+  //lb[25]->setVisible(true);
+  
+}
+
 void HighscoreScreen::setup() {
   setup("");
   buttons[0]->setVisible(false);
@@ -50,13 +71,31 @@ void HighscoreScreen::setup(std::string username) {
     lb[i+1]->setColour(0.0, 1.0, 0.0);
     lb[i+1]->setVisible(false);
   }
-/*  // Title
+  // New High score
   lb.push_back(new Label);
-  lb[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 0.4);
+  lb[20]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 0.4);
+  lb[20]->setText((char*)"New Highscore!!!", 16);
+  lb[20]->setColour(0.0, 1.0, 0.0);
+  lb[20]->setVisible(false);
+  
   // Score
   lb.push_back(new Label);
-  lb[1]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4 + BUTTONHEIGHT, 0.4);
-  */
+  lb[21]->setup(SPACE_X_RESOLUTION/2-BUTTONWIDTH/4, SPACE_Y_RESOLUTION/5*4 - BUTTONHEIGHT, 0.4);
+  lb[21]->setColour(0.0, 1.0, 0.0);
+  
+  // stats
+  lb.push_back(new Label);
+  lb[22]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*3, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Stats.png");
+  lb[22]->setVisible(false);
+  
+  // CoinsCollected
+  //Num enemies killed 
+  for(int i = 0; i < 3; ++i) {
+    lb.push_back(new Label);
+    lb[23+i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*3-BUTTONHEIGHT*(1+i), 0.3);
+    lb[23+i]->setColour(0.0, 1.0, 0.0);
+    lb[23+i]->setVisible(false);
+  }
 } 
 
 void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -78,12 +117,16 @@ void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnS
     if(showingHighscores) {
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(false);
+      for(int i = 0; i < 5; ++i)
+        lb[21+i]->setVisible(true);
       buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Highscore.png");
       buttons[2]->setWidth(BUTTONWIDTH*1.5);
       showingHighscores = false;
     } else {
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(true);
+      for(int i = 0; i < 5; ++i)
+        lb[21+i]->setVisible(false);
       buttons[2]->setTexture((char*)"Textures/Menu/GameMenus/Stats.png");
       buttons[2]->setWidth(BUTTONWIDTH);
       showingHighscores = true;
@@ -116,11 +159,15 @@ void HighscoreScreen::setScore(int score) {
     ss1 << highscore.getNewHighscore();
     std::string str1 = ss1.str();
     lb[i*2+1]->setText(str1.c_str(), str1.length());
+    
+    lb[20]->setVisible(true);
   }
-/*  std::stringstream ss;
+  std::stringstream ss;
   ss << score;
-  std::string strScore = "Your score: " + ss.str();*/
-  //lb[1]->setText(strScore.c_str(), strScore.length());
+  std::string strScore = "Your score: " + ss.str();
+  lb[21]->setText(strScore.c_str(), strScore.length());
+  lb[21]->setVisible(true);
+  lb[22]->setVisible(true);
   //LoadHighscores(score);
 }
 /*

@@ -11,11 +11,11 @@ SRCMENU =./src/Menus/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/But
 
 SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp
 
-SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp ./src/Enemies/AlphaOne.cpp
+SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp ./src/Enemies/AlphaOne.cpp ./src/Enemies/DotEnemy.cpp
 
-SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp ./src/Mounts/AlphaOneMount.cpp
+SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp ./src/Mounts/AlphaOneMount.cpp ./src/Mounts/DotMount.cpp
 
-SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp ./src/Weapons/PurplePlasma.cpp ./src/Weapons/Spiral.cpp ./src/Weapons/AlphaOnePlasma.cpp
+SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp ./src/Weapons/PurplePlasma.cpp ./src/Weapons/Spiral.cpp ./src/Weapons/AlphaOnePlasma.cpp ./src/Weapons/DotBullet.cpp
 
 SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp ./src/Drops/Shield.cpp
 

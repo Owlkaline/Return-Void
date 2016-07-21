@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "../Weapons/Spiral.h"
+#include "../Weapons/DotBullet.h"
 #include "../Weapons/RedPlasma.h"
 #include "../Weapons/BluePlasma.h"
 #include "../Weapons/GreenPlasma.h"
@@ -67,31 +68,9 @@ class Mount {
       dirY = directionY;
      
       tick(x, y, directionX, directionY, angle, isShooting);
-      
-     // if(isShooting) {
-        increment(isShooting);
-     // } else {
-        /*switch(variant) {
-        case GREENPLASMA:
-          bulletTicks = GREENPLASMATIMER;
-          break;
-        case BLUEPLASMA:
-          bulletTicks = BLUEPLASMATIMER;
-          break;
-        case REDPLASMA:
-          bulletTicks = REDPLASMATIMER;
-          break;
-        case PURPLEPLASMA:
-          bulletTicks = PURPLEPLASMATIMER;
-          break;
-        case SPIRAL:
-          bulletTicks = SPIRALTIMER;
-          break;
-        case ALPHAONEPLASMA:
-          bulletTicks = ALPHAONETIMER;
-          break;
-        }*/
-      //}  
+
+      increment(isShooting);
+ 
       erase();
     }
     
@@ -167,7 +146,7 @@ class Mount {
       individualClean();
     }   
 
-    void draw() {
+    virtual void draw() {
       for(unsigned int i = 0; i < bullets.size(); ++i)
         bullets[i]->draw();
 
@@ -241,6 +220,9 @@ class Mount {
         case ALPHAONEPLASMA:
           bulletTimer = ALPHAONETIMER;
           break;
+        case DOTBULLET:
+          bulletTimer = DOTBULLETTIMER;
+          break;
         default:
           printf("Error: unknown varient in mount setup: %d\n",variant);
           exit(0);
@@ -264,6 +246,9 @@ class Mount {
           break;
         case SPIRAL:
           bullets.push_back(new Spiral);
+          break;
+        case DOTBULLET:
+          bullets.push_back(new DotBullet);
           break;
         case ALPHAONEPLASMA:
           bullets.push_back(new AlphaOnePlasma);

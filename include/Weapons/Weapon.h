@@ -68,6 +68,11 @@ class Weapon {
       return spiralTexture;
     }
     
+    static GLuint getDotBulletTexture() {
+      static GLuint dotBulletTexture = txt::LoadTexture("Textures/Game/Weapons/DotBullet.png");
+      return dotBulletTexture;
+    }
+    
     static GLuint getAlphaOnePlasmaTexture() {
       static GLuint alphaOnePlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/AlphaOnePlasma.png");
       return alphaOnePlasmaTexture;

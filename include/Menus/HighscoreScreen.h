@@ -17,6 +17,7 @@ class HighscoreScreen: public Menu {
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
 
     void setScore(int score);
+    void setStats(int coinsCollected, int numOfEnemiesKilled);
   protected:
     bool showingHighscores;
     void drawBackground() { glColor4f(0.0, 0.0,0.0,0.0f); }
