@@ -1,6 +1,6 @@
 #include "../../include/Menus/HighscoreScreen.h"
 
-void HighscoreScreen::setStats(int coinsCollected, int numOfEnemiesKilled) {
+void HighscoreScreen::setStats(int coinsCollected, int numOfEnemiesKilled, int numOfPowerups) {
   std::stringstream ss;
   ss << coinsCollected;
   std::string str = "Coins Collected: " + ss.str();
@@ -14,10 +14,10 @@ void HighscoreScreen::setStats(int coinsCollected, int numOfEnemiesKilled) {
   lb[24]->setVisible(true);
   
   std::stringstream ss2;
-  ss2 << numOfEnemiesKilled;
-  str = "Powerups Picked up: " + ss2.str();
+  ss2 << numOfPowerups;
+  str = "Powerups Collected: " + ss2.str();
   lb[25]->setText(str.c_str(), str.length());
-  //lb[25]->setVisible(true);
+  lb[25]->setVisible(true);
   
 }
 

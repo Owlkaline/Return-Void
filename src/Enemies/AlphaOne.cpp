@@ -14,7 +14,7 @@ void AlphaOne::defaults() {
   speed = 5;
   width = 256;
   height = 128;
-  health = 20;//30;
+  health = 120;//30;
 
   angle = 0;
   isBoss = true;

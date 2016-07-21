@@ -68,7 +68,7 @@
 #define PURPLEPLASMATIMER      7
 #define SPIRALTIMER            64
 #define ALPHAONETIMER          180
-#define DOTBULLETTIMER         30
+#define DOTBULLETTIMER         50
  
 // Types of Movement
 #define FALL                   0

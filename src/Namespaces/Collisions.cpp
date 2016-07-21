@@ -216,15 +216,16 @@ void Collisions::detect(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std:
         float Bx = ship[0]->getBulletX(m, n);
         float By = ship[0]->getBulletY(m, n);
         if( (Bx + Bw) >= (Ex-Ew) && (Bx-Bw) <= (Ex + Ew) && (By + Bh) >= (Ey-Eh) && (By-Bh) <= (Ey + Eh) ) {
-          if(!enemy[k]->getIsBoss()) {
+        //  if(!enemy[k]->getIsBoss()) {
             enemy[k]->takeDamage(ship[0]->bulletHit(m, n));
-          } else {
+         /* } else {
             if(!enemy[k]->checkMountsVisible()) {
               ship[0]->bulletHit(m, n);
+              enemy[k]->takeDamage(0);
             } else {
               enemy[k]->takeDamage(ship[0]->bulletHit(m, n));
             }
-          }
+          }*/
         }
       }
       
@@ -247,19 +248,21 @@ void Collisions::detect(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std:
     for(unsigned int j = 0; j < enemyMountQuad[i].size(); ++j) {      
       int e = enemyMountEnemy[i][j];
       int m = enemyMountQuad[i][j];
-      float Mw = enemy[e]->getMountWidth(m)/2;
-      float Mh = enemy[e]->getMountHeight(m)/2;
-      float Mx = enemy[e]->getMountX(m);
-      float My = enemy[e]->getMountY(m);
-      for(unsigned int l = 0; l < shipMountQuad[i].size(); ++l) {
-        int Sm = shipMountQuad[i][l];
-        int Sn = shipBulletQuad[i][l];
-        float Bw = ship[0]->getBulletWidth(Sm, Sn)/2;
-        float Bh = ship[0]->getBulletHeight(Sm, Sn)/2;
-        float Bx = ship[0]->getBulletX(Sm, Sn);
-        float By = ship[0]->getBulletY(Sm, Sn);
-        if( (Mx + Mw) >= (Bx-Bw) && (Mx-Mw) <= (Bx + Bw) && (My + Mh) >= (By-Bh) && (My-Mh) <= (By + Bh) ) {
-          enemy[e]->mountTakeDamage(m, ship[0]->bulletHit(Sm, Sn));
+      if(enemy[e]->getMountVisible(j)) {
+        float Mw = enemy[e]->getMountWidth(m)/2+10;
+        float Mh = enemy[e]->getMountHeight(m)/2+10;
+        float Mx = enemy[e]->getMountX(m);
+        float My = enemy[e]->getMountY(m);
+        for(unsigned int l = 0; l < shipMountQuad[i].size(); ++l) {
+          int Sm = shipMountQuad[i][l];
+          int Sn = shipBulletQuad[i][l];
+          float Bw = ship[0]->getBulletWidth(Sm, Sn)/2;
+          float Bh = ship[0]->getBulletHeight(Sm, Sn)/2;
+          float Bx = ship[0]->getBulletX(Sm, Sn);
+          float By = ship[0]->getBulletY(Sm, Sn);
+          if( (Mx + Mw) >= (Bx-Bw) && (Mx-Mw) <= (Bx + Bw) && (My + Mh) >= (By-Bh) && (My-Mh) <= (By + Bh) ) {
+            enemy[e]->mountTakeDamage(m, ship[0]->bulletHit(Sm, Sn));
+          }
         }
       }
     }

@@ -43,7 +43,7 @@ void Game::setup() {
   printf("Game Setting up...");
   boostRand.newSeed(seed);
 
-  profile.Load((char*)"Akuma");
+  profile.Load((char*)"You   ");
   settings.Load();
 
   paused = false;
@@ -82,7 +82,7 @@ void Game::setup() {
   lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
   
-  lbCoins.setup(SPACE_X_RESOLUTION-100, 30, 0.3, false);
+  lbCoins.setup(SPACE_X_RESOLUTION-150, 30, 0.3, false);
   lbCoins.setColour( 1.0,  1.0,  1.0);
   
   std::stringstream ss;
@@ -143,11 +143,11 @@ void Game::newWave() {
   } else {
     unsigned int numOfEnemies = 0;
     while(numOfEnemies == 0) {
-      if(wave < 10) {
+   //   if(wave < 10) {
         numOfEnemies = boostRand.Int(5, wave*5);
-      } else {
-        numOfEnemies = boostRand.Int(wave+wave, wave*wave+wave);
-      }
+ //     } else {
+    //    numOfEnemies = boostRand.Int(wave+wave, wave*wave+wave);
+   //   }
     }
     for(unsigned int i = 0; i < numOfEnemies; ++i) {
       int type = -1;
@@ -175,9 +175,16 @@ void Game::newWave() {
           type = RIGHTSIDEFALL;
       }
       enemy[i]->defaults();
+     // if()
       int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
       float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
-      float y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION+(wave*SPACE_Y_RESOLUTION)));
+      float y = 0;
+      if(wave != 1 && (wave-1)%10 == 0) {
+        y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION*2), (int)(SPACE_Y_RESOLUTION*2+(wave*0.5*SPACE_Y_RESOLUTION)));
+      } else {
+        y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION+(wave*0.5*SPACE_Y_RESOLUTION)));
+      }
+      
       enemy[i]->setup(x, y, type, powerup);
     }
   }
@@ -254,6 +261,23 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
             int j = powerups.size()-1;
             powerups[j]->setup(enemy[i]->getX(), enemy[i]->getY());
           }
+          if(enemy[i]->getIsBoss()) {
+            for(int k = 0; k < 5; ++k) {
+              powerups.push_back(new Coins);
+              int j = powerups.size()-1;
+              powerups[j]->setup(enemy[i]->getX()-100+k*50, enemy[i]->getY());
+            }
+            for(int k = 0; k < 3; ++k) {
+              powerups.push_back(new Health);
+              int j = powerups.size()-1;
+              powerups[j]->setup(enemy[i]->getX()-50+k*50, enemy[i]->getY()-50);
+            }
+            for(int k = 0; k < 2; ++k) {
+              powerups.push_back(new Shield);
+              int j = powerups.size()-1;
+              powerups[j]->setup(enemy[i]->getX()-50+k*50, enemy[i]->getY()-100);
+            }
+          }
         }
         if(!enemy[i]->isVisible() && enemy[i]->getTotalNumOfBullets() == 0) {
           enemy.erase(enemy.begin()+i);
@@ -288,7 +312,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       if(!ship[0]->getVisible()) {
         inHighscore = true;
         highscore.setScore(score);
-        highscore.setStats(coins, numOfEnemiesKilled);
+        highscore.setStats(coins, numOfEnemiesKilled, numOfPowerupsCollected);
         printf("Player died, HighscoreScreen\n");
         profile.addCoins(coins);
       }

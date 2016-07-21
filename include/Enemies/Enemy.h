@@ -43,6 +43,7 @@ class Enemy {
     
     bool getIsBoss() { return isBoss; }    
     bool getWaskilled() { return wasKilled; }     
+    bool getMountVisible(int index) { return WeaponMount[index]->getVisible(); }
         
     float getX() { return this->x; }
     float getY() { return this->y; }
@@ -60,12 +61,12 @@ class Enemy {
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
 
     void setup(float x, float y, int moveType, int drop) {
-      defaults();
+      
       this->x = x;
       this->y = y;
       this->drop = drop;
       this->moveType = moveType;
-
+      defaults();
       tick = 0;
       cycle = 0;
 
@@ -174,7 +175,7 @@ class Enemy {
     
     bool checkMountsVisible() { 
       for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
-        if(WeaponMount[i]->isVisible())
+        if(WeaponMount[i]->getVisible())
           return false;
       }
       return true;

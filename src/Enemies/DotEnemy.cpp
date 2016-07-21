@@ -32,6 +32,7 @@ void DotEnemy::defaults() {
   WeaponMount[0]->isLeftMount();
   
   WeaponMount[0]->setOffset(0, 0);
+  drop = NOTHING;
   //WeaponMount[1]->setOffset(-15, 30);
 }
 

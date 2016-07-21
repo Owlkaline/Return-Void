@@ -32,7 +32,7 @@ class Mount {
     void setDamage(float damage) { customDamage = true; this->damage = damage; }
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
     
-    bool isVisible() { return visible; }
+    bool getVisible() { return visible; }
     int getNumBullets() { return bullets.size(); }    
     float bulletHit(int index) { return bullets[index]->hit(); }    
     

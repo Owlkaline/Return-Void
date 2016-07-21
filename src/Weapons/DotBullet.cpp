@@ -44,7 +44,7 @@ void DotBullet::setup(float x, float y, float dirX, float dirY, float angle) {
   width = 12;
   height = 64;
   speed = 12;
-  damage = 1;
+  damage = 0.5;
   this->angle = angle;
   directionX = dirX;
   directionY = dirY;
