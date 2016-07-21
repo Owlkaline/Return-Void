@@ -12,7 +12,7 @@
 #include <png.h>
 #endif
 
-#define VERSION                1.3
+#define VERSION                1.5
 
 #define GAME_MODE_POSSIBLE     0
 

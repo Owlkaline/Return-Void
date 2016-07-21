@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 
+#include "../defines.h"
+
 #include "./File.h"
 
 class Profile {

@@ -17,7 +17,7 @@ void Profile::Load(char* filename) {
     printf("Loading Profile\n");
     ifs.open(str.c_str(), std::ios::binary);
     version = File::LoadFloat(ifs);
-    if(version != (float)1.2) {
+    if(version != (float)VERSION) {
       ifs.close();
       createNewProfile();
     } else {    
@@ -36,7 +36,7 @@ void Profile::Load(char* filename) {
 
 void Profile::createNewProfile() {
   printf("Creating Profile file\n");
-  version = 1.2;   
+  version = VERSION;   
   coins = 0;
   selectedShip = 0;
   shipsUnlocked[0] = true;
