@@ -153,6 +153,12 @@ void drawCursor() {
 
 //Draw function
 void display() {
+  if(!settings.getFullscreen() && mouseBtnState[0] != BUTTON_DOWN) {
+   if(glutGet(GLUT_WINDOW_WIDTH) != screenResX || glutGet(GLUT_WINDOW_HEIGHT) != screenResY) {
+      //settings.Load()
+      glutReshapeWindow(screenResX, screenResY);
+    }
+  }
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
 
@@ -302,7 +308,7 @@ int main(int argc, char** argv) {
   const float ratio(static_cast<float>(SPACE_X_RESOLUTION)/static_cast<float>(SPACE_Y_RESOLUTION));
 
   gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
-
+/*
   if (static_cast<float>(screenResX)/screenResY > ratio) {
     //  scale_ = static_cast<float>(screenResY)/SPACE_Y_RESOLUTION;
     screenResY = screenResY;
@@ -314,7 +320,7 @@ int main(int argc, char** argv) {
     screenResY = screenResX / ratio;
     screenResX  = screenResX;
     glViewport(0, (screenResY-screenResY)*0.5f, screenResX, screenResY);
-  }
+  }*/
 
   glClearColor(0.0, 0.0, 0.0, 255.0);
 
