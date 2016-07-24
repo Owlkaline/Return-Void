@@ -25,6 +25,9 @@ class Label {
     void setText(const char* str, int length);
     void setColour(float R, float G, float B);
     
+    void enable() { disabled = false; }
+    void disable() { disabled = true;  }    
+    
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
     void setWidth(float width) { this->width = width; }
@@ -50,6 +53,7 @@ class Label {
     int ticks;
     
     bool visible;
+    bool disabled;  
     bool isFilled;
     bool hasBorder;
     bool hasTexture, isTimed;

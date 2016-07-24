@@ -46,10 +46,9 @@ class Ship {
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }    
  
-    void setup(bool relativeMovement) {    
+    void setup() {    
       maxNumWeapons = 0;
       defaults();
-      this->relativeMovement = relativeMovement;
       x = SPACE_X_RESOLUTION/2;
       y = 100;
   
@@ -324,7 +323,6 @@ class Ship {
     float directionX, directionY, distanceFromCursor;
     
     bool hasBoost;
-    bool relativeMovement;
     bool visible, tookDamage, shieldDamaged;
     
     GLuint textures[3];

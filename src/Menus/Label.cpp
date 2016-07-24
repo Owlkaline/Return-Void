@@ -25,6 +25,8 @@ void Label::draw() {
       glColor3f(1.0f, 1.0f, 1.0f);
     }
     if(hasTexture) {  
+     if(disabled)
+        glColor4f(1.0, 1.0, 1.0, 0.5);
       glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, Texture);
       glBegin(GL_QUADS);
@@ -65,6 +67,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   hasBorder = false;
   isFilled = false;
   visible = true;
+  disabled = false;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -83,6 +86,7 @@ void Label::setup(float x, float y, float scale) {
   hasBorder = false;
   isFilled = false;
   visible = true;
+  disabled = false;
   length = 0;
   ticks = 0;
   this->x = x;
@@ -98,6 +102,7 @@ void Label::setup(float x, float y, float scale, bool timer) {
   hasBorder = false;
   isFilled = false;
   visible = true;
+  disabled = false;
   isTimed = timer;
   length = 0;
   ticks = 0;

@@ -2,6 +2,7 @@
 #define HIGHSCORE_H
 
 #include <fstream>
+#include <sys/stat.h>
 
 #include "./File.h"
 #include "../defines.h"
@@ -72,6 +73,8 @@ class Highscore {
      
     int highscores[10];
     char name[10][7];  
+    
+    std::string home;
     
     std::ifstream ifs;
     std::ofstream ofs;

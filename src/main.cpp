@@ -1,5 +1,5 @@
 //Version 0.1
-
+// Oregano
 #include "../include/defines.h"
 
 #include <time.h>  /* time */
@@ -16,6 +16,7 @@
 #include "../include/GameTypes/Menu.h"
 
 #include "../include/Namespaces/File.h"
+#include "../include/Namespaces/Settings.h"
 #include "../include/Namespaces/LoadTexture.h"
 
 int screenResX;
@@ -41,6 +42,8 @@ float mouseX, mouseY;
 
 //Unused currently, For setting game into gamemode when fullscreen
 bool gameMode;
+
+Settings settings;
 
 //Keeps the current key state, keeps the key state of the previous key state
 unsigned int  specialKey[5];
@@ -112,8 +115,17 @@ void mouseBtn(int btn, int state, int x, int y) {
 
 //Updates mouse coords
 void mouse(int x, int y) {
-  mouseX = ((float)x);
-  mouseY = SPACE_Y_RESOLUTION - ((float)y); 
+  if(type == SETTINGS) {
+    settings.Load();
+    screenResX = settings.getWindowWidth();
+    screenResY = settings.getWindowHeight();
+    aspectRatio = (float)screenResX / screenResY;
+    aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
+    aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
+  }
+  mouseX = ((float)x) * aspectW;
+  mouseY = SPACE_Y_RESOLUTION - (((float)y)) * aspectH; 
+  //printf("x: %f, y:%f\n", mouseX, mouseY);  
 }
 
 void drawCursor() {
@@ -189,11 +201,13 @@ void display() {
 }
 
 void setup() {
-  int const screenResX = glutGet(GLUT_SCREEN_WIDTH);
-  int const screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  //int const screenResX = glutGet(GLUT_WINDOW_WIDTH);
+  //int const screenResY = glutGet(GLUT_WINDOW_HEIGHT);
   aspectRatio = (float)screenResX / screenResY;
-  aspectW = SPACE_X_RESOLUTION/screenResX;
-  aspectH = SPACE_Y_RESOLUTION/screenResY;
+  aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
+  aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
+  
+  //printf("%f, %f, %f\n, ", aspectW, aspectH, aspectRatio);
 
   for(int i = 0; i < 5; ++i) {
     specialKey[i] = BUTTON_UP;
@@ -206,11 +220,9 @@ int main(int argc, char** argv) {
 
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);     // black background
 
-  glClearColor(0.0, 0.0, 0.0, 255.0);     // black background
-
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-  gameMode = GAME_MODE_POSSIBLE;
+  /*gameMode = GAME_MODE_POSSIBLE;
 
   char mode_string[24];
 
@@ -224,16 +236,46 @@ int main(int argc, char** argv) {
     //destroys the current graphics window
     glutDestroyWindow(0);
     glutEnterGameMode();
+  } else {*/
+  
+  //}
+  settings.Load();
+  bool isFullscreen = settings.getFullscreen();
+  
+  screenResX = glutGet(GLUT_SCREEN_WIDTH);
+  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  
+  printf("%d, %d\n", screenResX, screenResY);
+  
+  glutDestroyWindow(0);
+  glutCreateWindow("Return-Void"); 
+  
+  if(isFullscreen) {
+  /*  if(screenResX > 1920 || screenResY > 1080) {
+      // glutInitWindowPosition(100,100);
+      settings.setFullscreen(false);
+      settings.setResolution(1920, 1080);  
+      printf("Screen resolution is greater than 1920x1080\nLaunching 1920x1080 Windowed mode\n");   
+      glutReshapeWindow(settings.getWindowWidth(), settings.getWindowHeight());
+      screenResX = settings.getWindowWidth();
+      screenResY = settings.getWindowHeight();
+      settings.Save();
+    } else {*/
+      printf("Entering fullscreen mode\n");
+      glutFullScreen();  
+      settings.setFullscreen(true); 
+   // }
   } else {
-    printf("GameMode %s NOT possible\n", mode_string);
-
-   // glutInitWindowPosition(100,100);
-	//glutInitWindowSize(1280,720);
-
-	glutCreateWindow("Return-Void");
-    glutFullScreen();
+    printf("Entering windowed mode\n");
+    screenResX = settings.getWindowWidth();
+    screenResY = settings.getWindowHeight();
+    printf("%d, %d\n", settings.getWindowWidth(), settings.getWindowHeight());
+   // glutInitWindowSize(screenResX, screenResY);
+    glutReshapeWindow(screenResX, screenResY);
+    glutInitWindowPosition(screenResX/4,screenResY/4); 
+    printf("%d, %d\n", screenResX, screenResY);
   }
-
+ 
   // hide the cursor
   glutSetCursor(GLUT_CURSOR_NONE);
 
@@ -252,10 +294,10 @@ int main(int argc, char** argv) {
   glutMotionFunc(mouse);
   glutPassiveMotionFunc(mouse);
 
-  setup();
+ // screenResX = glutGet(GLUT_SCREEN_WIDTH);
+//  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
 
-  screenResX = glutGet(GLUT_SCREEN_WIDTH);
-  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  setup();
 
   const float ratio(static_cast<float>(SPACE_X_RESOLUTION)/static_cast<float>(SPACE_Y_RESOLUTION));
 

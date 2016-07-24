@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include <sys/stat.h>
 
 #include "../defines.h"
 
@@ -45,6 +46,8 @@ class Profile {
 
     bool shipsUnlocked[6];   
     bool shipsBought[6];    
+    
+    std::string home;
     
     std::ifstream ifs;
     std::ofstream ofs;

@@ -71,7 +71,7 @@ void Game::setup() {
       break;
   }
   
-  ship[0]->setup(settings.getRelativeMovement());
+  ship[0]->setup();
 
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
   lbWave.setColour( 1.0,  0.0,  1.0);

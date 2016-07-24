@@ -9,14 +9,31 @@ Settings::~Settings() {
 }
 
 void Settings::Load() {
-  if(File::check_if_file_exists("data/settings.bin")) {
+
+  // check whether application directory in the home diretory exists, if not create it
+  # ifdef __linux__
+    home = getenv("HOME");
+    if (*home.rbegin() != '/') home += '/';
+      mkdir((home + ".returnvoid/").c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  # endif
+
+  # ifdef __WIN32__
+    TCHAR szAppData[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szAppData);
+    home = szAppData;
+    CreateDirectory((home + ".returnvoid/").c_str(), NULL);
+  # endif
+
+  if(File::check_if_file_exists((home + ".returnvoid/settings.bin").c_str())) {
     printf("Loading Settings\n");
-    ifs.open("./data/settings.bin", std::ios::binary);
+    ifs.open((home + ".returnvoid/settings.bin").c_str(), std::ios::binary);
     version = File::LoadFloat(ifs);
     if(version != (float)VERSION) {
       createNewSettings();
     } else {
-      relativeMovement = File::LoadBool(ifs);
+      fullscreen = File::LoadBool(ifs);
+      windowWidth = File::LoadInt(ifs);
+      windowHeight = File::LoadInt(ifs);
       ifs.close();
     }
   } else {
@@ -26,16 +43,20 @@ void Settings::Load() {
 
 void Settings::Save() {
   printf("Saving settings\n");
-  std::ofstream ofs("./data/settings.bin", std::ios::binary);
+  std::ofstream ofs((home + ".returnvoid/settings.bin").c_str(), std::ios::binary);
   File::SaveFloat(ofs, version);
-  File::SaveBool(ofs, relativeMovement);
+  File::SaveBool(ofs, fullscreen);
+  File::SaveInt(ofs, windowWidth);
+  File::SaveInt(ofs, windowHeight);
   ofs.close();
 }
 
 void Settings::createNewSettings() {
   printf("Creating settings file\n");
   version = VERSION;   
-  relativeMovement = false;
+  fullscreen = true;
+  windowWidth = 1280;
+  windowHeight = 720;
   Save();
 }
 

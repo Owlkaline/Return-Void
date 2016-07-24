@@ -85,38 +85,17 @@ void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
      angle = angle - 90.0f;
   }
    
-if(relativeMovement) {
-    if(distanceFromCursor > MINIMUM_DISTANCETOSHIP) {
-      if(keyState['W'] == BUTTON_DOWN || keyState['w'] == BUTTON_DOWN) {
-        y+=speed*directionY;
-        x+=speed*directionX;
-      }
-    }
-    if(keyState['S'] == BUTTON_DOWN || keyState['s'] == BUTTON_DOWN) {
-      y-=speed*directionY;
-      x-=speed*directionX;
-    }
+  if(keyState['W'] == BUTTON_DOWN || keyState['w'] == BUTTON_DOWN) {
+    y+=speed;
+  } else if(keyState['S'] == BUTTON_DOWN || keyState['s'] == BUTTON_DOWN) {
+    y-=speed;
+  }
 
-    if(keyState['D'] == BUTTON_DOWN || keyState['d'] == BUTTON_DOWN) {
-      x+=speed*directionY;
-      y-=speed*directionX;
-    } else if(keyState['A'] == BUTTON_DOWN || keyState['a'] == BUTTON_DOWN) {
-      x-=speed*directionY;
-      y+=speed*directionX;
-    }
-  } else {
-    if(keyState['W'] == BUTTON_DOWN || keyState['w'] == BUTTON_DOWN) {
-      y+=speed;
-    } else if(keyState['S'] == BUTTON_DOWN || keyState['s'] == BUTTON_DOWN) {
-      y-=speed;
-    }
-
-    if(keyState['D'] == BUTTON_DOWN || keyState['d'] == BUTTON_DOWN) {
-      x+=speed;
-    } else if(keyState['A'] == BUTTON_DOWN || keyState['a'] == BUTTON_DOWN) {
-      x-=speed;
-    }
-  }  
+  if(keyState['D'] == BUTTON_DOWN || keyState['d'] == BUTTON_DOWN) {
+    x+=speed;
+  } else if(keyState['A'] == BUTTON_DOWN || keyState['a'] == BUTTON_DOWN) {
+    x-=speed;
+  }
 
   if(x < width/2) 
     x = width/2;

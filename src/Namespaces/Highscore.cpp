@@ -9,10 +9,25 @@ Highscore::~Highscore() {
 }
 
 void Highscore::Load() {
+
+  // check whether application directory in the home diretory exists, if not create it
+  # ifdef __linux__
+    home = getenv("HOME");
+    if (*home.rbegin() != '/') home += '/';
+      mkdir((home + ".returnvoid/").c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  # endif
+
+  # ifdef __WIN32__
+    TCHAR szAppData[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szAppData);
+    home = szAppData;
+    CreateDirectory((home + ".returnvoid/").c_str(), NULL);
+  # endif
+
   isNewHighscore = false;
-  if(File::check_if_file_exists("data/Highscore.bin")) {
+  if(File::check_if_file_exists((home + ".returnvoid/Highscore.bin").c_str())) {
     printf("Loading Highscore\n");
-    ifs.open("./data/Highscore.bin", std::ios::binary);
+    ifs.open((home + ".returnvoid/Highscore.bin").c_str(), std::ios::binary);
     version = File::LoadFloat(ifs);
     if(version != (float)VERSION) {
       ifs.close();
@@ -35,7 +50,7 @@ void Highscore::Load() {
 
 void Highscore::Save() {
   printf("Saving Highscore\n");
-  std::ofstream ofs("./data/Highscore.bin", std::ios::binary);
+  std::ofstream ofs((home + ".returnvoid/Highscore.bin").c_str(), std::ios::binary);
   File::SaveFloat(ofs, version);
   for(int i = 0; i < 10; ++i) {
     for(int j = 0; j < 6; ++j) {

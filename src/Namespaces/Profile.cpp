@@ -9,8 +9,23 @@ Profile::~Profile() {
 }
 
 void Profile::Load(char* filename) {
+
+  // check whether application directory in the home diretory exists, if not create it
+  # ifdef __linux__
+    home = getenv("HOME");
+    if (*home.rbegin() != '/') home += '/';
+      mkdir((home + ".returnvoid/").c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  # endif
+
+  # ifdef __WIN32__
+    TCHAR szAppData[MAX_PATH];
+    SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szAppData);
+    home = szAppData;
+    CreateDirectory((home + ".returnvoid/").c_str(), NULL);
+  # endif
+
   this->filename = filename;  
-  str = "data/";
+  str = (home + ".returnvoid/").c_str();
   str += filename;
   str += ".save";
   if(File::check_if_file_exists(str)) {

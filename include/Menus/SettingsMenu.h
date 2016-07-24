@@ -14,7 +14,8 @@ class SettingsMenu: public Menu {
     void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
 
   protected:    
-    bool isRelative;
+    bool isFullscreen;
+    int crntResolution;
     
     Settings settings;
 };
