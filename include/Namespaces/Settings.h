@@ -8,6 +8,11 @@
 //#include <sys/types.h>
 #include <sys/stat.h>
 
+# ifdef __WIN32__
+    # include <shlobj.h>
+    # include <windows.h>
+# endif
+
 class Settings {
   public:
     Settings();

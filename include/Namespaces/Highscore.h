@@ -7,6 +7,11 @@
 #include "./File.h"
 #include "../defines.h"
 
+# ifdef __WIN32__
+    # include <shlobj.h>
+    # include <windows.h>
+# endif
+
 class Highscore {
   public:
     Highscore();

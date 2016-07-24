@@ -9,6 +9,11 @@
 
 #include "./File.h"
 
+# ifdef __WIN32__
+    # include <shlobj.h>
+    # include <windows.h>
+# endif
+
 class Profile {
   public:
     Profile();
