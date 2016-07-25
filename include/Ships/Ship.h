@@ -135,7 +135,7 @@ class Ship {
     
     void fire(float x, float y, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
     for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-      WeaponMount[i]->update(x, y, directionX, directionY, angle, mouseBtnState[GLUT_LEFT_BUTTON]);
+      WeaponMount[i]->update(x, y, directionX, directionY, angle, mouseBtnState[0]);
     }
     
     void animate() {

@@ -1,23 +1,29 @@
-//Version 0.1
-// Oregano
-#include "../include/defines.h"
+//Using SDL and standard IO
+#include <SDL2/SDL.h>
 
-#include <time.h>  /* time */
+#ifdef __APPLE__
+#include <OpenGL/gl.h>// Header File For The OpenGL32 Library
+#include <OpenGL/glu.h>// Header File For The GLu32 Library
+#else
+#include <GL/glu.h>
+#include <png.h>
+#endif
+
 #include <stdio.h>
-#include <fstream>
-#include <stdlib.h>
-#include <iostream>
 
 #include "../include/Menus/Shop.h"
 #include "../include/Menus/MainMenu.h"
 #include "../include/Menus/SettingsMenu.h"
+#include "../include/Menus/HighscoreScreen.h"
 
 #include "../include/GameTypes/Game.h"
 #include "../include/GameTypes/Menu.h"
 
-#include "../include/Namespaces/File.h"
 #include "../include/Namespaces/Settings.h"
-#include "../include/Namespaces/LoadTexture.h"
+
+//Screen dimension constants
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 
 int screenResX;
 int screenResY;
@@ -38,11 +44,9 @@ float aspectW;
 float aspectH;
 
 //Current coords of the mouse
-float mouseX, mouseY;
+int mouseX, mouseY;
 
-//Unused currently, For setting game into gamemode when fullscreen
-bool gameMode;
-
+//Settings settings;
 Settings settings;
 
 //Keeps the current key state, keeps the key state of the previous key state
@@ -58,75 +62,50 @@ GLuint mouseTexture;
 
 DisplayManager* Display[5] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen() };
 
-//Sets the pace of the game
-void Timer(int value) {
-   glutPostRedisplay();  // Post a paint request to activate display()
-   glutTimerFunc(refreshMillis, Timer, 0); // subsequent timer call at milliseconds
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
+
+//OpenGL context
+SDL_GLContext gContext;
+
+//Render flag
+bool gRenderQuad = true;
+
+void mouse() {
+  int x, y;
+  SDL_GetMouseState( &x, &y );
+  mouseY = (screenResY - y) * aspectH;
+  mouseX = x*aspectW;
 }
 
 //Updates what keys are pressed
-void keyboard(unsigned char key, int x, int y) {
+void keyboard(unsigned char key) {
   keyState[putchar (tolower(key))] = BUTTON_DOWN;
 }
 
 //Updates what keys are released
-void keyboard_up(unsigned char key, int x, int y) {
+void keyboard_up(unsigned char key) {
     keyState[putchar (tolower(key))] = BUTTON_UP;
 }
 
-//keys for special key presses (F1, F2, CTRL, LEFT, RIGHT etc)
-void specialKeys(int key, int x, int y) {
-
-  if( key == GLUT_KEY_LEFT) {
-    specialKey[LEFT_KEY] = BUTTON_DOWN;
-  } else {
-    specialKey[LEFT_KEY] = BUTTON_UP;
-  }
-
-  if( key == GLUT_KEY_RIGHT) {
-    specialKey[RIGHT_KEY] = BUTTON_DOWN;
-  } else {
-    specialKey[RIGHT_KEY] = BUTTON_UP;
-  }
-
-  if( key == GLUT_KEY_UP) {
-    specialKey[UP_KEY] = BUTTON_DOWN;
-  } else {
-    specialKey[UP_KEY] = BUTTON_UP;
-  }
-
-  if( key == GLUT_KEY_DOWN) {
-    specialKey[DOWN_KEY] = BUTTON_DOWN;
-  } else {
-    specialKey[DOWN_KEY] = BUTTON_UP;
-  }
-
-}
-
-void mouseBtn(int btn, int state, int x, int y) {
-  if(state == BUTTON_DOWN) {
+void mouseBtn(int btn, int state) {  
+/* if(state == BUTTON_DOWN) {
     state = BUTTON_UP;
   } else {
     state = BUTTON_DOWN;
+  }*/
+  
+  if(btn == SDL_BUTTON_LEFT) {
+    btn = 0;
+  } else if(btn == SDL_BUTTON_RIGHT) {
+    btn = 1;
+  } else {
+    btn = 2;
   }
-
+  
   mouseBtnState[btn] = state;
 }
-
-//Updates mouse coords
-void mouse(int x, int y) {
-  if(type == SETTINGS) {
-    settings.Load();
-    screenResX = settings.getWindowWidth();
-    screenResY = settings.getWindowHeight();
-    aspectRatio = (float)screenResX / screenResY;
-    aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
-    aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
-  }
-  mouseX = ((float)x) * aspectW;
-  mouseY = SPACE_Y_RESOLUTION - (((float)y)) * aspectH; 
-  //printf("x: %f, y:%f\n", mouseX, mouseY);  
-}
+  
 
 void drawCursor() {
   if(type != GAME) {
@@ -151,25 +130,36 @@ void drawCursor() {
   }
 }
 
-//Draw function
-void display() {
-  if(!settings.getFullscreen() && mouseBtnState[0] != BUTTON_DOWN) {
-   if(glutGet(GLUT_WINDOW_WIDTH) != screenResX || glutGet(GLUT_WINDOW_HEIGHT) != screenResY) {
-      //settings.Load()
-      glutReshapeWindow(screenResX, screenResY);
-    }
-  }
-  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);
+void clean() {
+	//Destroy window	
+	SDL_DestroyWindow( gWindow );
+	gWindow = NULL;
+
+	//Quit SDL subsystems
+	SDL_Quit();
+}
+
+void display() {      
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
-
+  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);
+  
   //Texture options
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
-
+  //Render quad
+/*  if( gRenderQuad ) {
+    glBegin( GL_QUADS );
+      glVertex2f( 0.5f, 0.5f );
+      glVertex2f( 50.0f, 0.5f );
+      glVertex2f( 0.5f, 50.0f );
+      glVertex2f( 50.0f, 50.0f );
+    glEnd();
+  }*/
+  
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
   
@@ -179,7 +169,7 @@ void display() {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
       case EXIT:
-        glutLeaveGameMode();
+        clean();
         exit(0);
         break;
       case SEEDEDGAME:
@@ -195,137 +185,105 @@ void display() {
     type = newtype;
     Display[type]->setup();
   }
-
+  
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
-  prevMouseBtnState[GLUT_LEFT_BUTTON] = mouseBtnState[GLUT_LEFT_BUTTON];
-
+  prevMouseBtnState[0] = mouseBtnState[0]; // Left Mouse Button
+  
   glEnable (GL_BLEND);
   glBlendFunc (GL_ONE, GL_ONE);
-
-  glutSwapBuffers();
 }
 
-void setup() {
-  //int const screenResX = glutGet(GLUT_WINDOW_WIDTH);
-  //int const screenResY = glutGet(GLUT_WINDOW_HEIGHT);
+void init() {
+  if( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
+    printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+    exit(0);
+  } else {  
+    
+    // Use OpenGL 2.1
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
+    
+    settings.Load();
+    bool isFullscreen = settings.getFullscreen();
+    screenResX = settings.getWindowWidth();
+    screenResY = settings.getWindowHeight();
+
+    
+
+    if(isFullscreen) {
+      screenResX = 1920;
+      screenResY = 1080;
+      //Create Window
+      gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+      
+      // Borderless fullscreen
+      //SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+      
+      // Fullscreen
+      SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+      printf("Entering fullscreen mode\n");
+      settings.setFullscreen(true); 
+      settings.setResolution(screenResX, screenResY);    
+    } else {
+      printf("Entering windowed mode\n");
+  
+      //Create Window
+      gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+      
+    }    
+    settings.Save();  
+    SDL_ShowCursor(SDL_DISABLE);
+  }
+  
   aspectRatio = (float)screenResX / screenResY;
   aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
   aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
   
-  //printf("%f, %f, %f\n, ", aspectW, aspectH, aspectRatio);
-
-  for(int i = 0; i < 5; ++i) {
-    specialKey[i] = BUTTON_UP;
-  }
+  // Create context
+  gContext = SDL_GL_CreateContext(gWindow);
+  
+  SDL_GL_SetSwapInterval(1);
+  
+  gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
+  
   mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
+  //Initialize clear color
+  glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+  
   Display[type]->setup();
 }
 
-int main(int argc, char** argv) {
-
-  glClearColor(0.0f, 0.0f, 0.0f, 255.0f);     // black background
-
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-  /*gameMode = GAME_MODE_POSSIBLE;
-
-  char mode_string[24];
-
-  sprintf(mode_string, "%dx%d:32@60", glutGet(GLUT_SCREEN_WIDTH),
-  glutGet(GLUT_SCREEN_HEIGHT));
-  glutGameModeString(mode_string);
-
-  if(GAME_MODE_POSSIBLE && !glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
-    printf("GameMode %s is possible\n", mode_string);
-
-    //destroys the current graphics window
-    glutDestroyWindow(0);
-    glutEnterGameMode();
-  } else {*/
+int main(int argc, char* args[]) {
+  init();
   
-  //}
-  settings.Load();
-  bool isFullscreen = settings.getFullscreen();
+  bool quit = false;
   
-  screenResX = glutGet(GLUT_SCREEN_WIDTH);
-  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
+  // Event Handler
+  SDL_Event e;
   
-  printf("%d, %d\n", screenResX, screenResY);
-  
-  glutDestroyWindow(0);
-  glutCreateWindow("Return-Void"); 
-  
-  if(isFullscreen) {
-  /*  if(screenResX > 1920 || screenResY > 1080) {
-      // glutInitWindowPosition(100,100);
-      settings.setFullscreen(false);
-      settings.setResolution(1920, 1080);  
-      printf("Screen resolution is greater than 1920x1080\nLaunching 1920x1080 Windowed mode\n");   
-      glutReshapeWindow(settings.getWindowWidth(), settings.getWindowHeight());
-      screenResX = settings.getWindowWidth();
-      screenResY = settings.getWindowHeight();
-      settings.Save();
-    } else {*/
-      printf("Entering fullscreen mode\n");
-      glutFullScreen();  
-      settings.setFullscreen(true); 
-   // }
-  } else {
-    printf("Entering windowed mode\n");
-    screenResX = settings.getWindowWidth();
-    screenResY = settings.getWindowHeight();
-    printf("%d, %d\n", settings.getWindowWidth(), settings.getWindowHeight());
-   // glutInitWindowSize(screenResX, screenResY);
-    glutReshapeWindow(screenResX, screenResY);
-    glutInitWindowPosition(screenResX/4,screenResY/4); 
-    printf("%d, %d\n", screenResX, screenResY);
+  while( !quit ) {
+    while( SDL_PollEvent( &e ) != 0 ) {    
+      if(e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {
+        mouse();
+        if(e.type == SDL_MOUSEBUTTONDOWN)
+          mouseBtn(e.button.button, BUTTON_DOWN);
+        if(e.type == SDL_MOUSEBUTTONUP)
+          mouseBtn(e.button.button, BUTTON_UP);
+      }
+      if(e.type == SDL_KEYDOWN) 
+        keyboard(e.key.keysym.sym);      
+      if(e.type == SDL_KEYUP) 
+        keyboard_up(e.key.keysym.sym);
+        
+	   //User requests quit
+		if( e.type == SDL_QUIT )
+		 quit = true;
+    }
+    display();    
+    SDL_GL_SwapWindow(gWindow);
+    SDL_Delay(20);
   }
- 
-  // hide the cursor
-  glutSetCursor(GLUT_CURSOR_NONE);
-
-  glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
-  glAlphaFunc(GL_GREATER, 0.1);
-  glEnable(GL_ALPHA_TEST);
-
-  glutIgnoreKeyRepeat(1);
-
-  glutDisplayFunc(display);
-  glutTimerFunc(0, Timer, 0);
-  glutKeyboardFunc(keyboard);
-  glutKeyboardUpFunc(keyboard_up);
-  glutSpecialFunc(specialKeys);
-  glutMouseFunc(mouseBtn);
-  glutMotionFunc(mouse);
-  glutPassiveMotionFunc(mouse);
-
- // screenResX = glutGet(GLUT_SCREEN_WIDTH);
-//  screenResY = glutGet(GLUT_SCREEN_HEIGHT);
-
-  setup();
-
-  const float ratio(static_cast<float>(SPACE_X_RESOLUTION)/static_cast<float>(SPACE_Y_RESOLUTION));
-
-  gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
-/*
-  if (static_cast<float>(screenResX)/screenResY > ratio) {
-    //  scale_ = static_cast<float>(screenResY)/SPACE_Y_RESOLUTION;
-    screenResY = screenResY;
-    screenResX  = screenResY * ratio;
-    glViewport((screenResX-screenResX)*0.5f, 0, screenResX, screenResY);
-  }
-  else {
-    // scale_ = static_cast<float>(screenResX)/SPACE_X_RESOLUTION;
-    screenResY = screenResX / ratio;
-    screenResX  = screenResX;
-    glViewport(0, (screenResY-screenResY)*0.5f, screenResX, screenResY);
-  }*/
-
-  glClearColor(0.0, 0.0, 0.0, 255.0);
-
-  printf("Setup Complete\n");
-
-  glutMainLoop();
+  clean();
   return 0;
 }

@@ -26,12 +26,12 @@ class Settings {
     void setFullscreen(bool fullscreen) { 
       this->fullscreen = fullscreen; 
       if(fullscreen) {
-        glutFullScreen();  
-        windowWidth = glutGet(GLUT_SCREEN_WIDTH);
-        windowHeight = glutGet(GLUT_SCREEN_HEIGHT);
+        //glutFullScreen();  
+     //   windowWidth = glutGet(GLUT_SCREEN_WIDTH);
+     //   windowHeight = glutGet(GLUT_SCREEN_HEIGHT);
       } else {
-        glutReshapeWindow(windowWidth, windowHeight);
-        glutInitWindowPosition(windowWidth/4, windowHeight/4); 
+        //glutReshapeWindow(windowWidth, windowHeight);
+        //glutInitWindowPosition(windowWidth/4, windowHeight/4); 
       }
     }
     

@@ -8,7 +8,6 @@
 
 #include "../Menus/Label.h"
 #include "../Menus/Button.h"
-#include "../Menus/CheckBox.h"
 
 #include "./DisplayManager.h"
 
@@ -25,10 +24,9 @@ class Menu: public DisplayManager {
     float getHeight() { return height; }
     
     virtual void clean() { 
-      buttons.clear(); lb.clear(); checkbox.clear(); 
+      buttons.clear(); lb.clear();
       buttons.erase(buttons.begin(), buttons.end());
       lb.erase(lb.begin(), lb.end());
-      checkbox.erase(checkbox.begin(), checkbox.end());
     }
                  
     void draw() {
@@ -55,7 +53,7 @@ class Menu: public DisplayManager {
         glVertex3f(SPACE_X_RESOLUTION, 0, 0.0);
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(0, 0, 0.0);
-      glEnd();
+      glEnd();      
       glDisable(GL_TEXTURE_2D);
   
       // Black Box in center
@@ -77,7 +75,6 @@ class Menu: public DisplayManager {
     
     std::vector<Label*> lb;
     std::vector<Button*> buttons;    
-    std::vector<CheckBox*> checkbox;
     
     GLuint background;
 };

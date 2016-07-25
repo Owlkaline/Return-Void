@@ -102,14 +102,14 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
   hasBeenClicked = false;
   isSelected = false;
   if(!disabled) {
-    if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP)
+    if(mouseBtnState[0] == 1)
       clicked = false;
       
     if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
-      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+      if(mouseBtnState[0] == 0) {
         clicked = true;
       } 
-      if(mouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_UP && prevMouseBtnState[GLUT_LEFT_BUTTON] == BUTTON_DOWN) {
+      if(mouseBtnState[0] == 1 && prevMouseBtnState[0] == 0) {
         hasBeenClicked = true;
       }
       isSelected = true;

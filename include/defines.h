@@ -4,11 +4,12 @@
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
-#include <GLUT/glut.h>// Header File For The GLut Library
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #else
-#include <GL/glut.h>
 #include <GL/glu.h>
-#include <GL/freeglut.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <png.h>
 #endif
 
