@@ -1,5 +1,6 @@
 //Using SDL and standard IO
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
@@ -59,6 +60,9 @@ unsigned char keyState[255];
 unsigned char prevKeyState[255];
 
 GLuint mouseTexture;
+
+SDL_Surface* surface;
+TTF_Font* font;
 
 DisplayManager* Display[5] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen() };
 
@@ -150,16 +154,17 @@ void display() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
-  //Render quad
-/*  if( gRenderQuad ) {
-    glBegin( GL_QUADS );
-      glVertex2f( 0.5f, 0.5f );
-      glVertex2f( 50.0f, 0.5f );
-      glVertex2f( 0.5f, 50.0f );
-      glVertex2f( 50.0f, 50.0f );
-    glEnd();
-  }*/
-  
+  surface  = SDL_GetWindowSurface(gWindow);
+    SDL_Color White = {0, 255, 0,255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+
+  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Testing text", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+  SDL_Rect pos;
+  pos.x = SPACE_X_RESOLUTION/2;
+  pos.y = SPACE_Y_RESOLUTION/2;
+  pos.w = 100;
+  pos.h = 100;
+  SDL_BlitSurface(surfaceMessage, NULL, surface, &pos);
+
   Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
   
@@ -186,6 +191,9 @@ void display() {
     Display[type]->setup();
   }
   
+
+ // SDL_FreeSurface(surfaceMessage); 
+ 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
   prevMouseBtnState[0] = mouseBtnState[0]; // Left Mouse Button
@@ -232,9 +240,12 @@ void init() {
       gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
       
     }    
+    TTF_Init();
     settings.Save();  
     SDL_ShowCursor(SDL_DISABLE);
   }
+  
+  surface  = SDL_GetWindowSurface(gWindow);
   
   aspectRatio = (float)screenResX / screenResY;
   aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
@@ -242,11 +253,16 @@ void init() {
   
   // Create context
   gContext = SDL_GL_CreateContext(gWindow);
+
+  SDL_Init(SDL_INIT_EVERYTHING);
   
   SDL_GL_SetSwapInterval(1);
   
   gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
   
+  font = TTF_OpenFont("lazy.ttf", 70); //this opens a font style and sets a size
+  if(font == NULL)
+    exit(0);
   mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
   //Initialize clear color
   glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
