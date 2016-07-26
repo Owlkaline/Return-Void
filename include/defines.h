@@ -15,6 +15,8 @@
 #include <SDL2/SDL.h>
 #endif
 
+#include <cstdlib>
+
 #define VERSION                1.5
 
 #define GAME_MODE_POSSIBLE     0
