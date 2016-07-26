@@ -55,8 +55,8 @@ void Settings::createNewSettings() {
   printf("Creating settings file\n");
   version = VERSION;   
   fullscreen = true;
-  windowWidth = 1280;
-  windowHeight = 720;
+  windowWidth = 1920;
+  windowHeight = 1080;
   Save();
 }
 

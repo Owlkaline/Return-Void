@@ -95,12 +95,12 @@ void SettingsMenu::setup() {
       lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/1920x1080.png");
   }
   
-  if(isFullscreen) {
+ /* if(isFullscreen) {
     lb[2]->disable();
     lb[3]->disable();
     buttons[4]->disable();
     buttons[5]->disable();    
-  }
+  }*/
   
   background = txt::LoadTexture("Textures/Menu/Background.png");
 }
@@ -144,17 +144,17 @@ void SettingsMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
     if(isFullscreen) {
       lb[1]->setTexture((char*)"Textures/Menu/Misc/False.png"); 
       isFullscreen = false;
-      lb[2]->enable();
-      lb[3]->enable();
-      buttons[4]->enable();
-      buttons[5]->enable();
+      //lb[2]->enable();
+      //lb[3]->enable();
+      //buttons[4]->enable();
+      //buttons[5]->enable();
     } else {
       lb[1]->setTexture((char*)"Textures/Menu/Misc/True.png"); 
       isFullscreen = true;
-      lb[2]->disable();
-      lb[3]->disable();
-      buttons[4]->disable();
-      buttons[5]->disable();
+      //lb[2]->disable();
+      //lb[3]->disable();
+      //buttons[4]->disable();
+      //buttons[5]->disable();
     }
   }
   // Left Arrow resolutions

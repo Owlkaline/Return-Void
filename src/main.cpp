@@ -1,13 +1,22 @@
 //Using SDL and standard IO
-#include <SDL2/SDL.h>
+
 //#include <SDL2/SDL_ttf.h>
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
+#include <SDL2/SDL.h>
 #else
 #include <GL/glu.h>
 #include <png.h>
+#endif
+
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#endif
+
+#ifdef __WIN32__
+#include <SDL.h>
 #endif
 
 #include <stdio.h>
@@ -217,8 +226,9 @@ void init() {
     
 
     if(isFullscreen) {
-      screenResX = 1920;
-      screenResY = 1080;
+      //screenResX = 800;
+      //screenResY = 600;
+      
       //Create Window
       gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
       
@@ -226,7 +236,7 @@ void init() {
       //SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
       
       // Fullscreen
-      SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+      SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
       printf("Entering fullscreen mode\n");
       settings.setFullscreen(true); 
       settings.setResolution(screenResX, screenResY);    
