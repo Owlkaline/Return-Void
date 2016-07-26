@@ -4,13 +4,15 @@
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #else
 #include <GL/glu.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #include <png.h>
+#endif
+
+#ifdef __WIN32
+#include <SDL.h>
+#else
+#include <SDL2/SDL.h>
 #endif
 
 #define VERSION                1.5

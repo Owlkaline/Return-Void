@@ -5,18 +5,15 @@
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
-#include <SDL2/SDL.h>
-#else
+#else 
 #include <GL/glu.h>
 #include <png.h>
 #endif
 
-#ifdef __linux__
-#include <SDL2/SDL.h>
-#endif
-
-#ifdef __WIN32__
+#ifdef __WIN32
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
 #endif
 
 #include <stdio.h>
