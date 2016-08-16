@@ -8,7 +8,7 @@ compiler:
 before_install:
   - sudo apt-get update -qq
 #  - sudo apt-get install -y libsdl2-ttf.dev
-  - sudo apt-get install -y libboost-random1.58-dev
+  - sudo apt-get install libboost-random1.58-dev
   - sudo apt-get install -y libpng12-dev
 # Build steps
 script:
