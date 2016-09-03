@@ -95,23 +95,21 @@ static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 //Updates what keys are pressed
-void keyboard(unsigned char key) {
-  keyState[putchar (tolower(key))] = BUTTON_DOWN;
+void keyboard(int key) {
+  //printf("key: %d\n", key);
+  keyState[key] = BUTTON_DOWN;
 }
 
 //Updates what keys are released
-void keyboard_up(unsigned char key) {
-    keyState[putchar (tolower(key))] = BUTTON_UP;
+void keyboard_up(int key) {
+    keyState[key] = BUTTON_UP;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  if(action == GLFW_PRESS)
-    printf("key: %d\n", key);
-  if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {    
+  if(action == GLFW_PRESS) {
     keyboard(key);
-    glfwSetWindowShouldClose(window, true);
   }
-  if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+  if(action == GLFW_RELEASE) {
     keyboard_up(key);
   }
 }
@@ -150,7 +148,7 @@ void clean() {
   glfwTerminate();
 }
 
-void display(float deltaTime) {      
+void display(GLFWwindow* window, float deltaTime) {      
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
@@ -171,6 +169,7 @@ void display(float deltaTime) {
     int newtype = Display[type]->getEndType();
     switch(newtype) {
       case EXIT:
+        glfwSetWindowShouldClose(window, true);
         clean();
         exit(0);
         break;
@@ -289,9 +288,10 @@ int main(int argc, char* args[]) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     double currentTime = glfwGetTime();
-    float deltaTime = float(currentTime - lastTime)  * 40;
+   // printf("Time: %f", currentTime);
+    float deltaTime = float(currentTime - lastTime)  * 50;
     lastTime = glfwGetTime();
-    display(deltaTime);  
+    display(window, deltaTime);  
     
     glfwSwapInterval(1);
 

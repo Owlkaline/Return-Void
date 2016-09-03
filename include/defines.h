@@ -83,12 +83,12 @@
 #define DRAWHITBOX             0
 
 // Arrow Keys
-#define LEFT_KEY               0
-#define RIGHT_KEY              1
-#define UP_KEY                 2
-#define DOWN_KEY               3
+#define LEFT_KEY               263
+#define RIGHT_KEY              262
+#define UP_KEY                 265
+#define DOWN_KEY               264
 
 // Keys
-#define ESC                    27
+#define ESC                    256
 
 #endif
