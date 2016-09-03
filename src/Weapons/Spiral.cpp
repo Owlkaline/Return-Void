@@ -33,10 +33,10 @@ void Spiral::clean() {
 
 }
 
-void Spiral::tick() {
-  y+=speed*directionY;
-  x+=speed*directionX;
-  angle+=10;
+void Spiral::tick(float deltaTime) {
+  y+=(speed*deltaTime)*directionY;
+  x+=(speed*deltaTime)*directionX;
+  angle+=10*deltaTime;
 }
 
 void Spiral::setup(float x, float y, float dirX, float dirY, float angle) {

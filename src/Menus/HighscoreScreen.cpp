@@ -98,7 +98,7 @@ void HighscoreScreen::setup(std::string username) {
   }
 } 
 
-void HighscoreScreen::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   ended = false;
   for(unsigned int i = 0; i < buttons.size(); ++i)
     buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);

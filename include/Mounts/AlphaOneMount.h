@@ -13,7 +13,7 @@ class AlphaOneMount: public Mount {
     void defaults();
     void setTexture();
     void individualClean();
-    void tick(float x, float y, float directionX, float directionY, float angle, bool isShooting);
+    void tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting);
 
   protected:   
     std::vector<int> cycle;

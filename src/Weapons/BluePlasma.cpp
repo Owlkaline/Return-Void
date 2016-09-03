@@ -33,9 +33,9 @@ void BluePlasma::clean() {
 
 }
 
-void BluePlasma::tick() {
-  y+=speed*directionY;
-  x+=speed*directionX;
+void BluePlasma::tick(float deltaTime) {
+  y+=(speed*deltaTime)*directionY;
+  x+=(speed*deltaTime)*directionX;
 }
 
 void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {

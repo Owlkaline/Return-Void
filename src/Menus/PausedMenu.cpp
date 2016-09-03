@@ -38,7 +38,7 @@ void PausedMenu::drawBackground() {
     glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
-void PausedMenu::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void PausedMenu::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   paused = true;
   ended = false;
   for(unsigned int i = 0; i < buttons.size(); ++i) {

@@ -43,7 +43,7 @@ void FighterShip::defaults() {
   }
 }
 
-void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void FighterShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   animate();
 
   if(tookDamage || shieldDamaged)
@@ -68,17 +68,17 @@ void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState
      angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
      angle = angle - 90.0f;
   }
-  
-  if(keyState['W'] == BUTTON_DOWN || keyState['w'] == BUTTON_DOWN) {
-    y+=speed;
-  } else if(keyState['S'] == BUTTON_DOWN || keyState['s'] == BUTTON_DOWN) {
-    y-=speed;
+  // w
+  if(keyState[87] == BUTTON_DOWN) {
+    y+=speed*deltaTime;
+  } else if(keyState[83] == BUTTON_DOWN) { //s
+    y-=speed*deltaTime;
   }
-
-  if(keyState['D'] == BUTTON_DOWN || keyState['d'] == BUTTON_DOWN) {
-    x+=speed;
-  } else if(keyState['A'] == BUTTON_DOWN || keyState['a'] == BUTTON_DOWN) {
-    x-=speed;
+  //d
+  if(keyState[68] == BUTTON_DOWN) {
+    x+=speed*deltaTime;
+  } else if(keyState[65] == BUTTON_DOWN) {// a
+    x-=speed*deltaTime;
   }
 
   if(x < width/2)
@@ -90,7 +90,7 @@ void FighterShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState
   if(y > SPACE_Y_RESOLUTION-height/2)
     y = SPACE_Y_RESOLUTION-height/2;
 
-  fire(x, y, directionX, directionY, angle, mouseBtnState);
+  fire(x, y, deltaTime, directionX, directionY, angle, mouseBtnState);
 
   if(health < crntHealth) {
     crntHealth-=0.000000002;

@@ -34,10 +34,10 @@ void Shield::setup(float x, float y) {
   name = "Shield";
 }
 
-void Shield::update() {
+void Shield::update(float deltaTime) {
   tick++;
   if(!isCollected) {
-    y-=3 * tick/100.0;
+    y-=3 * (tick/100.0)*deltaTime;
   }
   
   if(y < 0 - height)

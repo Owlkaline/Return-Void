@@ -200,7 +200,7 @@ void Game::restart() {
   setup();  
 }
 
-void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   ChX = mouseX;
   ChY = mouseY;
 
@@ -216,15 +216,15 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         newWave();
         
       // Background sccrolling   
-      offsetY-=2;
+      offsetY-=2*deltaTime;
       if(offsetY <= -1080)
         offsetY=0;
         
-      ship[0]->update(mouseX, mouseY, mouseBtnState, keyState, prevKeyState);
+      ship[0]->update(mouseX, mouseY, deltaTime, mouseBtnState, keyState, prevKeyState);
       
       // Updated enemy and checked if it was killed
       for(unsigned int i = 0; i < enemy.size(); ++i) {
-        enemy[i]->update(ship[0]->getX(), ship[0]->getY());
+        enemy[i]->update(ship[0]->getX(), ship[0]->getY(), deltaTime);
         if(enemy[i]->getWaskilled()) {
           numOfEnemiesKilled++;
           score += enemy[i]->getScore();
@@ -284,7 +284,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         }        
       }
       for(unsigned int i = 0; i < powerups.size(); ++i) {
-        powerups[i]->update();
+        powerups[i]->update(deltaTime);
         if(powerups[i]->getCollected()) {
           numOfPowerupsCollected++;
           std::string str = powerups[i]->getName();
@@ -317,7 +317,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
         profile.addCoins(coins);
       }
     } else {
-      pMenu.update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
+      pMenu.update(mouseX, mouseY, deltaTime, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
       if(!pMenu.isPaused())
         paused = !paused;
       if(pMenu.hasEnded()) {
@@ -338,7 +338,7 @@ void Game::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
       ended = true;
       printf("Returning to Menu, from highscore screen\n");
     }
-    highscore.update( mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
+    highscore.update( mouseX, mouseY, deltaTime, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
     if(highscore.hasEnded()) {
       switch(highscore.getEndType()) {
         case MAINMENU:

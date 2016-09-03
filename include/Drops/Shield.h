@@ -8,7 +8,7 @@ class Shield: public Drops {
     Shield();
     void draw();
     void setup(float x, float y);
-    void update();
+    void update(float deltaTime);
     int getType();
   protected:
 };

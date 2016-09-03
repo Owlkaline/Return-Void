@@ -51,7 +51,7 @@ void GalacticShip::defaults() {
   }
 }
     
-void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(boostTimer > 50) {
     if(SPEED+extraSpeed > speed) {
       speed+=0.5;
@@ -85,16 +85,16 @@ void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
      angle = angle - 90.0f;
   }
    
-  if(keyState['W'] == BUTTON_DOWN || keyState['w'] == BUTTON_DOWN) {
-    y+=speed;
-  } else if(keyState['S'] == BUTTON_DOWN || keyState['s'] == BUTTON_DOWN) {
-    y-=speed;
+  if(keyState[87] == BUTTON_DOWN) {
+    y+=speed*deltaTime;
+  } else if(keyState[83] == BUTTON_DOWN) {
+    y-=speed*deltaTime;
   }
 
-  if(keyState['D'] == BUTTON_DOWN || keyState['d'] == BUTTON_DOWN) {
-    x+=speed;
-  } else if(keyState['A'] == BUTTON_DOWN || keyState['a'] == BUTTON_DOWN) {
-    x-=speed;
+  if(keyState[68] == BUTTON_DOWN) {
+    x+=speed*deltaTime;
+  } else if(keyState[65] == BUTTON_DOWN) {
+    x-=speed*deltaTime;
   }
 
   if(x < width/2) 
@@ -106,7 +106,7 @@ void GalacticShip::update(float mouseX, float mouseY, unsigned int* mouseBtnStat
   if(y > SPACE_Y_RESOLUTION-height/2)
     y = SPACE_Y_RESOLUTION-height/2;
 
-  fire(x, y, directionX, directionY, angle, mouseBtnState);
+  fire(x, y, deltaTime, directionX, directionY, angle, mouseBtnState);
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;

@@ -33,9 +33,9 @@ void RedPlasma::clean() {
 
 } 
 
-void RedPlasma::tick() {
-  y+=speed*directionY;
-  x+=speed*directionX;
+void RedPlasma::tick(float deltaTime) {
+  y+=(speed*deltaTime)*directionY;
+  x+=(speed*deltaTime)*directionX;
 } 
 
 void RedPlasma::setup(float x, float y, float dirX, float dirY, float angle) {

@@ -10,7 +10,7 @@ class Drops {
   public:
     virtual void draw() = 0;
     virtual void setup(float x, float y) = 0;
-    virtual void update() = 0;
+    virtual void update(float deltaTime) = 0;
     
     virtual int getType() = 0;
     

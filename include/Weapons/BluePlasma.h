@@ -8,7 +8,7 @@ class BluePlasma: public Weapon {
     BluePlasma();
     
     void draw(); 
-    void tick();
+    void tick(float deltaTime);
     void reset();
     void clean();    
     void setup(float x, float y, float dirX, float dirY, float angle);  

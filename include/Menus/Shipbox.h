@@ -16,7 +16,7 @@ class Shipbox {
     void moveRight();
     void setup(float x, float y, int shipType); 
     void setup(float x, float y, bool unlocked, bool bought, int shipType);   
-    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
+    void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
 
     bool AttemptBuy() { return attemptBuy; }
     bool checkIfMoving() { if(isMovingRight || isMovingLeft) { return true; } return false; }

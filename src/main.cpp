@@ -1,6 +1,24 @@
-//Using SDL and standard IO
+/*
+ * main.cpp
+ * This file is part of ReturnVoid
+ *
+ * Copyright (C) 2016 - Akuma
+ *
+ * ReturnVoid is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * ReturnVoid is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ReturnVoid. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-//#include <SDL2/SDL_ttf.h>
+#include <GLFW/glfw3.h>
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
@@ -8,12 +26,6 @@
 #else 
 #include <GL/glu.h>
 #include <png.h>
-#endif
-
-#ifdef __WIN32
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
 #endif
 
 #include <stdio.h>
@@ -62,27 +74,24 @@ unsigned int  mouseBtnState[3];
 unsigned int  prevSpeicalKey[5];
 unsigned int  prevMouseBtnState[3];
 
-unsigned char keyState[255];
-unsigned char prevKeyState[255];
+unsigned char keyState[350];
+unsigned char prevKeyState[350];
 
 GLuint mouseTexture;
 
-//SDL_Surface* surface;
-//TTF_Font* font;
-
 DisplayManager* Display[5] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen() };
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//OpenGL context
-SDL_GLContext gContext;
-
+/*
 void mouse() {
   int x, y;
-  SDL_GetMouseState( &x, &y );
+ // SDL_GetMouseState( &x, &y );
   mouseY = (screenResY - y) * aspectH;
   mouseX = x*aspectW;
+}*/
+
+static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
+  mouseX = xpos;
+  mouseY = (screenResY - ypos);
 }
 
 //Updates what keys are pressed
@@ -95,22 +104,22 @@ void keyboard_up(unsigned char key) {
     keyState[putchar (tolower(key))] = BUTTON_UP;
 }
 
-void mouseBtn(int btn, int state) {  
-/* if(state == BUTTON_DOWN) {
-    state = BUTTON_UP;
-  } else {
-    state = BUTTON_DOWN;
-  }*/
-  
-  if(btn == SDL_BUTTON_LEFT) {
-    btn = 0;
-  } else if(btn == SDL_BUTTON_RIGHT) {
-    btn = 1;
-  } else {
-    btn = 2;
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+  if(action == GLFW_PRESS)
+    printf("key: %d\n", key);
+  if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    keyboard(key);
+    glfwSetWindowShouldClose(window, true);
   }
-  
-  mouseBtnState[btn] = state;
+  if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+    keyboard_up(key);
+  }
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+  mouseBtnState[button] = action;
+  //  if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+  //      popup_menu();
 }
   
 
@@ -138,15 +147,10 @@ void drawCursor() {
 }
 
 void clean() {
-	//Destroy window	
-	SDL_DestroyWindow( gWindow );
-	gWindow = NULL;
-
-	//Quit SDL subsystems
-	SDL_Quit();
+  glfwTerminate();
 }
 
-void display() {      
+void display(float deltaTime) {      
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
@@ -158,9 +162,9 @@ void display() {
 
   glColor4ub(255,255,255,255); //sets full colours and alpha
 
-  Display[type]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
+  Display[type]->update(mouseX, mouseY, deltaTime, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw();
-  
+
   drawCursor();
   
   if(Display[type]->hasEnded()) {
@@ -183,19 +187,6 @@ void display() {
     type = newtype;
     Display[type]->setup();
   }
-  
-    //surface  = SDL_GetWindowSurface(gWindow);
-    //SDL_Color White = {0, 255, 0,255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
-
-  //SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Testing text", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-  //SDL_Rect pos;
- // pos.x = 500;
- // pos.y = 500;
- // pos.w = SPACE_X_RESOLUTION;
- // pos.h = SPACE_Y_RESOLUTION;
- // SDL_BlitSurface(surfaceMessage, NULL, surface, &pos);
-
- // SDL_FreeSurface(surfaceMessage); 
  
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   prevKeyState[ESC] = keyState[ESC];
@@ -205,105 +196,109 @@ void display() {
   glBlendFunc (GL_ONE, GL_ONE);
 }
 
-void init() {
-  if( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
-    printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
-    exit(0);
-  } else {  
-    
-    // Use OpenGL 2.1
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-    
-    settings.Load();
-    bool isFullscreen = settings.getFullscreen();
-    screenResX = settings.getWindowWidth();
-    screenResY = settings.getWindowHeight();
-
-    
-
-    if(isFullscreen) {
-      //screenResX = 800;
-      //screenResY = 600;
-      
-      //Create Window
-      gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-      
-      // Borderless fullscreen
-      //SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
-      
-      // Fullscreen
-      SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
-      printf("Entering fullscreen mode\n");
-      settings.setFullscreen(true); 
-      settings.setResolution(screenResX, screenResY);    
-    } else {
-      printf("Entering windowed mode\n");
-  
-      //Create Window
-      gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-      
-    }    
-    //TTF_Init();
-    settings.Save();  
-    SDL_ShowCursor(SDL_DISABLE);
+GLFWwindow* init() {
+  /* Initialize the library */
+  GLFWwindow* window;
+  if (!glfwInit()) {
+    glfwSetWindowShouldClose(window, true);
+    return window;
   }
+  // Use OpenGL 2.1    
+  settings.Load();
+  bool isFullscreen = settings.getFullscreen();
+  screenResX = settings.getWindowWidth();
+  screenResY = settings.getWindowHeight();
+
+
+  /* Create a windowed mode window and its OpenGL context */
+  window = glfwCreateWindow(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, "Return-Void", glfwGetPrimaryMonitor(), NULL);
+  //window = glfwCreateWindow(640, 480, "Return-Void", NULL, NULL);
+  if (!window) {
+    glfwTerminate();
+    glfwSetWindowShouldClose(window, true);
+    return window;
+  }
+
+  if(isFullscreen) {
+    //screenResX = 800;
+    //screenResY = 600;
+      
+    //Create Window
+    //  gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+      
+    // Borderless fullscreen
+    //SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+      
+    // Fullscreen
+    //  SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    printf("Entering fullscreen mode\n");
+    settings.setFullscreen(true); 
+    settings.setResolution(screenResX, screenResY);    
+  } else {
+    printf("Entering windowed mode\n");
   
-  //surface  = SDL_GetWindowSurface(gWindow);
+    //Create Window
+   // gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+      
+  }
+    
+  settings.Save();  
   
-  aspectRatio = (float)screenResX / screenResY;
+  aspectRatio = (float)screenResX / (float)screenResY;
   aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
   aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
   
-  // Create context
-  gContext = SDL_GL_CreateContext(gWindow);
-
-  SDL_Init(SDL_INIT_EVERYTHING);
-  
-  SDL_GL_SetSwapInterval(1);
-  
   gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
+
+  //screen =SDL_GetWindowSurface(gWindow);    
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
   
-  //font = TTF_OpenFont("lazy.ttf", 12); //this opens a font style and sets a size
-  //if(font == NULL)
-   // exit(0);
+  return window;
+}
+
+int main(int argc, char* args[]) {
+  
+  GLFWwindow* window = init();
+  
+  /* Make the window's context current */
+  glfwMakeContextCurrent(window);
+  
+  glfwSetKeyCallback(window, key_callback);
+  glfwSetCursorPosCallback(window, cursor_pos_callback);
+  glfwSetMouseButtonCallback(window, mouse_button_callback);
+  
   mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
   //Initialize clear color
   glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
   
   Display[type]->setup();
-}
 
-int main(int argc, char* args[]) {
-  init();
   
-  bool quit = false;
-  
-  // Event Handler
-  SDL_Event e;
-  
-  while( !quit ) {
-    while( SDL_PollEvent( &e ) != 0 ) {    
-      if(e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP) {
-        mouse();
-        if(e.type == SDL_MOUSEBUTTONDOWN)
-          mouseBtn(e.button.button, BUTTON_DOWN);
-        if(e.type == SDL_MOUSEBUTTONUP)
-          mouseBtn(e.button.button, BUTTON_UP);
-      }
-      if(e.type == SDL_KEYDOWN) 
-        keyboard(e.key.keysym.sym);      
-      if(e.type == SDL_KEYUP) 
-        keyboard_up(e.key.keysym.sym);
-        
-	   //User requests quit
-		if( e.type == SDL_QUIT )
-		 quit = true;
-    }
-    display();    
-    SDL_GL_SwapWindow(gWindow);
-    SDL_Delay(20);
+  double lastTime = glfwGetTime();
+  while(!glfwWindowShouldClose(window)) {
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
+    float ratio = width / (float)height;
+    glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+    gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    double currentTime = glfwGetTime();
+    float deltaTime = float(currentTime - lastTime)  * 40;
+    lastTime = glfwGetTime();
+    display(deltaTime);  
+    
+    glfwSwapInterval(1);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
   }
   clean();
+  glfwTerminate();
   return 0;
 }

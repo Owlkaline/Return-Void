@@ -11,7 +11,7 @@ class AlphaOne: public Enemy {
     void reset();
     void defaults();
     void setTexture();
-    void update(float Px, float Py);
+    void update(float Px, float Py, float deltaTime);
 };
 
 #endif

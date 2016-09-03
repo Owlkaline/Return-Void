@@ -7,7 +7,7 @@
 
 class Weapon {
   public:
-    virtual void tick() = 0;
+    virtual void tick(float deltaTime) = 0;
     virtual void draw() = 0;
     virtual void reset() = 0;
     virtual void clean() = 0;
@@ -29,9 +29,9 @@ class Weapon {
     float getDamage() { return damage; }
     float hit() { visible = false; return damage; }    
     
-    virtual void update() { 
+    virtual void update(float deltaTime) { 
       if(visible)
-        tick();
+        tick(deltaTime);
       if(y > SPACE_Y_RESOLUTION+height || y < -height || x < -width || x > SPACE_X_RESOLUTION+width)
         visible = false;
     }

@@ -8,7 +8,7 @@ class Coins: public Drops {
     Coins();
     
     void draw();    
-    void update();
+    void update(float deltaTime);
     void setup(float x, float y);
     
     int getType();

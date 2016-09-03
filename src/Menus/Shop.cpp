@@ -162,7 +162,7 @@ void Shop::drawBackground() {
     box[i]->draw();
 }
 
-void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+void Shop::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
     type = MAINMENU;
@@ -179,7 +179,7 @@ void Shop::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsig
   } 
   
   for(unsigned int i = 0; i < box.size(); ++i)
-    box[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
+    box[i]->update(mouseX, mouseY, deltaTime, mouseBtnState, prevMouseBtnState);
   
   if(!box[0]->checkIfMoving()) {
     for(unsigned int i = 0; i < 6; ++i) {

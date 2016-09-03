@@ -20,7 +20,7 @@ class Enemy {
 
     virtual void reset() = 0;
     virtual void defaults() = 0;
-    virtual void update(float Px, float Py) = 0;
+    virtual void update(float Px, float Py, float deltaTime) = 0;
 
     virtual void setX(float x) { this->x = x; }
     virtual void setY(float y) { this->y = y; }
@@ -196,28 +196,28 @@ class Enemy {
   protected:
     virtual void setTexture() = 0;
 
-    void move() {
+    void move(float deltaTime) {
       if(visible) {
         switch(moveType) {
           case FALL:
-            move::fall(&y, speed, &movementAngle, &visible);//y-=speed;
+            move::fall(&y, speed*deltaTime, &movementAngle, &visible);//y-=speed;
             break;
           case SEMICIRCLE: {
             int numOfBullets = 0;
             for(unsigned int i = 0; i < WeaponMount.size(); ++i)
               numOfBullets += getNumOfBullets(i);
-            move::semicircle(&x, &y, width, height, speed, startX, &startY, &movementAngle, &isOnRightSide, &cycle, &visible, numOfBullets);
+            move::semicircle(&x, &y, width, height, speed*deltaTime, startX, &startY, &movementAngle, &isOnRightSide, &cycle, &visible, numOfBullets);
             break;
             }
           case SINWAVE:
-            move::sinwave(&x, &y, &movementAngle, height, speed, amp, startX, &visible);
+            move::sinwave(&x, &y, &movementAngle, height, speed*deltaTime, amp, startX, &visible);
             break;
           case RIGHTSIDEFALL:
-            move::sidefall(&x, &y, width, height, &startX, &startY, speed, &movementAngle, &cycle, &visible);
+            move::sidefall(&x, &y, width, height, &startX, &startY, speed*deltaTime, &movementAngle, &cycle, &visible);
             angle = -movementAngle;
             break;
           case ALPHAONE:
-            move::AlphaOne(&x, &y, width, height, speed, &cycle);
+            move::AlphaOne(&x, &y, width, height, speed*deltaTime, &cycle);
             break;
           default:
             printf("Unkown Enemy Movement variant: %d\n", moveType);

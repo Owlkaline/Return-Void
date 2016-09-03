@@ -33,16 +33,16 @@ void AlphaOnePlasma::clean() {
 
 }
 
-void AlphaOnePlasma::tick() {
+void AlphaOnePlasma::tick(float deltaTime) {
   if(isBoss) {
     if(y > SPACE_Y_RESOLUTION/2+height) {
-      y-=speed;
+      y-=speed*deltaTime;
     } else {
       visible = false;
     }
   } else {
-    x += speed*directionX;
-    y += speed*directionY;
+    x += speed*directionX*deltaTime;
+    y += speed*directionY*deltaTime;
   }
 }
 

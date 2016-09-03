@@ -36,8 +36,8 @@ void DotEnemy::defaults() {
   //WeaponMount[1]->setOffset(-15, 30);
 }
 
-void DotEnemy::update(float Px, float Py) {    
-  move(); 
+void DotEnemy::update(float Px, float Py, float deltaTime) {    
+  move(deltaTime); 
     
   float diffx = Px - x;
   float diffy = Py - y;
@@ -59,7 +59,7 @@ void DotEnemy::update(float Px, float Py) {
   for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);
-    WeaponMount[i]->update(x, y, 0, -1, angle, Px, Py);
+    WeaponMount[i]->update(x, y, deltaTime, 0, -1, angle, Px, Py);
   }
 }
  

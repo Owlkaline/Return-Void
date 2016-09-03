@@ -10,7 +10,7 @@ class FighterShip: public Ship {
     
     void defaults();
     void setTexture();    
-    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
+    void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
     
   protected:      
 };

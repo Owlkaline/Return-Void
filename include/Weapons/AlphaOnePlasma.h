@@ -10,7 +10,7 @@ class AlphaOnePlasma: public Weapon {
     AlphaOnePlasma();
     
     void draw(); 
-    void tick();
+    void tick(float deltaTime);
     void reset();
     void clean();
     

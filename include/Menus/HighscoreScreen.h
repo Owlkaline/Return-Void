@@ -14,7 +14,7 @@ class HighscoreScreen: public Menu {
     void setup();
     void setup(std::string username);
     void restart();
-    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+    void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
 
     void setScore(int score);
     void setStats(int coinsCollected, int numOfEnemiesKilled, int numOfEnemies);

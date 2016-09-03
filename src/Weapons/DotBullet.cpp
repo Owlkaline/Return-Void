@@ -33,9 +33,9 @@ void DotBullet::clean() {
 
 }
 
-void DotBullet::tick() {
-  y+=speed*directionY;
-  x+=speed*directionX;
+void DotBullet::tick(float deltaTime) {
+  y+=(speed*deltaTime)*directionY;
+  x+=(speed*deltaTime)*directionX;
 }
 
 void DotBullet::setup(float x, float y, float dirX, float dirY, float angle) {

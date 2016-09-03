@@ -8,7 +8,7 @@ class Health: public Drops {
     Health();
     void draw();
     void setup(float x, float y);
-    void update();
+    void update(float deltaTime);
     int getType();
   protected:
 };

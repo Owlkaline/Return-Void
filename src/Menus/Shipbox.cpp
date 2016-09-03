@@ -147,7 +147,7 @@ void Shipbox::draw() {
   }  
 }
 
-void Shipbox::update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
+void Shipbox::update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
   if(!selected) {
     if(isMovingLeft) {
       x-=10;  

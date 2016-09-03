@@ -9,11 +9,7 @@
 #include <png.h>
 #endif
 
-#ifdef __WIN32
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
+#include <GLFW/glfw3.h>
 
 #include <cstdlib>
 

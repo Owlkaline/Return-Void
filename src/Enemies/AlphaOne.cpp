@@ -37,8 +37,8 @@ void AlphaOne::defaults() {
   WeaponMount[1]->isLeftMount();
 }
 
-void AlphaOne::update(float Px, float Py) {
-  move();
+void AlphaOne::update(float Px, float Py, float deltaTime) {
+  move(deltaTime);
 
   if(tookDamage)
     tick--;
@@ -52,7 +52,7 @@ void AlphaOne::update(float Px, float Py) {
     float distance = pow(pow(diry,2.0f) + pow(dirx,2.0f), 0.5f);
     dirx = dirx/distance;
     diry = diry/distance;
-    WeaponMount[i]->update(x, y, dirx, diry, angle+180, true);
+    WeaponMount[i]->update(x, y, deltaTime, dirx, diry, angle+180, true);
   }
 }
 

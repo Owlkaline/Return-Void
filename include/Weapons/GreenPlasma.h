@@ -10,7 +10,7 @@ class GreenPlasma: public Weapon {
     void draw();    
     void reset();
     void clean();
-    void tick();
+    void tick(float deltaTime);
     void setup(float x, float y, float dirX, float dirY, float angle);
 };
 

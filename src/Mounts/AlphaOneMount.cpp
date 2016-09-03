@@ -50,9 +50,9 @@ void AlphaOneMount::erase() {
   }
 }
 
-void AlphaOneMount::tick(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
+void AlphaOneMount::tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {
   for(unsigned int i = 0; i < bullets.size(); ++i) {
-    bullets[i]->update();
+    bullets[i]->update(deltaTime);
     if(!bullets[i]->getVisible()) {
       if(bullets[i]->getIsBoss() && bullets[i]->getY() <= SPACE_Y_RESOLUTION/2+100) {
         Nx.push_back(bullets[i]->getX());

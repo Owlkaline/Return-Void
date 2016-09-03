@@ -8,7 +8,7 @@ class PausedMenu: public Menu {
     void setup();
     void restart();
     void drawBackground();
-    void update(float mX, float mY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
+    void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
    
     bool isPaused();
   protected:

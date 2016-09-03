@@ -33,10 +33,10 @@ void Coins::setup(float x, float y) {
   name = "10 Coins";
 }
 
-void Coins::update() {
+void Coins::update(float deltaTime) {
   tick++;
   if(!isCollected) {
-    y-=3 * tick/100.0;
+    y-=3 * (tick/100.0)*deltaTime;
   }
   if(y < 0 - height)
     visible = false;

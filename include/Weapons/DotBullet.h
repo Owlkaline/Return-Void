@@ -8,7 +8,7 @@ class DotBullet: public Weapon {
     DotBullet();
     
     void draw(); 
-    void tick();
+    void tick(float deltaTime);
     void reset();
     void clean();    
     void setup(float x, float y, float dirX, float dirY, float angle);  

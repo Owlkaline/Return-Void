@@ -21,7 +21,7 @@ class Mount {
     virtual void setTexture() = 0;  
       
     virtual void individualClean() {  }
-    virtual void tick(float x, float y, float directionX, float directionY, float angle, bool isShooting) {  }
+    virtual void tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {  }
     
     void setIsBoss() { isBoss = true; }
     void isLeftMount() { isLeft = true; }
@@ -47,15 +47,15 @@ class Mount {
     
     float getHealth() { return health; } 
     
-    virtual void erase() {
+    virtual void erase(float deltaTime) {
       for(unsigned int i = 0; i < bullets.size(); ++i) {
-        bullets[i]->update();
+        bullets[i]->update(deltaTime);
         if(!bullets[i]->getVisible())
           bullets.erase(bullets.begin() + i);
       }
     }
     
-    virtual void update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
+    virtual void update(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {
       if(currentTexture == 1)
         currentTexture = 0;
       float rad = angle* (float)M_PI / 180;
@@ -67,14 +67,14 @@ class Mount {
       dirX = directionX;
       dirY = directionY;
      
-      tick(x, y, directionX, directionY, angle, isShooting);
+      tick(x, y, deltaTime, directionX, directionY, angle, isShooting);
 
-      increment(isShooting);
+      increment(isShooting, deltaTime);
  
-      erase();
+      erase(deltaTime);
     }
     
-    virtual void update(float x, float y, float directionX, float directionY, float angle, float Px, float Py) {
+    virtual void update(float x, float y, float deltaTime, float directionX, float directionY, float angle, float Px, float Py) {
 
       float diffx = Px - x;
       float diffy = Py - y;
@@ -90,10 +90,10 @@ class Mount {
       this->y = y+newY;
       this->angle = angle;
 
-      increment(true);
+      increment(true, deltaTime);
  
       for(unsigned int i = 0; i < bullets.size(); ++i) {
-        bullets[i]->update();
+        bullets[i]->update(deltaTime);
         if(!bullets[i]->getVisible())
           bullets.erase(bullets.begin() + i);
       }
@@ -107,9 +107,9 @@ class Mount {
         visible = false;
     }
     
-    void increment(bool isShooting) {
-      damageTicks++; 
-      bulletTicks++; 
+    void increment(bool isShooting, float deltaTime) {
+      damageTicks+= 1*deltaTime; 
+      bulletTicks+= 1*deltaTime; 
       
       if(damageTicks > damageTimer) { 
         tookDamage = false; 
@@ -267,7 +267,7 @@ class Mount {
     int variant;
     int maxMounts;
     int currentTexture;
-    int bulletTicks, bulletTimer, damageTicks, damageTimer;
+    float bulletTicks, bulletTimer, damageTicks, damageTimer;
        
     bool isBoss;
     bool visible;

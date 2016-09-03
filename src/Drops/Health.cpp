@@ -33,11 +33,11 @@ void Health::setup(float x, float y) {
   name = "Health";
 }
 
-void Health::update() {
+void Health::update(float deltaTime) {
   tick++;
   
   if(!isCollected) {
-    y-=3 * tick/100.0;  
+    y-=3 * (tick/100.0)*deltaTime;  
   }
   
   if(y < 0 - height)

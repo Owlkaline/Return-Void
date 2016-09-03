@@ -15,7 +15,7 @@ class Ship {
   public:    
     virtual void setTexture()=0;
     virtual void defaults()=0;
-    virtual void update(float mX, float mY, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
+    virtual void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
     
     void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
@@ -128,14 +128,14 @@ class Ship {
       tookDamage = false;
       
       for(unsigned int i = 0; i < WeaponMount.size(); ++i)
-        WeaponMount[i]->update(x, y, 0, 0, 0, false);  
+        WeaponMount[i]->update(x, y, 1, 0, 0, 0, false);  
         
       angle = 0;          
     }
     
-    void fire(float x, float y, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
+    void fire(float x, float y, float deltaTime, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
     for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-      WeaponMount[i]->update(x, y, directionX, directionY, angle, mouseBtnState[0]);
+      WeaponMount[i]->update(x, y, deltaTime, directionX, directionY, angle, mouseBtnState[0]);
     }
     
     void animate() {

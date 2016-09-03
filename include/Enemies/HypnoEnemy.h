@@ -13,7 +13,7 @@ class HypnoEnemy: public Enemy {
     void setTexture();
     void setX(float x);
     void setY(float y);
-    void update(float Px, float Py);
+    void update(float Px, float Py, float deltaTime);
   protected:
 };
 
