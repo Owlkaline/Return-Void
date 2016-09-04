@@ -13,6 +13,12 @@ void Shop::setup() {
   numShips = 0;
   selected = profile.getSelectedShip();
   
+  settings.Load();
+  float width = settings.getCurrentWindowWidth();
+  float height = settings.getCurrentWindowHeight();
+  float ratioX = width/(float)SPACE_X_RESOLUTION;
+  float ratioY = height/(float)SPACE_Y_RESOLUTION;
+  
   // Buttons
   // Return button
   buttons.push_back(new Button);
@@ -39,7 +45,7 @@ void Shop::setup() {
   
   // Description Box
   lb.push_back(new Label);
-  lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 0.3);
+  lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 30*ratioX, 30*ratioY);
   lb[1]->setText((char*)"Description", 11);
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
@@ -54,7 +60,7 @@ void Shop::setup() {
   
   // Coin Box
   lb.push_back(new Label);
-  lb[2]->setup(SPACE_X_RESOLUTION - 200, SPACE_Y_RESOLUTION-100, 0.3);
+  lb[2]->setup(SPACE_X_RESOLUTION - 200, SPACE_Y_RESOLUTION-100, 30*ratioX, 30*ratioY);
   lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
   lb[2]->setWidth(350);
   lb[2]->setHeight(70);

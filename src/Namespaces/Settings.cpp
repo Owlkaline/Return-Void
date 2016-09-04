@@ -8,6 +8,12 @@ Settings::~Settings() {
 
 }
 
+void Settings::firstLoad() {
+  Load();
+  crntWindowWidth = windowWidth;
+  crntWindowHeight = windowHeight;
+}
+
 void Settings::Load() {
 
   // check whether application directory in the home diretory exists, if not create it
@@ -34,6 +40,8 @@ void Settings::Load() {
       fullscreen = File::LoadBool(ifs);
       windowWidth = File::LoadInt(ifs);
       windowHeight = File::LoadInt(ifs);
+      crntWindowWidth = File::LoadInt(ifs);
+      crntWindowHeight = File::LoadInt(ifs);
       ifs.close();
     }
   } else {
@@ -48,6 +56,8 @@ void Settings::Save() {
   File::SaveBool(ofs, fullscreen);
   File::SaveInt(ofs, windowWidth);
   File::SaveInt(ofs, windowHeight);
+  File::SaveInt(ofs, crntWindowWidth);
+  File::SaveInt(ofs, crntWindowHeight);
   ofs.close();
 }
 
@@ -57,6 +67,8 @@ void Settings::createNewSettings() {
   fullscreen = true;
   windowWidth = 1920;
   windowHeight = 1080;
+  crntWindowWidth = windowWidth;
+  crntWindowHeight = windowHeight;
   Save();
 }
 

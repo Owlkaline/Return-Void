@@ -71,18 +71,23 @@ void Game::setup() {
       break;
   }
   
+  float width = settings.getCurrentWindowWidth();
+  float height = settings.getCurrentWindowHeight();
+  ratioX = width/(float)SPACE_X_RESOLUTION;
+  ratioY = height/(float)SPACE_Y_RESOLUTION;
+  
   ship[0]->setup();
 
-  lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.5, true);
+  lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 50*ratioX, 50*ratioY, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
   
-  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-80, 0.3, false);
+  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-80, 30*ratioX, 30*ratioY, false);
   lbWaveStatic.setColour(1.0, 1.0, 1.0);
 
-  lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 0.3, false);
+  lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 30*ratioX, 30*ratioY, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
   
-  lbCoins.setup(SPACE_X_RESOLUTION-150, 30, 0.3, false);
+  lbCoins.setup(SPACE_X_RESOLUTION-150, 30, 30*ratioX, 30*ratioY, false);
   lbCoins.setColour( 1.0,  1.0,  1.0);
   
   std::stringstream ss;
@@ -130,7 +135,7 @@ void Game::newWave() {
   ss << wave;
   std::string str = "Wave " + ss.str();
   lbWave.setText(str.c_str(), str.length() + 1);
-  lbWave.setTimer(40);
+  lbWave.setTimer(100);
   
   lbWaveStatic.setText(str.c_str(), str.length() + 1);
   
@@ -237,7 +242,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           sf << enemy[i]->getScore();;
           std::string str1 = "+" + sf.str();
           Ftext.push_back(new FloatingText);
-          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), str1.length(), 0.2);
+          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), str1.length(), 20*ratioX, 20*ratioY);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           ship[0]->boost();
@@ -289,7 +294,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           numOfPowerupsCollected++;
           std::string str = powerups[i]->getName();
           Ftext.push_back(new FloatingText);
-          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), str.length(), 0.2);
+          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), str.length(), 20*ratioX, 20*ratioY);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           powerups.erase(powerups.begin()+i);

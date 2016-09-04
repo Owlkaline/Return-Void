@@ -57,7 +57,7 @@ class Game: public DisplayManager {
     int numOfEnemiesKilled;
     int numOfPowerupsCollected;
     
-    float offsetY;
+    float offsetY, ratioX, ratioY;
     // Cross Hair
     float lastChX, lastChY, ChX, ChY, ChRadius; 
  

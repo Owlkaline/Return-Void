@@ -18,6 +18,7 @@ class Settings {
     Settings();
     ~Settings();
     void Load();
+    void firstLoad();
     void Save();
     
     void setResolution(int resX, int resY) { this->windowWidth = resX; this->windowHeight = resY; }
@@ -39,6 +40,8 @@ class Settings {
     
     int getWindowWidth() { return windowWidth; }   
     int getWindowHeight() { return windowHeight; } 
+    int getCurrentWindowWidth() { return crntWindowWidth; }   
+    int getCurrentWindowHeight() { return crntWindowHeight; } 
     
     bool getFullscreen() { return fullscreen; }
   protected:
@@ -48,7 +51,7 @@ class Settings {
     
     bool fullscreen;
     
-    int windowWidth, windowHeight;
+    int windowWidth, windowHeight, crntWindowWidth, crntWindowHeight;
     
     std::string home;
     

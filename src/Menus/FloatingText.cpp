@@ -20,16 +20,16 @@ void FloatingText::setup(float x, float y, float width, float height, char* file
   lb.setup(x, y, width, height, filename);
   this->x = x;
   this->y = y;
-  ticks = 30;
+  ticks = 400;
   visible = true;
 }
 
-void FloatingText::setup(float x, float y,  const char* str, int length, float scale) {
-  lb.setup(x, y, scale);
+void FloatingText::setup(float x, float y,  const char* str, int length, float scaleX, float scaleY) {
+  lb.setup(x, y, scaleX, scaleY);
   lb.setText(str, length);
   this->x = x;
   this->y = y;
-  ticks = 30;
+  ticks = 400;
   visible = true;
 }
 

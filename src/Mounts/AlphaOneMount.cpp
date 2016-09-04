@@ -54,7 +54,7 @@ void AlphaOneMount::tick(float x, float y, float deltaTime, float directionX, fl
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update(deltaTime);
     if(!bullets[i]->getVisible()) {
-      if(bullets[i]->getIsBoss() && bullets[i]->getY() <= SPACE_Y_RESOLUTION/2+100) {
+      if(bullets[i]->getIsBoss()/* && bullets[i]->getY() <= SPACE_Y_RESOLUTION/2+100 */) {
         Nx.push_back(bullets[i]->getX());
         Ny.push_back(bullets[i]->getY());
         cycle.push_back(0);
@@ -64,8 +64,8 @@ void AlphaOneMount::tick(float x, float y, float deltaTime, float directionX, fl
 
   int size = bullets.size();
   for(unsigned int i = 0; i < cycle.size(); ++i) {
-    if(cycle[i] % 5 == 0) {
-      angle = 0 + 5*cycle[i]/5;
+    if((int)round(cycle[i]) % 5 == 0) {
+      angle = 0 + 5*(int)round(cycle[i])/5;
       for(unsigned int j = 0; j < 8; ++j) {
         bullets.push_back(new AlphaOnePlasma);
         bullets[size+j]->setup(0, 0, 0, 0, 0);
@@ -81,7 +81,7 @@ void AlphaOneMount::tick(float x, float y, float deltaTime, float directionX, fl
         angle+=45;
       }
     }
-    cycle[i]++;
+    cycle[i]+=1;
   }
 }
 

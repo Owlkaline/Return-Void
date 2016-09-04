@@ -75,12 +75,13 @@ void Button::setup(float x, float y, float width, float height, char* filename) 
   
   this->x = x;
   this->y = y;
-  this->scale = 0;
+  this->scaleX = 0;
+  this->scaleY = 0;
   this->width = width;
   this->height = height;
 }
 
-void Button::setup(float x, float y, float width, float height, float scale) {
+void Button::setup(float x, float y, float width, float height, float scaleX, float scaleY) {
   isSelected = false;
   hasTexture = false;
   clicked = false;
@@ -92,10 +93,11 @@ void Button::setup(float x, float y, float width, float height, float scale) {
   
   this->x = x;
   this->y = y;
-  this->scale = scale;
+  this->scaleX = scaleX;
+  this->scaleY = scaleY;
   this->width = width;
   this->height = height;
-  lbTitle.setup(x, y, scale);
+  lbTitle.setup(x, y, scaleX, scaleY);
 }
 
 void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {

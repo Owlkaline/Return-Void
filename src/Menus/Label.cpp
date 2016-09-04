@@ -60,7 +60,10 @@ void Label::clean() {
 
 }
 
-void Label::setupGLC(int scale) {
+void Label::setupGLC(float scaleX, float scaleY) {
+  settings.Load();
+  float ratioX = settings.getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
+  float ratioY = settings.getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
   // Set up and initialize GLC
   ctx = glcGenContext();
   glcContext(ctx);
@@ -73,11 +76,10 @@ void Label::setupGLC(int scale) {
   #else
     glcNewFontFromFamily(myFont, "Palatino");
   #endif
-  glcFontFace(myFont, "Bold");
+  //glcFontFace(myFont, "Bold");
   glcFont(myFont);
-
-  // Render the text at a size of 100 points
-  glcScale(scale, scale);
+      // Render the text at a size of 100 points
+  glcScale(30*ratioX, 30*ratioY);
 }
 
 void Label::setup(float x, float y, float width, float height, char* filename) {
@@ -94,14 +96,15 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   this->y = y;
   this->width = width;
   this->height = height;
-  this->scale = 0;
+  this->scaleX = 1;
+  this->scaleY = 1;
   R = 0;
   B = 0;
   G = 0;
-  setupGLC(30);
+  setupGLC(scaleX, scaleY);
 }
 
-void Label::setup(float x, float y, float scale) {
+void Label::setup(float x, float y, float scaleX, float scaleY) {
   hasTexture = false;
   isTimed = false;
   hasBorder = false;
@@ -112,14 +115,15 @@ void Label::setup(float x, float y, float scale) {
   ticks = 0;
   this->x = x;
   this->y = y;
-  this->scale = scale;
+  this->scaleX = scaleX;
+  this->scaleY = scaleY;
   R = 0;
   B = 0;
   G = 0;
-  setupGLC(30);
+  setupGLC(scaleX, scaleY);
 }
 
-void Label::setup(float x, float y, float scale, bool timer) {
+void Label::setup(float x, float y, float scaleX, float scaleY, bool timer) {
   hasTexture = false;
   hasBorder = false;
   isFilled = false;
@@ -130,11 +134,12 @@ void Label::setup(float x, float y, float scale, bool timer) {
   ticks = 0;
   this->x = x;
   this->y = y;
-  this->scale = scale;
+  this->scaleX = scaleX;
+  this->scaleY = scaleY;
   R = 0;
   B = 0;
   G = 0;
-  setupGLC(30);
+  setupGLC(scaleX, scaleY);
 }
 
 void Label::update(float deltaTime) {
@@ -149,7 +154,7 @@ void Label::update(float deltaTime) {
 void Label::drawChar() {
   // Render "Hello world!"
   glColor3f(R, G, B);
-  glRasterPos2f(x, y);
+  glRasterPos2f(x-length*10, y);
   glcRenderString(str.c_str());
 }
 

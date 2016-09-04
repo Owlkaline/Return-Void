@@ -204,7 +204,7 @@ GLFWwindow* init() {
     return window;
   }
   // Use OpenGL 2.1    
-  settings.Load();
+  settings.firstLoad();
   bool isFullscreen = settings.getFullscreen();
   screenResX = settings.getWindowWidth();
   screenResY = settings.getWindowHeight();

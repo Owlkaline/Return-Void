@@ -12,7 +12,7 @@ class FloatingText {
     void clean();
     void update(float deltaTime);
     void setup(float x, float y, float width, float height, char* filename);
-    void setup(float x, float y, const char* str, int length, float scale);    
+    void setup(float x, float y, const char* str, int length, float scaleX, float scaleY);    
     
     void setTimer(int time);
     void setTexture(char* filename);

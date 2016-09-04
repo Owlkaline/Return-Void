@@ -9,6 +9,7 @@
 #include "./Shipbox.h"
 
 #include "../Namespaces/Profile.h"
+#include "../Namespaces/Settings.h"
 
 class Shop: public Menu {
   public:
@@ -39,6 +40,7 @@ class Shop: public Menu {
     int selected;
     
     Profile profile;
+    Settings settings;
     
     std::vector<Ship*> ship;
     std::vector<Shipbox*> box;

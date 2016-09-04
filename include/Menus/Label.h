@@ -3,6 +3,7 @@
 
 #include "../defines.h"
 #include "../Namespaces/LoadTexture.h"
+#include "../Namespaces/Settings.h"
 //#include "./Text.h"
 #include "GL/glc.h"
 
@@ -17,10 +18,10 @@ class Label {
     void clean();
     void update(float deltaTime);
     void setup(float x, float y, float width, float height, char* filename);
-    void setup(float x, float y, float scale);
-    void setup(float x, float y, float scale, bool timer);
+    void setup(float x, float y, float scaleX, float scaleY);
+    void setup(float x, float y, float scaleX, float scaleY, bool timer);
     
-    void setupGLC(int scale);
+    void setupGLC(float scaleX, float scaleY);
     
     //Draws Text to the screen
     void drawChar();    
@@ -62,12 +63,15 @@ class Label {
     bool hasBorder;
     bool hasTexture, isTimed;
     
-    float scale;
+    float scaleX, scaleY;
     float R, G, B;
     float fillR, fillG, fillB;
     float x, y, width, height;
     
     std::string str;
+    
+    //Settings settings;
+    Settings settings;
        
     GLint ctx, myFont;
  

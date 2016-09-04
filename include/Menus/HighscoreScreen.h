@@ -7,6 +7,7 @@
 
 #include "../Namespaces/Highscore.h"
 #include "../Namespaces/File.h"
+#include "../Namespaces/Settings.h"
 
 
 class HighscoreScreen: public Menu {
@@ -25,6 +26,7 @@ class HighscoreScreen: public Menu {
     int highscores[10];
     
     Highscore highscore;
+    Settings settings;
     
     std::string username;
     

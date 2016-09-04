@@ -36,7 +36,12 @@ void HighscoreScreen::setup(std::string username) {
   highscore.Load();
   showingHighscores = false;
   this->username = username;
-
+  
+  settings.Load();
+  float widthT = settings.getCurrentWindowWidth();
+  float heightT = settings.getCurrentWindowHeight();
+  float ratioX = widthT/(float)SPACE_X_RESOLUTION;
+  float ratioY = heightT/(float)SPACE_Y_RESOLUTION;
   // Retry
   buttons.push_back(new Button);
   buttons[0]->setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Retry.png");
@@ -57,7 +62,7 @@ void HighscoreScreen::setup(std::string username) {
     ss << i/2+1;
     std::string tempname = ss.str() + ". " + names[i/2]; 
     lb.push_back(new Label);
-    lb[i]->setup(SPACE_X_RESOLUTION/4+BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i/2*0.5)) + 0.5) - height/2, 0.3);
+    lb[i]->setup(SPACE_X_RESOLUTION/4+BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i/2*0.5)) + 0.5) - height/2, 30*ratioX, 30*ratioY);
     lb[i]->setText(tempname.c_str(), tempname.length());
     lb[i]->setColour(0.0, 1.0, 0.0);
     lb[i]->setVisible(false);
@@ -66,21 +71,21 @@ void HighscoreScreen::setup(std::string username) {
     ss1 << highscores[i/2];
     std::string tempscore = ss1.str(); 
     lb.push_back(new Label);
-    lb[i+1]->setup(SPACE_X_RESOLUTION/4*3 - BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i/2*0.5)) + 0.5) - height/2, 0.3);
+    lb[i+1]->setup(SPACE_X_RESOLUTION/4*3 - BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i/2*0.5)) + 0.5) - height/2, 30*ratioX, 30*ratioY);
     lb[i+1]->setText(tempscore.c_str(), tempscore.length());
     lb[i+1]->setColour(0.0, 1.0, 0.0);
     lb[i+1]->setVisible(false);
   }
   // New High score
   lb.push_back(new Label);
-  lb[20]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 0.4);
+  lb[20]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 40*ratioX, 40*ratioY);
   lb[20]->setText((char*)"New Highscore!!!", 16);
   lb[20]->setColour(0.0, 1.0, 0.0);
   lb[20]->setVisible(false);
   
   // Score
   lb.push_back(new Label);
-  lb[21]->setup(SPACE_X_RESOLUTION/2-BUTTONWIDTH/4, SPACE_Y_RESOLUTION/5*4 - BUTTONHEIGHT, 0.4);
+  lb[21]->setup(SPACE_X_RESOLUTION/2-BUTTONWIDTH/4, SPACE_Y_RESOLUTION/5*4 - BUTTONHEIGHT, 40*ratioX, 40*ratioY);
   lb[21]->setColour(0.0, 1.0, 0.0);
   
   // stats
@@ -92,7 +97,7 @@ void HighscoreScreen::setup(std::string username) {
   //Num enemies killed 
   for(int i = 0; i < 3; ++i) {
     lb.push_back(new Label);
-    lb[23+i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*3-BUTTONHEIGHT*(1+i), 0.3);
+    lb[23+i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*3-BUTTONHEIGHT*(1+i), 30*ratioX, 30*ratioY);
     lb[23+i]->setColour(0.0, 1.0, 0.0);
     lb[23+i]->setVisible(false);
   }
@@ -115,18 +120,22 @@ void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsign
   // Highscore button
   if(buttons[2]->Clicked()) {
     if(showingHighscores) {
+    
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(false);
       for(int i = 0; i < 5; ++i)
         lb[21+i]->setVisible(true);
+        
       buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Highscore.png");
       buttons[2]->setWidth(BUTTONWIDTH*1.5);
       showingHighscores = false;
     } else {
+    
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(true);
       for(int i = 0; i < 5; ++i)
         lb[21+i]->setVisible(false);
+        
       buttons[2]->setTexture((char*)"Textures/Menu/GameMenus/Stats.png");
       buttons[2]->setWidth(BUTTONWIDTH);
       showingHighscores = true;

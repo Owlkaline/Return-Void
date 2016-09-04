@@ -12,11 +12,11 @@ void MainMenu::setup() {
   for(int i = 0; i < 6; ++i) {
     buttons.push_back(new Button);
     if(i == 1) {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*2, BUTTONHEIGHT, -1);
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*2, BUTTONHEIGHT, 0, 0);
     } else if (i == 3) {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*1.5, BUTTONHEIGHT, -1);
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*1.5, BUTTONHEIGHT, 0,0);
     }  else {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH, BUTTONHEIGHT, -1);
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH, BUTTONHEIGHT, 0,0);
     }
   }
 

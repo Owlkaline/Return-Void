@@ -36,7 +36,7 @@ void Coins::setup(float x, float y) {
 void Coins::update(float deltaTime) {
   tick++;
   if(!isCollected) {
-    y-=3 * (tick/100.0)*deltaTime;
+    y-=1.5 * (tick/100.0)*deltaTime;
   }
   if(y < 0 - height)
     visible = false;

@@ -36,13 +36,13 @@ void AlphaOnePlasma::clean() {
 void AlphaOnePlasma::tick(float deltaTime) {
   if(isBoss) {
     if(y > SPACE_Y_RESOLUTION/2+height) {
-      y-=speed*deltaTime;
+      y-=speed*(deltaTime/2);
     } else {
       visible = false;
     }
   } else {
-    x += speed*directionX*deltaTime;
-    y += speed*directionY*deltaTime;
+    x += (speed*(deltaTime/2))*directionX;
+    y += (speed*(deltaTime/2))*directionY;
   }
 }
 
@@ -60,7 +60,7 @@ void AlphaOnePlasma::setup(float x, float y, float dirX, float dirY, float angle
     offsetY = 0;
     width = 32;
     height = 32;
-    damage = 2;
+    damage = 0.1;
   }
   speed = 12;
   

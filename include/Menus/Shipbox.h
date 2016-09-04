@@ -5,6 +5,7 @@
 #include "../Ships/FighterShip.h"
 #include "./Button.h"
 #include "./Label.h"
+#include "../Namespaces/Settings.h"
 
 class Shipbox {
   public:
@@ -72,6 +73,8 @@ class Shipbox {
     
     float oldX;
     float x, y, width, height;
+    
+    Settings settings;
     
     std::vector<Label*> lb;
     std::vector<Ship*> ship;

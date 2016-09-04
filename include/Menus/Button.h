@@ -15,7 +15,7 @@ class Button {
     
     void draw();
     void clean();
-    void setup(float x, float y, float width, float height, float scale);
+    void setup(float x, float y, float width, float height, float scaleX, float scaleY);
     void setup(float x, float y, float width, float height, char* filename);
     void update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
 
@@ -53,7 +53,7 @@ class Button {
     bool hasBorder;
     bool isSelected, hasTexture, hasBeenClicked, clicked;
     
-    float scale; 
+    float scaleX, scaleY; 
     float R, G, B;
     float fillR, fillG, fillB;
     float x, y, width, height;

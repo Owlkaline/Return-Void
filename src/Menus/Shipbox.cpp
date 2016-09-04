@@ -34,9 +34,15 @@ void Shipbox::setup(float x, float y, int shipType) {
   lb[0]->setup(x, y, 400, 400, (char*)"Textures/Menu/ShopMenu/Boxbackground.png");
   lb[0]->drawBorder(true);
   
+  settings.Load();
+  float width = settings.getCurrentWindowWidth();
+  float height = settings.getCurrentWindowHeight();
+  float ratioX = width/(float)SPACE_X_RESOLUTION;
+  float ratioY = height/(float)SPACE_Y_RESOLUTION;
+  
   // Selected Ship Name
   lb.push_back(new Label);
-  lb[1]->setup(x, y+135, 0.3);
+  lb[1]->setup(x, y+135, 30*ratioX, 30*ratioY);
   lb[1]->setText("Select Ship", 11);
   lb[1]->setColour(0.0, 0.0, 0.0);
   lb[1]->setWidth(350);
@@ -57,6 +63,12 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   isMovingRight = false;
   attemptBuy = false;
   visible = true;
+  
+  settings.Load();
+  float width = settings.getCurrentWindowWidth();
+  float height = settings.getCurrentWindowHeight();
+  float ratioX = width/(float)SPACE_X_RESOLUTION;
+  float ratioY = height/(float)SPACE_Y_RESOLUTION;
   
   cost = 0;
 
@@ -85,7 +97,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   lb[0]->drawBorder(true);
   
   buttons.push_back(new Button);
-  buttons[0]->setup(x, y - 150, 200, 60, 0.3);
+  buttons[0]->setup(x, y - 150, 200, 60, 30*ratioX, 30*ratioY);
   
   if(unlocked) {
     if(bought) {
@@ -96,7 +108,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
       buttons[0]->fill(0.0f, 0.8f, 0.0f);
 
       lb.push_back(new Label);
-      lb[1]->setup(x, y + 150, 0.3);
+      lb[1]->setup(x, y + 150, 30*ratioX, 30*ratioY);
       lb[1]->setWidth(250);
       lb[1]->setHeight(60);
         
