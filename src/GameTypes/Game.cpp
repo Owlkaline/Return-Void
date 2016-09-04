@@ -299,13 +299,13 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
         
       }
       for(unsigned int i = 0; i < Ftext.size(); ++i) {
-        Ftext[i]->update();
+        Ftext[i]->update(deltaTime);
         if(!Ftext[i]->getVisible()) {
           Ftext.erase(Ftext.begin()+i);
         }
       }
         
-      lbWave.update();
+      lbWave.update(deltaTime);
 
       Collisions::detect(ship, enemy, powerups);
 

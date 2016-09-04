@@ -33,9 +33,9 @@ void FloatingText::setup(float x, float y,  const char* str, int length, float s
   visible = true;
 }
 
-void FloatingText::update() {
-  ticks--;
-  y++;
+void FloatingText::update(float deltaTime) {
+  ticks-=1*deltaTime;
+  y+=1*deltaTime;
   lb.setY(y);
   if(ticks <= 0)
     visible = false;

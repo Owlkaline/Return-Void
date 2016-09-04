@@ -24,6 +24,7 @@
 #include <OpenGL/gl.h>// Header File For The OpenGL32 Library
 #include <OpenGL/glu.h>// Header File For The GLu32 Library
 #else 
+#include <GL/glc.h>
 #include <GL/glu.h>
 #include <png.h>
 #endif
@@ -90,8 +91,8 @@ void mouse() {
 }*/
 
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
-  mouseX = xpos;
-  mouseY = (screenResY - ypos);
+  mouseX = xpos*aspectW;
+  mouseY = (screenResY - ypos) * aspectH;
 }
 
 //Updates what keys are pressed
@@ -210,13 +211,8 @@ GLFWwindow* init() {
 
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, "Return-Void", glfwGetPrimaryMonitor(), NULL);
-  //window = glfwCreateWindow(640, 480, "Return-Void", NULL, NULL);
-  if (!window) {
-    glfwTerminate();
-    glfwSetWindowShouldClose(window, true);
-    return window;
-  }
+
+  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
   if(isFullscreen) {
     //screenResX = 800;
@@ -230,6 +226,20 @@ GLFWwindow* init() {
       
     // Fullscreen
     //  SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    /* Borderless fullscreen
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", monitor, NULL);
+    */
+    const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    screenResX = mode->width;
+    screenResY = mode->height;
+    
+    window = glfwCreateWindow(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, "Return-Void", glfwGetPrimaryMonitor(), NULL);
+
     printf("Entering fullscreen mode\n");
     settings.setFullscreen(true); 
     settings.setResolution(screenResX, screenResY);    
@@ -238,9 +248,16 @@ GLFWwindow* init() {
   
     //Create Window
    // gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+    window = glfwCreateWindow(screenResX, screenResY, "Return-Void", NULL, NULL);
       
   }
-    
+  
+  if (!window) {
+    glfwTerminate();
+    glfwSetWindowShouldClose(window, true);
+    return window;
+  } 
+  
   settings.Save();  
   
   aspectRatio = (float)screenResX / (float)screenResY;
@@ -251,7 +268,7 @@ GLFWwindow* init() {
 
   //screen =SDL_GetWindowSurface(gWindow);    
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-  
+
   return window;
 }
 
@@ -272,7 +289,6 @@ int main(int argc, char* args[]) {
   
   Display[type]->setup();
 
-  
   double lastTime = glfwGetTime();
   while(!glfwWindowShouldClose(window)) {
     int width, height;

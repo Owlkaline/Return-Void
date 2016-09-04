@@ -19,7 +19,7 @@ SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weap
 
 SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp ./src/Drops/Shield.cpp
 
-LIBS = -lglfw -lGLU -lGL -lpng
+LIBS = -lglfw -lGLC -lGLU -lGL -lpng
 
 all: $(PROG)
 

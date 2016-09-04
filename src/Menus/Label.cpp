@@ -60,6 +60,26 @@ void Label::clean() {
 
 }
 
+void Label::setupGLC(int scale) {
+  // Set up and initialize GLC
+  ctx = glcGenContext();
+  glcContext(ctx);
+  glcAppendCatalog("/usr/lib/X11/fonts/Type1/");
+
+  // Create a font "Palatino Bold"
+  myFont = glcGenFontID();
+  #ifdef __WIN32__
+    glcNewFontFromFamily(myFont, "Palatino Linotype");
+  #else
+    glcNewFontFromFamily(myFont, "Palatino");
+  #endif
+  glcFontFace(myFont, "Bold");
+  glcFont(myFont);
+
+  // Render the text at a size of 100 points
+  glcScale(scale, scale);
+}
+
 void Label::setup(float x, float y, float width, float height, char* filename) {
   Texture = txt::LoadTexture(filename);
   hasTexture = true;
@@ -78,6 +98,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   R = 0;
   B = 0;
   G = 0;
+  setupGLC(30);
 }
 
 void Label::setup(float x, float y, float scale) {
@@ -95,6 +116,7 @@ void Label::setup(float x, float y, float scale) {
   R = 0;
   B = 0;
   G = 0;
+  setupGLC(30);
 }
 
 void Label::setup(float x, float y, float scale, bool timer) {
@@ -112,11 +134,12 @@ void Label::setup(float x, float y, float scale, bool timer) {
   R = 0;
   B = 0;
   G = 0;
+  setupGLC(30);
 }
 
-void Label::update() {
+void Label::update(float deltaTime) {
     if(isTimed) {
-      ticks--;
+      ticks-=1*deltaTime;
       if(ticks <= 0)
         ticks = 0;
     } 
@@ -124,34 +147,10 @@ void Label::update() {
 
 //Draws Text to the screen
 void Label::drawChar() {
- /* SDL_Surface* surface  = SDL_GetWindowSurface(gWindow);
-  TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24); //this opens a font style and sets a size
-  SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
-
-  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, str, White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-  SDL_Rect pos { x, y, width, height };
- SDL_BlitSurface(surfaceMessage, NULL, surface, &pos);*/
-  
-  drawBox();
-  //Mind you that (0,0) is on the top left of the window/screen, think a rect as the text's box, that way it would be very simple to understance
-
-  //Now since it's a texture, you have to put RenderCopy in your game loop area, the area where the whole code executes
-
-  //SDL_RenderCopy(renderer, Message, NULL, &Message_rect); //you put the renderer's name first, the Message, the crop size(you can ignore this if you don't want to dabble with cropping), and the rect which is the size and coordinate of your texture
-  /*glPushMatrix();
-  
-  glColor3f(R, G, B); // Text Colour
-  glTranslatef(x-length*10, y-10, 0);// *20, y, 0);
-  glScalef(scale,scale,scale);
-  
-  for(int i = 0; i < length; i++) {
-    //glutBitmapCharacter(font, str[i]);//Draw character to screen
-    glutStrokeCharacter(GLUT_STROKE_ROMAN , str[i]);
-  }
-   
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);//return colours to the full amounts
-
-  glPopMatrix();*/
+  // Render "Hello world!"
+  glColor3f(R, G, B);
+  glRasterPos2f(x, y);
+  glcRenderString(str.c_str());
 }
 
 void Label::setTexture(char* filename) {
@@ -159,10 +158,10 @@ void Label::setTexture(char* filename) {
   hasTexture = true;
 }
 
-void Label::setText(const char* str, int length) {
-  for(int i = 0; i < length; ++i)
-    this->str[i] = str[i];
+void Label::setText(std::string str, int length) {
+ // for(int i = 0; i < length; ++i)
    this->length = length;
+   this->str = str;
   //text.setup(x, y, (char*)str);
 }
 

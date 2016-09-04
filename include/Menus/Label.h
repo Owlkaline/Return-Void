@@ -3,8 +3,10 @@
 
 #include "../defines.h"
 #include "../Namespaces/LoadTexture.h"
-#include "./Text.h"
+//#include "./Text.h"
+#include "GL/glc.h"
 
+#include<string>
 
 class Label {
   public:
@@ -13,16 +15,18 @@ class Label {
     
     void draw();
     void clean();
-    void update();
+    void update(float deltaTime);
     void setup(float x, float y, float width, float height, char* filename);
     void setup(float x, float y, float scale);
     void setup(float x, float y, float scale, bool timer);
+    
+    void setupGLC(int scale);
     
     //Draws Text to the screen
     void drawChar();    
     void setTimer(int time);
     void setTexture(char* filename);
-    void setText(const char* str, int length);
+    void setText(std::string str, int length);
     void setColour(float R, float G, float B);
     
     void enable() { disabled = false; }
@@ -50,7 +54,7 @@ class Label {
     void drawBox();
     
     int length;
-    int ticks;
+    float ticks;
     
     bool visible;
     bool disabled;  
@@ -63,7 +67,9 @@ class Label {
     float fillR, fillG, fillB;
     float x, y, width, height;
     
-    char str[50];
+    std::string str;
+       
+    GLint ctx, myFont;
  
     //Text text;
     GLuint Texture;
