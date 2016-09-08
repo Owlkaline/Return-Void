@@ -180,14 +180,14 @@ void Game::newWave() {
           type = RIGHTSIDEFALL;
       }
       enemy[i]->defaults();
-     // if()
+
       int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
       float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
       float y = 0;
       if(wave != 1 && (wave-1)%10 == 0) {
         y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION*2), (int)(SPACE_Y_RESOLUTION*2+(wave*0.5*SPACE_Y_RESOLUTION)));
       } else {
-        y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION), (int)(SPACE_Y_RESOLUTION+(wave*0.5*SPACE_Y_RESOLUTION)));
+        y = boostRand.Int((enemy[i]->getHeight()+SPACE_Y_RESOLUTION*2), (int)(SPACE_Y_RESOLUTION*2+(wave*0.5*SPACE_Y_RESOLUTION)));
       }
       
       enemy[i]->setup(x, y, type, powerup);
