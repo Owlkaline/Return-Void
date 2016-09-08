@@ -1,11 +1,16 @@
 #include "../../include/Drops/Coins.h"
 
 Coins::Coins() {
-  tick = 100;
+  this->tick = 100;
+  this->width = 50;
+  this->height = 50;
+  this->visible = true;
+  this->isCollected = false;
+  this->name = "10 Coins";
 }
 
 void Coins::draw() {
-  if(!isCollected) {
+  if(!this->isCollected) {
     glEnable(GL_TEXTURE_2D);  
     
     glBindTexture(GL_TEXTURE_2D, getCoinTexture());
@@ -26,11 +31,6 @@ void Coins::draw() {
 void Coins::setup(float x, float y) {
   this->x = x;
   this->y = y;
-  width = 50;
-  height = 50;
-  visible = true;
-  isCollected = false;
-  name = "10 Coins";
 }
 
 void Coins::update(float deltaTime) {
@@ -49,6 +49,6 @@ void Coins::update(float deltaTime) {
 } 
 
 int Coins::getType() {
-  isCollected = true;
+  this->isCollected = true;
   return COIN;
 }

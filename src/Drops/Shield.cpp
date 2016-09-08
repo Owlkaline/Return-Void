@@ -1,7 +1,12 @@
 #include "../../include/Drops/Shield.h"
 
 Shield::Shield() {
-  tick = 100;
+  this->tick = 100;
+  this->width = 35;
+  this->height = 45;
+  this->visible = true;
+  this->isCollected = false;
+  this->name = "Shield";
 }
 
 void Shield::draw() {
@@ -26,12 +31,6 @@ void Shield::draw() {
 void Shield::setup(float x, float y) {
   this->x = x;
   this->y = y;
-  width = 35;
-  height = 45;
-  visible = true;
-  isCollected = false;
-
-  name = "Shield";
 }
 
 void Shield::update(float deltaTime) {

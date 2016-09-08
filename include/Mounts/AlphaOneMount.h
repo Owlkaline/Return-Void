@@ -16,7 +16,7 @@ class AlphaOneMount: public Mount {
     void tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting);
 
   protected:   
-    std::vector<float> cycle;
+    std::vector<int> cycle;
     std::vector<float> Nx;
     std::vector<float> Ny;
 }; 

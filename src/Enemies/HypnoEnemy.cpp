@@ -1,9 +1,29 @@
 #include "../../include/Enemies/HypnoEnemy.h"
 
 HypnoEnemy::HypnoEnemy() {
-  visible = false;
-  width = 75;
-  height = 75;
+  this->visible = false;
+  this->width = 75;
+  this->height = 75;
+  this->speed = 5;
+  this->health = 7;
+  this->angle = 0; 
+ 
+  this->maxWeaponMounts = 2;
+  this->isBoss = false;
+  
+  this->movementAngle = 180;
+
+  this->score = 50;
+  
+  for(int i = 0; i < maxWeaponMounts; ++i) {
+    this->WeaponMount.push_back(new HypnoMount);
+    this->WeaponMount[i]->setup(SPIRAL);
+  }
+  
+  this->WeaponMount[0]->isLeftMount();
+  
+  this->WeaponMount[0]->setOffset(15, 30);
+  this->WeaponMount[1]->setOffset(-15, 30);
 }
 
 HypnoEnemy::~HypnoEnemy() {
@@ -11,31 +31,12 @@ HypnoEnemy::~HypnoEnemy() {
 }
 
 void HypnoEnemy::defaults() {
-  speed = 5;
-  width = 75;
-  height = 75;
-  health = 7;
-  angle = 0; 
- 
-  maxWeaponMounts = 2;
-  isBoss = false;
-  
-  movementAngle = 180;
 
-  score = 50;
  // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
  // lbScore.setColour( 0.0,  1.0,  0.1);
  // lbScore.setText("+70", 3);
 
-  for(int i = 0; i < maxWeaponMounts; ++i) {
-    WeaponMount.push_back(new HypnoMount);
-    WeaponMount[i]->setup(SPIRAL);
-  }
-  
-  WeaponMount[0]->isLeftMount();
-  
-  WeaponMount[0]->setOffset(15, 30);
-  WeaponMount[1]->setOffset(-15, 30);
+
 }
 
 void HypnoEnemy::update(float Px, float Py, float deltaTime) {    

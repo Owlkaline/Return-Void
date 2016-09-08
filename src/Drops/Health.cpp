@@ -1,7 +1,12 @@
 #include "../../include/Drops/Health.h"
 
 Health::Health() {
-  tick = 100;
+  this->tick = 100;
+  this->width = 50;
+  this->height = 50;
+  this->visible = true;
+  this->isCollected = false;
+  this->name = "Health";
 }
 
 void Health::draw() {
@@ -26,11 +31,6 @@ void Health::draw() {
 void Health::setup(float x, float y) {
   this->x = x;
   this->y = y;
-  width = 50;
-  height = 50;
-  visible = true;
-  isCollected = false;
-  name = "Health";
 }
 
 void Health::update(float deltaTime) {
@@ -51,6 +51,6 @@ void Health::update(float deltaTime) {
 } 
 
 int Health::getType() {
-  isCollected = true;
+  this->isCollected = true;
   return HEALTH;
 }

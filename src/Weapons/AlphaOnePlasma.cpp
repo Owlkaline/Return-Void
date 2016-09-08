@@ -1,7 +1,7 @@
 #include "../../include/Weapons/AlphaOnePlasma.h"
 
 AlphaOnePlasma::AlphaOnePlasma() {
-
+  this->explode = false;
 }
 
 void AlphaOnePlasma::draw() { 
@@ -34,15 +34,17 @@ void AlphaOnePlasma::clean() {
 }
 
 void AlphaOnePlasma::tick(float deltaTime) {
-  if(isBoss) {
-    if(y > SPACE_Y_RESOLUTION/2+height) {
-      y-=speed*(deltaTime/2);
+  if(visible) {
+    if(isBoss) {
+      if(y > SPACE_Y_RESOLUTION/2+height+100) {
+        y-=speed*(deltaTime/2);
+      } else {
+        this->explode = true;
+      }
     } else {
-      visible = false;
+      x += (speed*(deltaTime/2))*directionX;
+      y += (speed*(deltaTime/2))*directionY;
     }
-  } else {
-    x += (speed*(deltaTime/2))*directionX;
-    y += (speed*(deltaTime/2))*directionY;
   }
 }
 
@@ -60,7 +62,7 @@ void AlphaOnePlasma::setup(float x, float y, float dirX, float dirY, float angle
     offsetY = 0;
     width = 32;
     height = 32;
-    damage = 0.1;
+    damage = 3;
   }
   speed = 12;
   

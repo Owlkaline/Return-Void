@@ -15,7 +15,7 @@ class AlphaOnePlasma: public Weapon {
     void clean();
     
     void setup(float x, float y, float dirX, float dirY, float angle);  
-  protected: 
+  protected:   
 };
 
 #endif

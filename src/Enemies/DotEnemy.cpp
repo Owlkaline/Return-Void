@@ -1,9 +1,32 @@
 #include "../../include/Enemies/DotEnemy.h"
 
 DotEnemy::DotEnemy() {
-  visible = false;
-  width = 20;
-  height = 20;
+  this->visible = false;
+  this->width = 20;
+  this->height = 20;
+  
+  this->speed = 8;
+  this->width = 30;
+  this->height = 30;
+  this->health = 3;
+  this->angle = 0; 
+ 
+  this->maxWeaponMounts = 1;
+  this->isBoss = false;
+  
+  this->movementAngle = 0;
+
+  this->score = 10;
+
+  for(int i = 0; i < maxWeaponMounts; ++i) {
+    this->WeaponMount.push_back(new DotMount);
+    this->WeaponMount[i]->setup(DOTBULLET);
+  }
+  
+  this->WeaponMount[0]->isLeftMount();
+  
+  this->WeaponMount[0]->setOffset(0, 0);
+  this->drop = NOTHING;
 }
 
 DotEnemy::~DotEnemy() {
@@ -11,28 +34,7 @@ DotEnemy::~DotEnemy() {
 }
 
 void DotEnemy::defaults() {
-  speed = 8;
-  width = 30;
-  height = 30;
-  health = 3;
-  angle = 0; 
- 
-  maxWeaponMounts = 1;
-  isBoss = false;
-  
-  movementAngle = 0;
 
-  score = 10;
-
-  for(int i = 0; i < maxWeaponMounts; ++i) {
-    WeaponMount.push_back(new DotMount);
-    WeaponMount[i]->setup(DOTBULLET);
-  }
-  
-  WeaponMount[0]->isLeftMount();
-  
-  WeaponMount[0]->setOffset(0, 0);
-  drop = NOTHING;
   //WeaponMount[1]->setOffset(-15, 30);
 }
 

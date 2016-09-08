@@ -38,7 +38,7 @@ void AlphaOneMount::defaults() {
 
 void AlphaOneMount::erase() {
   for(unsigned int i = 0; i < cycle.size(); ++i) {
-    if(cycle[i] > 40) {
+    if(cycle[i] > 400) {
       cycle.erase(cycle.begin() + i);
       Nx.erase(Nx.begin() + i);
       Ny.erase(Ny.begin() + i);
@@ -53,20 +53,21 @@ void AlphaOneMount::erase() {
 void AlphaOneMount::tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {
   for(unsigned int i = 0; i < bullets.size(); ++i) {
     bullets[i]->update(deltaTime);
-    if(!bullets[i]->getVisible()) {
-      if(bullets[i]->getIsBoss()/* && bullets[i]->getY() <= SPACE_Y_RESOLUTION/2+100 */) {
+      if(bullets[i]->getIsBoss() && bullets[i]->hasExploded()) {
+        printf("Boss bullet exploded\n");
         Nx.push_back(bullets[i]->getX());
         Ny.push_back(bullets[i]->getY());
         cycle.push_back(0);
+        bullets[i]->setVisible(false);
       }
-    }
   }
-
+  erase();
   int size = bullets.size();
   for(unsigned int i = 0; i < cycle.size(); ++i) {
-    if((int)round(cycle[i]) % 5 == 0) {
-      angle = 0 + 5*(int)round(cycle[i])/5;
+    if((int)cycle[i] % 50 == 0) {
+      angle = 0 + round(cycle[i]);
       for(unsigned int j = 0; j < 8; ++j) {
+        printf("%d. new bullet\n", size+j);
         bullets.push_back(new AlphaOnePlasma);
         bullets[size+j]->setup(0, 0, 0, 0, 0);
         float rad = (angle) * M_PI/180.0;
@@ -81,7 +82,8 @@ void AlphaOneMount::tick(float x, float y, float deltaTime, float directionX, fl
         angle+=45;
       }
     }
-    cycle[i]+=1;
+    if((int)deltaTime % 1 == 0)
+      cycle[i]+=1;
   }
 }
 

@@ -1,9 +1,33 @@
 #include "../../include/Enemies/AlphaOne.h"
 
 AlphaOne::AlphaOne() {
-  visible = false;
-  width = 256;
-  height = 30;
+  this->visible = false;
+  this->width = 256;
+  this->height = 30;
+  this->speed = 5;
+  this->width = 256;
+  this->height = 128;
+  this->health = 120;//30;
+
+  this->angle = 0;
+  this->isBoss = true;
+
+  this->transparent = 1.0;
+
+  this->maxWeaponMounts = 2;
+
+  this->score = 500;
+
+  this->WeaponMount.push_back(new AlphaOneMount);
+  this->WeaponMount[0]->setIsBoss();
+  this->WeaponMount[0]->setup(ALPHAONEPLASMA);
+  this->WeaponMount[0]->setOffset(128, 0);
+
+  this->WeaponMount.push_back(new AlphaOneMount);
+  this->WeaponMount[1]->setIsBoss();
+  this->WeaponMount[1]->setup(ALPHAONEPLASMA);
+  this->WeaponMount[1]->setOffset(-128, 0);  
+  this->WeaponMount[1]->isLeftMount();
 }
 
 AlphaOne::~AlphaOne() {
@@ -11,30 +35,7 @@ AlphaOne::~AlphaOne() {
 }
 
 void AlphaOne::defaults() {
-  speed = 5;
-  width = 256;
-  height = 128;
-  health = 120;//30;
-
-  angle = 0;
-  isBoss = true;
-
-  transparent = 1.0;
-
-  maxWeaponMounts = 2;
-
-  score = 500;
-
-  WeaponMount.push_back(new AlphaOneMount);
-  WeaponMount[0]->setIsBoss();
-  WeaponMount[0]->setup(ALPHAONEPLASMA);
-  WeaponMount[0]->setOffset(128, 0);
-
-  WeaponMount.push_back(new AlphaOneMount);
-  WeaponMount[1]->setIsBoss();
-  WeaponMount[1]->setup(ALPHAONEPLASMA);
-  WeaponMount[1]->setOffset(-128, 0);  
-  WeaponMount[1]->isLeftMount();
+  
 }
 
 void AlphaOne::update(float Px, float Py, float deltaTime) {

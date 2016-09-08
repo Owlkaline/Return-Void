@@ -20,7 +20,8 @@ class Weapon {
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }  
       
     bool getIsBoss() { return isBoss; }
-    bool getVisible() { return visible; }    
+    bool getVisible() { return visible; }  
+    bool hasExploded() { return explode; }  
         
     float getX() { return x; }
     float getY() { return y; }
@@ -38,6 +39,7 @@ class Weapon {
        
   protected:
     bool isBoss;
+    bool explode;
     bool visible;
      
     float angle; 

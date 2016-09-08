@@ -1,9 +1,28 @@
 #include "../../include/Enemies/BasicEnemy.h"
 
 BasicEnemy::BasicEnemy() {
-  visible = false;
-  width = 75;
-  height = 75;
+  this->visible = false;
+  this->width = 75;
+  this->height = 75;
+  this->speed = 5;
+  this->width = 75;
+  this->height = 75;
+  this->health = 10;
+
+  this->angle = 0;
+  this->isBoss = false;
+
+  this->transparent = 1.0;
+
+  this->maxWeaponMounts = 1;
+
+  this->score = 10;
+  
+  for(int i = 0; i < maxWeaponMounts; ++i) {
+    this->WeaponMount.push_back(new BasicMount);
+    this->WeaponMount[i]->setup(BLUEPLASMA);
+    this->WeaponMount[i]->setOffset(0, 20);
+  }
 }
 
 BasicEnemy::~BasicEnemy() {
@@ -11,28 +30,12 @@ BasicEnemy::~BasicEnemy() {
 }
 
 void BasicEnemy::defaults() {
-  speed = 5;
-  width = 75;
-  height = 75;
-  health = 10;
-
-  angle = 0;
-  isBoss = false;
-
-  transparent = 1.0;
-
-  maxWeaponMounts = 1;
-
-  score = 10;
+ 
  // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
 //  lbScore.setColour( 1.0,  0.1,  0.1);
 //  lbScore.setText("+10", 3);
 
-  for(int i = 0; i < maxWeaponMounts; ++i) {
-    WeaponMount.push_back(new BasicMount);
-    WeaponMount[i]->setup(BLUEPLASMA);
-    WeaponMount[i]->setOffset(0, 20);
-  }
+
 }
 
 void BasicEnemy::update(float Px, float Py, float deltaTime) {
