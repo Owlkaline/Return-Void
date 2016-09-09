@@ -38,25 +38,7 @@ void HeroShip3::defaults() {
   WeaponMount[0]->setup(GREENPLASMA);        
   WeaponMount[0]->setDamage(9);
   WeaponMount[0]->setTimer(70);
- // WeaponMount[0]->setAutomated(false);
   WeaponMount[0]->setOffset(mountPosX[0], mountPosY[0]);
- // WeaponMount[0]->setVisible(false);
-  /*for(int i = 0; i < 2; ++i) {
-    switch(i) {
-      case 0:
-      case 1:   
-        WeaponMount.push_back(new BasicMount);
-        WeaponMount[i]->setup(BLUEPLASMA);
-        WeaponMount[i]->setTimer(BLUEPLASMATIMER - BLUEPLASMATIMER/4);
-        WeaponMount[i]->setDamage(2);
-        break;
-      case 2:
-       // WeaponMount.push_back(new TriangleMount);
-       // WeaponMount[i]->setup(GREENPLASMA);
-        break;
-    }    
-    WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
-  }*/
 }
     
 void HeroShip3::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -107,13 +89,8 @@ void HeroShip3::update(float mouseX, float mouseY, float deltaTime, unsigned int
     y = SPACE_Y_RESOLUTION-height/2;
 
   fire(x, y, deltaTime, directionX, directionY, angle, mouseBtnState);
-  //WeaponMount[0]->update(x, y, deltaTime, directionX, directionY, angle, mouseBtnState[0]);
   
   int charge = WeaponMount[0]->getTimer();
-  /*if(charge > 70) {
-    WeaponMount[0]->fire();
-    WeaponMount[0]->resetTimer();
-  } else */
   if(charge > 60) {
     crntTexture = 3;
   } else if (charge > 40) {

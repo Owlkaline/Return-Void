@@ -43,8 +43,6 @@ void GalacticShip::defaults() {
         WeaponMount[i]->setDamage(2);
         break;
       case 2:
-       // WeaponMount.push_back(new TriangleMount);
-       // WeaponMount[i]->setup(GREENPLASMA);
         break;
     }    
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
