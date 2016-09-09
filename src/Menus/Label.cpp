@@ -61,9 +61,10 @@ void Label::clean() {
 }
 
 void Label::setupGLC(float scaleX, float scaleY) {
-  settings.Load();
-  float ratioX = settings.getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
-  float ratioY = settings.getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
+  Settings *settings = Settings::instance();
+  
+  float ratioX = settings->getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
+  float ratioY = settings->getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
   // Set up and initialize GLC
   ctx = glcGenContext();
   glcContext(ctx);

@@ -34,9 +34,9 @@ void Shipbox::setup(float x, float y, int shipType) {
   lb[0]->setup(x, y, 400, 400, (char*)"Textures/Menu/ShopMenu/Boxbackground.png");
   lb[0]->drawBorder(true);
   
-  settings.Load();
-  float width = settings.getCurrentWindowWidth();
-  float height = settings.getCurrentWindowHeight();
+  Settings *settings = Settings::instance();
+  float width = settings->getCurrentWindowWidth();
+  float height = settings->getCurrentWindowHeight();
   float ratioX = width/(float)SPACE_X_RESOLUTION;
   float ratioY = height/(float)SPACE_Y_RESOLUTION;
   
@@ -64,9 +64,9 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   attemptBuy = false;
   visible = true;
   
-  settings.Load();
-  float width = settings.getCurrentWindowWidth();
-  float height = settings.getCurrentWindowHeight();
+  Settings *settings = Settings::instance();
+  float width = settings->getCurrentWindowWidth();
+  float height = settings->getCurrentWindowHeight();
   float ratioX = width/(float)SPACE_X_RESOLUTION;
   float ratioY = height/(float)SPACE_Y_RESOLUTION;
   

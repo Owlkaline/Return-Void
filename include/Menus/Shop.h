@@ -40,7 +40,6 @@ class Shop: public Menu {
     int selected;
     
     Profile profile;
-    Settings settings;
     
     std::vector<Ship*> ship;
     std::vector<Shipbox*> box;

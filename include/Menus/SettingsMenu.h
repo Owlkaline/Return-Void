@@ -16,8 +16,6 @@ class SettingsMenu: public Menu {
   protected:    
     bool isFullscreen, borderless;
     int crntResolution;
-    
-    Settings settings;
 };
 
 #endif

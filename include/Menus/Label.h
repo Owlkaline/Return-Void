@@ -69,9 +69,6 @@ class Label {
     float x, y, width, height;
     
     std::string str;
-    
-    //Settings settings;
-    Settings settings;
        
     GLint ctx, myFont;
  

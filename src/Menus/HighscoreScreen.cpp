@@ -37,9 +37,9 @@ void HighscoreScreen::setup(std::string username) {
   showingHighscores = false;
   this->username = username;
   
-  settings.Load();
-  float widthT = settings.getCurrentWindowWidth();
-  float heightT = settings.getCurrentWindowHeight();
+  Settings *settings = Settings::instance();
+  float widthT = settings->getCurrentWindowWidth();
+  float heightT = settings->getCurrentWindowHeight();
   float ratioX = widthT/(float)SPACE_X_RESOLUTION;
   float ratioY = heightT/(float)SPACE_Y_RESOLUTION;
   // Retry
@@ -119,23 +119,19 @@ void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsign
   }
   // Highscore button
   if(buttons[2]->Clicked()) {
-    if(showingHighscores) {
-    
+    if(showingHighscores) {    
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(false);
       for(int i = 0; i < 5; ++i)
-        lb[21+i]->setVisible(true);
-        
+        lb[21+i]->setVisible(true);      
       buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Highscore.png");
       buttons[2]->setWidth(BUTTONWIDTH*1.5);
       showingHighscores = false;
-    } else {
-    
+    } else {    
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(true);
       for(int i = 0; i < 5; ++i)
-        lb[21+i]->setVisible(false);
-        
+        lb[21+i]->setVisible(false);        
       buttons[2]->setTexture((char*)"Textures/Menu/GameMenus/Stats.png");
       buttons[2]->setWidth(BUTTONWIDTH);
       showingHighscores = true;
@@ -177,7 +173,8 @@ void HighscoreScreen::setScore(int score) {
   lb[21]->setText(strScore.c_str(), strScore.length());
   lb[21]->setVisible(true);
   lb[22]->setVisible(true);
-  //LoadHighscores(score);
+
+ // LoadHighscores(score);
 }
 /*
 void HighscoreScreen::LoadHighscores(int score) {

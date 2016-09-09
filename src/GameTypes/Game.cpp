@@ -40,15 +40,15 @@ void Game::draw() {
 }
 
 void Game::setup() {
+  Settings *settings = Settings::instance();
   printf("Game Setting up...");
   boostRand.newSeed(seed);
 
   profile.Load((char*)"You   ");
-  settings.Load();
 
   paused = false;
   inHighscore = false;
-  highscore.setup(profile.getUsername());
+  highscore.setup("You   ");
 
   score = 0;
   wave = 0;
@@ -71,8 +71,8 @@ void Game::setup() {
       break;
   }
   
-  float width = settings.getCurrentWindowWidth();
-  float height = settings.getCurrentWindowHeight();
+  float width = settings->getCurrentWindowWidth();
+  float height = settings->getCurrentWindowHeight();
   ratioX = width/(float)SPACE_X_RESOLUTION;
   ratioY = height/(float)SPACE_Y_RESOLUTION;
   

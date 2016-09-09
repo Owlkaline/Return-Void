@@ -15,26 +15,19 @@
 
 class Settings {
   public:
-    Settings();
     ~Settings();
+    
+    static Settings *init();
+    static Settings *instance();
+    static void destroy();
+    
     void Load();
-    void firstLoad();
     void Save();
     
     void setResolution(int resX, int resY) { this->windowWidth = resX; this->windowHeight = resY; }
     void setWindowWidth(int windowWidth) { this->windowWidth = windowWidth; }
     void setWindowHeight(int windowHeight) { this->windowHeight = windowHeight; }
-    void setFullscreen(bool fullscreen) { 
-      this->fullscreen = fullscreen; 
-      if(fullscreen) {
-        //glutFullScreen();  
-     //   windowWidth = glutGet(GLUT_SCREEN_WIDTH);
-     //   windowHeight = glutGet(GLUT_SCREEN_HEIGHT);
-      } else {
-        //glutReshapeWindow(windowWidth, windowHeight);
-        //glutInitWindowPosition(windowWidth/4, windowHeight/4); 
-      }
-    }
+    void setFullscreen(bool fullscreen) { this->fullscreen = fullscreen; }
     
     float getVersion() { return version; }
     
@@ -47,6 +40,8 @@ class Settings {
   protected:
     void createNewSettings();
 
+   
+
     float version;
     
     bool fullscreen;
@@ -57,6 +52,10 @@ class Settings {
     
     std::ifstream ifs;
     std::ofstream ofs;
+  protected:
+     static Settings *m_instance;
+     
+     Settings();
 };
 
 #endif

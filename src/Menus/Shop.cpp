@@ -13,9 +13,9 @@ void Shop::setup() {
   numShips = 0;
   selected = profile.getSelectedShip();
   
-  settings.Load();
-  float width = settings.getCurrentWindowWidth();
-  float height = settings.getCurrentWindowHeight();
+  Settings *settings = Settings::instance();
+  float width = settings->getCurrentWindowWidth();
+  float height = settings->getCurrentWindowHeight();
   float ratioX = width/(float)SPACE_X_RESOLUTION;
   float ratioY = height/(float)SPACE_Y_RESOLUTION;
   

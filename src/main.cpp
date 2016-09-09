@@ -66,9 +66,6 @@ float aspectH;
 //Current coords of the mouse
 int mouseX, mouseY;
 
-//Settings settings;
-Settings settings;
-
 //Keeps the current key state, keeps the key state of the previous key state
 unsigned int  specialKey[5];
 unsigned int  mouseBtnState[3];
@@ -146,6 +143,8 @@ void drawCursor() {
 }
 
 void clean() {
+  Settings *settings = Settings::instance();
+  settings->destroy();
   glfwTerminate();
 }
 
@@ -197,6 +196,7 @@ void display(GLFWwindow* window, float deltaTime) {
 }
 
 GLFWwindow* init() {
+    Settings *settings =  Settings::init();
   /* Initialize the library */
   GLFWwindow* window;
   if (!glfwInit()) {
@@ -204,10 +204,10 @@ GLFWwindow* init() {
     return window;
   }
   // Use OpenGL 2.1    
-  settings.firstLoad();
-  bool isFullscreen = settings.getFullscreen();
-  screenResX = settings.getWindowWidth();
-  screenResY = settings.getWindowHeight();
+ 
+  bool isFullscreen = settings->getFullscreen();
+  screenResX = settings->getWindowWidth();
+  screenResY = settings->getWindowHeight();
 
 
   /* Create a windowed mode window and its OpenGL context */
@@ -241,8 +241,8 @@ GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", mon
     window = glfwCreateWindow(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, "Return-Void", glfwGetPrimaryMonitor(), NULL);
 
     printf("Entering fullscreen mode\n");
-    settings.setFullscreen(true); 
-    settings.setResolution(screenResX, screenResY);    
+    settings->setFullscreen(true); 
+    settings->setResolution(screenResX, screenResY);    
   } else {
     printf("Entering windowed mode\n");
   
@@ -256,9 +256,7 @@ GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", mon
     glfwTerminate();
     glfwSetWindowShouldClose(window, true);
     return window;
-  } 
-  
-  settings.Save();  
+  }  
   
   aspectRatio = (float)screenResX / (float)screenResY;
   aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
@@ -288,6 +286,8 @@ int main(int argc, char* args[]) {
   glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
   
   Display[type]->setup();
+  
+  
 
   double lastTime = glfwGetTime();
   while(!glfwWindowShouldClose(window)) {

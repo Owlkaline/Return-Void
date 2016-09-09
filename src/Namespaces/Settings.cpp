@@ -1,21 +1,47 @@
 #include "../../include/Namespaces/Settings.h"
 
+Settings *Settings::m_instance = 0;
+
 Settings::Settings() {
-//  Load();
+  version = VERSION;
+    
+  fullscreen = false;
+    
+  windowWidth = 800;
+  windowHeight = 600;
+  crntWindowWidth = 800;
+  crntWindowHeight = 600;
+  
+  Load();
 }
 
 Settings::~Settings() {
-
+  Save();
 }
 
-void Settings::firstLoad() {
-  Load();
-  crntWindowWidth = windowWidth;
-  crntWindowHeight = windowHeight;
+Settings *Settings::init() {
+  if(!Settings::m_instance) {
+    Settings::m_instance = new Settings;
+  } else {
+    printf(("WARNING: Config::init() has already been called.\n"));
+    exit(-1);
+  }
+  return Settings::m_instance;
 }
 
-void Settings::Load() {
+Settings *Settings::instance() {
+  if(!Settings::m_instance) {
+    return Settings::init();
+  } else
+    return Settings::m_instance;
+}
 
+void Settings::destroy() {
+  delete Settings::m_instance;
+  Settings::m_instance = 0;
+}
+
+void Settings::Load() {  
   // check whether application directory in the home diretory exists, if not create it
   # ifdef __linux__
     home = getenv("HOME");
@@ -47,6 +73,8 @@ void Settings::Load() {
   } else {
     createNewSettings();
   }
+  crntWindowWidth = windowWidth;
+  crntWindowHeight = windowHeight;
 }
 
 void Settings::Save() {

@@ -5,11 +5,12 @@ SettingsMenu::SettingsMenu() {
 }
 
 void SettingsMenu::setup() {
-  settings.Load();
+  Settings *settings = Settings::instance();
+  
   ended = false;
   type = MAINMENU;
-  isFullscreen = settings.getFullscreen();
-  switch(settings.getWindowWidth()) {
+  isFullscreen = settings->getFullscreen();
+  switch(settings->getWindowWidth()) {
     case 800:
       crntResolution = 0;
       break;
@@ -110,6 +111,7 @@ void SettingsMenu::restart() {
 }
 
 void SettingsMenu::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+  Settings *settings = Settings::instance();
   if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
     prevKeyState[ESC] = keyState[ESC];
     type = MAINMENU;
@@ -127,19 +129,19 @@ void SettingsMenu::update(float mouseX, float mouseY, float deltaTime, unsigned 
   if(buttons[1]->Clicked()) {
     switch(crntResolution) {
       case 0:
-        settings.setResolution(800, 600);
+        settings->setResolution(800, 600);
         break;
       case 1:
-        settings.setResolution(1280, 720);
+        settings->setResolution(1280, 720);
         break;
       case 2:
-        settings.setResolution(1920, 1080);
+        settings->setResolution(1920, 1080);
         break;
     }
     if(isFullscreen)
-      settings.setResolution(1920, 1080);
-    settings.setFullscreen(isFullscreen);
-    settings.Save();
+      settings->setResolution(1920, 1080);
+    settings->setFullscreen(isFullscreen);
+    settings->Save();
   }
   
   if(buttons[2]->Clicked() || buttons[3]->Clicked()) {

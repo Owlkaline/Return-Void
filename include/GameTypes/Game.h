@@ -64,7 +64,6 @@ class Game: public DisplayManager {
     Profile profile;
     Random boostRand;     
     PausedMenu pMenu;
-    Settings settings;
     std::string strScore;
     HighscoreScreen highscore;
     GLuint ChTexture, background;    
