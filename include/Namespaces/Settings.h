@@ -40,8 +40,6 @@ class Settings {
   protected:
     void createNewSettings();
 
-   
-
     float version;
     
     bool fullscreen;
@@ -52,10 +50,10 @@ class Settings {
     
     std::ifstream ifs;
     std::ofstream ofs;
-  protected:
-     static Settings *m_instance;
-     
-     Settings();
+
+    static Settings *m_instance;
+    
+    Settings();
 };
 
 #endif

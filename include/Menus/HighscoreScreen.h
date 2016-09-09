@@ -25,8 +25,6 @@ class HighscoreScreen: public Menu {
 
     int highscores[10];
     
-    Highscore highscore;
-    
     std::string username;
     
     std::string names[10];

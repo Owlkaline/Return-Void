@@ -100,7 +100,7 @@ void Game::setup() {
   level = 1;
   isNew = true;
   ended = false;
-  ChRadius = 20;
+  ChRadius = 40;
   type = MAINMENU;
   ChTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
   background = txt::LoadTexture("Textures/Game/Background.png");
@@ -378,17 +378,7 @@ void Game::drawCrosshair() {
     lastChX = ChX;
     lastChY = ChY;
   }
-
-  glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(lastChX-ChRadius, lastChY+ChRadius, 0.0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(lastChX+ChRadius, lastChY+ChRadius, 0.0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(lastChX+ChRadius, lastChY-ChRadius, 0.0);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(lastChX-ChRadius, lastChY-ChRadius, 0.0);
-  glEnd();
+  drawQuad(lastChX, ChRadius, lastChY, ChRadius, UP);
 
   glColor3f(1.0, 1.0, 1.0f);
   glDisable(GL_TEXTURE_2D);
@@ -399,7 +389,6 @@ void Game::drawBackground() {
     // Background
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, background);
- 
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
       glVertex3f(0, SPACE_Y_RESOLUTION*2+offsetY, 0.0);

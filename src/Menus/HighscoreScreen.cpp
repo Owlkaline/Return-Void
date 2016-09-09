@@ -33,7 +33,7 @@ void HighscoreScreen::setup() {
 }
 
 void HighscoreScreen::setup(std::string username) {
-  highscore.Load();
+  Highscore *highscore = Highscore::instance(); 
   showingHighscores = false;
   this->username = username;
   
@@ -54,8 +54,8 @@ void HighscoreScreen::setup(std::string username) {
   buttons[2]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10, BUTTONWIDTH*1.5, BUTTONHEIGHT,  (char*)"Textures/Menu/MainMenu/Highscore.png");
   
   for(int i = 0; i < 20; i+=2) {
-    names[i/2] = highscore.getName(i/2);
-    highscores[i/2] = highscore.getScore(i/2);
+    names[i/2] = highscore->getName(i/2);
+    highscores[i/2] = highscore->getScore(i/2);
     
     // Name
     std::stringstream ss;
@@ -140,9 +140,10 @@ void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsign
 }
 
 void HighscoreScreen::setScore(int score) {
-
-  if(highscore.setNewHighscore(username, score)) {
-    int i = highscore.getNewHighscorePos();
+  Highscore *highscore = Highscore::instance(); 
+   
+  if(highscore->setNewHighscore(username, score)) {
+    int i = highscore->getNewHighscorePos();
     for(int j = 9; j > i; j--) {
       names[j] = names[j-1];
       highscores[j] = highscores[j-1];
@@ -155,13 +156,13 @@ void HighscoreScreen::setScore(int score) {
       std::string str1 = ss1.str();
       lb[j*2+1]->setText(str1.c_str(), str1.length());      
     }
-    names[i] = highscore.getHighscoreName();
+    names[i] = highscore->getHighscoreName();
     std::stringstream ss;
     ss << i+1;
     std::string str = ss.str() + ". " + names[i].c_str(); 
     lb[i*2]->setText(str.c_str(), str.length());
     std::stringstream ss1;
-    ss1 << highscore.getNewHighscore();
+    ss1 << highscore->getNewHighscore();
     std::string str1 = ss1.str();
     lb[i*2+1]->setText(str1.c_str(), str1.length());
     

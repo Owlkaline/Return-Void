@@ -40,6 +40,7 @@
 #include "../include/GameTypes/Menu.h"
 
 #include "../include/Namespaces/Settings.h"
+#include "../include/Namespaces/Highscore.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1920;
@@ -196,7 +197,9 @@ void display(GLFWwindow* window, float deltaTime) {
 }
 
 GLFWwindow* init() {
-    Settings *settings =  Settings::init();
+  Settings *settings =  Settings::init();
+  Highscore *highscore = Highscore::init();
+    
   /* Initialize the library */
   GLFWwindow* window;
   if (!glfwInit()) {

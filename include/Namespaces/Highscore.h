@@ -14,8 +14,11 @@
 
 class Highscore {
   public:
-    Highscore();
     ~Highscore();
+    
+    static Highscore *init();
+    static Highscore *instance();
+    static void destroy();    
     
     void Load();
     void Save();    
@@ -83,6 +86,9 @@ class Highscore {
     
     std::ifstream ifs;
     std::ofstream ofs;
+    
+    static Highscore *m_instance;
+    Highscore();
 };
 
 #endif

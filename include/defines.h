@@ -29,6 +29,9 @@
 #define BUTTONHEIGHT           95
 #define ARROWWIDTH             59
 
+#define UP                     0
+#define DOWN                   1
+
 // Game States
 #define EXIT                   -1
 #define SEEDEDGAME             -2
@@ -90,5 +93,22 @@
 
 // Keys
 #define ESC                    256
+
+inline void drawQuad(float x, float w, float y, float h, int rotation)
+	{
+		glBegin(GL_TRIANGLE_STRIP);
+		  if(rotation == DOWN) {
+		    glTexCoord2f(1.0, 0.0); glVertex3f( x+w/2,  y+h/2, 0.0);
+			  glTexCoord2f(0.0, 0.0); glVertex3f( x-w/2,  y+h/2, 0.0);
+			  glTexCoord2f(1.0, 1.0); glVertex3f( x+w/2,  y-h/2, 0.0);
+			  glTexCoord2f(0.0, 1.0); glVertex3f( x-w/2,  y-h/2, 0.0);
+			} else {
+		    glTexCoord2f(0.0, 1.0); glVertex3f( x+w/2,  y+h/2, 0.0);
+			  glTexCoord2f(1.0, 1.0); glVertex3f( x-w/2,  y+h/2, 0.0);
+			  glTexCoord2f(0.0, 0.0); glVertex3f( x+w/2,  y-h/2, 0.0);
+			  glTexCoord2f(1.0, 0.0); glVertex3f( x-w/2,  y-h/2, 0.0);			
+			}
+		glEnd();
+	}
 
 #endif

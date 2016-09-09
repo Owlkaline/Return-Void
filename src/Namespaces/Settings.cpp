@@ -23,7 +23,7 @@ Settings *Settings::init() {
   if(!Settings::m_instance) {
     Settings::m_instance = new Settings;
   } else {
-    printf(("WARNING: Config::init() has already been called.\n"));
+    printf(("WARNING: Settings::init() has already been called.\n"));
     exit(-1);
   }
   return Settings::m_instance;

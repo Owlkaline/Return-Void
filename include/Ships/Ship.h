@@ -95,17 +95,7 @@ class Ship {
         
         glEnable(GL_TEXTURE_2D);
         setTexture();
-
-        glBegin(GL_QUADS);
-          glTexCoord2f(0.0f, 1.0f);
-          glVertex3f(x-width/2, y+height/2, 0.0);
-          glTexCoord2f(1.0f, 1.0f);
-          glVertex3f(x+width/2, y+height/2, 0.0);
-          glTexCoord2f(1.0f, 0.0f);
-          glVertex3f(x+width/2, y-height/2, 0.0);
-          glTexCoord2f(0.0f, 0.0f);
-          glVertex3f(x-width/2, y-height/2, 0.0);
-        glEnd();
+        drawQuad(x, -width, y, height, UP);
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();  
         glColor4f(1.0, 1.0, 1.0, 1.0);      
@@ -197,61 +187,29 @@ class Ship {
     
     void drawHealthBar() {
 
-      float hy = SPACE_Y_RESOLUTION - 10;    
+      float hy = SPACE_Y_RESOLUTION - 35;    
       float hw = 500;
       float hh = 50;
-      float hx = SPACE_X_RESOLUTION/2 - hw/2;
+      float hx = SPACE_X_RESOLUTION/2;
       glEnable(GL_TEXTURE_2D);
   
       glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
   
       glColor4f(1.0, 1.0, 1.0, 0.5f);
-      glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(hx, hy, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(hx+hw, hy, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(hx+hw, hy-hh, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(hx, hy-hh, 0.0);
-      glEnd();
+      drawQuad(hx, -hw, hy, hh, UP);
   
       hw = hw/maxShield * shield;
-      hx = SPACE_X_RESOLUTION/2 - hw/2;
+      hx = SPACE_X_RESOLUTION/2;
   
       //Shield Bar
       glBindTexture(GL_TEXTURE_2D, healthBarTexture[2]);
-  
-      glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(hx, hy, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(hx+hw, hy, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(hx+hw, hy-hh, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(hx, hy-hh, 0.0);
-      glEnd(); 
-  
-      hw = 500;
-      hx = SPACE_X_RESOLUTION/2 - hw/2;
+      drawQuad(hx, -hw, hy, hh, UP);
     
-      hw = hw/(float)maxHealth * crntHealth;
-      hx = SPACE_X_RESOLUTION/2 - hw/2;
+      hw = 500/(float)maxHealth * crntHealth;
+      hx = SPACE_X_RESOLUTION/2;
       //Health bar
       glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
-  
-      glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(hx, hy, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(hx+hw, hy, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(hx+hw, hy-hh, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(hx, hy-hh, 0.0);
-      glEnd();
+      drawQuad(hx, -hw, hy, hh, UP);
    
       glDisable(GL_TEXTURE_2D);
       glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -287,17 +245,7 @@ class Ship {
       } else {
         glBindTexture(GL_TEXTURE_2D, shieldTexture[0]);
       }
-  
-      glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x-width*0.7, y+height*0.7, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x+width*0.7, y+height*0.7, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(x+width*0.7, y-height*0.7, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x-width*0.7, y-height*0.7, 0.0);
-      glEnd();
+      drawQuad(x, -width*1.3, y, height*1.3, UP);
       glDisable(GL_TEXTURE_2D);
       glPopMatrix();  
       glColor4f(1.0, 1.0, 1.0, 1.0);     

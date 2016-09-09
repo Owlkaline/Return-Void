@@ -33,7 +33,7 @@ void PausedMenu::drawBackground() {
       glVertex3f(x+width, y-height, 0.0);
       glTexCoord2f(0.0f, 0.0f);
       glVertex3f(x-width, y-height, 0.0);
-    glEnd();    
+    glEnd(); 
     glDisable(GL_TEXTURE_2D);
     glColor4f(1.0, 1.0, 1.0, 1.0);
 }

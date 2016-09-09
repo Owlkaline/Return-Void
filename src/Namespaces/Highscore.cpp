@@ -1,11 +1,35 @@
 #include "../../include/Namespaces/Highscore.h"
 
+Highscore *Highscore::m_instance = 0;
+
 Highscore::Highscore() {
-//  Load();
+  Load();
 }
 
 Highscore::~Highscore() {
+  Save();
+}
 
+Highscore *Highscore::init() {
+  if(!Highscore::m_instance) {
+    Highscore::m_instance = new Highscore;
+  } else {
+    printf(("WARNING: Highscore::init() has already been called.\n"));
+    exit(-1);
+  }
+  return Highscore::m_instance;
+}
+
+Highscore *Highscore::instance() {
+  if(!Highscore::m_instance) {
+    return Highscore::init();
+  } else
+    return Highscore::m_instance;
+}
+
+void Highscore::destroy() {
+  delete Highscore::m_instance;
+  Highscore::m_instance = 0;
 }
 
 void Highscore::Load() {

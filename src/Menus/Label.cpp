@@ -61,10 +61,10 @@ void Label::clean() {
 }
 
 void Label::setupGLC(float scaleX, float scaleY) {
-  Settings *settings = Settings::instance();
+  //Settings *settings = Settings::instance();
   
-  float ratioX = settings->getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
-  float ratioY = settings->getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
+  //float ratioX = settings->getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
+  //float ratioY = settings->getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
   // Set up and initialize GLC
   ctx = glcGenContext();
   glcContext(ctx);
@@ -77,10 +77,16 @@ void Label::setupGLC(float scaleX, float scaleY) {
   #else
     glcNewFontFromFamily(myFont, "Palatino");
   #endif
-  //glcFontFace(myFont, "Bold");
+  glcFontFace(myFont, "Normal");
   glcFont(myFont);
+  
+  	// Use the texture-based font renderer
+	glcRenderStyle(GLC_TRIANGLE);
+
+	// Use UTF-8 encoded strings
+	glcStringType(GLC_UTF8_QSO);
       // Render the text at a size of 100 points
-  glcScale(30*ratioX, 30*ratioY);
+  //glcScale(30*ratioX, 30*ratioY);
 }
 
 void Label::setup(float x, float y, float width, float height, char* filename) {
@@ -153,10 +159,15 @@ void Label::update(float deltaTime) {
 
 //Draws Text to the screen
 void Label::drawChar() {
+  glPushMatrix();
   // Render "Hello world!"
+  glTranslatef(x-length*10, y, 0.0);
+  glScalef(24.0f, 24.0f, 1.0f);
   glColor3f(R, G, B);
-  glRasterPos2f(x-length*10, y);
+  //glRasterPos2f(x-length*10, y);
   glcRenderString(str.c_str());
+
+  glPopMatrix();
 }
 
 void Label::setTexture(char* filename) {
