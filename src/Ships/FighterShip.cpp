@@ -47,7 +47,8 @@ void FighterShip::update(float mouseX, float mouseY, float deltaTime, unsigned i
   animate();
 
   if(tookDamage || shieldDamaged)
-    tick--;
+    tick-=1*deltaTime;
+    
   float diffx = mouseX - x;
   float diffy = mouseY - y;
 

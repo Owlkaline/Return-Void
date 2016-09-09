@@ -1,7 +1,8 @@
 #include "../../include/Weapons/RedPlasma.h"
 
 RedPlasma::RedPlasma() {
-
+  this->immortal = false;
+  this->active = true;
 }
 
 void RedPlasma::draw() {

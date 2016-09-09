@@ -73,11 +73,13 @@ void Label::setupGLC(float scaleX, float scaleY) {
   // Create a font "Palatino Bold"
   myFont = glcGenFontID();
   #ifdef __WIN32__
-    glcNewFontFromFamily(myFont, "Palatino Linotype");
+   // glcNewFontFromFamily(myFont, "Palatino Linotype");
+   glcNewFontFromFamily(myFont, "Gothic Uralic");
   #else
-    glcNewFontFromFamily(myFont, "Palatino");
+   // glcNewFontFromFamily(myFont, "Palatino");
+   glcNewFontFromFamily(myFont, "Gothic Uralic");
   #endif
-  glcFontFace(myFont, "Normal");
+  glcFontFace(myFont, "Bold");
   glcFont(myFont);
   
   	// Use the texture-based font renderer

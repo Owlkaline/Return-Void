@@ -65,8 +65,11 @@ void Game::setup() {
     case 1:
       ship.push_back(new FighterShip);
       break;
+    case 2:
+      ship.push_back(new HeroShip3);
+      break;
     default:
-      printf("Error in Game.cpp: Unkown ship selected");
+      printf("Line 72: Error in Game.cpp: Unkown ship selected\n ");
       exit(0);
       break;
   }

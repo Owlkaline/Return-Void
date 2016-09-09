@@ -1,7 +1,8 @@
 #include "../../include/Weapons/Spiral.h"
 
 Spiral::Spiral() {
-
+  this->immortal = false;
+  this->active = true;
 }
 
 void Spiral::draw() {

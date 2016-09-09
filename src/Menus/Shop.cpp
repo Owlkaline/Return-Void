@@ -107,6 +107,8 @@ void Shop::setup() {
         box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, FIGHTERSHIP);
         break;
       case 2: 
+        box[i]->setup(267 + 453*i, SPACE_Y_RESOLUTION/3*2, unlocked, bought, HEROSHIP3);
+        break;
       case 3:
       case 4:
       case 5:
@@ -134,6 +136,8 @@ void Shop::setup() {
       box[box.size()-1]->setup(1676, 390, FIGHTERSHIP);
       break;
     case 2:
+      box[box.size()-1]->setup(1676, 390, HEROSHIP3);
+      break;
     case 3:
     case 4:
     case 5:
@@ -257,9 +261,11 @@ void Shop::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
                 box[box.size()-1]->setShip(FIGHTERSHIP);
                 break;
               case 2:
+                box[box.size()-1]->setShip(HEROSHIP3);
+                break;
               case 3:
               case 4:
-                box[box.size()-1]->setShip(GALACTICSHIP);
+               // box[box.size()-1]->setShip(GALACTICSHIP);
                 break;
             }
             break;
@@ -276,17 +282,21 @@ void Shop::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
         for(int i = selected+1; i < 6; ++i) {
           if(shipType[i]) {
             selected = i;
-            switch(selected) {              
+            switch(selected) {  
+              case 0:
+                box[box.size()-1]->setShip(GALACTICSHIP);
+                buttons[4]->disable();
+                buttons[4]->setVisible(false);  
+                break;           
               case 1:
                 box[box.size()-1]->setShip(FIGHTERSHIP);
                 break;
               case 2:
+                box[box.size()-1]->setShip(HEROSHIP3);
+                break;
               case 3:
               case 4:
-              case 5:
-                box[box.size()-1]->setShip(GALACTICSHIP);
-                buttons[4]->disable();
-                buttons[4]->setVisible(false);  
+              case 5: 
                 break;
             }
             break;

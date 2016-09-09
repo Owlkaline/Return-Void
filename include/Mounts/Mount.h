@@ -29,10 +29,14 @@ class Mount {
     void setHealth(float health) { this->health = health; };
     void setVisible(bool visible) { this->visible = visible; }
     void setTimer(float bulletTimer) { this->bulletTimer = bulletTimer; }
+    void resetTimer() { this->bulletTicks = 0; }
+    
+    void setAutomated(bool automate) { this->automated = automate; }
     void setDamage(float damage) { customDamage = true; this->damage = damage; }
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }
     
     bool getVisible() { return visible; }
+    int getTimer() { return bulletTicks; }
     int getNumBullets() { return bullets.size(); }    
     float bulletHit(int index) { return bullets[index]->hit(); }    
     
@@ -118,8 +122,10 @@ class Mount {
       
       if(isShooting) {
         if(bulletTicks > bulletTimer) { 
-          fire(); 
-          bulletTicks = 0; 
+          if(visible && automated) {
+            fire(); 
+            bulletTicks = 0; 
+          }
         }
       }
       if(x < 0)
@@ -127,15 +133,13 @@ class Mount {
     }
     
     void fire() {
-      if(visible) {
-        currentTexture = 1;
-        addBullet();
-        unsigned int i = bullets.size()-1;
-        bullets[i]->setup(x, y, dirX, dirY, angle);
-        bullets[i]->setVisible(true);
-        if(customDamage)
-          bullets[i]->setDamage(damage);
-      }
+      currentTexture = 1;
+      addBullet();
+      unsigned int i = bullets.size()-1;
+      bullets[i]->setup(x, y, dirX, dirY, angle);
+      bullets[i]->setVisible(true);
+      if(customDamage)
+        bullets[i]->setDamage(damage);
     }
     
     void clean() { 
@@ -187,6 +191,7 @@ class Mount {
     }
 
     void setup(int variant) {
+      automated = true;
       bulletTicks = 0;
       damageTicks = 0;
       angle = 0;
@@ -273,6 +278,7 @@ class Mount {
     bool visible;
     bool tookDamage;
     bool customDamage;
+    bool automated; 
     
     float angle;
     float health; 

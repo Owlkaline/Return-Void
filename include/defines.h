@@ -46,6 +46,7 @@
 // Ship Types
 #define FIGHTERSHIP            1
 #define GALACTICSHIP           2
+#define HEROSHIP3              3
 
 // Powerups
 #define NUMOFDROPS             3
@@ -96,17 +97,17 @@
 
 inline void drawQuad(float x, float w, float y, float h, int rotation)
 	{
-		glBegin(GL_TRIANGLE_STRIP);
+		glBegin(GL_QUADS);
 		  if(rotation == DOWN) {
-		    glTexCoord2f(1.0, 0.0); glVertex3f( x+w/2,  y+h/2, 0.0);
-			  glTexCoord2f(0.0, 0.0); glVertex3f( x-w/2,  y+h/2, 0.0);
-			  glTexCoord2f(1.0, 1.0); glVertex3f( x+w/2,  y-h/2, 0.0);
+		    glTexCoord2f(0.0, 0.0); glVertex3f( x-w/2,  y+h/2, 0.0);
 			  glTexCoord2f(0.0, 1.0); glVertex3f( x-w/2,  y-h/2, 0.0);
+			  glTexCoord2f(1.0, 1.0); glVertex3f( x+w/2,  y-h/2, 0.0);
+			  glTexCoord2f(1.0, 0.0); glVertex3f( x+w/2,  y+h/2, 0.0);
 			} else {
-		    glTexCoord2f(0.0, 1.0); glVertex3f( x+w/2,  y+h/2, 0.0);
-			  glTexCoord2f(1.0, 1.0); glVertex3f( x-w/2,  y+h/2, 0.0);
+		    glTexCoord2f(1.0, 1.0); glVertex3f( x-w/2,  y+h/2, 0.0);
+			  glTexCoord2f(1.0, 0.0); glVertex3f( x-w/2,  y-h/2, 0.0);
 			  glTexCoord2f(0.0, 0.0); glVertex3f( x+w/2,  y-h/2, 0.0);
-			  glTexCoord2f(1.0, 0.0); glVertex3f( x-w/2,  y-h/2, 0.0);			
+			  glTexCoord2f(0.0, 1.0); glVertex3f( x+w/2,  y+h/2, 0.0);			
 			}
 		glEnd();
 	}

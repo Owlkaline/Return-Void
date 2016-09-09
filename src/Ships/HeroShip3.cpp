@@ -1,39 +1,47 @@
-#include "../../include/Ships/GalacticShip.h"   
-
-#define SPEED 8
+#include "../../include/Ships/HeroShip3.h"   
   
-GalacticShip::GalacticShip() {
+HeroShip3::HeroShip3() {
   tick = 0;
 } 
 
-GalacticShip::~GalacticShip() {
+HeroShip3::~HeroShip3() {
   clean();
 } 
 
-void GalacticShip::setTexture() {  
-  glBindTexture(GL_TEXTURE_2D, textures[0]);
+void HeroShip3::setTexture() {  
+  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
 }
 
-void GalacticShip::defaults() {
+void HeroShip3::defaults() {
   printf("Setting up galatic ship\n");
  
-  speed = 7;
+  speed = 9;
  
-  health = 30;
-  shield = 15;
+  health = 40;
+  shield = 5;
   
-  maxNumWeapons = 3;
+  maxNumWeapons = 1;
   width = 100;
   height = 100;
   
   boostTimer = 0;
   
-  textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
+  textures[0] = txt::LoadTexture("Textures/Game/Ships/HeroShip3.png");
+  textures[1] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C1.png");
+  textures[2] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C2.png");
+  textures[3] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C3.png");
+  crntTexture = 0;
   
-  const float mountPosX[maxNumWeapons] = {20, -20, 0};
-  const float mountPosY[maxNumWeapons] = {0, 0, 50};
-  
-  for(int i = 0; i < 2; ++i) {
+  const float mountPosX[maxNumWeapons] = {0};
+  const float mountPosY[maxNumWeapons] = {50};
+  WeaponMount.push_back(new TriangleMount);
+  WeaponMount[0]->setup(GREENPLASMA);        
+  WeaponMount[0]->setDamage(9);
+  WeaponMount[0]->setTimer(70);
+ // WeaponMount[0]->setAutomated(false);
+  WeaponMount[0]->setOffset(mountPosX[0], mountPosY[0]);
+ // WeaponMount[0]->setVisible(false);
+  /*for(int i = 0; i < 2; ++i) {
     switch(i) {
       case 0:
       case 1:   
@@ -48,19 +56,10 @@ void GalacticShip::defaults() {
         break;
     }    
     WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
-  }
+  }*/
 }
     
-void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
-  if(boostTimer > 50) {
-    if(SPEED+extraSpeed > speed) {
-      speed+=0.5;
-    }
-  } else if (boostTimer < 50) {
-    if(speed > SPEED) {
-      speed-=0.5;
-    }
-  }
+void HeroShip3::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
   
   if(tookDamage || shieldDamaged)
     tick-=1*deltaTime;
@@ -108,18 +107,25 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
     y = SPACE_Y_RESOLUTION-height/2;
 
   fire(x, y, deltaTime, directionX, directionY, angle, mouseBtnState);
+  //WeaponMount[0]->update(x, y, deltaTime, directionX, directionY, angle, mouseBtnState[0]);
+  
+  int charge = WeaponMount[0]->getTimer();
+  /*if(charge > 70) {
+    WeaponMount[0]->fire();
+    WeaponMount[0]->resetTimer();
+  } else */
+  if(charge > 60) {
+    crntTexture = 3;
+  } else if (charge > 40) {
+    crntTexture = 2;
+  } else if (charge > 20) {
+    crntTexture = 1;
+  } else {
+    crntTexture = 0;
+  }
     
   if(health < crntHealth) {
     crntHealth-=0.000000002;
-  }
-  
-  if(hasBoost) {    
-    boostTimer--;
-    if(boostTimer <= 0) {
-      hasBoost = false;
-      extraSpeed = 0;
-      speed = SPEED;
-    }
   }
 }
 

@@ -19,6 +19,9 @@ void Shipbox::setup(float x, float y, int shipType) {
     case FIGHTERSHIP:
       ship.push_back(new FighterShip);
       break;
+    case HEROSHIP3:
+      ship.push_back(new HeroShip3);
+      break;
     case NOTHING:
       break;
     default:
@@ -80,6 +83,9 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
     case FIGHTERSHIP:
       ship.push_back(new FighterShip);
       break;
+    case HEROSHIP3:
+      ship.push_back(new HeroShip3);
+      break;
     case NOTHING:
       break;
     default:
@@ -119,7 +125,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
           lb[1]->setText((char*)"1000coins", 10);
           cost = 1000;
           break;
-        case 3:
+        case HEROSHIP3:
           lb[1]->setText((char*)"1500coins", 10);
           cost = 1500;
           break;

@@ -3,6 +3,7 @@
 
 #include "../Ships/GalacticShip.h"
 #include "../Ships/FighterShip.h"
+#include "../Ships/HeroShip3.h"
 #include "./Button.h"
 #include "./Label.h"
 #include "../Namespaces/Settings.h"
@@ -48,6 +49,9 @@ class Shipbox {
           break;
         case FIGHTERSHIP:
           ship.push_back(new FighterShip);
+          break;
+        case HEROSHIP3:
+          ship.push_back(new HeroShip3);
           break;
         case NOTHING:
           break;

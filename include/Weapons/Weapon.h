@@ -19,6 +19,7 @@ class Weapon {
     void setVisible(bool visible) { this->visible = visible; }
     void setOffset(float offsetX, float offsetY) { this->offsetX = offsetX; this->offsetY = offsetY; }  
       
+    bool getImmortal() { return immortal; }
     bool getIsBoss() { return isBoss; }
     bool getVisible() { return visible; }  
     bool hasExploded() { return explode; }  
@@ -28,11 +29,26 @@ class Weapon {
     float getWidth() { return width; }
     float getHeight() { return height; }
     float getDamage() { return damage; }
-    float hit() { visible = false; return damage; }    
+    float hit() { 
+      if(!immortal) 
+        visible = false;
+      if(active) {
+        active = false;
+        activeTimer = 20;
+        return damage;
+      }   
+      return 0;
+    }    
     
     virtual void update(float deltaTime) { 
-      if(visible)
+      if(visible) {
         tick(deltaTime);
+        if(!active) {
+          activeTimer-=1*deltaTime;
+          if(activeTimer <= 0)
+            active = true;
+        }
+      }
       if(y > SPACE_Y_RESOLUTION+height || y < -height || x < -width || x > SPACE_X_RESOLUTION+width)
         visible = false;
     }
@@ -41,7 +57,10 @@ class Weapon {
     bool isBoss;
     bool explode;
     bool visible;
-     
+    bool immortal;
+    bool active;
+    
+    float activeTimer;
     float angle; 
     float damage;  
     float offsetX, offsetY;

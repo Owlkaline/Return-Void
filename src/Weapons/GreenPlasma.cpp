@@ -1,7 +1,8 @@
 #include "../../include/Weapons/GreenPlasma.h"
 
 GreenPlasma::GreenPlasma() {
-
+  this->immortal = true;
+  this->active = true;
 }
 
 void GreenPlasma::draw() {
@@ -41,8 +42,8 @@ void GreenPlasma::tick(float deltaTime) {
 void GreenPlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   this->x = x;
   this->y = y;
-  width = 24;
-  height = 64;
+  width = 16;
+  height = 48;
   speed = 12;
   damage = 2;
   this->angle = angle;

@@ -2,6 +2,8 @@
 
 AlphaOnePlasma::AlphaOnePlasma() {
   this->explode = false;
+  this->immortal = false;
+  this->active = true;
 }
 
 void AlphaOnePlasma::draw() { 

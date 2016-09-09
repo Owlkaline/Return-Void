@@ -1,7 +1,8 @@
 #include "../../include/Weapons/BluePlasma.h"
 
 BluePlasma::BluePlasma() {
-
+  this->immortal = false;
+  this->active = true;
 }
 
 void BluePlasma::draw() { 
@@ -41,8 +42,8 @@ void BluePlasma::tick(float deltaTime) {
 void BluePlasma::setup(float x, float y, float dirX, float dirY, float angle) {
   this->x = x;
   this->y = y;
-  width = 12;
-  height = 64;
+  width = 8;
+  height = 32;
   speed = 12;
   damage = 1;
   this->angle = angle;

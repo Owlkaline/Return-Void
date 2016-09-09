@@ -1,7 +1,8 @@
 #include "../../include/Weapons/DotBullet.h"
 
 DotBullet::DotBullet() {
-
+  this->immortal = false;
+  this->active = true;
 }
 
 void DotBullet::draw() { 

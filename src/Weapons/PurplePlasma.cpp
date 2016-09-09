@@ -1,7 +1,8 @@
 #include "../../include/Weapons/PurplePlasma.h"
 
 PurplePlasma::PurplePlasma() {
-
+  this->immortal = false;
+  this->active = true;
 }
 
 void PurplePlasma::draw() {

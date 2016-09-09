@@ -9,6 +9,7 @@
 
 #include "../Ships/FighterShip.h"
 #include "../Ships/GalacticShip.h"
+#include "../Ships/HeroShip3.h"
 
 #include "../Menus/Label.h"
 #include "../Menus/PausedMenu.h"

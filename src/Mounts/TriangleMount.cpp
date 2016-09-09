@@ -23,6 +23,12 @@ void TriangleMount::defaults() {
   height = 32;
   health = 20;
 }
+
+void TriangleMount::draw() {
+   for(unsigned int i = 0; i < bullets.size(); ++i)
+        bullets[i]->draw();
+
+}
 /*
 void TriangleMount::update(float x, float y, float directionX, float directionY, float angle, bool isShooting) {
   float rad = angle* (float)M_PI / 180;

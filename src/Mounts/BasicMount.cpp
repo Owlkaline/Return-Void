@@ -2,7 +2,7 @@
 
 BasicMount::BasicMount() {
   this->visible = false;
-  this->width = 64;
+  this->width = 8;
   this->height = 64;
 }
 

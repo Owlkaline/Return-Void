@@ -85,7 +85,7 @@ class Ship {
       if(visible) {
         glPushMatrix();
         if(tookDamage) {
-          tick--;
+        //  tick-=1*deltaTime;
           if(tick <= 0)
             tookDamage = false;
         }      
@@ -239,7 +239,7 @@ class Ship {
           glBindTexture(GL_TEXTURE_2D, shieldTexture[5]);
         }
     
-        tick--;
+       // tick-=1*deltaTime;
         if(tick <= 0)
           shieldDamaged = false;
       } else {
@@ -252,7 +252,7 @@ class Ship {
     }
     
   protected:      
-    int tick;  
+    
     int coins;    
     int maxShield;
     int maxHealth;    
@@ -262,7 +262,7 @@ class Ship {
     int maxNumWeapons;
     int health, crntHealth;
     
-        
+    float tick;  
     float x, y;
     float speed;
     float angle;
@@ -273,7 +273,7 @@ class Ship {
     bool hasBoost;
     bool visible, tookDamage, shieldDamaged;
     
-    GLuint textures[3];
+    GLuint textures[10];
     GLuint shieldTexture[6];
     GLuint healthBarTexture[3];
     std::vector<Mount*> WeaponMount;
