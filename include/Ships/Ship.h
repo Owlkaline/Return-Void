@@ -17,7 +17,6 @@ class Ship {
     virtual void defaults()=0;
     virtual void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
     
-    void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
     
     void setY(float y) { this->y = y; }
@@ -60,7 +59,6 @@ class Ship {
       maxHealth = health;
       crntHealth = health;
   
-      hasBoost = false;
       visible = true;
       tookDamage = false;
       shieldDamaged = false;
@@ -255,8 +253,7 @@ class Ship {
     
     int coins;    
     int maxShield;
-    int maxHealth;    
-    int boostTimer;  
+    int maxHealth;     
     int extraSpeed;
     int crntTexture;
     int maxNumWeapons;
@@ -270,7 +267,6 @@ class Ship {
     float width, height;
     float directionX, directionY, distanceFromCursor;
     
-    bool hasBoost;
     bool visible, tookDamage, shieldDamaged;
     
     GLuint textures[10];

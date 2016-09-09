@@ -48,7 +48,6 @@ void Game::setup() {
 
   paused = false;
   inHighscore = false;
-  highscore.setup("You   ");
 
   score = 0;
   wave = 0;
@@ -248,8 +247,6 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), str1.length(), 20*ratioX, 20*ratioY);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
-          ship[0]->boost();
-          
           bool nothing = false; 
           switch(enemy[i]->dropPowerup()) {
             case NOTHING:
@@ -319,6 +316,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
 
       if(!ship[0]->getVisible()) {
         inHighscore = true;
+        highscore.setup("You   ");
         highscore.setScore(score);
         highscore.setStats(coins, numOfEnemiesKilled, numOfPowerupsCollected);
         printf("Player died, HighscoreScreen\n");

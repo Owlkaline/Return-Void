@@ -12,7 +12,11 @@ class GalacticShip: public Ship {
     void defaults();
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
     
-  protected:      
+  protected:  
+  
+    void boost() { hasBoost = true; boostTimer = 100; extraSpeed = 3; }
+    bool hasBoost;
+    float boostTimer;    
 };
 
 #endif

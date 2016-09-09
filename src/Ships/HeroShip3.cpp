@@ -24,8 +24,6 @@ void HeroShip3::defaults() {
   width = 100;
   height = 100;
   
-  boostTimer = 0;
-  
   textures[0] = txt::LoadTexture("Textures/Game/Ships/HeroShip3.png");
   textures[1] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C1.png");
   textures[2] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C2.png");

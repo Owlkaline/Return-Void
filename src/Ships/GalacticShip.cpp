@@ -21,6 +21,7 @@ void GalacticShip::defaults() {
  
   health = 30;
   shield = 15;
+  hasBoost = false;
   
   maxNumWeapons = 3;
   width = 100;
@@ -83,6 +84,12 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
      angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
      angle = angle - 90.0f;
   }
+  
+  // Space bar
+  if(keyState[32] == BUTTON_DOWN) {
+    if(!hasBoost)
+      boost();
+  }
    
   if(keyState[87] == BUTTON_DOWN) {
     y+=speed*deltaTime;
@@ -112,7 +119,7 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
   }
   
   if(hasBoost) {    
-    boostTimer--;
+    boostTimer-=1*deltaTime;
     if(boostTimer <= 0) {
       hasBoost = false;
       extraSpeed = 0;
