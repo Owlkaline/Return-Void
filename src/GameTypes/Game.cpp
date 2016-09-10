@@ -166,33 +166,35 @@ void Game::newWave() {
    //   }
     }
     for(unsigned int i = 0; i < numOfEnemies; ++i) {
-      int type = -1;
-   
+     int type = -1;
+     int powerup = NOTHING;
      switch(boostRand.Int(0.4, 0.4, 0.05, 0.15)) {
     // switch(boostRand.Int(0.1, 0.1, 0.1, 0.7)) {
         case 1:
           printf("Basic Enemy Spawned\n");
           enemy.push_back(new BasicEnemy); 
           type = FALL;
+          powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
           break;
         case 2:
           printf("Corrupted Enemy Spawned\n");
           enemy.push_back(new CorruptedStarShip);
           type = SINWAVE;
+          powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
           break;
         case 3: 
           printf("Hypno Enemy Spawned\n");
           enemy.push_back(new HypnoEnemy);
           type = SEMICIRCLE;
+          powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
           break;
         case 4:
           printf("Dot enemy spawned\n");
           enemy.push_back(new DotEnemy);
           type = RIGHTSIDEFALL;
       }
-      enemy[i]->defaults();
-
-      int powerup = boostRand.Int(0.5, 0.3, 0.1, 0.1) - 1;
+      //enemy[i]->defaults();
+      
       float x = boostRand.Int((int)(enemy[i]->getWidth()/2), SPACE_X_RESOLUTION-enemy[i]->getWidth());
       float y = 0;
       if(wave != 1 && (wave-1)%10 == 0) {

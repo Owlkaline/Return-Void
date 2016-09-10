@@ -111,7 +111,7 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
   }
   
   // Space bar
-  if(keyState[32] == BUTTON_DOWN) {
+  if(keyState[32] == BUTTON_DOWN && prevKeyState[32] == BUTTON_UP) {
     if(!specialActive)
       special();
   }
@@ -151,5 +151,7 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
       speed = SPEED;
     }
   }
+  
+  prevKeyState[32] = keyState[32];
 }
 

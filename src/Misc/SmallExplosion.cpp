@@ -4,7 +4,7 @@ SmallExplosion::SmallExplosion() {
   this->expired = false;
   
   this->timer = 0;
-  this->size = 30;
+  this->size = 15;
   this->pos[0] = 0;
   this->pos[1] = 0;
   this->dirX = 0;
