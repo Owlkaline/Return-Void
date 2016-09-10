@@ -16,6 +16,7 @@ class Ship {
     virtual void setTexture()=0;
     virtual void defaults()=0;
     virtual void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
+    virtual void specialDraw() {}
     
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
     
@@ -42,6 +43,8 @@ class Ship {
 
     float getBulletX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletX(bIndex); }
     float getBulletY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletY(bIndex); }
+    float getBulletDirectionX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletDirectionX(bIndex); }
+    float getBulletDirectionY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletDirectionY(bIndex); }
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }    
  
@@ -77,10 +80,13 @@ class Ship {
       shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
       shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
       shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
+   
+      specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
     }
  
     void draw() {
       if(visible) {
+        specialDraw();
         glPushMatrix();
         if(tookDamage) {
         //  tick-=1*deltaTime;
@@ -112,6 +118,7 @@ class Ship {
       this->x = x;
       this->y = y;
       shield = 0;
+      specialsLeft = 0;
       visible = true;
       tookDamage = false;
       
@@ -251,11 +258,14 @@ class Ship {
     
   protected:      
     
+    virtual void special() {  }
+    
     int coins;    
     int maxShield;
     int maxHealth;     
     int extraSpeed;
     int crntTexture;
+    int specialsLeft;
     int maxNumWeapons;
     int health, crntHealth;
     
@@ -264,14 +274,17 @@ class Ship {
     float speed;
     float angle;
     float shield;
+    float specialTimer;
     float width, height;
     float directionX, directionY, distanceFromCursor;
     
+    bool specialActive;
     bool visible, tookDamage, shieldDamaged;
     
     GLuint textures[10];
     GLuint shieldTexture[6];
     GLuint healthBarTexture[3];
+    GLuint specialIcon;
     std::vector<Mount*> WeaponMount;
 };
 

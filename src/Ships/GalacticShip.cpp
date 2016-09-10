@@ -1,6 +1,6 @@
 #include "../../include/Ships/GalacticShip.h"   
 
-#define SPEED 8
+#define SPEED 7
   
 GalacticShip::GalacticShip() {
   tick = 0;
@@ -14,20 +14,49 @@ void GalacticShip::setTexture() {
   glBindTexture(GL_TEXTURE_2D, textures[0]);
 }
 
+void GalacticShip::special() { 
+  if(specialsLeft > 0) {
+    specialActive = true; 
+    specialTimer = 50; 
+    extraSpeed = 5; 
+    specialsLeft--; 
+  }
+}
+
+void GalacticShip::specialDraw() {
+  int sSize = 32;
+  for(int i = 0; i < specialsLeft; ++i) {
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, specialIcon);
+    glBegin(GL_QUADS);
+      glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(40 - sSize/2 + i*50, 40 - sSize/2, 0.0);
+      glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(40 + sSize/2 + i*50, 40 - sSize/2, 0.0);
+      glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(40 + sSize/2 + i*50, 40 + sSize/2, 0.0f);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(40 - sSize/2 + i*50, 40 + sSize/2, 0.0);
+    glEnd();   
+    glDisable(GL_TEXTURE_2D);
+  }
+}
+
 void GalacticShip::defaults() {
   printf("Setting up galatic ship\n");
  
-  speed = 7;
+  speed = SPEED;
+  specialsLeft = 3;
  
   health = 30;
   shield = 15;
-  hasBoost = false;
+  specialActive = false;
   
   maxNumWeapons = 3;
   width = 100;
   height = 100;
   
-  boostTimer = 0;
+  specialTimer = 0;
   
   textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
   
@@ -51,13 +80,9 @@ void GalacticShip::defaults() {
 }
     
 void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
-  if(boostTimer > 50) {
+  if(specialActive) {
     if(SPEED+extraSpeed > speed) {
       speed+=0.5;
-    }
-  } else if (boostTimer < 50) {
-    if(speed > SPEED) {
-      speed-=0.5;
     }
   }
   
@@ -87,8 +112,8 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
   
   // Space bar
   if(keyState[32] == BUTTON_DOWN) {
-    if(!hasBoost)
-      boost();
+    if(!specialActive)
+      special();
   }
    
   if(keyState[87] == BUTTON_DOWN) {
@@ -118,10 +143,10 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
     crntHealth-=0.000000002;
   }
   
-  if(hasBoost) {    
-    boostTimer-=1*deltaTime;
-    if(boostTimer <= 0) {
-      hasBoost = false;
+  if(specialActive) {    
+    specialTimer-=1*deltaTime;
+    if(specialTimer <= 0) {
+      specialActive = false;
       extraSpeed = 0;
       speed = SPEED;
     }

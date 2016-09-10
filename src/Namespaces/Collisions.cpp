@@ -32,6 +32,8 @@ void Collisions::drawQuadTree() {
 }
 
 void Collisions::detect(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std::vector<Drops*> powerups) { 
+  Effects *effect = Effects::instance();
+  
   bool shipQuad[4];
   for(int i = 0; i < 4; ++i) 
     shipQuad[i] = false;
@@ -218,6 +220,8 @@ void Collisions::detect(std::vector<Ship*> ship, std::vector<Enemy*> enemy, std:
         if( (Bx + Bw) >= (Ex-Ew) && (Bx-Bw) <= (Ex + Ew) && (By + Bh) >= (Ey-Eh) && (By-Bh) <= (Ey + Eh) ) {
         //  if(!enemy[k]->getIsBoss()) {
             enemy[k]->takeDamage(ship[0]->bulletHit(m, n));
+            effect->addSmallExplosion(ship[0]->getBulletX(m,n), ship[0]->getBulletY(m,n),
+                                      ship[0]->getBulletDirectionX(m,n), ship[0]->getBulletDirectionY(m,n));
          /* } else {
             if(!enemy[k]->checkMountsVisible()) {
               ship[0]->bulletHit(m, n);

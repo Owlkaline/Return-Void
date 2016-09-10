@@ -29,6 +29,8 @@ class Weapon {
     float getWidth() { return width; }
     float getHeight() { return height; }
     float getDamage() { return damage; }
+    float getDirectionX() { return directionX; }
+    float getDirectionY() { return directionY; }
     float hit() { 
       if(!immortal) 
         visible = false;

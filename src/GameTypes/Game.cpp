@@ -3,9 +3,16 @@
 Game::Game() {
   seed = time(NULL);
   boostRand.newSeed(seed);
+  Effects *effect = Effects::init();
+}
+
+Game::~Game() {
+  Effects *effect = Effects::instance();
+  effect->destroy();
 }
 
 void Game::draw() {
+  Effects *effect = Effects::instance();
   drawBackground();  
 
   for(unsigned int i = 0; i < powerups.size(); ++i) 
@@ -18,6 +25,8 @@ void Game::draw() {
   
   for(unsigned int i = 0; i < Ftext.size(); ++i)
     Ftext[i]->draw();
+    
+  effect->draw();
   
   ship[0]->drawHealthBar();
 
@@ -208,6 +217,8 @@ void Game::restart() {
 }
 
 void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
+  Effects *effect = Effects::instance();
+  
   ChX = mouseX;
   ChY = mouseY;
 
@@ -309,7 +320,8 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           Ftext.erase(Ftext.begin()+i);
         }
       }
-        
+       
+      effect->update(deltaTime);
       lbWave.update(deltaTime);
 
       Collisions::detect(ship, enemy, powerups);

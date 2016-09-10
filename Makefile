@@ -9,7 +9,7 @@ SRCMAIN =./src/main.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collis
 
 SRCMENU =./src/Menus/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/Button.cpp ./src/Menus/Label.cpp ./src/Menus/CheckBox.cpp ./src/Menus/HighscoreScreen.cpp ./src/Menus/Shop.cpp ./src/Menus/Shipbox.cpp ./src/Menus/FloatingText.cpp ./src/Menus/Text.cpp
 
-SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp
+SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp ./src/Misc/Effects.cpp ./src/Misc/SmallExplosion.cpp
 
 SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp ./src/Enemies/AlphaOne.cpp ./src/Enemies/DotEnemy.cpp
 

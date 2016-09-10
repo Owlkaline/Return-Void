@@ -8,6 +8,8 @@
 #include "../Ships/FighterShip.h"
 #include "../Ships/GalacticShip.h"
 
+#include "../Misc/Effects.h"
+
 #include "../Drops/Drops.h"
 
 #include "../Enemies/Enemy.h"

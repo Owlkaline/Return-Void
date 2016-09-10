@@ -46,6 +46,8 @@ class Mount {
     float getHeight() { return height; }
     float getBulletX(int index) { return bullets[index]->getX(); }
     float getBulletY(int index) { return bullets[index]->getY(); }
+    float getBulletDirectionX(int index) { return bullets[index]->getDirectionX(); }
+    float getBulletDirectionY(int index) { return bullets[index]->getDirectionY(); }
     float getBulletWidth(int index) { return bullets[index]->getWidth(); }
     float getBulletHeight(int index) { return bullets[index]->getHeight(); }
     

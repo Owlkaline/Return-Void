@@ -11,6 +11,8 @@
 #include "../Ships/GalacticShip.h"
 #include "../Ships/HeroShip3.h"
 
+#include "../Misc/Effects.h"
+
 #include "../Menus/Label.h"
 #include "../Menus/PausedMenu.h"
 #include "../Menus/FloatingText.h"
@@ -35,6 +37,7 @@
 class Game: public DisplayManager {
   public:
     Game();
+    ~Game();
     
     void draw();    
     void setup();
