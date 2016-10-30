@@ -18,24 +18,11 @@ BasicEnemy::BasicEnemy() {
 
   this->score = 10;
   
-  for(int i = 0; i < maxWeaponMounts; ++i) {
-    this->WeaponMount.push_back(new BasicMount);
-    this->WeaponMount[i]->setup(BLUEPLASMA);
-    this->WeaponMount[i]->setOffset(0, 20);
-  }
+  this->WeaponMount.push_back(new MountType1(0, 20));
 }
 
 BasicEnemy::~BasicEnemy() {
   clean();
-}
-
-void BasicEnemy::defaults() {
- 
- // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
-//  lbScore.setColour( 1.0,  0.1,  0.1);
-//  lbScore.setText("+10", 3);
-
-
 }
 
 void BasicEnemy::update(float Px, float Py, float deltaTime) {

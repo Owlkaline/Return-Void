@@ -9,9 +9,7 @@ class GalacticShip: public Ship {
     ~GalacticShip();
 
     void setTexture();
-    void defaults();
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
-    void specialDraw();
   protected:  
   
     void special();   

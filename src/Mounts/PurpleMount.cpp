@@ -14,10 +14,6 @@ void PurpleMount::setTexture() {
   glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
 }
 
-void PurpleMount::reset() {
-
-}
-
 void PurpleMount::defaults() {
   width = 32;
   height = 32;

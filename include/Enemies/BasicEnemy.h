@@ -9,7 +9,6 @@ class BasicEnemy: public Enemy {
     ~BasicEnemy();
        
     void reset();
-    void defaults();
     void setTexture();
     void update(float Px, float Py, float deltaTime);
 };

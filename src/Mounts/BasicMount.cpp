@@ -19,10 +19,6 @@ void BasicMount::setTexture() {
   }
 }
 
-void BasicMount::reset() {
-
-}
-
 void BasicMount::defaults() {
   health = 10;
 }

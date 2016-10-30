@@ -125,8 +125,8 @@ void drawCursor() {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mouseTexture);
     // Nice blue #1e00d5
-    glColor3f(0.117647059f, 0, 0.835294197f);
-
+    //glColor3f(0.117647059f, 0, 0.835294197f);
+    glColor4f(1, 0.643137255, 0, 1.0f);
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
       glVertex3f(mouseX-20, mouseY+20, 0.0);

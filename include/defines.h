@@ -69,7 +69,7 @@
 // Bullet timer
 #define REDPLASMATIMER         20
 #define BLUEPLASMATIMER        25
-#define GREENPLASMATIMER       20
+#define GREENPLASMATIMER       70
 #define PURPLEPLASMATIMER      7
 #define SPIRALTIMER            64
 #define ALPHAONETIMER          180

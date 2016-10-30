@@ -9,7 +9,6 @@ class PurpleMount: public Mount {
     ~PurpleMount();
     
     void setTexture();
-    void reset();
     void defaults();
   protected:   
 };

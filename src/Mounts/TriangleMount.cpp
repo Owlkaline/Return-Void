@@ -11,11 +11,7 @@ TriangleMount::~TriangleMount() {
 }
 
 void TriangleMount::setTexture() {
-  glBindTexture(GL_TEXTURE_2D, getTriangleMountTexture());
-}
-
-void TriangleMount::reset() {
-
+  glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(0));
 }
 
 void TriangleMount::defaults() {

@@ -17,10 +17,6 @@ void AlphaOneMount::setTexture() {
     glBindTexture(GL_TEXTURE_2D, getAlphaOneMountTexture());
 }
 
-void AlphaOneMount::reset() {
-
-}
-
 void AlphaOneMount::individualClean() {
   cycle.clear();  
   cycle.erase(cycle.begin(), cycle.end());

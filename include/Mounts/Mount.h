@@ -16,8 +16,13 @@
 
 class Mount {
   public:
-    virtual void reset() = 0;
-    virtual void defaults() = 0;
+    ~Mount() { 
+      for(unsigned int i = 0; i < bullets.size(); ++i) 
+          bullets.erase(bullets.begin() + i);
+    }
+    
+    virtual void reset(float x, float y) { }
+    virtual void defaults() {};
     virtual void setTexture() = 0;  
       
     virtual void individualClean() {  }
@@ -75,7 +80,7 @@ class Mount {
      
       tick(x, y, deltaTime, directionX, directionY, angle, isShooting);
 
-      increment(isShooting, deltaTime);
+      incrementTimers(isShooting, deltaTime);
  
       erase(deltaTime);
     }
@@ -96,13 +101,9 @@ class Mount {
       this->y = y+newY;
       this->angle = angle;
 
-      increment(true, deltaTime);
+      incrementTimers(true, deltaTime);
  
-      for(unsigned int i = 0; i < bullets.size(); ++i) {
-        bullets[i]->update(deltaTime);
-        if(!bullets[i]->getVisible())
-          bullets.erase(bullets.begin() + i);
-      }
+      erase(deltaTime);
     } 
 
     void takeDamage(float damage) { 
@@ -113,7 +114,7 @@ class Mount {
         visible = false;
     }
     
-    void increment(bool isShooting, float deltaTime) {
+    void incrementTimers(bool isShooting, float deltaTime) {
       damageTicks+= 1*deltaTime; 
       bulletTicks+= 1*deltaTime; 
       
@@ -163,7 +164,7 @@ class Mount {
 
         glEnable(GL_TEXTURE_2D);
         setTexture();
-        if(!isLeft) {
+        //if(!isLeft) {
           glBegin(GL_QUADS);
             glTexCoord2f(0.0f, 1.0f);
             glVertex3f(x-width/2, y+height/2, 0.0);
@@ -174,7 +175,7 @@ class Mount {
             glTexCoord2f(0.0f, 0.0f);
             glVertex3f(x-width/2, y-height/2, 0.0);
           glEnd();
-        } else {
+       /* } else {
           glBegin(GL_QUADS);
             glTexCoord2f(1.0f, 1.0f);
             glVertex3f(x-width/2, y+height/2, 0.0);
@@ -185,13 +186,44 @@ class Mount {
             glTexCoord2f(1.0f, 0.0f);
             glVertex3f(x-width/2, y-height/2, 0.0);
           glEnd();
-        }
+        }*/
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
       }
     }
-
+    
+    void setTimers() {
+      damageTimer = DAMAGETIMER;
+      switch (bulletType) {
+        case BLUEPLASMA:
+          bulletTimer = BLUEPLASMATIMER;
+          break;
+        case REDPLASMA:
+          bulletTimer = REDPLASMATIMER;
+          break;
+        case PURPLEPLASMA:
+          bulletTimer = PURPLEPLASMATIMER;
+          break;
+        case GREENPLASMA:
+          bulletTimer = GREENPLASMATIMER;
+          break;
+        case SPIRAL:
+          bulletTimer = SPIRALTIMER;
+          break;
+        case ALPHAONEPLASMA:
+          bulletTimer = ALPHAONETIMER;
+          break;
+        case DOTBULLET:
+          bulletTimer = DOTBULLETTIMER;
+          break;
+        default:
+          printf("Error: unknown varient in mount setup: %d\n",variant);
+          exit(0);
+      }
+    }
+    
+    // This setup should be removed
     void setup(int variant) {
       automated = true;
       bulletTicks = 0;
@@ -205,7 +237,11 @@ class Mount {
       x = SPACE_X_RESOLUTION/2;
       y = SPACE_Y_RESOLUTION/2;
       this->variant = variant;
+      this->bulletType = variant;
       defaults();
+      
+      // To be removed 
+      // -----------------------------------------------------------------------
       damageTimer = DAMAGETIMER;
       switch (variant) {
         case BLUEPLASMA:
@@ -233,11 +269,12 @@ class Mount {
           printf("Error: unknown varient in mount setup: %d\n",variant);
           exit(0);
       }
+      // -----------------------------------------------------------------------
     }
 
   protected:
     void addBullet() {
-      switch(variant) {
+      switch(bulletType) {
         case GREENPLASMA:
           bullets.push_back(new GreenPlasma);
           break;
@@ -268,23 +305,30 @@ class Mount {
           exit(0);
       }
     }
-    
+    //To be Removed
+    //-------------
     int isLeft;
     int damage;
     int variant;
     int maxMounts;
-    int currentTexture;
-    float bulletTicks, bulletTimer, damageTicks, damageTimer;
-       
+    int bulletType;
+    
     bool isBoss;
+    bool customDamage;
+    float health; 
+    float fireRate;  
+    //-------------   
+    
+    int currentTexture;
+    float bulletTicks, bulletTimer, damageTicks, damageTimer;       
+    
     bool visible;
     bool tookDamage;
-    bool customDamage;
     bool automated; 
     
     float angle;
-    float health; 
-    float fireRate;  
+
+
     float dirX, dirY;  
     float offsetX, offsetY;
     float x,y, width, height;
@@ -301,11 +345,6 @@ class Mount {
       return basicMountBrightTexture;
     }
 
-    static GLuint getTriangleMountTexture() {
-      static GLuint triangleMountTexture = txt::LoadTexture("Textures/Game/Mounts/TriangleMount.png");
-      return triangleMountTexture;
-    }
-
     static GLuint getPurpleMountTexture() {
       static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Mounts/PurpleMount.png");
       return purpleMountTexture;
@@ -314,6 +353,29 @@ class Mount {
     static GLuint getAlphaOneMountTexture() {
       static GLuint alphaOneMountTexture = txt::LoadTexture("Textures/Game/Mounts/AlphaOneMount.png");
       return alphaOneMountTexture;
+    }
+    
+    static GLuint getHeroMountTexture(int i) {
+      static GLuint heroMount1Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount1.png");
+      static GLuint heroMount2Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount2.png");
+      static GLuint heroMount3Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount3.png");
+      static GLuint heroMount4Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount4.png");
+                        
+      switch(i) {
+        case 0:
+          return heroMount1Texture;
+          break;
+        case 1:
+          return heroMount2Texture;
+          break;
+        case 2:
+          return heroMount3Texture;
+          break;
+        case 3:
+          return heroMount4Texture;
+          break;
+      }
+      return heroMount1Texture;
     }
 
     static GLuint getHypnoMountTexture(int i) {

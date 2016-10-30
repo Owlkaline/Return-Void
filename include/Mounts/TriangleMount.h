@@ -9,7 +9,6 @@ class TriangleMount: public Mount {
     ~TriangleMount();
     
     void setTexture();
-    void reset();
     void defaults();
     void draw();
   protected:

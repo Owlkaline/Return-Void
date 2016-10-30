@@ -87,7 +87,7 @@ void Game::setup() {
   ratioX = width/(float)SPACE_X_RESOLUTION;
   ratioY = height/(float)SPACE_Y_RESOLUTION;
   
-  ship[0]->setup();
+  //ship[0]->setup();
 
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 50*ratioX, 50*ratioY, true);
   lbWave.setColour( 1.0,  0.0,  1.0);

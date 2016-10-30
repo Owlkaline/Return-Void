@@ -3,7 +3,50 @@
 #define SPEED 7
   
 GalacticShip::GalacticShip() {
-  tick = 0;
+  this->tick = 0;
+  this->width = 100;
+  this->height = 100;
+  this->x = SPACE_X_RESOLUTION/2;
+  this->y = 100;
+  
+  this->angle = 0;
+    
+  // To be removed
+  // --------------------------------------------------
+  this->coins = 0;
+  this->extraSpeed = 0;
+  this->specialsLeft = 3;
+  this->onCooldown = false;
+  this->specialActive = false;
+  this->specialTimer = 0;
+  this->specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
+  //---------------------------------------------------
+  
+  this->health = 30;
+  this->shield = 15;
+  
+  this->maxShield = shield;
+  this->maxHealth = health;
+  this->crntHealth = health;
+  
+  this->visible = true;
+  this->tookDamage = false;
+  this->shieldDamaged = false;
+  
+  this->directionX = 1;
+  this->directionY = 1; 
+  
+  this->crntTexture = 0;
+      
+  printf("Setting up galatic ship\n");
+ 
+  this->speed = SPEED; 
+  
+  setTextures();
+  this->textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
+  
+  WeaponMount.push_back(new MountType1(20, 0));
+  WeaponMount.push_back(new MountType1(-20, 0)); 
 } 
 
 GalacticShip::~GalacticShip() {
@@ -20,62 +63,6 @@ void GalacticShip::special() {
     specialTimer = 50; 
     extraSpeed = 5; 
     specialsLeft--; 
-  }
-}
-
-void GalacticShip::specialDraw() {
-  int sSize = 32;
-  for(int i = 0; i < specialsLeft; ++i) {
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, specialIcon);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(40 - sSize/2 + i*50, 40 - sSize/2, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(40 + sSize/2 + i*50, 40 - sSize/2, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(40 + sSize/2 + i*50, 40 + sSize/2, 0.0f);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(40 - sSize/2 + i*50, 40 + sSize/2, 0.0);
-    glEnd();   
-    glDisable(GL_TEXTURE_2D);
-  }
-}
-
-void GalacticShip::defaults() {
-  printf("Setting up galatic ship\n");
- 
-  speed = SPEED;
-  specialsLeft = 3;
- 
-  health = 30;
-  shield = 15;
-  specialActive = false;
-  
-  maxNumWeapons = 3;
-  width = 100;
-  height = 100;
-  
-  specialTimer = 0;
-  
-  textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
-  
-  const float mountPosX[maxNumWeapons] = {20, -20, 0};
-  const float mountPosY[maxNumWeapons] = {0, 0, 50};
-  
-  for(int i = 0; i < 2; ++i) {
-    switch(i) {
-      case 0:
-      case 1:   
-        WeaponMount.push_back(new BasicMount);
-        WeaponMount[i]->setup(BLUEPLASMA);
-        WeaponMount[i]->setTimer(BLUEPLASMATIMER - BLUEPLASMATIMER/4);
-        WeaponMount[i]->setDamage(2);
-        break;
-      case 2:
-        break;
-    }    
-    WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
   }
 }
     

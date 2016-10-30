@@ -8,7 +8,6 @@ class HypnoMount: public Mount {
     HypnoMount();
     ~HypnoMount();
       
-    void reset();
     void setLeft();
     void defaults();
     void setTexture();

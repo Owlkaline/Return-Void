@@ -1,7 +1,54 @@
 #include "../../include/Ships/HeroShip3.h"   
   
 HeroShip3::HeroShip3() {
-  tick = 0;
+  this->tick = 0;
+  this->width = 100;
+  this->height = 100;
+  
+  this->x = SPACE_X_RESOLUTION/2;
+  this->y = 100;
+  
+  this->angle = 0;
+    
+  // To be removed
+  // --------------------------------------------------
+  this->onCooldown = false;
+  this->coins = 0;
+  this->extraSpeed = 0;
+  this->specialsLeft = 3;
+  this->specialActive = false;
+  this->specialTimer = 0;
+  this->specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
+  //---------------------------------------------------
+  
+  this->health = 40;
+  this->shield = 0;
+  
+  this->maxShield = shield;
+  this->maxHealth = health;
+  this->crntHealth = health;
+  
+  this->visible = true;
+  this->tookDamage = false;
+  this->shieldDamaged = false;
+  
+  this->directionX = 1;
+  this->directionY = 1; 
+  
+  this->crntTexture = 0;
+      
+  printf("Setting up galatic ship\n");
+ 
+  this->speed = 9; 
+  
+  setTextures();
+  maxNumWeapons = 1;
+  
+  this->textures[0] = txt::LoadTexture("Textures/Game/Ships/HeroShip3.png");
+
+  this->crntTexture = 0;
+  WeaponMount.push_back(new MountType3(0, 0));       
+  WeaponMount[0]->setDamage(9);
 } 
 
 HeroShip3::~HeroShip3() {
@@ -12,31 +59,13 @@ void HeroShip3::setTexture() {
   glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
 }
 
-void HeroShip3::defaults() {
-  printf("Setting up galatic ship\n");
- 
-  speed = 9;
- 
-  health = 40;
-  shield = 5;
-  
-  maxNumWeapons = 1;
-  width = 100;
-  height = 100;
-  
-  textures[0] = txt::LoadTexture("Textures/Game/Ships/HeroShip3.png");
-  textures[1] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C1.png");
-  textures[2] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C2.png");
-  textures[3] = txt::LoadTexture("Textures/Game/Ships/HeroShip3C3.png");
-  crntTexture = 0;
-  
-  const float mountPosX[maxNumWeapons] = {0};
-  const float mountPosY[maxNumWeapons] = {50};
-  WeaponMount.push_back(new TriangleMount);
-  WeaponMount[0]->setup(GREENPLASMA);        
-  WeaponMount[0]->setDamage(9);
-  WeaponMount[0]->setTimer(70);
-  WeaponMount[0]->setOffset(mountPosX[0], mountPosY[0]);
+void HeroShip3::special() { 
+  if(!specialActive) {
+    specialActive = true; 
+    specialTimer = 600; 
+    maxShield = 20;
+    shield = 20;
+  }
 }
     
 void HeroShip3::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -64,6 +93,12 @@ void HeroShip3::update(float mouseX, float mouseY, float deltaTime, unsigned int
      angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
      angle = angle - 90.0f;
   }
+  
+  // Space bar
+  if(keyState[32] == BUTTON_DOWN && prevKeyState[32] == BUTTON_UP) {
+    if(!specialActive && !onCooldown)
+      special();
+  }
    
   if(keyState[87] == BUTTON_DOWN) {
     y+=speed*deltaTime;
@@ -90,13 +125,32 @@ void HeroShip3::update(float mouseX, float mouseY, float deltaTime, unsigned int
   
   int charge = WeaponMount[0]->getTimer();
   if(charge > 60) {
-    crntTexture = 3;
+    crntTexture = 0;
   } else if (charge > 40) {
-    crntTexture = 2;
+    crntTexture = 0;
   } else if (charge > 20) {
-    crntTexture = 1;
+    crntTexture = 0;
   } else {
     crntTexture = 0;
+  }
+  
+  if(specialActive) {    
+    specialTimer-=1*deltaTime;
+    if(specialTimer <= 0) {
+      onCooldown = true;
+      specialTimer = 1000;
+      specialActive = false;
+      shield = 0;
+      maxShield = 0;
+      specialsLeft = 0;
+    }
+  }
+  if(onCooldown) {
+    specialTimer-=1*deltaTime;
+    if(specialTimer <= 0) {
+      onCooldown = false;
+      specialsLeft = 1;
+    }
   }
     
   if(health < crntHealth) {

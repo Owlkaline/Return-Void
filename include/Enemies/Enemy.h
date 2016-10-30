@@ -11,15 +11,15 @@
 #include "../Mounts/BasicMount.h"
 #include "../Mounts/HypnoMount.h"
 #include "../Mounts/AlphaOneMount.h"
+#include "../Mounts/MountType1.h"
 
 #include "../Namespaces/Movement.h"
 #include "../Namespaces/LoadTexture.h"
 
 class Enemy {
   public:
-
     virtual void reset() = 0;
-    virtual void defaults() = 0;
+    virtual void defaults() {};
     virtual void update(float Px, float Py, float deltaTime) = 0;
 
     virtual void setX(float x) { this->x = x; }

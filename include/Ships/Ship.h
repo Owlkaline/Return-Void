@@ -5,18 +5,36 @@
 
 #include "../defines.h"
 
-#include "../Mounts/BasicMount.h"
 #include "../Mounts/TriangleMount.h"
-#include "../Mounts/PurpleMount.h"
+#include "../Mounts/MountType1.h"
+#include "../Mounts/MountType2.h"
+#include "../Mounts/MountType3.h"
 
 #include "../Namespaces/LoadTexture.h"
 
 class Ship {
   public:    
     virtual void setTexture()=0;
-    virtual void defaults()=0;
+    virtual void defaults(){}
     virtual void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
-    virtual void specialDraw() {}
+    virtual void specialDraw() {
+      int sSize = 32;
+      for(int i = 0; i < specialsLeft; ++i) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, specialIcon);
+        glBegin(GL_QUADS);
+          glTexCoord2f(0.0f, 1.0f);
+          glVertex3f(40 - sSize/2 + i*50, 40 - sSize/2, 0.0);
+          glTexCoord2f(1.0f, 1.0f);
+          glVertex3f(40 + sSize/2 + i*50, 40 - sSize/2, 0.0);
+          glTexCoord2f(1.0f, 0.0f);
+          glVertex3f(40 + sSize/2 + i*50, 40 + sSize/2, 0.0f);
+          glTexCoord2f(0.0f, 0.0f);
+          glVertex3f(40 - sSize/2 + i*50, 40 + sSize/2, 0.0);
+        glEnd();   
+      glDisable(GL_TEXTURE_2D);
+    }
+  }
     
     void clean() { WeaponMount.clear();  WeaponMount.erase(WeaponMount.begin(), WeaponMount.end()); }
     
@@ -48,7 +66,7 @@ class Ship {
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
     float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }    
  
-    void setup() {    
+  /*  void setup() {    
       maxNumWeapons = 0;
       defaults();
       x = SPACE_X_RESOLUTION/2;
@@ -82,7 +100,7 @@ class Ship {
       shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
    
       specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
-    }
+    }*/
  
     void draw() {
       if(visible) {
@@ -256,6 +274,19 @@ class Ship {
       glColor4f(1.0, 1.0, 1.0, 1.0);     
     }
     
+    void setTextures() {
+        healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
+  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
+  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
+  
+  shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
+  shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
+  shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
+  shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
+   shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
+   shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
+    }
+    
   protected:      
     
     virtual void special() {  }
@@ -278,6 +309,7 @@ class Ship {
     float width, height;
     float directionX, directionY, distanceFromCursor;
     
+    bool onCooldown;
     bool specialActive;
     bool visible, tookDamage, shieldDamaged;
     

@@ -9,7 +9,6 @@ class BasicMount: public Mount {
     ~BasicMount();
     
     void setTexture();
-    void reset();
     void defaults();
   protected:   
    

@@ -7,8 +7,7 @@ class AlphaOneMount: public Mount {
   public:
     AlphaOneMount();
     ~AlphaOneMount();
-    
-    void reset();    
+       
     void erase();
     void defaults();
     void setTexture();

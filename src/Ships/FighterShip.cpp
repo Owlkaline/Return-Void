@@ -1,7 +1,53 @@
 #include "../../include/Ships/FighterShip.h"
 
 FighterShip::FighterShip() {
-  tick = 0;
+  this->tick = 0;
+  this->width = 120;
+  this->height = 140;
+  
+  this->x = SPACE_X_RESOLUTION/2;
+  this->y = 100;
+  
+  this->angle = 0;
+    
+  // To be removed
+  // --------------------------------------------------
+  this->coins = 0;
+  this->extraSpeed = 0;
+  this->specialsLeft = 3;
+  this->onCooldown = false;
+  this->specialActive = false;
+  this->specialTimer = 0;
+  this->specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
+  //---------------------------------------------------
+  
+  this->health = 20;
+  this->shield = 5;
+  
+  this->maxShield = shield;
+  this->maxHealth = health;
+  this->crntHealth = health;
+  
+  this->visible = true;
+  this->tookDamage = false;
+  this->shieldDamaged = false;
+  
+  this->directionX = 1;
+  this->directionY = 1; 
+  
+  this->crntTexture = 0;
+      
+  printf("Setting up galatic ship\n");
+ 
+  this->speed = 10; 
+  
+  setTextures();
+  this->textures[0] = txt::LoadTexture("Textures/Game/Ships/FighterShip1.png");
+  this->textures[1] = txt::LoadTexture("Textures/Game/Ships/FighterShip2.png");
+  this->textures[2] = txt::LoadTexture("Textures/Game/Ships/FighterShip3.png");
+
+  WeaponMount.push_back(new MountType2(30, 5));
+  WeaponMount.push_back(new MountType2(-30, 5)); 
 }
 
 FighterShip::~FighterShip() {
@@ -12,35 +58,6 @@ void FighterShip::setTexture() {
   if(tookDamage)
     glColor3f(1.0, 0.0, 0.0);
   glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
-}
-
-void FighterShip::defaults() {
-  printf("Setting up fighter ship\n");
-
-  speed = 10;
-  health = 20;
-  shield = 5;
-
-  maxNumWeapons = 2;
-  width = 120;
-  height = 140;
-
-  textures[0] = txt::LoadTexture("Textures/Game/Ships/FighterShip1.png");
-  textures[1] = txt::LoadTexture("Textures/Game/Ships/FighterShip2.png");
-  textures[2] = txt::LoadTexture("Textures/Game/Ships/FighterShip3.png");
-
-  const float mountPosX[maxNumWeapons] = {30, -30};
-  const float mountPosY[maxNumWeapons] = {5, 5};
-  for(int i = 0; i < maxNumWeapons; ++i) {
-    switch(i) {
-      case 0:
-      case 1:
-        WeaponMount.push_back(new PurpleMount);
-        WeaponMount[i]->setup(PURPLEPLASMA);
-        break;
-    }
-    WeaponMount[i]->setOffset(mountPosX[i], mountPosY[i]);
-  }
 }
 
 void FighterShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {

@@ -13,7 +13,7 @@ SRCGAME =./src/GameTypes/Game.cpp ./src/Menus/MainMenu.cpp ./src/Misc/Effects.cp
 
 SRCENEMIES =./src/Enemies/BasicEnemy.cpp ./src/Enemies/CorruptedStarShip.cpp ./src/Enemies/HypnoEnemy.cpp ./src/Enemies/AlphaOne.cpp ./src/Enemies/DotEnemy.cpp
 
-SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp ./src/Mounts/AlphaOneMount.cpp ./src/Mounts/DotMount.cpp
+SRCMOUNTS =./src/Mounts/BasicMount.cpp ./src/Mounts/TriangleMount.cpp ./src/Mounts/HypnoMount.cpp ./src/Mounts/PurpleMount.cpp ./src/Mounts/AlphaOneMount.cpp ./src/Mounts/DotMount.cpp ./src/Mounts/MountType1.cpp ./src/Mounts/MountType2.cpp ./src/Mounts/MountType3.cpp
 
 SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weapons/GreenPlasma.cpp ./src/Weapons/PurplePlasma.cpp ./src/Weapons/Spiral.cpp ./src/Weapons/AlphaOnePlasma.cpp ./src/Weapons/DotBullet.cpp
 

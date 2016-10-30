@@ -9,10 +9,10 @@ class HeroShip3: public Ship {
     ~HeroShip3();
 
     void setTexture();
-    void defaults();
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
-    
-  protected:      
+  protected:   
+     
+    void special(); 
 };
 
 #endif
