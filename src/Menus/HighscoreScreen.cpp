@@ -109,7 +109,7 @@ void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsign
     buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   // Retru button
   if(buttons[0]->Clicked()) {
-    type = GAME;
+    type = ENDLESSGAME;
     ended = true;
   }
   // Quit button

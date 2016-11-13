@@ -36,10 +36,11 @@
 #define EXIT                   -1
 #define SEEDEDGAME             -2
 #define MAINMENU               0
-#define GAME                   1
+#define ENDLESSGAME            1
 #define SETTINGS               2
 #define SHOP                   3
 #define HIGHSCORE              4
+#define STORY                  5
 
 #define MINIMUM_DISTANCETOSHIP 100
 

@@ -45,11 +45,11 @@ void MainMenu::update(float mouseX, float mouseY, float deltaTime, unsigned int*
     buttons[i]->update(mouseX, mouseY, mouseBtnState, prevMouseBtnState);
   
   if(buttons[0]->Clicked()) {
-    type = GAME;
+    type = STORY;
     ended = true;
   }
   if(buttons[1]->Clicked()) {
-    type = SEEDEDGAME;
+    type = ENDLESSGAME;
     ended = true;
   }
   if(buttons[2]->Clicked()) {

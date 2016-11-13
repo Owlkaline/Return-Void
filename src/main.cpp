@@ -38,6 +38,7 @@
 
 #include "../include/GameTypes/Game.h"
 #include "../include/GameTypes/Menu.h"
+#include "../include/GameTypes/Story.h"
 
 #include "../include/Namespaces/Settings.h"
 #include "../include/Namespaces/Highscore.h"
@@ -78,7 +79,7 @@ unsigned char prevKeyState[350];
 
 GLuint mouseTexture;
 
-DisplayManager* Display[5] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen() };
+DisplayManager* Display[6] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen(), new Story() };
 
 /*
 void mouse() {
@@ -121,7 +122,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
   
 
 void drawCursor() {
-  if(type != GAME) {
+  if(type != ENDLESSGAME) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mouseTexture);
     // Nice blue #1e00d5
@@ -174,12 +175,11 @@ void display(GLFWwindow* window, float deltaTime) {
         clean();
         exit(0);
         break;
-      case SEEDEDGAME:
-        newtype = GAME;
-        Display[newtype]->setSeed(time(NULL));
-        break;
-      case GAME:
+      case ENDLESSGAME:
         Display[newtype]->setSeed(567894);
+        break;
+      case STORY:
+       // Display[newtype]->setSeed(time(NULL));
         //Display[newtype]->setSeed(time(NULL));
         break;
     }

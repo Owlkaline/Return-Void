@@ -367,7 +367,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           profile.Save();
           printf("Return to Menu from Quit Button pressed on highscore screen\n");
           break;
-        case GAME:
+        case ENDLESSGAME:
           restart();
           break;
       }
