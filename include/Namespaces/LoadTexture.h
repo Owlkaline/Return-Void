@@ -2,6 +2,8 @@
 #define LOADTEXTURE
 
 #include "../defines.h"
+#include <string>
+#include <stdio.h>
 
 #define TEXTURE_LOAD_ERROR 0
 

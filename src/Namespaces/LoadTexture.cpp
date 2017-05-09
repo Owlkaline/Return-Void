@@ -1,7 +1,35 @@
 #include "../../include/Namespaces/LoadTexture.h"
 
+#include <stb_image.h>
+
 GLuint txt::LoadTexture( const char * filename ) {
-  int width;
+stbi_set_flip_vertically_on_load(true);
+int w;
+int h;
+int comp;
+unsigned char* image = stbi_load(filename, &w, &h, &comp, STBI_rgb_alpha);
+
+if(image == nullptr)
+    throw(std::string("Failed to load texture"));
+GLuint m_texture;
+glGenTextures(1, &m_texture);
+
+glBindTexture(GL_TEXTURE_2D, m_texture);
+
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+if(comp == 3)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+else if(comp == 4)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+glBindTexture(GL_TEXTURE_2D, 0);
+
+stbi_image_free(image);
+
+return m_texture;
+/*  int width;
   int height;
 
   //header for testing if it is a png
@@ -123,5 +151,5 @@ GLuint txt::LoadTexture( const char * filename ) {
    delete[] row_pointers;
    fclose(fp);
 
-   return texture;
+   return texture;*/
   }
