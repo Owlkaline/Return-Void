@@ -2,6 +2,11 @@
 A Mordern space invaders
 
               Created by Lilith Wynter
+Compiling
+  Ubuntu / Linux Mint:
+        $ sudo apt-get install build-essential libglfw3 libpng++-dev libglc-dev libboost-dev
+        $ make
+        $ ./Return-void
 Controls:
   General:
         Use the mouse to navigate the Menus.

@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 CC = g++
-CFLAGS  = -Wall -g -O3 -I/home/akuma/Git/Return-Void/include/stb
+CFLAGS  = -Wall -g -O3 -std=c++0x -I$(HOME)/Git/Return-Void/include/stb
 PROG = Return-void
 
 SRCS = $(SRCMAIN) $(SRCMENU) $(SRCGAME) $(SRCSTORY) $(SRCENEMIES) $(SRCMOUNTS) $(SRCBULLETS) $(SRCDROPS)
