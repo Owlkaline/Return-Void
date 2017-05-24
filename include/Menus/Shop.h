@@ -19,8 +19,8 @@ class Shop: public Menu {
     void setup();
     void restart();
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
-    void drawBackground();
-    void drawAfter();
+    void drawBackground(GraphicsHandler* graphics);
+    void drawAfter(GraphicsHandler *graphics);
     
     void clean() {
       box.clear();

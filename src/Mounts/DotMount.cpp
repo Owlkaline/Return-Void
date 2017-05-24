@@ -10,8 +10,9 @@ DotMount::~DotMount() {
   clean();
 }
 
-void DotMount::setTexture() {
+std::string DotMount::getTexture() {
   //glBindTexture(GL_TEXTURE_2D, getDotMountTexture(isLeft));
+  return "DotMount";
 }
 
 void DotMount::defaults() {

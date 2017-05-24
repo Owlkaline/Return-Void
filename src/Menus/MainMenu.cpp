@@ -20,14 +20,13 @@ void MainMenu::setup() {
     }
   }
 
-  buttons[0]->setTexture((char*)"Textures/Menu/MainMenu/Story.png");
-  buttons[1]->setTexture((char*)"Textures/Menu/MainMenu/EndlessMode.png");
-  buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Shop.png");
-  buttons[3]->setTexture((char*)"Textures/Menu/MainMenu/Highscore.png");
-  buttons[4]->setTexture((char*)"Textures/Menu/MainMenu/Settings.png");
-  buttons[5]->setTexture((char*)"Textures/Menu/Misc/Quit.png");
-  
-  background = txt::LoadTexture("Textures/Menu/Background.png");
+  buttons[0]->setTexture((char*)"Story");
+  buttons[1]->setTexture((char*)"EndlessMode");
+  buttons[2]->setTexture((char*)"Shop");
+  buttons[3]->setTexture((char*)"Highscore");
+  buttons[4]->setTexture((char*)"Settings");
+  buttons[5]->setTexture((char*)"Quit");
+
 }
 
 void MainMenu::restart() {

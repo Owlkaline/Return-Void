@@ -9,13 +9,10 @@ Coins::Coins() {
   this->name = "10 Coins";
 }
 
-void Coins::draw() {
+void Coins::draw(GraphicsHandler *graphics) {
   if(!this->isCollected) {
-    glEnable(GL_TEXTURE_2D);  
-    
-    glBindTexture(GL_TEXTURE_2D, getCoinTexture());
-    drawQuad(x, -width, y, height, UP);
-    glDisable(GL_TEXTURE_2D);
+    //drawQuad(x, -width, y, height, UP);
+    graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), "PowerupCoin");
   }
 }
 

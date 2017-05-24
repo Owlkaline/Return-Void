@@ -5,25 +5,16 @@ Button::Button() {
 }
 
 Button::~Button() {
-  Texture = 0;
+  Texture = "";
 }
 
-void Button::draw() {
+void Button::draw(GraphicsHandler *graphics) {
   if(visible) {
     if(isFilled) {
-      glColor3f(fillR, fillG, fillB);
+     /* glColor3f(fillR, fillG, fillB);
       drawQuad(x, -width, y, height, UP);
-      /*glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x-width/2, y+height/2, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x+width/2, y+height/2, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(x+width/2, y-height/2, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x-width/2, y-height/2, 0.0);
-      glEnd(); */
-      glColor3f(1.0f, 1.0f, 1.0f);
+
+      glColor3f(1.0f, 1.0f, 1.0f);*/
     }
     if(hasTexture) {
       if(disabled) {
@@ -35,26 +26,18 @@ void Button::draw() {
       } else {
         glColor3f(1.0, 1.0, 1.0);
       }
-      glEnable(GL_TEXTURE_2D);
+      graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), Texture); 
+     /* glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, Texture);
       drawQuad(x, -width, y, height, UP);
-     /* glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x-width/2, y+height/2, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x+width/2, y+height/2, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(x+width/2, y-height/2, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x-width/2, y-height/2, 0.0);
-      glEnd(); */ 
+
       glColor3f(1.0f, 1.0f, 1.0f);
-      glDisable(GL_TEXTURE_2D);    
+      glDisable(GL_TEXTURE_2D);    */
     } else { 
       lbTitle.draw();
     }
     if(hasBorder)
-      drawBox();
+      drawBox(graphics);
   }
   glColor4f(1.0, 1.0, 1.0, 1.0);
 }
@@ -73,7 +56,7 @@ void Button::setup(float x, float y, float width, float height, char* filename) 
   disabled = false;
   visible = true;
   
-  Texture = txt::LoadTexture(filename);
+  Texture = filename;
   
   this->x = x;
   this->y = y;
@@ -126,7 +109,7 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
 }
 
 void Button::setTexture(char* filename) {
-  Texture = txt::LoadTexture(filename);
+  Texture = filename;
   hasTexture = true;
 }
 
@@ -142,9 +125,9 @@ bool Button::Clicked() {
   return hasBeenClicked;
 }
 
-void Button::drawBox() {
+void Button::drawBox(GraphicsHandler *graphics) {
   float border = 5;
-  glColor3f(0.0, 0.0, 0.0);
+ /* glColor3f(0.0, 0.0, 0.0);
   glBegin(GL_QUADS);
 
     // Left
@@ -172,6 +155,11 @@ void Button::drawBox() {
     glVertex3f(x-width/2, y-height/2, 0.0);
 
   glEnd();
-  glColor3f(1.0, 1.0, 1.0);
+  glColor3f(1.0, 1.0, 1.0);*/
+  
+  graphics->drawObject(glm::vec2(x+border/2, y), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x-border/2, y), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x, y-border/2), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x, y+border/2), glm::vec2(width, height), "Edge");
 }
 

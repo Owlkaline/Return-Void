@@ -7,7 +7,7 @@ class PausedMenu: public Menu {
   public:
     void setup();
     void restart();
-    void drawBackground();
+    void drawBackground(GraphicsHandler *graphics);
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
    
     bool isPaused();
@@ -16,7 +16,7 @@ class PausedMenu: public Menu {
   
     float x, y, width, height;
    
-    GLuint Texture;
+    std::string Texture;
 };
 
 #endif

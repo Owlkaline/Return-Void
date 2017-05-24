@@ -19,7 +19,6 @@ GalacticShip::GalacticShip() {
   this->onCooldown = false;
   this->specialActive = false;
   this->specialTimer = 0;
-  this->specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
   //---------------------------------------------------
   
   this->health = 30;
@@ -42,9 +41,6 @@ GalacticShip::GalacticShip() {
  
   this->speed = SPEED; 
   
-  setTextures();
-  this->textures[0] = txt::LoadTexture("Textures/Game/Ships/GalacticShip.png");
-  
   WeaponMount.push_back(new MountType1(20, 0));
   WeaponMount.push_back(new MountType1(-20, 0)); 
 } 
@@ -53,8 +49,9 @@ GalacticShip::~GalacticShip() {
   clean();
 } 
 
-void GalacticShip::setTexture() {  
-  glBindTexture(GL_TEXTURE_2D, textures[0]);
+std::string GalacticShip::getTexture() {  
+//  glBindTexture(GL_TEXTURE_2D, textures[0]);
+  return "GalacticShip";
 }
 
 void GalacticShip::special() { 

@@ -66,7 +66,7 @@ void Label::setupGLC(float scaleX, float scaleY) {
   //float ratioX = settings->getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
   //float ratioY = settings->getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
   // Set up and initialize GLC
-  ctx = glcGenContext();
+ /* ctx = glcGenContext();
   glcContext(ctx);
   glcAppendCatalog("/usr/lib/X11/fonts/Type1/");
 
@@ -86,7 +86,7 @@ void Label::setupGLC(float scaleX, float scaleY) {
 	glcRenderStyle(GLC_TRIANGLE);
 
 	// Use UTF-8 encoded strings
-	glcStringType(GLC_UTF8_QSO);
+	glcStringType(GLC_UTF8_QSO);*/
       // Render the text at a size of 100 points
   //glcScale(30*ratioX, 30*ratioY);
 }
@@ -110,7 +110,7 @@ void Label::setup(float x, float y, float width, float height, char* filename) {
   R = 0;
   B = 0;
   G = 0;
-  setupGLC(scaleX, scaleY);
+//  setupGLC(scaleX, scaleY);
 }
 
 void Label::setup(float x, float y, float scaleX, float scaleY) {
@@ -129,7 +129,7 @@ void Label::setup(float x, float y, float scaleX, float scaleY) {
   R = 0;
   B = 0;
   G = 0;
-  setupGLC(scaleX, scaleY);
+ // setupGLC(scaleX, scaleY);
 }
 
 void Label::setup(float x, float y, float scaleX, float scaleY, bool timer) {
@@ -148,7 +148,7 @@ void Label::setup(float x, float y, float scaleX, float scaleY, bool timer) {
   R = 0;
   B = 0;
   G = 0;
-  setupGLC(scaleX, scaleY);
+ // setupGLC(scaleX, scaleY);
 }
 
 void Label::update(float deltaTime) {
@@ -167,7 +167,7 @@ void Label::drawChar() {
   glScalef(24.0f, 24.0f, 1.0f);
   glColor3f(R, G, B);
   //glRasterPos2f(x-length*10, y);
-  glcRenderString(str.c_str());
+ // glcRenderString(str.c_str());
 
   glPopMatrix();
 }

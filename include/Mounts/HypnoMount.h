@@ -10,7 +10,7 @@ class HypnoMount: public Mount {
       
     void setLeft();
     void defaults();
-    void setTexture();
+    std::string getTexture();
     
   protected:
 };

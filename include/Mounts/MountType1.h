@@ -8,7 +8,7 @@ class MountType1: public Mount {
     MountType1(float offsetX, float offsetY);
     
     void reset(float x, float y);
-    void setTexture();  
+    std::string getTexture();
   protected:
 };
 

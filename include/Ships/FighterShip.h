@@ -8,7 +8,7 @@ class FighterShip: public Ship {
     FighterShip();
     ~FighterShip();
 
-    void setTexture();    
+    std::string getTexture();    
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
     
   protected:      

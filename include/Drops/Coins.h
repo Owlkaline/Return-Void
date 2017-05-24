@@ -7,7 +7,7 @@ class Coins: public Drops {
   public:
     Coins();
     
-    void draw();    
+    void draw(GraphicsHandler *graphics);    
     void update(float deltaTime);
     void setup(float x, float y);
     

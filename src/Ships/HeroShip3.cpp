@@ -18,7 +18,6 @@ HeroShip3::HeroShip3() {
   this->specialsLeft = 3;
   this->specialActive = false;
   this->specialTimer = 0;
-  this->specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
   //---------------------------------------------------
   
   this->health = 40;
@@ -40,11 +39,8 @@ HeroShip3::HeroShip3() {
   printf("Setting up galatic ship\n");
  
   this->speed = 9; 
-  
-  setTextures();
+
   maxNumWeapons = 1;
-  
-  this->textures[0] = txt::LoadTexture("Textures/Game/Ships/HeroShip3.png");
 
   this->crntTexture = 0;
   WeaponMount.push_back(new MountType3(0, 0));       
@@ -55,8 +51,9 @@ HeroShip3::~HeroShip3() {
   clean();
 } 
 
-void HeroShip3::setTexture() {  
-  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
+std::string HeroShip3::getTexture() {  
+//  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
+  return "HeroShip";
 }
 
 void HeroShip3::special() { 

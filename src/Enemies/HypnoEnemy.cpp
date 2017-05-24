@@ -70,8 +70,9 @@ void HypnoEnemy::reset() {
 
 }
 
-void HypnoEnemy::setTexture() {
-    glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture());
+std::string HypnoEnemy::getTexture() {
+//    glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture());
+  return "HypnoEnemy";
 }
 
 void HypnoEnemy::setX(float x) {

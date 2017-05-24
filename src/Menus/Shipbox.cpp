@@ -34,7 +34,7 @@ void Shipbox::setup(float x, float y, int shipType) {
     
   // Select Ship Box
   lb.push_back(new Label);
-  lb[0]->setup(x, y, 400, 400, (char*)"Textures/Menu/ShopMenu/Boxbackground.png");
+  lb[0]->setup(x, y, 400, 400, (char*)"BoxBackground");
   lb[0]->drawBorder(true);
   
   Settings *settings = Settings::instance();
@@ -99,7 +99,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   
   // 1st Ship Box
   lb.push_back(new Label);
-  lb[0]->setup(x, y, 456, 400, (char*)"Textures/Menu/ShopMenu/Boxbackground.png");
+  lb[0]->setup(x, y, 456, 400, (char*)"BoxBackground");
   lb[0]->drawBorder(true);
   
   buttons.push_back(new Button);
@@ -107,10 +107,10 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   
   if(unlocked) {
     if(bought) {
-      buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Upgrade.png");
+      buttons[0]->setTexture((char*)"Upgrade");
       buttons[0]->fill(0.8f, 0.0f, 0.0f);
     } else {
-      buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Buy.png");
+      buttons[0]->setTexture((char*)"Buy");
       buttons[0]->fill(0.0f, 0.8f, 0.0f);
 
       lb.push_back(new Label);
@@ -147,21 +147,21 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
     }
   } else {
     bought = false;
-    buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Locked.png");
+    buttons[0]->setTexture((char*)"Locked");
     buttons[0]->fill(0.6f, 0.6f, 0.6f);
     buttons[0]->disable();
   }  
   buttons[0]->drawBorder(true);
 }
 
-void Shipbox::draw() {  
+void Shipbox::draw(GraphicsHandler *graphics) {  
   if(visible) {
     for(unsigned int i = 0; i < lb.size(); ++i)
       lb[i]->draw();
     for(unsigned int i = 0; i < buttons.size(); ++i)
-      buttons[i]->draw();
+      buttons[i]->draw(graphics);
     for(unsigned int i = 0; i < ship.size(); ++i)
-      ship[i]->draw();      
+      ship[i]->draw(graphics);      
   }  
 }
 
@@ -211,7 +211,7 @@ void Shipbox::update(float mX, float mY, float deltaTime, unsigned int* mouseBtn
 
 void Shipbox::buy() {
   bought = true;
-  buttons[0]->setTexture((char*)"Textures/Menu/ShopMenu/Upgrade.png");
+  buttons[0]->setTexture((char*)"Upgrade");
   buttons[0]->fill(0.8f, 0.0f, 0.0f);
   lb[1]->setVisible(false);
 }

@@ -8,7 +8,7 @@ class BasicMount: public Mount {
     BasicMount();
     ~BasicMount();
     
-    void setTexture();
+    std::string getTexture();
     void defaults();
   protected:   
    

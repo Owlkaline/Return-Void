@@ -8,7 +8,7 @@ class PurpleMount: public Mount {
     PurpleMount();
     ~PurpleMount();
     
-    void setTexture();
+    std::string getTexture();
     void defaults();
   protected:   
 };

@@ -8,7 +8,7 @@ class HeroShip3: public Ship {
     HeroShip3();
     ~HeroShip3();
 
-    void setTexture();
+    std::string getTexture();
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState); 
   protected:   
      

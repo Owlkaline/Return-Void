@@ -22,24 +22,24 @@ void Shop::setup() {
   // Buttons
   // Return button
   buttons.push_back(new Button);
-  buttons[0]->setup(BUTTONWIDTH/2+50, 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/Misc/Return.png");
+  buttons[0]->setup(BUTTONWIDTH/2+50, 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Return");
   buttons[0]->drawBorder(false);
   
   // Left Arrow button
   buttons.push_back(new Button);
-  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
+  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"LeftArrow");
   buttons[1]->drawBorder(true);
   buttons[1]->disable();
   buttons[1]->setVisible(false);
   
   // Right Arrow button
   buttons.push_back(new Button);
-  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
+  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"RightArrow");
   buttons[2]->drawBorder(true);  
   
   // Top Left Shop Name Box
   lb.push_back(new Label);
-  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/MainMenu/Shop.png");
+  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Shop");
   lb[0]->fill(0.0, 0.0, 1.0f);
   lb[0]->drawBorder(true);
   
@@ -69,7 +69,7 @@ void Shop::setup() {
   
   // Left Arrow button Selected Ship
   buttons.push_back(new Button);
-  buttons[3]->setup(1676-200+ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/LeftArrow.png");
+  buttons[3]->setup(1676-200+ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"LeftArrow");
   buttons[3]->drawBorder(true);
   if(selected == 0) {
     buttons[3]->disable();
@@ -78,7 +78,7 @@ void Shop::setup() {
   
   // Right Arrow button Selected Ship
   buttons.push_back(new Button);
-  buttons[4]->setup(1676+200-ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"Textures/Menu/Misc/RightArrow.png");
+  buttons[4]->setup(1676+200-ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"RightArrow");
   buttons[4]->drawBorder(true);  
 
   for(int i = 0; i < 6; ++i) {
@@ -144,15 +144,14 @@ void Shop::setup() {
       box[box.size()-1]->setup(1676, 390, GALACTICSHIP);
       break;
   }
-  background = txt::LoadTexture((char*)"Textures/Menu/ShopMenu/Background.png");
 }
 
 void Shop::restart() {
 
 }
 
-void Shop::drawBackground() {  
-  glColor3f(1.0f, 1.0f, 1.0f);
+void Shop::drawBackground(GraphicsHandler *graphics) {  
+/*  glColor3f(1.0f, 1.0f, 1.0f);
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, background);
   glBegin(GL_QUADS);
@@ -166,10 +165,10 @@ void Shop::drawBackground() {
     glVertex3f(0, 0, 0.0);
   glEnd();
   glColor3f(1.0f, 1.0f, 1.0f);
-  glDisable(GL_TEXTURE_2D);
-  
+  glDisable(GL_TEXTURE_2D);*/
+  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
   for(unsigned int i = 0; i < box.size(); ++i)
-    box[i]->draw();
+    box[i]->draw(graphics);
 }
 
 void Shop::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {
@@ -318,7 +317,7 @@ void Shop::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
   }
 }
 
-void Shop::drawAfter() {
+void Shop::drawAfter(GraphicsHandler * graphics) {
 
 }
 

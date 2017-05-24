@@ -7,7 +7,7 @@
 
 class Story: public DisplayManager {
   public:
-    void draw();
+    void draw(GraphicsHandler *graphics);
     void setup();    
     void clean() { }
     void restart();

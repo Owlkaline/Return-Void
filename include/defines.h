@@ -1,16 +1,6 @@
 #ifndef DEFINES
 #define DEFINES
 
-#ifdef __APPLE__
-#include <OpenGL/gl.h>// Header File For The OpenGL32 Library
-#include <OpenGL/glu.h>// Header File For The GLu32 Library
-#else
-#include <GL/glu.h>
-#include <png.h>
-#endif
-
-#include <GLFW/glfw3.h>
-
 #include <cstdlib>
 
 #define VERSION                1.5
@@ -95,7 +85,7 @@
 
 // Keys
 #define ESC                    256
-
+/*
 inline void drawQuad(float x, float w, float y, float h, int rotation)
 	{
 		glBegin(GL_QUADS);
@@ -112,5 +102,5 @@ inline void drawQuad(float x, float w, float y, float h, int rotation)
 			}
 		glEnd();
 	}
-
+*/
 #endif

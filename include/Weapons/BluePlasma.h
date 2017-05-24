@@ -7,7 +7,7 @@ class BluePlasma: public Weapon {
   public:
     BluePlasma();
     
-    void draw(); 
+    void draw(GraphicsHandler *graphics); 
     void tick(float deltaTime);
     void reset();
     void clean();    

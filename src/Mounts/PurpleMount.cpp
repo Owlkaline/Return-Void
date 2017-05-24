@@ -10,8 +10,9 @@ PurpleMount::~PurpleMount() {
   clean();
 }
 
-void PurpleMount::setTexture() {
-  glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
+std::string PurpleMount::getTexture() {
+//  glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
+  return "PurpleMount";
 }
 
 void PurpleMount::defaults() {

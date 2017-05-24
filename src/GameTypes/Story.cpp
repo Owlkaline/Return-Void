@@ -1,7 +1,7 @@
 #include "../../include/GameTypes/Story.h"
 
-void Story::draw() {
-  world.draw();
+void Story::draw(GraphicsHandler *graphics) {
+  world.draw(graphics);
 }
 
 void Story::setup() {

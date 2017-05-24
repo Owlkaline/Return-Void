@@ -10,7 +10,7 @@ class AlphaOneMount: public Mount {
        
     void erase();
     void defaults();
-    void setTexture();
+    std::string getTexture();
     void individualClean();
     void tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting);
 

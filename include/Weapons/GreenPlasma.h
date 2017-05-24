@@ -7,7 +7,7 @@ class GreenPlasma: public Weapon {
   public:
     GreenPlasma();
        
-    void draw();    
+    void draw(GraphicsHandler *graphics);    
     void reset();
     void clean();
     void tick(float deltaTime);

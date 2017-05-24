@@ -7,7 +7,7 @@ class PurplePlasma: public Weapon {
   public:
     PurplePlasma();
     
-    void draw(); 
+    void draw(GraphicsHandler *graphics); 
     void reset();
     void clean();
     void tick(float deltaTime);

@@ -9,7 +9,7 @@ class AlphaOnePlasma: public Weapon {
   public:
     AlphaOnePlasma();
     
-    void draw(); 
+    void draw(GraphicsHandler *graphics); 
     void tick(float deltaTime);
     void reset();
     void clean();

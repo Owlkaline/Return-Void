@@ -1,11 +1,6 @@
-#!/usr/bin/make -f
-CC = g++
-CFLAGS  = -Wall -g -O3 -I/home/akuma/Git/Return-Void/include/stb
-PROG = Return-void
+OBJS = $(SRCMAIN) $(SRCMENU) $(SRCGAME) $(SRCSTORY) $(SRCENEMIES) $(SRCMOUNTS) $(SRCBULLETS) $(SRCDROPS)
 
-SRCS = $(SRCMAIN) $(SRCMENU) $(SRCGAME) $(SRCSTORY) $(SRCENEMIES) $(SRCMOUNTS) $(SRCBULLETS) $(SRCDROPS)
-
-SRCMAIN =./src/main.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Namespaces/Random.cpp ./src/Namespaces/File.cpp ./src/Namespaces/Movement.cpp ./src/Namespaces/Settings.cpp ./src/Namespaces/Profile.cpp ./src/Namespaces/Highscore.cpp ./src/Ships/GalacticShip.cpp ./src/Ships/FighterShip.cpp ./src/Ships/HeroShip3.cpp
+SRCMAIN =./src/main.cpp ./src/GraphicsHandler.cpp ./src/Namespaces/LoadTexture.cpp ./src/Namespaces/Collisions.cpp ./src/Namespaces/Random.cpp ./src/Namespaces/File.cpp ./src/Namespaces/Movement.cpp ./src/Namespaces/Settings.cpp ./src/Namespaces/Profile.cpp ./src/Namespaces/Highscore.cpp ./src/Ships/GalacticShip.cpp ./src/Ships/FighterShip.cpp ./src/Ships/HeroShip3.cpp
 
 SRCMENU =./src/Menus/SettingsMenu.cpp ./src/Menus/PausedMenu.cpp ./src/Menus/Button.cpp ./src/Menus/Label.cpp ./src/Menus/CheckBox.cpp ./src/Menus/HighscoreScreen.cpp ./src/Menus/Shop.cpp ./src/Menus/Shipbox.cpp ./src/Menus/FloatingText.cpp ./src/Menus/Text.cpp
 
@@ -21,13 +16,39 @@ SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weap
 
 SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp ./src/Drops/Shield.cpp
 
-LIBS = -lglfw -lGLC -lGLU -lGL -lpng
+OS := $(shell uname)
+CC = g++
 
-all: $(PROG)
+COMPILER_FLAGS = -I./staticlibs/ -std=c++14
 
-$(PROG):	$(SRCS)
-	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LIBS)
+ifeq ($(OS), Darwin)
+INCLUDE_PATHS = -I/usr/local/include
+LIBRARY_PATHS = -L/usr/local/lib
 
-clean:
-	rm -f $(PROG) 
 
+LINKER_FLAGS = -lglew -lglfw -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+
+else
+
+ifeq ($(OS), Linux)
+INCLUDE_PATHS =  -I/usr/include -I/usr/include/freetype2
+LIBRARY_PATHS =  -L/usr/lib
+
+LINKER_FLAGS = -lGL -lglfw -lGLEW -lfreetype
+
+else
+INCLUDE_PATHS = -I../win64/include
+LIBRARY_PATHS = -L../win64/lib
+
+LINKER_FLAGS = -lmingw32 -lopengl32 -lglew32.dll -lglfw3 -luser32 -lgdi32 -lkernel32
+
+endif
+endif
+
+
+
+OBJ_NAME = Return-void
+
+all: $(OBJS)
+				$(CC) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+				

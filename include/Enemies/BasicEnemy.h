@@ -9,7 +9,7 @@ class BasicEnemy: public Enemy {
     ~BasicEnemy();
        
     void reset();
-    void setTexture();
+    std::string getTexture();
     void update(float Px, float Py, float deltaTime);
 };
 

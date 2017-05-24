@@ -11,24 +11,24 @@ Game::~Game() {
   effect->destroy();
 }
 
-void Game::draw() {
+void Game::draw(GraphicsHandler *graphics) {
   Effects *effect = Effects::instance();
-  drawBackground();  
+  drawBackground(graphics);  
 
   for(unsigned int i = 0; i < powerups.size(); ++i) 
-    powerups[i]->draw();
+    powerups[i]->draw(graphics);
  
-  ship[0]->draw();
+  ship[0]->draw(graphics);
 
   for(unsigned int i = 0; i < enemy.size(); ++i) 
-    enemy[i]->draw();
+    enemy[i]->draw(graphics);
   
   for(unsigned int i = 0; i < Ftext.size(); ++i)
     Ftext[i]->draw();
     
   effect->draw();
   
-  ship[0]->drawHealthBar();
+  ship[0]->drawHealthBar(graphics);
 
   if(DRAWQUADTREE)
     Collisions::drawQuadTree();
@@ -40,12 +40,12 @@ void Game::draw() {
   lbScore.draw();
   lbCoins.draw();
   if(paused)
-    pMenu.draw();
+    pMenu.draw(graphics);
 
   if(inHighscore) 
-    highscore.draw();
+    highscore.draw(graphics);
     
-  drawCrosshair();
+  drawCrosshair(graphics);
 }
 
 void Game::setup() {
@@ -113,8 +113,8 @@ void Game::setup() {
   ended = false;
   ChRadius = 40;
   type = MAINMENU;
-  ChTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
-  background = txt::LoadTexture("Textures/Game/Background.png");
+  ChTexture = "cursor";
+  background = "Background";
 
   pMenu.setup();
   printf(" Game Setup\n");
@@ -375,12 +375,12 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
   } 
 }
 
-void Game::drawCrosshair() {
-  glEnable(GL_TEXTURE_2D);
+void Game::drawCrosshair(GraphicsHandler *graphics) {
+ /* glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, ChTexture);
   // Nice blue #1e00d5
   //lColor3f(0.117647059f, 0, 0.835294197f);
-  glColor4f(1, 0.643137255, 0, 1.0f);
+  glColor4f(1, 0.643137255, 0, 1.0f);*/
   if(!paused && !inHighscore) {
     if(ship[0]->getDistanceFromCursor() > MINIMUM_DISTANCETOSHIP) {
       lastChX = ChX;
@@ -393,16 +393,20 @@ void Game::drawCrosshair() {
     lastChX = ChX;
     lastChY = ChY;
   }
-  drawQuad(lastChX, ChRadius, lastChY, ChRadius, UP);
+  graphics->drawObject(glm::vec2(lastChX, lastChY), glm::vec2(ChRadius, ChRadius), ChTexture);
+  /*drawQuad(lastChX, ChRadius, lastChY, ChRadius, UP);
 
   glColor3f(1.0, 1.0, 1.0f);
-  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_TEXTURE_2D);*/
 
 }
 
-void Game::drawBackground() {
+void Game::drawBackground(GraphicsHandler *graphics) {
+  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION+offsetY), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
+  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2+offsetY), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
+  
     // Background
-    glEnable(GL_TEXTURE_2D);
+  /*  glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, background);
     glBegin(GL_QUADS);
       glTexCoord2f(0.0f, 1.0f);
@@ -428,5 +432,5 @@ void Game::drawBackground() {
       glVertex3f(0, 0+offsetY, 0.0);
     glEnd();
     
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);*/
 }

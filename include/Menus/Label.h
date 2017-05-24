@@ -2,7 +2,7 @@
 #define LABEL_H
 
 #include "../defines.h"
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 #include "../Namespaces/Settings.h"
 //#include "./Text.h"
 #include "GL/glc.h"

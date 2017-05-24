@@ -17,22 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with ReturnVoid. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>// Header File For The OpenGL32 Library
-#include <OpenGL/glu.h>// Header File For The GLu32 Library
-#else 
-#include <GL/glc.h>
-#include <GL/glu.h>
-#include <png.h>
-#endif
 
 #include <stdio.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#include "../include/GraphicsHandler.h"
 
 #include "../include/Menus/Shop.h"
 #include "../include/Menus/MainMenu.h"
@@ -153,22 +146,24 @@ void clean() {
   glfwTerminate();
 }
 
-void display(GLFWwindow* window, float deltaTime) {      
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Wipes screen clear
+void display(GLFWwindow* window, GraphicsHandler* graphics, float deltaTime) {      
+  glClear(GL_COLOR_BUFFER_BIT); //Wipes screen clear
 
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
+ 
   glClearColor(0.0f, 0.0f, 0.0f, 255.0f);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Blends colours with alpha
+  
   
   //Texture options
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  glColor4ub(255,255,255,255); //sets full colours and alpha
+  //glColor4ub(255,255,255,255); //sets full colours and alpha
 
   Display[type]->update(mouseX, mouseY, deltaTime, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
-  Display[type]->draw();
+  Display[type]->draw(graphics);
 
-  drawCursor();
+  graphics->drawObject(glm::vec2(mouseX, mouseY), glm::vec2(40, 40), "cursor");
   
   if(Display[type]->hasEnded()) {
     int newtype = Display[type]->getEndType();
@@ -210,7 +205,12 @@ GLFWwindow* init() {
     return window;
   }
   // Use OpenGL 2.1    
- 
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    
   bool isFullscreen = settings->getFullscreen();
   screenResX = settings->getWindowWidth();
   screenResY = settings->getWindowHeight();
@@ -220,26 +220,15 @@ GLFWwindow* init() {
 
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-  if(isFullscreen) {
-    //screenResX = 800;
-    //screenResY = 600;
-      
-    //Create Window
-    //  gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-      
+  if(!isFullscreen) {
     // Borderless fullscreen
-    //SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
-      
-    // Fullscreen
-    //  SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    /* Borderless fullscreen
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", monitor, NULL);
-    */
+    // const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    // glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    // glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    // glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    // glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+    // GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", monitor, NULL);
+    
     const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     screenResX = mode->width;
     screenResY = mode->height;
@@ -250,10 +239,9 @@ GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", mon
     settings->setFullscreen(true); 
     settings->setResolution(screenResX, screenResY);    
   } else {
-    printf("Entering windowed mode\n");
+    printf("Entering windowed mode %dx%d\n", screenResX, screenResY);
   
     //Create Window
-   // gWindow = SDL_CreateWindow("Return-Void", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,  screenResX, screenResY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
     window = glfwCreateWindow(screenResX, screenResY, "Return-Void", NULL, NULL);
       
   }
@@ -267,13 +255,105 @@ GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "My Title", mon
   aspectRatio = (float)screenResX / (float)screenResY;
   aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
   aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
-  
-  gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
 
   //screen =SDL_GetWindowSurface(gWindow);    
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
   return window;
+}
+
+void loadAllTextures(GraphicsHandler* graphics) {
+  graphics->loadTexture("cursor", "Textures/Game/Crosshair.png");
+  
+  // Enemy Textures
+  graphics->loadTexture("BasicEnemy", "Textures/Game/Enemies/BasicEnemy.png");
+  graphics->loadTexture("HypnoEnemy","Textures/Game/Enemies/HypnoEnemy.png");
+  graphics->loadTexture("AlphaOne","Textures/Game/Enemies/AlphaOne.png");
+  graphics->loadTexture("DotEnemy","Textures/Game/Enemies/DotEnemy.png");
+
+  graphics->loadTexture("CStarShip","Textures/Game/Enemies/CorruptedStarShip.png");
+  graphics->loadTexture("CStarShip1","Textures/Game/Enemies/CorruptedStarShipDmg1.png");
+  graphics->loadTexture("CStarShip2","Textures/Game/Enemies/CorruptedStarShipDmg2.png");
+  graphics->loadTexture("CStarShip3","Textures/Game/Enemies/CorruptedStarShipDmg3.png");
+  graphics->loadTexture("CStarShip4","Textures/Game/Enemies/CorruptedStarShipDmg4.png");
+  
+  // Player Textures
+  graphics->loadTexture("FighterShip1", "Textures/Game/Ships/FighterShip1.png");
+  graphics->loadTexture("FighterShip2","Textures/Game/Ships/FighterShip2.png");
+  graphics->loadTexture("FighterShip3","Textures/Game/Ships/FighterShip3.png");
+  graphics->loadTexture("GalacticShip","Textures/Game/Ships/GalacticShip.png");
+  graphics->loadTexture("HeroShip","Textures/Game/Ships/HeroShip3.png");
+    
+  // Weapon Textures
+  graphics->loadTexture("BluePlasma","Textures/Game/Weapons/BluePlasma.png");
+  graphics->loadTexture("GreenPlasma","Textures/Game/Weapons/GreenPlasma.png");
+  graphics->loadTexture("RedPlasma","Textures/Game/Weapons/RedPlasma.png");
+  graphics->loadTexture("PurplePlasma","Textures/Game/Weapons/PurplePlasma.png");
+  graphics->loadTexture("Spiral","Textures/Game/Weapons/Spiral.png");
+  graphics->loadTexture("DotBullet","Textures/Game/Weapons/DotBullet.png");
+  graphics->loadTexture("AlphaOnePlasma","Textures/Game/Weapons/AlphaOnePlasma.png");
+  
+  // HUD textures
+  graphics->loadTexture("HealthBarBase", "Textures/Game/Misc/HealthBarBase.png");
+  graphics->loadTexture("HealthBar", "Textures/Game/Misc/HealthBar.png");
+  graphics->loadTexture("ShieldBar", "Textures/Game/Misc/ShieldBar.png");
+  
+  graphics->loadTexture("Shield", "Textures/Game/Ships/Shield.png");
+  graphics->loadTexture("ShieldRipple1", "Textures/Game/Ships/ShieldRipple1.png");
+  graphics->loadTexture("ShieldRipple2", "Textures/Game/Ships/ShieldRipple2.png");
+  graphics->loadTexture("ShieldRipple3", "Textures/Game/Ships/ShieldRipple3.png");
+  graphics->loadTexture("ShieldRipple4", "Textures/Game/Ships/ShieldRipple4.png");
+  graphics->loadTexture("ShieldRipple5", "Textures/Game/Ships/ShieldRipple5.png");
+  
+  // Mount textures
+  graphics->loadTexture("BasicMount","Textures/Game/Mounts/BasicMount.png");  
+  graphics->loadTexture("BasicMountBright", "Textures/Game/Mounts/BasicMountBright.png");
+  graphics->loadTexture("PurpleMount", "Textures/Game/Mounts/PurpleMount.png");
+  graphics->loadTexture("AlphaOneMount", "Textures/Game/Mounts/AlphaOneMount.png");  
+  graphics->loadTexture("HeroMount1", "Textures/Game/Ships/HeroMount1.png");
+  graphics->loadTexture("HeroMount2", "Textures/Game/Ships/HeroMount2.png");
+  graphics->loadTexture("HeroMount3", "Textures/Game/Ships/HeroMount3.png");
+  graphics->loadTexture("HeroMount4", "Textures/Game/Ships/HeroMount4.png");
+  graphics->loadTexture("HypnoMountLeft", "Textures/Game/Mounts/HypnoMountLeft.png");
+  graphics->loadTexture("HypnoMountRight", "Textures/Game/Mounts/HypnoMountRight.png");
+  
+  // Powerup texturess
+  graphics->loadTexture("PowerupCoin", "Textures/Game/Powerups/Coin.png");
+  graphics->loadTexture("PowerupHealth", "Textures/Game/Powerups/Health.png");
+  graphics->loadTexture("PowerupShield", "Textures/Game/Powerups/Shield.png");
+  graphics->loadTexture("Boost", "Textures/Game/Misc/Boost.png");
+  
+  // TOBEREMOVED
+  // Menu stuff - For now 
+  graphics->loadTexture("Return", "Textures/Menu/Misc/Return.png");
+  graphics->loadTexture("Apply", "Textures/Menu/SettingsMenu/Apply.png");
+  graphics->loadTexture("LeftArrow", "Textures/Menu/Misc/LeftArrow.png");
+  graphics->loadTexture("RightArrow", "Textures/Menu/Misc/RightArrow.png");
+  graphics->loadTexture("Fullscreen","Textures/Menu/SettingsMenu/Fullscreen.png");
+  graphics->loadTexture("True", "Textures/Menu/Misc/True.png");
+  graphics->loadTexture("False", "Textures/Menu/Misc/False.png");
+  graphics->loadTexture("Resolution", "Textures/Menu/SettingsMenu/Resolution.png");
+  graphics->loadTexture("800x600", "Textures/Menu/SettingsMenu/800x600.png");
+  graphics->loadTexture("1280x720", "Textures/Menu/SettingsMenu/1280x720.png");
+  graphics->loadTexture("1920x1080", "Textures/Menu/SettingsMenu/1920x1080.png");
+  graphics->loadTexture("Shop", "Textures/Menu/MainMenu/Shop.png");
+  graphics->loadTexture("Upgrade", "Textures/Menu/ShopMenu/Upgrade.png");
+  graphics->loadTexture("Buy", "Textures/Menu/ShopMenu/Buy.png");
+  graphics->loadTexture("Locked", "Textures/Menu/ShopMenu/Locked.png");
+  graphics->loadTexture("Resume", "Textures/Menu/GameMenus/Resume.png");
+  graphics->loadTexture("Paused", "Textures/Menu/GameMenus/Paused.png");
+  graphics->loadTexture("Story", "Textures/Menu/MainMenu/Story.png");
+  graphics->loadTexture("Endless", "Textures/Menu/MainMenu/EndlessMode.png");
+  graphics->loadTexture("Highscore", "Textures/Menu/MainMenu/Highscore.png");
+  graphics->loadTexture("Settings", "Textures/Menu/MainMenu/Settings.png");
+  graphics->loadTexture("Quit", "Textures/Menu/Misc/Quit.png");
+  
+  // Extra
+  graphics->loadTexture("Edge", "Textures/Game/Mounts/BasicMount2.png");
+  graphics->loadTexture("MenuBackground", "Textures/Menu/Background.png");
+  graphics->loadTexture("Background", "Textures/Game/Background.png");
+  graphics->loadTexture("BoxBackground", "Textures/Menu/ShopMenu/Boxbackground.png");
+  graphics->loadTexture("window", "Textures/Menu/GameMenus/Window.png");
 }
 
 int main(int argc, char* args[]) {
@@ -283,42 +363,42 @@ int main(int argc, char* args[]) {
   /* Make the window's context current */
   glfwMakeContextCurrent(window);
   
+  glewExperimental = GL_TRUE;
+  if (glewInit() != GLEW_OK)
+  {
+    std::cout << "Failed to initialize GLEW\n";
+    return -1;
+  }
+  
   glfwSetKeyCallback(window, key_callback);
   glfwSetCursorPosCallback(window, cursor_pos_callback);
   glfwSetMouseButtonCallback(window, mouse_button_callback);
   
-  mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
+  //mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
+  GraphicsHandler graphics;
+  graphics.loadShaders("./Shaders/shader.vert", "./Shaders/shader.frag", "basic");
+  graphics.loadShaders("./Shaders/font.vert", "./Shaders/font.frag", "text");
+  graphics.useShader("basic");
+  graphics.init(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION);
+  graphics.initText("DarkCrystal.ttf", "text");
+  loadAllTextures(&graphics);
+  
   //Initialize clear color
   glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
   
   Display[type]->setup();
   
-  
-
   double lastTime = glfwGetTime();
-  while(!glfwWindowShouldClose(window)) {
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
-    float ratio = width / (float)height;
-    glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    gluOrtho2D(0.f, SPACE_X_RESOLUTION, 0.f, SPACE_Y_RESOLUTION);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+  while(!glfwWindowShouldClose(window)) {    
     double currentTime = glfwGetTime();
-   // printf("Time: %f", currentTime);
     float deltaTime = float(currentTime - lastTime)  * 50;
-    lastTime = glfwGetTime();
-    display(window, deltaTime);  
+    lastTime = currentTime;
     
-    glfwSwapInterval(1);
-
-    glfwSwapBuffers(window);
     glfwPollEvents();
+    graphics.useShader("basic");
+    display(window, &graphics, deltaTime);  
+    graphics.drawText("It Fucking works, ya cunt", glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), 1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+    glfwSwapBuffers(window);
   }
   clean();
   glfwTerminate();

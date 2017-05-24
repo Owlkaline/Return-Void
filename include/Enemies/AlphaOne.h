@@ -10,7 +10,7 @@ class AlphaOne: public Enemy {
     
     void reset();
     void defaults();
-    void setTexture();
+    std::string getTexture();
     void update(float Px, float Py, float deltaTime);
 };
 

@@ -3,12 +3,12 @@
 
 #include "../defines.h"
 
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 
 class Weapon {
   public:
     virtual void tick(float deltaTime) = 0;
-    virtual void draw() = 0;
+    virtual void draw(GraphicsHandler *graphics) = 0;
     virtual void reset() = 0;
     virtual void clean() = 0;
     
@@ -68,38 +68,6 @@ class Weapon {
     float offsetX, offsetY;
     float directionX, directionY;
     float x, y, width, height, speed;
-    
-    static GLuint getBluePlasmaTexture() {
-      static GLuint bluePlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/BluePlasma.png");
-      return bluePlasmaTexture;
-    }
-    static GLuint getGreenPlasmaTexture() {
-      static GLuint greenPlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/GreenPlasma.png");
-      return greenPlasmaTexture;
-    }
-    static GLuint getRedPlasmaTexture() {
-      static GLuint redPlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/RedPlasma.png");
-      return redPlasmaTexture;
-    }
-    static GLuint getPurplePlasmaTexture() {
-      static GLuint purplePlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/PurplePlasma.png");
-      return purplePlasmaTexture;
-    }
-    
-    static GLuint getSpiralTexture() {
-      static GLuint spiralTexture = txt::LoadTexture("Textures/Game/Weapons/Spiral.png");
-      return spiralTexture;
-    }
-    
-    static GLuint getDotBulletTexture() {
-      static GLuint dotBulletTexture = txt::LoadTexture("Textures/Game/Weapons/DotBullet.png");
-      return dotBulletTexture;
-    }
-    
-    static GLuint getAlphaOnePlasmaTexture() {
-      static GLuint alphaOnePlasmaTexture = txt::LoadTexture("Textures/Game/Weapons/AlphaOnePlasma.png");
-      return alphaOnePlasmaTexture;
-    }
 };
 
 #endif

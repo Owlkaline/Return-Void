@@ -11,10 +11,11 @@ AlphaOneMount::~AlphaOneMount() {
 }
 
 
-void AlphaOneMount::setTexture() {
-    if(tookDamage)
-      glColor4f(1.0, 0.1, 0.1, 0.5f);
-    glBindTexture(GL_TEXTURE_2D, getAlphaOneMountTexture());
+std::string AlphaOneMount::getTexture() {
+  /* if(tookDamage)
+      glColor4f(1.0, 0.1, 0.1, 0.5f);*/
+  //glBindTexture(GL_TEXTURE_2D, getAlphaOneMountTexture());
+  return "AlphaOneMount";
 }
 
 void AlphaOneMount::individualClean() {

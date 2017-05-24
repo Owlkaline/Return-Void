@@ -125,17 +125,17 @@ class Enemy {
       movementAngle = 0;
     }
 
-    void draw() {
+    void draw(GraphicsHandler *graphics) {
       for(unsigned int i = 0; i < WeaponMount.size(); ++i)
-        WeaponMount[i]->draw();
+        WeaponMount[i]->draw(graphics);
 
       if(visible) {
         if(tookDamage) {
           if(tick <= 0)
             tookDamage = false;
         }
-
-        glEnable(GL_TEXTURE_2D);
+       graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), angle, getTexture());
+        /*glEnable(GL_TEXTURE_2D);
         setTexture();
         glPushMatrix();
         glTranslatef(x, y, 0); // M1 - 2nd translation
@@ -155,7 +155,7 @@ class Enemy {
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
 
-        glColor3f(1.0, 1.0, 1.0);
+        glColor3f(1.0, 1.0, 1.0);*/
       }
     }
 
@@ -194,7 +194,7 @@ class Enemy {
       return totalBullets;
     }
   protected:
-    virtual void setTexture() = 0;
+    virtual std::string getTexture() = 0;
 
     void move(float deltaTime) {
       if(visible) {
@@ -249,53 +249,6 @@ class Enemy {
     float x, y, width, height, speed;
 
     std::vector<Mount*> WeaponMount;
-
-    static GLuint getBasicEnemyTexture() {
-      static GLuint basicEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/BasicEnemy.png");
-      return basicEnemyTexture;
-    }
-
-    static GLuint getHypnoEnemyTexture() {
-      static GLuint hypnoEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/HypnoEnemy.png");
-      return hypnoEnemyTexture;
-    }
-    
-    static GLuint getAlphaOneTexture() {
-      static GLuint AlphaOneTexture = txt::LoadTexture("Textures/Game/Enemies/AlphaOne.png");
-      return AlphaOneTexture;
-    }
-    
-    static GLuint getDotEnemyTexture() {
-      static GLuint dotEnemyTexture = txt::LoadTexture("Textures/Game/Enemies/DotEnemy.png");
-      return dotEnemyTexture;
-    }
-
-    static GLuint getCorruptedStarShipTexture(int i) {
-      static GLuint corruptedStarShipTexture0 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShip.png");
-      static GLuint corruptedStarShipTexture1 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg1.png");
-      static GLuint corruptedStarShipTexture2 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg2.png");
-      static GLuint corruptedStarShipTexture3 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg3.png");
-      static GLuint corruptedStarShipTexture4 = txt::LoadTexture("Textures/Game/Enemies/CorruptedStarShipDmg4.png");
-
-      switch(i) {
-        case 0:
-          return corruptedStarShipTexture0;
-          break;
-        case 1:
-          return corruptedStarShipTexture1;
-          break;
-        case 2:
-          return corruptedStarShipTexture2;
-          break;
-        case 3:
-          return corruptedStarShipTexture3;
-          break;
-        case 4:
-          return corruptedStarShipTexture4;
-          break;
-      }
-      return 0;
-    }
 };
 
 #endif

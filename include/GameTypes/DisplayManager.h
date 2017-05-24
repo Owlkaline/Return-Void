@@ -3,11 +3,11 @@
 
 #include "../defines.h"
 
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 
 class DisplayManager {
   public:    
-    virtual void draw() = 0;
+    virtual void draw(GraphicsHandler *graphic) = 0;
     virtual void setup() = 0;    
     virtual void clean() = 0;
     virtual void restart() = 0;

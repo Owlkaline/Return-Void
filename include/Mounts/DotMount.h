@@ -9,10 +9,10 @@ class DotMount: public Mount {
     ~DotMount();
       
     void defaults();
-    void setTexture();
-    void draw() {      
+    std::string getTexture();
+    void draw(GraphicsHandler *graphics) {      
       for(unsigned int i = 0; i < bullets.size(); ++i)
-        bullets[i]->draw();
+        bullets[i]->draw(graphics);
     }
     
   protected:

@@ -39,7 +39,7 @@ class Game: public DisplayManager {
     Game();
     ~Game();
     
-    void draw();    
+    void draw(GraphicsHandler *graphics);    
     void setup();
     void clean();
     void newWave();
@@ -47,8 +47,8 @@ class Game: public DisplayManager {
     void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState);
 
   protected:
-    void drawCrosshair();
-    void drawBackground();
+    void drawCrosshair(GraphicsHandler *graphics);
+    void drawBackground(GraphicsHandler *graphics);
   
     bool isNew; //If Game is new
     bool paused;
@@ -70,7 +70,7 @@ class Game: public DisplayManager {
     PausedMenu pMenu;
     std::string strScore;
     HighscoreScreen highscore;
-    GLuint ChTexture, background;    
+    std::string ChTexture, background;    
     Label lbWave, lbWaveStatic, lbScore, lbCoins;    
     
     std::vector<Ship*> ship;

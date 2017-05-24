@@ -13,7 +13,7 @@ class Shipbox {
     ~Shipbox();
     
     void buy();
-    void draw();
+    void draw(GraphicsHandler *graphics);
     void moveLeft();
     void moveRight();
     void setup(float x, float y, int shipType); 

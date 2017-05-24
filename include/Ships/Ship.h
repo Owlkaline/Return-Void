@@ -10,17 +10,17 @@
 #include "../Mounts/MountType2.h"
 #include "../Mounts/MountType3.h"
 
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 
 class Ship {
   public:    
-    virtual void setTexture()=0;
+    virtual std::string getTexture()=0;
     virtual void defaults(){}
     virtual void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0; 
-    virtual void specialDraw() {
+    virtual void specialDraw(GraphicsHandler *graphics) {
       int sSize = 32;
       for(int i = 0; i < specialsLeft; ++i) {
-        glEnable(GL_TEXTURE_2D);
+        /*glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, specialIcon);
         glBegin(GL_QUADS);
           glTexCoord2f(0.0f, 1.0f);
@@ -32,7 +32,8 @@ class Ship {
           glTexCoord2f(0.0f, 0.0f);
           glVertex3f(40 - sSize/2 + i*50, 40 + sSize/2, 0.0);
         glEnd();   
-      glDisable(GL_TEXTURE_2D);
+      glDisable(GL_TEXTURE_2D);*/
+      graphics->drawObject(glm::vec2(40 + i*50, 40), glm::vec2(sSize, sSize), "Boost");
     }
   }
     
@@ -102,16 +103,16 @@ class Ship {
       specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
     }*/
  
-    void draw() {
+    void draw(GraphicsHandler *graphics) {
       if(visible) {
-        specialDraw();
-        glPushMatrix();
+        specialDraw(graphics);
+        //glPushMatrix();
         if(tookDamage) {
         //  tick-=1*deltaTime;
           if(tick <= 0)
             tookDamage = false;
         }      
-        glTranslatef(x, y, 0); // M1 - 2nd translation
+       /* glTranslatef(x, y, 0); // M1 - 2nd translation
         glRotatef(angle, 0.0f, 0.0f, 1.0f);  
         glTranslatef(-x, -y, 0); // M1 - 2nd translation        
         
@@ -120,14 +121,15 @@ class Ship {
         drawQuad(x, -width, y, height, UP);
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();  
-        glColor4f(1.0, 1.0, 1.0, 1.0);      
+        glColor4f(1.0, 1.0, 1.0, 1.0);      */
+        graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), getTexture());
       }
       
       for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
-        WeaponMount[i]->draw(); 
+        WeaponMount[i]->draw(graphics); 
        
       if(shield > 0)
-        drawShield();
+        drawShield(graphics);
     }
     
     void VisualSetup(float x, float y) {
@@ -208,37 +210,40 @@ class Ship {
       }
     }
     
-    void drawHealthBar() {
+    void drawHealthBar(GraphicsHandler *graphics) {
 
       float hy = SPACE_Y_RESOLUTION - 35;    
       float hw = 500;
       float hh = 50;
       float hx = SPACE_X_RESOLUTION/2;
-      glEnable(GL_TEXTURE_2D);
+      /*glEnable(GL_TEXTURE_2D);
   
       glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
   
       glColor4f(1.0, 1.0, 1.0, 0.5f);
-      drawQuad(hx, -hw, hy, hh, UP);
+      drawQuad(hx, -hw, hy, hh, UP);*/
+      graphics->drawObject(glm::vec2(hx, hy), glm::vec2(hw, hh), "HealthBarBase");
   
       hw = hw/maxShield * shield;
       hx = SPACE_X_RESOLUTION/2;
   
       //Shield Bar
-      glBindTexture(GL_TEXTURE_2D, healthBarTexture[2]);
-      drawQuad(hx, -hw, hy, hh, UP);
+//      glBindTexture(GL_TEXTURE_2D, healthBarTexture[2]);
+  //    drawQuad(hx, -hw, hy, hh, UP);
+      graphics->drawObject(glm::vec2(hx, hy), glm::vec2(hw, hh), "ShieldBar");
     
       hw = 500/(float)maxHealth * crntHealth;
       hx = SPACE_X_RESOLUTION/2;
       //Health bar
-      glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
-      drawQuad(hx, -hw, hy, hh, UP);
+//      glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
+  //    drawQuad(hx, -hw, hy, hh, UP);
+      graphics->drawObject(glm::vec2(hx, hy), glm::vec2(hw, hh), "HealthBar");
    
-      glDisable(GL_TEXTURE_2D);
-      glColor4f(1.0, 1.0, 1.0, 1.0);
+//      glDisable(GL_TEXTURE_2D);
+//      glColor4f(1.0, 1.0, 1.0, 1.0);
     }
     
-    void drawShield() {
+    void drawShield(GraphicsHandler *graphics) {
       glPushMatrix();
 
       glTranslatef(x, y, 0); // M1 - 2nd translation
@@ -248,43 +253,34 @@ class Ship {
       glEnable(GL_TEXTURE_2D);
       glColor4f(1.0, 1.0, 1.0, 0.5);
   
-  
+      std::string name = "Shield";
       if(shieldDamaged) {
         if(tick > 20) {
-          glBindTexture(GL_TEXTURE_2D, shieldTexture[1]); 
+          //glBindTexture(GL_TEXTURE_2D, shieldTexture[1]); 
+          name = "ShieldRipple1";
         } else if(tick > 15) {
-          glBindTexture(GL_TEXTURE_2D, shieldTexture[2]);
+          //glBindTexture(GL_TEXTURE_2D, shieldTexture[2]);
+          name = "ShieldRipple2";
         } else if(tick > 10) {
-          glBindTexture(GL_TEXTURE_2D, shieldTexture[3]);
+          //glBindTexture(GL_TEXTURE_2D, shieldTexture[3]);
+          name = "ShieldRipple3";
         } else if(tick > 5) {
-          glBindTexture(GL_TEXTURE_2D, shieldTexture[4]);
+          //glBindTexture(GL_TEXTURE_2D, shieldTexture[4]);
+          name = "ShieldRipple4";
         } else {
-          glBindTexture(GL_TEXTURE_2D, shieldTexture[5]);
-        }
-    
+          //glBindTexture(GL_TEXTURE_2D, shieldTexture[5]);
+          name = "ShieldRipple5";
+        }    
        // tick-=1*deltaTime;
         if(tick <= 0)
           shieldDamaged = false;
-      } else {
-        glBindTexture(GL_TEXTURE_2D, shieldTexture[0]);
-      }
-      drawQuad(x, -width*1.3, y, height*1.3, UP);
-      glDisable(GL_TEXTURE_2D);
-      glPopMatrix();  
-      glColor4f(1.0, 1.0, 1.0, 1.0);     
-    }
-    
-    void setTextures() {
-        healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
-  healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
-  healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
-  
-  shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
-  shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
-  shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
-  shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
-   shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
-   shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
+      } 
+      
+      graphics->drawObject(glm::vec2(x, y), glm::vec2(width*1.3, height*1.3), name);
+      //drawQuad(x, -width*1.3, y, height*1.3, UP);
+     // glDisable(GL_TEXTURE_2D);
+//      glPopMatrix();  
+  //    glColor4f(1.0, 1.0, 1.0, 1.0);     
     }
     
   protected:      

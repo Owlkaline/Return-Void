@@ -18,7 +18,6 @@ FighterShip::FighterShip() {
   this->onCooldown = false;
   this->specialActive = false;
   this->specialTimer = 0;
-  this->specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
   //---------------------------------------------------
   
   this->health = 20;
@@ -40,11 +39,6 @@ FighterShip::FighterShip() {
   printf("Setting up galatic ship\n");
  
   this->speed = 10; 
-  
-  setTextures();
-  this->textures[0] = txt::LoadTexture("Textures/Game/Ships/FighterShip1.png");
-  this->textures[1] = txt::LoadTexture("Textures/Game/Ships/FighterShip2.png");
-  this->textures[2] = txt::LoadTexture("Textures/Game/Ships/FighterShip3.png");
 
   WeaponMount.push_back(new MountType2(30, 5));
   WeaponMount.push_back(new MountType2(-30, 5)); 
@@ -54,10 +48,18 @@ FighterShip::~FighterShip() {
   clean();
 }
 
-void FighterShip::setTexture() {
-  if(tookDamage)
+std::string FighterShip::getTexture() {
+  /*if(tookDamage)
     glColor3f(1.0, 0.0, 0.0);
-  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
+  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);*/
+  if(crntTexture == 0) {
+    return "FighterShip1";
+  } else if (crntTexture == 1) {
+    return "FighterShip2";
+  } else if (crntTexture == 2) {
+    return "FighterShip3";
+  }
+  return "FighterShip1";
 }
 
 void FighterShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {

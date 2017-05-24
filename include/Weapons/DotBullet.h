@@ -7,7 +7,7 @@ class DotBullet: public Weapon {
   public:
     DotBullet();
     
-    void draw(); 
+    void draw(GraphicsHandler *graphics); 
     void tick(float deltaTime);
     void reset();
     void clean();    

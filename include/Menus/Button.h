@@ -6,14 +6,14 @@
 #include "./Label.h"
 #include "./Text.h"
 
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 
 class Button {
   public:
     ~Button();
     Button();
     
-    void draw();
+    void draw(GraphicsHandler *graphics);
     void clean();
     void setup(float x, float y, float width, float height, float scaleX, float scaleY);
     void setup(float x, float y, float width, float height, char* filename);
@@ -43,7 +43,7 @@ class Button {
     
 
   protected:  
-    void drawBox();
+    void drawBox(GraphicsHandler *graphics);
     
     int length;
     
@@ -61,7 +61,7 @@ class Button {
     char str[25];
 
     Label lbTitle;
-    GLuint Texture;
+    std::string Texture;
 };
 
 #endif

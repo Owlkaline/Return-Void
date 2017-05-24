@@ -8,9 +8,9 @@ class TriangleMount: public Mount {
     TriangleMount();
     ~TriangleMount();
     
-    void setTexture();
+    std::string getTexture();
     void defaults();
-    void draw();
+    void draw(GraphicsHandler *graphics);
   protected:
 };
 

@@ -4,11 +4,11 @@
 #include <string>
 
 #include "../Menus/Label.h"
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 
 class Drops {
   public:
-    virtual void draw() = 0;
+    virtual void draw(GraphicsHandler *graphics) = 0;
     virtual void setup(float x, float y) = 0;
     virtual void update(float deltaTime) = 0;
     
@@ -36,20 +36,6 @@ class Drops {
     bool visible, isCollected;
     
     std::string name;
-    static GLuint getCoinTexture() {
-      static GLuint coinText = txt::LoadTexture("Textures/Game/Powerups/Coin.png");
-      return coinText;
-    }
-    
-    static GLuint getHealthTexture() {
-      static GLuint healthText = txt::LoadTexture("Textures/Game/Powerups/Health.png");
-      return healthText;
-    }
-    
-    static GLuint getShieldTexture() {
-      static GLuint shieldText = txt::LoadTexture("Textures/Game/Powerups/Shield.png");
-      return shieldText;
-    }
 };
 
 #endif

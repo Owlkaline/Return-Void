@@ -1,9 +1,11 @@
 #ifndef LOADTEXTURE
 #define LOADTEXTURE
 
-#include "../defines.h"
 #include <string>
 #include <stdio.h>
+#include <stdexcept>
+// GLFW
+#include <GLFW/glfw3.h>
 
 #define TEXTURE_LOAD_ERROR 0
 

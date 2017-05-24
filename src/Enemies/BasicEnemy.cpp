@@ -48,8 +48,9 @@ void BasicEnemy::reset() {
 
 }
 
-void BasicEnemy::setTexture() {
-    if(tookDamage)
-      glColor3f(1.0, 0.0, 0.0);
-    glBindTexture(GL_TEXTURE_2D, getBasicEnemyTexture());
+std::string BasicEnemy::getTexture() {
+    //if(tookDamage)
+      //glColor3f(1.0, 0.0, 0.0);
+    //glBindTexture(GL_TEXTURE_2D, getBasicEnemyTexture());
+  return "BasicEnemy";
 }

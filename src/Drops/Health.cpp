@@ -9,13 +9,10 @@ Health::Health() {
   this->name = "Health";
 }
 
-void Health::draw() {
+void Health::draw(GraphicsHandler *graphics) {
   if(!isCollected) {
-    glEnable(GL_TEXTURE_2D);  
-    
-    glBindTexture(GL_TEXTURE_2D, getHealthTexture());
-    drawQuad(x, -width, y, height, UP);
-    glDisable(GL_TEXTURE_2D);
+    // drawQuad(x, -width, y, height, UP);
+    graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), "PowerupHealth");
   }
 }
 

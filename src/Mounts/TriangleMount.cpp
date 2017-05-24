@@ -10,8 +10,9 @@ TriangleMount::~TriangleMount() {
   clean();
 }
 
-void TriangleMount::setTexture() {
-  glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(0));
+std::string TriangleMount::getTexture() {
+  //glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(0));
+  return "HeroMount1";
 }
 
 void TriangleMount::defaults() {
@@ -20,9 +21,9 @@ void TriangleMount::defaults() {
   health = 20;
 }
 
-void TriangleMount::draw() {
+void TriangleMount::draw(GraphicsHandler *graphics) {
    for(unsigned int i = 0; i < bullets.size(); ++i)
-        bullets[i]->draw();
+        bullets[i]->draw(graphics);
 
 }
 /*

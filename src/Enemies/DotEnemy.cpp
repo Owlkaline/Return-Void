@@ -69,8 +69,9 @@ void DotEnemy::reset() {
 
 }
 
-void DotEnemy::setTexture() {
-    glBindTexture(GL_TEXTURE_2D, getDotEnemyTexture());
+std::string DotEnemy::getTexture() {
+//    glBindTexture(GL_TEXTURE_2D, getDotEnemyTexture());
+  return "DotEnemy";
 }
 
 void DotEnemy::setX(float x) {

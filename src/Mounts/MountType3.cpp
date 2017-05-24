@@ -24,7 +24,7 @@ MountType3::MountType3(float offsetX, float offsetY) {
     setTimers();
     
     //Load texture
-    getPurpleMountTexture();
+  //  getPurpleMountTexture();
 }
 
 void MountType3::reset(float x, float y) {
@@ -36,17 +36,20 @@ void MountType3::reset(float x, float y) {
   setTimers();
 }
 
-void MountType3::setTexture() {
+std::string MountType3::getTexture() {
   if(bulletTicks > 60) {
-    currentTexture = 3;
+    //currentTexture = 3;
+    return "HeroMount4";
   } else if (bulletTicks > 40) {
-    currentTexture = 2;
+    //currentTexture = 2;
+    return "HeroMount3";
   } else if (bulletTicks > 20) {
-    currentTexture = 1;
-  } else {
-    currentTexture = 0;
-  }
+    //currentTexture = 1;
+    return "HeroMount2";
+  } 
+  //  currentTexture = 0;
+  return "HeroMount1";
 
-  glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(currentTexture));
+  //glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(currentTexture));
     
 }

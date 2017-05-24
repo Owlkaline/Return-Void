@@ -6,7 +6,7 @@
 class Health: public Drops {
   public:
     Health();
-    void draw();
+    void draw(GraphicsHandler *graphics);
     void setup(float x, float y);
     void update(float deltaTime);
     int getType();

@@ -15,7 +15,7 @@ class Menu: public DisplayManager {
   public:
     virtual void setup()=0;
     virtual void restart()=0;
-    virtual void drawAfter() {  }
+    virtual void drawAfter(GraphicsHandler *graphics) {  }
     virtual void update(float mX, float mY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState)=0;
     
     float getX() { return x; }
@@ -29,19 +29,20 @@ class Menu: public DisplayManager {
       lb.erase(lb.begin(), lb.end());
     }
                  
-    void draw() {
-      drawBackground();
+    void draw(GraphicsHandler *graphics) {
+      drawBackground(graphics);
             for(unsigned int i = 0; i < lb.size(); ++i) 
         lb[i]->draw();
       for(unsigned int i = 0; i < buttons.size(); ++i)
-        buttons[i]->draw();
-      drawAfter();
+        buttons[i]->draw(graphics);
+      drawAfter(graphics);
     }
     
   protected:
-    virtual void drawBackground() {
+    virtual void drawBackground(GraphicsHandler *graphics) {
       // Background
-      glEnable(GL_TEXTURE_2D);
+      graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
+/*      glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, background);
  
       glBegin(GL_QUADS);
@@ -54,10 +55,10 @@ class Menu: public DisplayManager {
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(0, 0, 0.0);
       glEnd();      
-      glDisable(GL_TEXTURE_2D);
+      glDisable(GL_TEXTURE_2D);*/
   
       // Black Box in center
-      glColor4f(0.0, 0.0, 0.0f, 0.5f);
+  /*    glColor4f(0.0, 0.0, 0.0f, 0.5f);
       glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 1.0f);
         glVertex3f((SPACE_X_RESOLUTION/4), (SPACE_Y_RESOLUTION/6) * 4, 0.0);
@@ -68,15 +69,13 @@ class Menu: public DisplayManager {
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(SPACE_X_RESOLUTION/4, 0, 0.0);
       glEnd();
-      glColor4f(1.0, 1.0, 1.0f, 1.0f);
+      glColor4f(1.0, 1.0, 1.0f, 1.0f);*/
     }
     
     float x, y, width, height;
     
     std::vector<Label*> lb;
-    std::vector<Button*> buttons;    
-    
-    GLuint background;
+    std::vector<Button*> buttons;
 };
 
 #endif

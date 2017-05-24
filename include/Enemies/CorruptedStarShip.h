@@ -10,7 +10,7 @@ class CorruptedStarShip: public Enemy {
     
     void reset();
     void defaults();
-    void setTexture();
+    std::string getTexture();
     void setX(float x);
     void setY(float y);
     void update(float Px, float Py, float deltaTime);

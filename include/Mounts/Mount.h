@@ -12,7 +12,7 @@
 #include "../Weapons/PurplePlasma.h"
 #include "../Weapons/AlphaOnePlasma.h"
 
-#include "../Namespaces/LoadTexture.h"
+#include "../GraphicsHandler.h"
 
 class Mount {
   public:
@@ -23,7 +23,7 @@ class Mount {
     
     virtual void reset(float x, float y) { }
     virtual void defaults() {};
-    virtual void setTexture() = 0;  
+    virtual std::string getTexture() = 0;  
       
     virtual void individualClean() {  }
     virtual void tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {  }
@@ -152,12 +152,13 @@ class Mount {
       individualClean();
     }   
 
-    virtual void draw() {
+    virtual void draw(GraphicsHandler *graphics) {
       for(unsigned int i = 0; i < bullets.size(); ++i)
-        bullets[i]->draw();
+        bullets[i]->draw(graphics);
 
       if(visible) {
-        glPushMatrix();
+        graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), angle, getTexture());
+        /*glPushMatrix();
         glTranslatef(x, y, 0); // M1 - 2nd translation
         glRotatef(angle, 0.0f, 0.0f, 1.0f);
         glTranslatef(-x, -y, 0); // M1 - 2nd translation
@@ -186,10 +187,10 @@ class Mount {
             glTexCoord2f(1.0f, 0.0f);
             glVertex3f(x-width/2, y-height/2, 0.0);
           glEnd();
-        }*/
+        }
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f); */
       }
     }
     
@@ -334,62 +335,6 @@ class Mount {
     float x,y, width, height;
 
     std::vector<Weapon*> bullets;
-
-    static GLuint getBasicMountTexture() {
-      static GLuint basicMountTexture = txt::LoadTexture("Textures/Game/Mounts/BasicMount.png");
-      return basicMountTexture;
-    }
-
-    static GLuint getBasicMountBrightTexture() {
-      static GLuint basicMountBrightTexture = txt::LoadTexture("Textures/Game/Mounts/BasicMountBright.png");
-      return basicMountBrightTexture;
-    }
-
-    static GLuint getPurpleMountTexture() {
-      static GLuint purpleMountTexture = txt::LoadTexture("Textures/Game/Mounts/PurpleMount.png");
-      return purpleMountTexture;
-    }
-
-    static GLuint getAlphaOneMountTexture() {
-      static GLuint alphaOneMountTexture = txt::LoadTexture("Textures/Game/Mounts/AlphaOneMount.png");
-      return alphaOneMountTexture;
-    }
-    
-    static GLuint getHeroMountTexture(int i) {
-      static GLuint heroMount1Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount1.png");
-      static GLuint heroMount2Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount2.png");
-      static GLuint heroMount3Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount3.png");
-      static GLuint heroMount4Texture = txt::LoadTexture("Textures/Game/Ships/HeroMount4.png");
-                        
-      switch(i) {
-        case 0:
-          return heroMount1Texture;
-          break;
-        case 1:
-          return heroMount2Texture;
-          break;
-        case 2:
-          return heroMount3Texture;
-          break;
-        case 3:
-          return heroMount4Texture;
-          break;
-      }
-      return heroMount1Texture;
-    }
-
-    static GLuint getHypnoMountTexture(int i) {
-      static GLuint hypnoMountLeftTexture = txt::LoadTexture("Textures/Game/Mounts/HypnoMountLeft.png");
-      static GLuint hypnoMountRightTexture = txt::LoadTexture("Textures/Game/Mounts/HypnoMountRight.png");
-
-      switch(i) {
-        case 0:
-          return hypnoMountLeftTexture;
-        case 1:
-          return hypnoMountRightTexture;
-      }
-      return hypnoMountLeftTexture;
-    }
 };
 
 #endif

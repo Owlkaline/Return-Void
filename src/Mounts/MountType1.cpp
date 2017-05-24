@@ -24,7 +24,7 @@ MountType1::MountType1(float offsetX, float offsetY) {
     setTimers();
     
     //Load texture
-    getBasicMountTexture();
+    //getBasicMountTexture();
 }
 
 void MountType1::reset(float x, float y) {
@@ -36,8 +36,8 @@ void MountType1::reset(float x, float y) {
   setTimers();
 }
 
-void MountType1::setTexture() {
+std::string MountType1::getTexture() {
   if(currentTexture == 0) {
-    glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
+    return "BasicMount";//glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
   } 
 }
