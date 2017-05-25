@@ -4,8 +4,6 @@
 #include "../defines.h"
 #include "../GraphicsHandler.h"
 #include "../Namespaces/Settings.h"
-//#include "./Text.h"
-#include "GL/glc.h"
 
 #include<string>
 

@@ -185,6 +185,8 @@ void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat sca
   
   glBindVertexArray(0);
   glBindTexture(GL_TEXTURE_2D, 0);
+  
+  useShader(crntShader);
 }
 
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, std::string name) {

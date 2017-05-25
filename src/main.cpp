@@ -40,8 +40,8 @@
 #include "../include/Namespaces/Highscore.h"
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT =600;
+const int SCREEN_WIDTH = 1366;
+const int SCREEN_HEIGHT =786;
 
 int screenResX;
 int screenResY;
@@ -78,13 +78,9 @@ GLuint mouseTexture;
 DisplayManager* Display[6] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen(), new Story() };
 
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
-  mouseX = xpos*aspectW;
-  mouseY = (screenResY - ypos) * aspectH;
-
   // Gets the relative mouse position to the grid coords rather than physics window
- // mouseY = ypos*SPACE_Y_RESOLUTION/SCREEN_WIDTH;
-  //mouseX = xpos*SPACE_X_RESOLUTION/SCREEN_WIDTH;
-  //std::cout << xpos << std::endl;
+  mouseY = SPACE_Y_RESOLUTION-ypos*SPACE_Y_RESOLUTION/SCREEN_HEIGHT;
+  mouseX = xpos*SPACE_X_RESOLUTION/SCREEN_WIDTH;
 }
 
 //Updates what keys are pressed
@@ -235,8 +231,8 @@ GLFWwindow* init() {
     settings->setFullscreen(true); 
   } else {
     printf("Entering windowed mode %dx%d\n", screenResX, screenResY);
-    screenResX = 1920;
-    screenResY = 1080;
+    screenResX = SCREEN_WIDTH;
+    screenResY = SCREEN_HEIGHT;
     //Create Window
     window = glfwCreateWindow(screenResX, screenResY, "Return-Void", NULL, NULL);
       
