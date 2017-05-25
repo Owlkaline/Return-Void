@@ -12,20 +12,20 @@ void MainMenu::setup() {
   for(int i = 0; i < 6; ++i) {
     buttons.push_back(new Button);
     if(i == 1) {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*2, BUTTONHEIGHT, 0, 0);
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
     } else if (i == 3) {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH*1.5, BUTTONHEIGHT, 0,0);
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
     }  else {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, BUTTONWIDTH, BUTTONHEIGHT, 0,0);
+      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
     }
   }
 
-  buttons[0]->setTexture((char*)"Story");
-  buttons[1]->setTexture((char*)"EndlessMode");
-  buttons[2]->setTexture((char*)"Shop");
-  buttons[3]->setTexture((char*)"Highscore");
-  buttons[4]->setTexture((char*)"Settings");
-  buttons[5]->setTexture((char*)"Quit");
+  buttons[0]->setText((char*)"Story");
+  buttons[1]->setText((char*)"Endless");
+  buttons[2]->setText((char*)"Shop");
+  buttons[3]->setText((char*)"Highscore");
+  buttons[4]->setText((char*)"Settings");
+  buttons[5]->setText((char*)"Quit");
 
 }
 

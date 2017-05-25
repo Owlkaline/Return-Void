@@ -44,14 +44,14 @@ void HighscoreScreen::setup(std::string username) {
   float ratioY = heightT/(float)SPACE_Y_RESOLUTION;
   // Retry
   buttons.push_back(new Button);
-  buttons[0]->setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Retry.png");
+  buttons[0]->setup(SPACE_X_RESOLUTION/4*3, SPACE_Y_RESOLUTION/10, 1.5f, (char*)"Retry");
   // Quit
   buttons.push_back(new Button);
-  buttons[1]->setup(SPACE_X_RESOLUTION/4 +width/2, SPACE_Y_RESOLUTION/10, BUTTONWIDTH, BUTTONHEIGHT,  (char*)"Textures/Menu/Misc/Quit.png");
+  buttons[1]->setup(SPACE_X_RESOLUTION/4 +width/2, SPACE_Y_RESOLUTION/10, 1.5f,  (char*)"Quit");
   
   // Highscore screen
   buttons.push_back(new Button);
-  buttons[2]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10, BUTTONWIDTH*1.5, BUTTONHEIGHT,  (char*)"Textures/Menu/MainMenu/Highscore.png");
+  buttons[2]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10, 2.0f,  (char*)"Highscore");
   
   for(int i = 0; i < 20; i+=2) {
     names[i/2] = highscore->getName(i/2);
@@ -124,16 +124,14 @@ void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsign
         lb[i]->setVisible(false);
       for(int i = 0; i < 5; ++i)
         lb[21+i]->setVisible(true);      
-      buttons[2]->setTexture((char*)"Textures/Menu/MainMenu/Highscore.png");
-      buttons[2]->setWidth(BUTTONWIDTH*1.5);
+      buttons[2]->setText((char*)"Highscore");
       showingHighscores = false;
     } else {    
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(true);
       for(int i = 0; i < 5; ++i)
         lb[21+i]->setVisible(false);        
-      buttons[2]->setTexture((char*)"Textures/Menu/GameMenus/Stats.png");
-      buttons[2]->setWidth(BUTTONWIDTH);
+      buttons[2]->setText((char*)"Stats");
       showingHighscores = true;
     }
   } 
@@ -177,71 +175,5 @@ void HighscoreScreen::setScore(int score) {
 
  // LoadHighscores(score);
 }
-/*
-void HighscoreScreen::LoadHighscores(int score) {
-  if (!File::check_if_file_exists("data/highscore.bin")) {
-    printf("\nCreating new highscore file\n");
-    saveDefaults();
-  }
-  for(int i = 0; i < 10; ++i) {
-    names[i] = "";
-  }
-  printf("\nLoading highscore\n");
-  std::ifstream ifs("./data/highscore.bin", std::ios::binary);
-  bool isHighscore = false;
-  bool done = false;
-  for(int i = 0; i < 10; ++i) {  
-    std::stringstream ss;
-    ss << i+1;
-    std::string tempname = ss.str() + ". ";   
 
-    for(int j = 0; j < 6; ++j) 
-      names[i] += File::LoadChar(ifs);  
-       
-    highscores[i] = File::LoadInt(ifs);
-     
-    if(!isHighscore && score > highscores[i]) {
-      isHighscore = true;
-      if(i+1 < 10) {
-        names[i+1] = names[i];
-        highscores[i+1] = highscores[i];
-      }
-      highscores[i] = score; 
-      names[i] = "You   ";
-    }
-    tempname += names[i]; 
-    lb[i+12]->setText(tempname.c_str(), tempname.length()); 
-    std::stringstream ss1;
-    ss1 << highscores[i];
-    std::string tempscore = ss1.str();
-    lb[i+2]->setText(tempscore.c_str(), tempscore.length());
-    
-    if(!done && isHighscore) {
-      if(i+1 < 10) {
-        tempname = "";
-        std::stringstream ss3;
-        ss3 << i+2;
-        tempname += ss3.str() +". " + names[i+1]; 
-        lb[i+12+1]->setText(tempname.c_str(), tempname.length()); 
-        std::stringstream ss2;
-        ss2 << highscores[i+1];
-        std::string tempscore = ss2.str();
-        lb[i+2+1]->setText(tempscore.c_str(), tempscore.length());
-        i++;
-        done = true;
-      }      
-    }
-  }
-    
-  if(isHighscore) {
-    std::ofstream ofs("./data/highscore.bin", std::ios::binary);
-    for(int i = 0; i < 10; ++i) {
-      for(int j = 0; j < 6; ++j) {
-        File::SaveChar(ofs, names[i].at(j));
-      }
-      File::SaveInt(ofs, highscores[i]);
-    }
-  }
-} 
-*/
 void HighscoreScreen::restart() {}

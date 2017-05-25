@@ -29,25 +29,25 @@ void SettingsMenu::setup() {
   x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (1.0) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[0]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Return");
+  buttons[0]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"Return");
   
   // Save Button
   x = SPACE_X_RESOLUTION/4*2.5 + BUTTONWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (1.0) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[1]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Apply");
+  buttons[1]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"Apply");
   
   // Fullscreen Left Arrow button 
   x = SPACE_X_RESOLUTION/4  * 3 - BUTTONWIDTH - ARROWWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[2]->setup(x, y, ARROWWIDTH, BUTTONHEIGHT, (char*)"LeftArrow");
+  buttons[2]->setup(x, y,  ARROWWIDTH, BUTTONHEIGHT, (char*)"LeftArrow");
   
   // Fullscreen Right Arrow button
   x = SPACE_X_RESOLUTION/4 * 3 - ARROWWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[3]->setup(x, y, ARROWWIDTH, BUTTONHEIGHT, (char*)"RightArrow");
+  buttons[3]->setup(x, y,  ARROWWIDTH, BUTTONHEIGHT, (char*)"RightArrow");
    
   // Fullscreen Label
   x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH*0.75;

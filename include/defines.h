@@ -11,6 +11,10 @@
 #define SPACE_X_RESOLUTION     1920 //1440
 #define SPACE_Y_RESOLUTION     1080 //810
 
+#define TEXTR                  0.5
+#define TEXTG                  0.5
+#define TEXTB                  1.0
+
 // key states
 #define BUTTON_UP              0
 #define BUTTON_DOWN            1

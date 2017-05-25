@@ -103,14 +103,16 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
   lb[0]->drawBorder(true);
   
   buttons.push_back(new Button);
-  buttons[0]->setup(x, y - 150, 200, 60, 30*ratioX, 30*ratioY);
+  
+  //buttons[0]->setup(x, y - 150, 200, 60, 30*ratioX, 30*ratioY);
+  buttons[0]->setup(x, y, 1.5f, (char*)"");
   
   if(unlocked) {
     if(bought) {
-      buttons[0]->setTexture((char*)"Upgrade");
+      buttons[0]->setText((char*)"Upgrade");
       buttons[0]->fill(0.8f, 0.0f, 0.0f);
     } else {
-      buttons[0]->setTexture((char*)"Buy");
+      buttons[0]->setText((char*)"Buy");
       buttons[0]->fill(0.0f, 0.8f, 0.0f);
 
       lb.push_back(new Label);
@@ -147,7 +149,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
     }
   } else {
     bought = false;
-    buttons[0]->setTexture((char*)"Locked");
+    buttons[0]->setText((char*)"Locked");
     buttons[0]->fill(0.6f, 0.6f, 0.6f);
     buttons[0]->disable();
   }  
@@ -211,7 +213,7 @@ void Shipbox::update(float mX, float mY, float deltaTime, unsigned int* mouseBtn
 
 void Shipbox::buy() {
   bought = true;
-  buttons[0]->setTexture((char*)"Upgrade");
+  buttons[0]->setText((char*)"Upgrade");
   buttons[0]->fill(0.8f, 0.0f, 0.0f);
   lb[1]->setVisible(false);
 }

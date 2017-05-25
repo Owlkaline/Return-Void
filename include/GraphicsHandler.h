@@ -54,6 +54,7 @@ class GraphicsHandler {
     void drawObject(glm::vec2 position, glm::vec2 size, std::string texture);
     // Draws object at position x/y, with specified size, rotated specified degrees, full colour
     void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, std::string texture);
+    void drawObject(glm::vec2 position, glm::vec2 size, glm::vec3 colour, std::string name);
     // Draws object at position x/y, with specified size, rotated specified degrees, With only colours specified drawn
     void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 colour, std::string texture);
     

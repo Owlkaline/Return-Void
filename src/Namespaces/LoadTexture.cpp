@@ -3,7 +3,7 @@
 #include <stb_image.h>
 
 GLuint txt::LoadTexture( const char * filename ) {
-  stbi_set_flip_vertically_on_load(true);
+  stbi_set_flip_vertically_on_load(false);
   int w;
   int h;
   int comp;

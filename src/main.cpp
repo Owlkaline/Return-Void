@@ -40,8 +40,8 @@
 #include "../include/Namespaces/Highscore.h"
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT =600;
 
 int screenResX;
 int screenResY;
@@ -77,17 +77,14 @@ GLuint mouseTexture;
 
 DisplayManager* Display[6] = { new MainMenu(), new Game(), new SettingsMenu(), new Shop(), new HighscoreScreen(), new Story() };
 
-/*
-void mouse() {
-  int x, y;
- // SDL_GetMouseState( &x, &y );
-  mouseY = (screenResY - y) * aspectH;
-  mouseX = x*aspectW;
-}*/
-
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
   mouseX = xpos*aspectW;
   mouseY = (screenResY - ypos) * aspectH;
+
+  // Gets the relative mouse position to the grid coords rather than physics window
+ // mouseY = ypos*SPACE_Y_RESOLUTION/SCREEN_WIDTH;
+  //mouseX = xpos*SPACE_X_RESOLUTION/SCREEN_WIDTH;
+  //std::cout << xpos << std::endl;
 }
 
 //Updates what keys are pressed
@@ -162,7 +159,7 @@ void display(GLFWwindow* window, GraphicsHandler* graphics, float deltaTime) {
 
   Display[type]->update(mouseX, mouseY, deltaTime, mouseBtnState, prevMouseBtnState, keyState, prevKeyState);
   Display[type]->draw(graphics);
-
+  
   graphics->drawObject(glm::vec2(mouseX, mouseY), glm::vec2(40, 40), "cursor");
   
   if(Display[type]->hasEnded()) {
@@ -215,7 +212,6 @@ GLFWwindow* init() {
   screenResX = settings->getWindowWidth();
   screenResY = settings->getWindowHeight();
 
-
   /* Create a windowed mode window and its OpenGL context */
 
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -237,14 +233,15 @@ GLFWwindow* init() {
 
     printf("Entering fullscreen mode\n");
     settings->setFullscreen(true); 
-    settings->setResolution(screenResX, screenResY);    
   } else {
     printf("Entering windowed mode %dx%d\n", screenResX, screenResY);
-  
+    screenResX = 1920;
+    screenResY = 1080;
     //Create Window
     window = glfwCreateWindow(screenResX, screenResY, "Return-Void", NULL, NULL);
       
   }
+  settings->setResolution(screenResX, screenResY);    
   
   if (!window) {
     glfwTerminate();
@@ -256,7 +253,6 @@ GLFWwindow* init() {
   aspectW = (float)SPACE_X_RESOLUTION/(float)screenResX;
   aspectH = (float)SPACE_Y_RESOLUTION/(float)screenResY;
 
-  //screen =SDL_GetWindowSurface(gWindow);    
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
   return window;
@@ -325,28 +321,8 @@ void loadAllTextures(GraphicsHandler* graphics) {
   
   // TOBEREMOVED
   // Menu stuff - For now 
-  graphics->loadTexture("Return", "Textures/Menu/Misc/Return.png");
-  graphics->loadTexture("Apply", "Textures/Menu/SettingsMenu/Apply.png");
   graphics->loadTexture("LeftArrow", "Textures/Menu/Misc/LeftArrow.png");
   graphics->loadTexture("RightArrow", "Textures/Menu/Misc/RightArrow.png");
-  graphics->loadTexture("Fullscreen","Textures/Menu/SettingsMenu/Fullscreen.png");
-  graphics->loadTexture("True", "Textures/Menu/Misc/True.png");
-  graphics->loadTexture("False", "Textures/Menu/Misc/False.png");
-  graphics->loadTexture("Resolution", "Textures/Menu/SettingsMenu/Resolution.png");
-  graphics->loadTexture("800x600", "Textures/Menu/SettingsMenu/800x600.png");
-  graphics->loadTexture("1280x720", "Textures/Menu/SettingsMenu/1280x720.png");
-  graphics->loadTexture("1920x1080", "Textures/Menu/SettingsMenu/1920x1080.png");
-  graphics->loadTexture("Shop", "Textures/Menu/MainMenu/Shop.png");
-  graphics->loadTexture("Upgrade", "Textures/Menu/ShopMenu/Upgrade.png");
-  graphics->loadTexture("Buy", "Textures/Menu/ShopMenu/Buy.png");
-  graphics->loadTexture("Locked", "Textures/Menu/ShopMenu/Locked.png");
-  graphics->loadTexture("Resume", "Textures/Menu/GameMenus/Resume.png");
-  graphics->loadTexture("Paused", "Textures/Menu/GameMenus/Paused.png");
-  graphics->loadTexture("Story", "Textures/Menu/MainMenu/Story.png");
-  graphics->loadTexture("Endless", "Textures/Menu/MainMenu/EndlessMode.png");
-  graphics->loadTexture("Highscore", "Textures/Menu/MainMenu/Highscore.png");
-  graphics->loadTexture("Settings", "Textures/Menu/MainMenu/Settings.png");
-  graphics->loadTexture("Quit", "Textures/Menu/Misc/Quit.png");
   
   // Extra
   graphics->loadTexture("Edge", "Textures/Game/Mounts/BasicMount2.png");
@@ -397,7 +373,7 @@ int main(int argc, char* args[]) {
     glfwPollEvents();
     graphics.useShader("basic");
     display(window, &graphics, deltaTime);  
-    graphics.drawText("It Fucking works, ya cunt", glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), 1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+    //graphics.drawText("It Fucking works, ya cunt", glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), 1.5f, glm::vec3(0.5f, 0.5f, 1.0f));
     glfwSwapBuffers(window);
   }
   clean();

@@ -5,68 +5,40 @@ Button::Button() {
 }
 
 Button::~Button() {
-  Texture = "";
+  texture = "";
+  text = "";
 }
 
 void Button::draw(GraphicsHandler *graphics) {
   if(visible) {
     if(isFilled) {
      /* glColor3f(fillR, fillG, fillB);
-      drawQuad(x, -width, y, height, UP);
-
-      glColor3f(1.0f, 1.0f, 1.0f);*/
+      drawQuad(x, -width, y, height, UP);*/
     }
-    if(hasTexture) {
-      if(disabled) {
-        glColor4f(1.0, 1.0, 1.0, 0.5);
-      } else if(clicked || hasBeenClicked) {
-        glColor3f(0.0f, 0.0f, 0.0f);
-      } else if(isSelected) {
-        glColor3f(0.5f, 0.5f, 0.5f);
-      } else {
-        glColor3f(1.0, 1.0, 1.0);
-      }
-      graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), Texture); 
-     /* glEnable(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, Texture);
-      drawQuad(x, -width, y, height, UP);
-
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glDisable(GL_TEXTURE_2D);    */
+    glm::vec3 colour = textColour;
+    if(disabled) {
+      colour = textColour*glm::vec3(0.5f);
+    } else if(clicked || hasBeenClicked) {
+      colour = glm::vec3(0.0f, 0.0f, 0.0f);
+    } else if(isSelected) {
+      colour = textColour*glm::vec3(0.5f);
+    }
+    if(hasTexture) {      
+     graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), texture); 
+     graphics->drawText(text, glm::vec2(x, y), 1.5f, colour);
     } else { 
-      lbTitle.draw();
+     graphics->drawText(text, glm::vec2(x, y), 1.5f, colour);
     }
     if(hasBorder)
       drawBox(graphics);
   }
-  glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void Button::clean() {
 
 }
 
-void Button::setup(float x, float y, float width, float height, char* filename) {
-  isSelected = false;
-  hasTexture = true;
-  clicked = false;
-  hasBeenClicked = false;
-  hasBorder = false;
-  isFilled = false;
-  disabled = false;
-  visible = true;
-  
-  Texture = filename;
-  
-  this->x = x;
-  this->y = y;
-  this->scaleX = 0;
-  this->scaleY = 0;
-  this->width = width;
-  this->height = height;
-}
-
-void Button::setup(float x, float y, float width, float height, float scaleX, float scaleY) {
+void Button::setup(float x, float y, float scale, char* text) {
   isSelected = false;
   hasTexture = false;
   clicked = false;
@@ -76,13 +48,87 @@ void Button::setup(float x, float y, float width, float height, float scaleX, fl
   disabled = false;
   visible = true;
   
+  textColour = glm::vec3(1.0f);
+  
+  this->text = text;
+  
   this->x = x;
   this->y = y;
-  this->scaleX = scaleX;
-  this->scaleY = scaleY;
+  this->scale = scale;
+}
+
+void Button::setup(float x, float y, float width, float height, char* texture) {
+  isSelected = false;
+  hasTexture = true;
+  clicked = false;
+  hasBeenClicked = false;
+  hasBorder = false;
+  isFilled = false;
+  disabled = false;
+  visible = true;
+  
+  textColour = glm::vec3(1.0f);
+  this->texture = texture;
+  
+  this->x = x;
+  this->y = y;
+  this->width = width;
+  this->width = width;
+  this->scale = scale;
+}
+
+void Button::setup(float x, float y, float scale, glm::vec3 colour, char* text) {
+  isSelected = false;
+  hasTexture = false;
+  clicked = false;
+  hasBeenClicked = false;
+  hasBorder = false;
+  isFilled = false;
+  disabled = false;
+  visible = true;
+  
+  textColour = colour;
+  this->text = text;
+  
+  this->x = x;
+  this->y = y;
+  this->scale = scale;
+}
+
+void Button::setup(float x, float y, float width, float height, float scale, glm::vec3 colour, char* text, char* texture) {
+  isSelected = false;
+  hasTexture = true;
+  clicked = false;
+  hasBeenClicked = false;
+  hasBorder = false;
+  isFilled = false;
+  disabled = false;
+  visible = true;
+  
+  textColour = colour;
+  this->x = x;
+  this->y = y;
   this->width = width;
   this->height = height;
-  lbTitle.setup(x, y, scaleX, scaleY);
+  this->scale = scale;
+}
+
+void Button::setup(float x, float y, float width, float height, float scale, char* text, char* texture) {
+  isSelected = false;
+  hasTexture = true;
+  clicked = false;
+  hasBeenClicked = false;
+  hasBorder = false;
+  isFilled = false;
+  disabled = false;
+  visible = true;
+  
+  textColour = glm::vec3(1.0f);
+  this->x = x;
+  this->y = y;
+  this->width = width;
+  this->height = height;
+  this->scale = scale;
 }
 
 void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState) {
@@ -107,18 +153,18 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
     }
   }
 }
-
+/*
 void Button::setTexture(char* filename) {
   Texture = filename;
   hasTexture = true;
 }
-
-void Button::setText(const char* str, int length) {
-  lbTitle.setText(str, length);
+*/
+void Button::setText(const char* str) {
+  text = str;
 }
 
-void Button::setColour(float R, float G, float B) {
-  lbTitle.setColour(R, G, B);
+void Button::setColour(glm::vec3 colour) {
+  textColour = colour;
 }
 
 bool Button::Clicked() {

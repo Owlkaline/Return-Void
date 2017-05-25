@@ -15,18 +15,24 @@ class Button {
     
     void draw(GraphicsHandler *graphics);
     void clean();
-    void setup(float x, float y, float width, float height, float scaleX, float scaleY);
-    void setup(float x, float y, float width, float height, char* filename);
+    
+    void setup(float x, float y, float scale, char* text);
+    void setup(float x, float y, float scale, glm::vec3 colour, char* text);
+    
+    void setup(float x, float y, float width, float height, char* texture);
+    void setup(float x, float y, float width, float height, float scale, char* text, char* texture);
+    void setup(float x, float y, float width, float height, float scale, glm::vec3 colour, char* text, char* texture);
+    
     void update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
 
     //Draws Text to the screen
-    void setTexture(char* filename);
-    void setText(const char* str, int length);
-    void setColour(float R, float G, float B);
+    //void setTexture(char* filename);
+    void setText(const char* str);
+    void setColour(glm::vec3 colour);
     
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
-    void setWidth(float width) { this->width = width; }
+    void setScale(float scale) { this->scale = scale; }
     void setVisible(bool visible) { this->visible = visible; }
      
     void enable() { disabled = false; }
@@ -36,12 +42,9 @@ class Button {
     
     float getX() { return x; }
     float getY() { return y; }
-    float getWidth() { return width; }
-    float getHeight() { return height; }
 
     bool Clicked();
     
-
   protected:  
     void drawBox(GraphicsHandler *graphics);
     
@@ -53,15 +56,15 @@ class Button {
     bool hasBorder;
     bool isSelected, hasTexture, hasBeenClicked, clicked;
     
-    float scaleX, scaleY; 
-    float R, G, B;
+    float scale;
     float fillR, fillG, fillB;
     float x, y, width, height;
     
     char str[25];
 
-    Label lbTitle;
-    std::string Texture;
+    glm::vec3 textColour;
+    std::string text;
+    std::string texture;
 };
 
 #endif

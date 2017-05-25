@@ -139,6 +139,8 @@ void GraphicsHandler::initText(const char* fontname, std::string shadername) {
 }
 
 void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color) {
+  //glEnable(GL_BLEND);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   useShader(textShader);
   glUniform3f(glGetUniformLocation(getShader(textShader), "fragColour"), color.x, color.y, color.z);
   glActiveTexture(GL_TEXTURE0);
@@ -210,6 +212,18 @@ void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rot
   draw();
 }
 
+void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, glm::vec3 colour, std::string name) {
+
+  transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
+                 size,
+                 0.0f,
+                 glm::vec3(colour.x, colour.y, colour.z));
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, getTexture(name));
+
+  draw();
+}
+
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 colour, std::string name) {
   transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
                  size,
@@ -255,7 +269,7 @@ GLuint GraphicsHandler::getShader(std::string name) {
 GLuint GraphicsHandler::getTexture(std::string name) {
   if(textures[name] == 0) {
     std::string err = "Attempting to use texture \"" + name + "\" that doesn't exist!";
-    //throw std::runtime_error(err);
+    throw std::runtime_error(err);
   }
   return textures[name];
 }

@@ -41,7 +41,8 @@ class Menu: public DisplayManager {
   protected:
     virtual void drawBackground(GraphicsHandler *graphics) {
       // Background
-      graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
+      graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "MenuBackground");
+      graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, (SPACE_Y_RESOLUTION/6) * 2), glm::vec2(SPACE_X_RESOLUTION/2,  (SPACE_Y_RESOLUTION/6) * 4), glm::vec3(0.5f, 0.5f, 0.5f), "MenuBackground");
 /*      glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, background);
  
