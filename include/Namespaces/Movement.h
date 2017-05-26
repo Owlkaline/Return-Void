@@ -1,7 +1,6 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#define _USE_MATH_DEFINES
 #include <math.h>
 #include "../defines.h"
 

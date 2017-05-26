@@ -37,10 +37,10 @@ LIBRARY_PATHS =  -L/usr/lib
 LINKER_FLAGS = -lGL -lglfw -lGLEW -lfreetype
 
 else
-INCLUDE_PATHS = -I../win32/include
-LIBRARY_PATHS = -L../win32/lib
+INCLUDE_PATHS = -I./win32/include
+LIBRARY_PATHS = -L./win32/lib
 
-LINKER_FLAGS = -lmingw32 -lopengl32 -lglew32.dll -lglfw3 -luser32 -lgdi32 -lkernel32
+LINKER_FLAGS = -lmingw32 -lopengl32 -lglew32.dll -lglfw3 -luser32 -lgdi32 -lkernel32 -D_USE_MATH_DEFINES
 
 endif
 endif

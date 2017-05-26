@@ -2,7 +2,7 @@
 #define DISPLAYMANAGER
 
 #include "../defines.h"
-
+#include <time.h>
 #include "../GraphicsHandler.h"
 
 class DisplayManager {

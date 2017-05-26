@@ -1,5 +1,8 @@
 HOW TO INSTALL WINDOWS
 
+git clone https://github.com/lilith645/Return-Void.git
+git checkout opengl3.3
+
 DOWNLOAD THIS
 https://sourceforge.net/projects/mingw/files/latest/download?source=files
 https://sourceforge.net/projects/mingw/?source=typ_redirect
@@ -20,7 +23,11 @@ openCMD run bootstrap.bat
 .\b2.exe
 
 copy /BOOSTFOLDER/stage/lib into win32/lib
-copy /BOOSTFOLDER/include   into win32/include
+copy the folder /BOOSTFOLDER/boost   into win32/include
+
+copy the contents of win32/static/ into C:\MinGW\lib\
+
+
 
 Open CMD, navigate to git repo run
 C:\MinGW\bin\mingw32-make.exe
