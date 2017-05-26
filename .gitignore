@@ -43,3 +43,4 @@ obj
 /Releases/*
 Textures/Gimp/*
 Textures/Old/*
+win32/include/boost/*
