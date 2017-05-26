@@ -112,7 +112,7 @@ void GraphicsHandler::initText(const char* fontname, std::string shadername) {
       texture, 
       glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
       glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-      face->glyph->advance.x
+      (GLuint)face->glyph->advance.x
     };
     Characters.insert(std::pair<GLchar, Character>(c, character));
   }
@@ -139,9 +139,7 @@ void GraphicsHandler::initText(const char* fontname, std::string shadername) {
 }
 
 void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color) {
-  //glEnable(GL_BLEND);
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  useShader(textShader);
+
   glUniform3f(glGetUniformLocation(getShader(textShader), "fragColour"), color.x, color.y, color.z);
   glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(textVAO);
@@ -185,8 +183,6 @@ void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat sca
   
   glBindVertexArray(0);
   glBindTexture(GL_TEXTURE_2D, 0);
-  
-  useShader(crntShader);
 }
 
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, std::string name) {

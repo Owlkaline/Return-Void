@@ -9,7 +9,7 @@ Button::~Button() {
   text = "";
 }
 
-void Button::draw(GraphicsHandler *graphics) {
+void Button::draw(GraphicsHandler *graphics) {  
   if(visible) {
     if(isFilled) {
      /* glColor3f(fillR, fillG, fillB);
@@ -23,11 +23,17 @@ void Button::draw(GraphicsHandler *graphics) {
     } else if(isSelected) {
       colour = textColour*glm::vec3(0.5f);
     }
-    if(hasTexture) {      
-     graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), texture); 
+    if(hasTexture) {
+    
+     graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), texture);
+     
+     graphics->useShader("text");
      graphics->drawText(text, glm::vec2(x, y), 1.5f, colour);
+     graphics->useShader("basic");
     } else { 
+     graphics->useShader("text");
      graphics->drawText(text, glm::vec2(x, y), 1.5f, colour);
+     graphics->useShader("basic");
     }
     if(hasBorder)
       drawBox(graphics);
@@ -55,6 +61,8 @@ void Button::setup(float x, float y, float scale, char* text) {
   this->x = x;
   this->y = y;
   this->scale = scale;
+  this->width = -1;
+  this->height = -1;
 }
 
 void Button::setup(float x, float y, float width, float height, char* texture) {
@@ -93,6 +101,8 @@ void Button::setup(float x, float y, float scale, glm::vec3 colour, char* text) 
   this->x = x;
   this->y = y;
   this->scale = scale;
+  this->width = -1;
+  this->height = -1;
 }
 
 void Button::setup(float x, float y, float width, float height, float scale, glm::vec3 colour, char* text, char* texture) {
@@ -137,7 +147,6 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
   if(!disabled) {
     if(mouseBtnState[0] == 0)
       clicked = false;
-      
     if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
       if(mouseBtnState[0] == 1) {
         clicked = true;

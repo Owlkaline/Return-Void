@@ -32,6 +32,8 @@ class Button {
     
     void setX(float x) { this->x = x; }
     void setY(float y) { this->y = y; }
+    void setWidth(float width) { this->width = width; }
+    void setHeight(float height) { this->height = height; }
     void setScale(float scale) { this->scale = scale; }
     void setVisible(bool visible) { this->visible = visible; }
      

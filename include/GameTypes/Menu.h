@@ -31,7 +31,7 @@ class Menu: public DisplayManager {
                  
     void draw(GraphicsHandler *graphics) {
       drawBackground(graphics);
-            for(unsigned int i = 0; i < lb.size(); ++i) 
+      for(unsigned int i = 0; i < lb.size(); ++i) 
         lb[i]->draw();
       for(unsigned int i = 0; i < buttons.size(); ++i)
         buttons[i]->draw(graphics);

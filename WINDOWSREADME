@@ -1,0 +1,28 @@
+HOW TO INSTALL WINDOWS
+
+DOWNLOAD THIS
+https://sourceforge.net/projects/mingw/files/latest/download?source=files
+https://sourceforge.net/projects/mingw/?source=typ_redirect
+
+install and run it
+
+INSTALL THESE FROM DOWNLOADED PROGRAM
+developer-toolkit
+base
+gcc-g++
+msys-base
+
+download boost
+http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.zip
+
+extract
+openCMD run bootstrap.bat
+.\b2.exe
+
+copy /BOOSTFOLDER/stage/lib into win32/lib
+copy /BOOSTFOLDER/include   into win32/include
+
+Open CMD, navigate to git repo run
+C:\MinGW\bin\mingw32-make.exe
+
+

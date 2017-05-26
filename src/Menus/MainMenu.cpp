@@ -12,21 +12,37 @@ void MainMenu::setup() {
   for(int i = 0; i < 6; ++i) {
     buttons.push_back(new Button);
     if(i == 1) {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
+      buttons[i]->setup(SPACE_X_RESOLUTION/32*15, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
     } else if (i == 3) {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
+      buttons[i]->setup(SPACE_X_RESOLUTION/32*15, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
     }  else {
-      buttons[i]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
+      buttons[i]->setup(SPACE_X_RESOLUTION/32*15, SPACE_Y_RESOLUTION/10 * ((6-i) + 0.5) - BUTTONHEIGHT/2, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"");
     }
   }
 
   buttons[0]->setText((char*)"Story");
+  buttons[0]->setWidth(50*5);
+  buttons[0]->setHeight(100);
+  
   buttons[1]->setText((char*)"Endless");
+  buttons[1]->setWidth(50*7);
+  buttons[1]->setHeight(100);
+  
   buttons[2]->setText((char*)"Shop");
+  buttons[2]->setWidth(50*4);
+  buttons[2]->setHeight(100);
+  
   buttons[3]->setText((char*)"Highscore");
-  buttons[4]->setText((char*)"Settings");
-  buttons[5]->setText((char*)"Quit");
+  buttons[3]->setWidth(50*9);
+  buttons[3]->setHeight(100);
 
+  buttons[4]->setText((char*)"Settings");
+  buttons[4]->setWidth(50*8);
+  buttons[4]->setHeight(100);
+
+  buttons[5]->setText((char*)"Quit");
+  buttons[5]->setWidth(50*4);
+  buttons[5]->setHeight(100);
 }
 
 void MainMenu::restart() {
