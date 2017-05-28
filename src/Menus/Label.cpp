@@ -5,13 +5,13 @@ Label::Label() {
 }
 
 Label::~Label() {
-  Texture = 0;
+  texture = "";
 }
 
-void Label::draw() {
+void Label::draw(GraphicsHandler *graphics) {
   if(visible) {
     if(isFilled) {
-      glColor3f(fillR, fillG, fillB);
+     /* glColor3f(fillR, fillG, fillB);
       glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x-width/2, y+height/2, 0.0);
@@ -23,10 +23,17 @@ void Label::draw() {
         glVertex3f(x-width/2, y-height/2, 0.0);
       glEnd(); 
       glColor3f(1.0f, 1.0f, 1.0f);
+      
+      // Button example
+      drawQuad(x, -width, y, height, UP);
+      
+      */
     }
+    
     if(hasTexture) {  
-     if(disabled)
-        glColor4f(1.0, 1.0, 1.0, 0.5);
+    // if(disabled)
+     //   glColor4f(1.0, 1.0, 1.0, 0.5);
+      /*
       glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, Texture);
       glBegin(GL_QUADS);
@@ -40,115 +47,71 @@ void Label::draw() {
         glVertex3f(x-width/2, y-height/2, 0.0);
       glEnd();  
       glColor3f(1.0f, 1.0f, 1.0f);
-      glDisable(GL_TEXTURE_2D);
+      glDisable(GL_TEXTURE_2D);*/
+      graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), texture);
     } else {
       if(isTimed) {
         if(ticks > 0)
-          drawChar();
+          graphics->drawText(str, glm::vec2(x,y), scale, colour, "DarkCrystal");
       } else {
         //text.draw();
-        drawChar();
+        //drawChar();
+        graphics->drawText(str, glm::vec2(x,y), scale, colour, "DarkCrystal");
       }
     }
     if(hasBorder)
-      drawBox();
+      drawBox(graphics);
   }
-  glColor3f(1.0, 1.0f, 1.0);
 }
 
 void Label::clean() {
 
 }
 
-void Label::setupGLC(float scaleX, float scaleY) {
-  //Settings *settings = Settings::instance();
-  
-  //float ratioX = settings->getCurrentWindowWidth()/(float)SPACE_X_RESOLUTION;
-  //float ratioY = settings->getCurrentWindowHeight()/(float)SPACE_Y_RESOLUTION;
-  // Set up and initialize GLC
- /* ctx = glcGenContext();
-  glcContext(ctx);
-  glcAppendCatalog("/usr/lib/X11/fonts/Type1/");
-
-  // Create a font "Palatino Bold"
-  myFont = glcGenFontID();
-  #ifdef __WIN32__
-   // glcNewFontFromFamily(myFont, "Palatino Linotype");
-   glcNewFontFromFamily(myFont, "Gothic Uralic");
-  #else
-   // glcNewFontFromFamily(myFont, "Palatino");
-   glcNewFontFromFamily(myFont, "Gothic Uralic");
-  #endif
-  glcFontFace(myFont, "Bold");
-  glcFont(myFont);
-  
-  	// Use the texture-based font renderer
-	glcRenderStyle(GLC_TRIANGLE);
-
-	// Use UTF-8 encoded strings
-	glcStringType(GLC_UTF8_QSO);*/
-      // Render the text at a size of 100 points
-  //glcScale(30*ratioX, 30*ratioY);
-}
-
-void Label::setup(float x, float y, float width, float height, char* filename) {
-  Texture = txt::LoadTexture(filename);
+void Label::setup(float x, float y, float width, float height, std::string filename) {
+  texture = filename;
   hasTexture = true;
   isTimed = false;
   hasBorder = false;
   isFilled = false;
   visible = true;
   disabled = false;
-  length = 0;
   ticks = 0;
   this->x = x;
   this->y = y;
   this->width = width;
   this->height = height;
-  this->scaleX = 1;
-  this->scaleY = 1;
-  R = 0;
-  B = 0;
-  G = 0;
-//  setupGLC(scaleX, scaleY);
+  this->scale = 0;
+  colour = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 
-void Label::setup(float x, float y, float scaleX, float scaleY) {
+void Label::setup(float x, float y, float scale) {
   hasTexture = false;
   isTimed = false;
   hasBorder = false;
   isFilled = false;
   visible = true;
   disabled = false;
-  length = 0;
   ticks = 0;
   this->x = x;
   this->y = y;
-  this->scaleX = scaleX;
-  this->scaleY = scaleY;
-  R = 0;
-  B = 0;
-  G = 0;
- // setupGLC(scaleX, scaleY);
+  this->scale = scale;
+  this->colour = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 
-void Label::setup(float x, float y, float scaleX, float scaleY, bool timer) {
-  hasTexture = false;
-  hasBorder = false;
-  isFilled = false;
-  visible = true;
-  disabled = false;
+void Label::setup(float x, float y, float scale, std::string text) {
+  setup(x, y, scale);
+  this->str = text;
+}
+
+void Label::setup(float x, float y, float scale, glm::vec3 colour, std::string text) {
+  setup(x, y, scale, text);
+  this->colour = colour;
+}
+
+void Label::setup(float x, float y, float scale, bool timer) {
+  setup(x, y, scale);
   isTimed = timer;
-  length = 0;
-  ticks = 0;
-  this->x = x;
-  this->y = y;
-  this->scaleX = scaleX;
-  this->scaleY = scaleY;
-  R = 0;
-  B = 0;
-  G = 0;
- // setupGLC(scaleX, scaleY);
 }
 
 void Label::update(float deltaTime) {
@@ -159,29 +122,13 @@ void Label::update(float deltaTime) {
     } 
 }
 
-//Draws Text to the screen
-void Label::drawChar() {
-  glPushMatrix();
-  // Render "Hello world!"
-  glTranslatef(x-length*10, y, 0.0);
-  glScalef(24.0f, 24.0f, 1.0f);
-  glColor3f(R, G, B);
-  //glRasterPos2f(x-length*10, y);
- // glcRenderString(str.c_str());
-
-  glPopMatrix();
-}
-
-void Label::setTexture(char* filename) {
-  Texture = txt::LoadTexture(filename);
+void Label::setTexture(std::string filename) {
+  texture = filename;
   hasTexture = true;
 }
 
-void Label::setText(std::string str, int length) {
- // for(int i = 0; i < length; ++i)
-   this->length = length;
+void Label::setText(std::string str) {
    this->str = str;
-  //text.setup(x, y, (char*)str);
 }
 
 void Label::setTimer(int time) {
@@ -189,14 +136,12 @@ void Label::setTimer(int time) {
 }
 
 void Label::setColour(float R, float G, float B) {
-  this->R = R;
-  this->G = G;
-  this->B = B;
+  colour = glm::vec3(R,G,B);
 }
 
-void Label::drawBox() {
+void Label::drawBox(GraphicsHandler *graphics) {
   float border = 5;
-  glColor3f(0.0, 0.0, 0.0);
+  /*glColor3f(0.0, 0.0, 0.0);
   glBegin(GL_QUADS);
 
     // Left
@@ -224,6 +169,11 @@ void Label::drawBox() {
     glVertex3f(x-width/2, y-height/2, 0.0);
 
   glEnd();
-  glColor3f(1.0, 1.0, 1.0);
+  glColor3f(1.0, 1.0, 1.0);*/
+  graphics->useShader("basic");
+  graphics->drawObject(glm::vec2(x+border/2, y), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x-border/2, y), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x, y-border/2), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x, y+border/2), glm::vec2(width, height), "Edge");
 }
 

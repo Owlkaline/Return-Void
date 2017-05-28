@@ -16,18 +16,18 @@ class Button {
     void draw(GraphicsHandler *graphics);
     void clean();
     
-    void setup(float x, float y, float scale, char* text);
-    void setup(float x, float y, float scale, glm::vec3 colour, char* text);
+    void setup(float x, float y, float scale, std::string text);
+    void setup(float x, float y, float scale, glm::vec3 colour, std::string text);
     
-    void setup(float x, float y, float width, float height, char* texture);
-    void setup(float x, float y, float width, float height, float scale, char* text, char* texture);
-    void setup(float x, float y, float width, float height, float scale, glm::vec3 colour, char* text, char* texture);
+    void setup(float x, float y, float width, float height, std::string texture);
+    void setup(float x, float y, float width, float height, float scale, std::string text, std::string texture);
+    void setup(float x, float y, float width, float height, float scale, glm::vec3 colour, std::string text, std::string texture);
     
     void update(float mouseX, float mouseY, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState);
 
     //Draws Text to the screen
     //void setTexture(char* filename);
-    void setText(const char* str);
+    void setText(std::string str);
     void setColour(glm::vec3 colour);
     
     void setX(float x) { this->x = x; }

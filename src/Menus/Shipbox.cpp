@@ -46,7 +46,7 @@ void Shipbox::setup(float x, float y, int shipType) {
   // Selected Ship Name
   lb.push_back(new Label);
   lb[1]->setup(x, y+135, 30*ratioX, 30*ratioY);
-  lb[1]->setText("Select Ship", 11);
+  lb[1]->setText("Select Ship");
   lb[1]->setColour(0.0, 0.0, 0.0);
   lb[1]->setWidth(350);
   lb[1]->setHeight(70);
@@ -124,23 +124,23 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
         case GALACTICSHIP:
           break;
         case FIGHTERSHIP:
-          lb[1]->setText((char*)"1000coins", 10);
+          lb[1]->setText("1000coins");
           cost = 1000;
           break;
         case HEROSHIP3:
-          lb[1]->setText((char*)"1500coins", 10);
+          lb[1]->setText("1500coins");
           cost = 1500;
           break;
         case 4:
-          lb[1]->setText((char*)"2000coins", 10);
+          lb[1]->setText("2000coins");
           cost = 2000;
           break;
         case 5:
-          lb[1]->setText((char*)"2500coins", 10);
+          lb[1]->setText("2500coins");
           cost = 2500;
           break;
         case 6:
-          lb[1]->setText((char*)"3000coins", 10);
+          lb[1]->setText("3000coins");
           cost = 3000;
           break;
       }
@@ -159,7 +159,7 @@ void Shipbox::setup(float x, float y, bool unlocked, bool bought, int shipType) 
 void Shipbox::draw(GraphicsHandler *graphics) {  
   if(visible) {
     for(unsigned int i = 0; i < lb.size(); ++i)
-      lb[i]->draw();
+      lb[i]->draw(graphics);
     for(unsigned int i = 0; i < buttons.size(); ++i)
       buttons[i]->draw(graphics);
     for(unsigned int i = 0; i < ship.size(); ++i)

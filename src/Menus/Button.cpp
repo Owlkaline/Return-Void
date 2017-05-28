@@ -17,7 +17,7 @@ void Button::draw(GraphicsHandler *graphics) {
     }
     glm::vec3 colour = textColour;
     if(disabled) {
-      colour = textColour*glm::vec3(0.5f);
+      //colour = textColour*glm::vec3(0.5f);
     } else if(clicked || hasBeenClicked) {
       colour = glm::vec3(0.0f, 0.0f, 0.0f);
     } else if(isSelected) {
@@ -26,14 +26,9 @@ void Button::draw(GraphicsHandler *graphics) {
     if(hasTexture) {
     
      graphics->drawObject(glm::vec2(x,y), glm::vec2(width, height), texture);
-     
-     graphics->useShader("text");
-     graphics->drawText(text, glm::vec2(x, y), 1.5f, colour);
-     graphics->useShader("basic");
+     graphics->drawText(text, glm::vec2(x, y), scale, colour, "DarkCrystal");
     } else { 
-     graphics->useShader("text");
-     graphics->drawText(text, glm::vec2(x, y), 1.5f, colour);
-     graphics->useShader("basic");
+     graphics->drawText(text, glm::vec2(x, y), scale, colour, "DarkCrystal");
     }
     if(hasBorder)
       drawBox(graphics);
@@ -44,7 +39,7 @@ void Button::clean() {
 
 }
 
-void Button::setup(float x, float y, float scale, char* text) {
+void Button::setup(float x, float y, float scale, std::string text) {
   isSelected = false;
   hasTexture = false;
   clicked = false;
@@ -65,7 +60,7 @@ void Button::setup(float x, float y, float scale, char* text) {
   this->height = -1;
 }
 
-void Button::setup(float x, float y, float width, float height, char* texture) {
+void Button::setup(float x, float y, float width, float height, std::string texture) {
   isSelected = false;
   hasTexture = true;
   clicked = false;
@@ -85,7 +80,7 @@ void Button::setup(float x, float y, float width, float height, char* texture) {
   this->scale = scale;
 }
 
-void Button::setup(float x, float y, float scale, glm::vec3 colour, char* text) {
+void Button::setup(float x, float y, float scale, glm::vec3 colour, std::string text) {
   isSelected = false;
   hasTexture = false;
   clicked = false;
@@ -105,7 +100,7 @@ void Button::setup(float x, float y, float scale, glm::vec3 colour, char* text) 
   this->height = -1;
 }
 
-void Button::setup(float x, float y, float width, float height, float scale, glm::vec3 colour, char* text, char* texture) {
+void Button::setup(float x, float y, float width, float height, float scale, glm::vec3 colour, std::string text, std::string texture) {
   isSelected = false;
   hasTexture = true;
   clicked = false;
@@ -123,7 +118,7 @@ void Button::setup(float x, float y, float width, float height, float scale, glm
   this->scale = scale;
 }
 
-void Button::setup(float x, float y, float width, float height, float scale, char* text, char* texture) {
+void Button::setup(float x, float y, float width, float height, float scale, std::string text, std::string texture) {
   isSelected = false;
   hasTexture = true;
   clicked = false;
@@ -168,7 +163,7 @@ void Button::setTexture(char* filename) {
   hasTexture = true;
 }
 */
-void Button::setText(const char* str) {
+void Button::setText(std::string str) {
   text = str;
 }
 

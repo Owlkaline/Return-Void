@@ -8,8 +8,8 @@ FloatingText::~FloatingText() {
 
 }
 
-void FloatingText::draw() { 
-   lb.draw();
+void FloatingText::draw(GraphicsHandler *graphics) { 
+   lb.draw(graphics);
 }
 
 void FloatingText::clean() {
@@ -24,9 +24,9 @@ void FloatingText::setup(float x, float y, float width, float height, char* file
   visible = true;
 }
 
-void FloatingText::setup(float x, float y,  const char* str, int length, float scaleX, float scaleY) {
-  lb.setup(x, y, scaleX, scaleY);
-  lb.setText(str, length);
+void FloatingText::setup(float x, float y,  const char* str, float scale) {
+  lb.setup(x, y, scale);
+  lb.setText(str);
   this->x = x;
   this->y = y;
   ticks = 400;
@@ -45,8 +45,8 @@ void FloatingText::setTexture(char* filename) {
   lb.setTexture(filename);
 }
 
-void FloatingText::setText(const char* str, int length) {
-  lb.setText(str, length);
+void FloatingText::setText(const char* str) {
+  lb.setText(str);
 }
 
 void FloatingText::setTimer(int time) {

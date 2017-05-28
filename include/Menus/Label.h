@@ -12,20 +12,20 @@ class Label {
     ~Label();
     Label();
     
-    void draw();
+    void draw(GraphicsHandler *graphics);
     void clean();
     void update(float deltaTime);
-    void setup(float x, float y, float width, float height, char* filename);
-    void setup(float x, float y, float scaleX, float scaleY);
-    void setup(float x, float y, float scaleX, float scaleY, bool timer);
-    
-    void setupGLC(float scaleX, float scaleY);
+    void setup(float x, float y, float width, float height, std::string filename);
+    void setup(float x, float y, float scale);
+    void setup(float x, float y, float scale, std::string);
+    void setup(float x, float y, float scale, glm::vec3 colour, std::string);
+    void setup(float x, float y, float scale, bool timer);
     
     //Draws Text to the screen
-    void drawChar();    
+    void drawChar(GraphicsHandler *graphics);    
     void setTimer(int time);
-    void setTexture(char* filename);
-    void setText(std::string str, int length);
+    void setTexture(std::string filename);
+    void setText(std::string str);
     void setColour(float R, float G, float B);
     
     void enable() { disabled = false; }
@@ -50,9 +50,8 @@ class Label {
     }
 
   protected:    
-    void drawBox();
+    void drawBox(GraphicsHandler *graphics);
     
-    int length;
     float ticks;
     
     bool visible;
@@ -61,17 +60,14 @@ class Label {
     bool hasBorder;
     bool hasTexture, isTimed;
     
-    float scaleX, scaleY;
-    float R, G, B;
+    float scale;
     float fillR, fillG, fillB;
     float x, y, width, height;
     
+    glm::vec3 colour;
     std::string str;
-       
-    GLint ctx, myFont;
- 
-    //Text text;
-    GLuint Texture;
+
+    std::string texture;
 };
 
 #endif

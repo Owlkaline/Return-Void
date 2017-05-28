@@ -66,15 +66,16 @@ void GraphicsHandler::init(int width, int height) {
   glBindVertexArray(0);
 }
 
-void GraphicsHandler::initText(const char* fontname, std::string shadername) {
-  // Text Init
-  textShader = shadername;
-  useShader(textShader);
+void GraphicsHandler::initText(const char* location, const char * vertex_file_path,const char * fragment_file_path, std::string referencename) {
+
+  loadShaders(vertex_file_path, fragment_file_path, referencename);
+  
+  useShader(referencename);
   
   if (FT_Init_FreeType(&ft))
     throw std::runtime_error("ERROR::FREETYPE: Could not init FreeType Library");
   
-  if (FT_New_Face(ft, fontname, 0, &face))
+  if (FT_New_Face(ft, location, 0, &face))
     std::runtime_error("ERROR::FREETYPE: Failed to load font");
   
   FT_Set_Pixel_Sizes(face, 0, 48);
@@ -114,7 +115,8 @@ void GraphicsHandler::initText(const char* fontname, std::string shadername) {
       glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
       (GLuint)face->glyph->advance.x
     };
-    Characters.insert(std::pair<GLchar, Character>(c, character));
+    Fonts[referencename].insert(std::pair<GLchar, Character>(c, character));
+    //Characters.insert(std::pair<GLchar, Character>(c, character));
   }
   
   FT_Done_Face(face);
@@ -125,7 +127,7 @@ void GraphicsHandler::initText(const char* fontname, std::string shadername) {
   
   glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(window.x),
                                     0.0f, static_cast<GLfloat>(window.y));
-  glUniformMatrix4fv(glGetUniformLocation(getShader(textShader), (const GLchar*)"projection"), 1, GL_FALSE, glm::value_ptr(projection));
+  glUniformMatrix4fv(glGetUniformLocation(getShader(referencename), (const GLchar*)"projection"), 1, GL_FALSE, glm::value_ptr(projection));
   
   glGenVertexArrays(1, &textVAO);
   glGenBuffers(1, &textVBO);
@@ -138,16 +140,20 @@ void GraphicsHandler::initText(const char* fontname, std::string shadername) {
   glBindVertexArray(0); 
 }
 
-void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color) {
+void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color, std::string referencename) {
+  std::string previousShader = crntShader;
 
-  glUniform3f(glGetUniformLocation(getShader(textShader), "fragColour"), color.x, color.y, color.z);
+  useShader(referencename);
+
+  glUniform3f(glGetUniformLocation(getShader(referencename), "fragColour"), color.x, color.y, color.z);
   glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(textVAO);
 
   // Iterate through all characters
   std::string::const_iterator c;
   for (c = text.begin(); c != text.end(); c++) {
-    Character ch = Characters[*c];
+    //Character ch = Characters[*c];
+    Character ch = Fonts[referencename][*c];
 
     GLfloat xpos = position.x + ch.Bearing.x * scale;
     GLfloat ypos = position.y - (ch.Size.y - ch.Bearing.y) * scale;
@@ -183,6 +189,9 @@ void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat sca
   
   glBindVertexArray(0);
   glBindTexture(GL_TEXTURE_2D, 0);
+  
+  useShader(previousShader);
+  
 }
 
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, std::string name) {
@@ -304,7 +313,6 @@ void GraphicsHandler::loadShaders(const char * vertex_file_path,const char * fra
   // Create the shaders
   GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
   GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-  std::cout << "Here";
   // Read the Vertex Shader code from the file
   std::string VertexShaderCode;
   std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);

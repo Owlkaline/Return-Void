@@ -39,14 +39,14 @@ void Shop::setup() {
   
   // Top Left Shop Name Box
   lb.push_back(new Label);
-  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Shop");
+  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, 1.5f, "Shop");
   lb[0]->fill(0.0, 0.0, 1.0f);
   lb[0]->drawBorder(true);
   
   // Description Box
   lb.push_back(new Label);
   lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 30*ratioX, 30*ratioY);
-  lb[1]->setText((char*)"Description", 11);
+  lb[1]->setText("Description");
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
   lb[1]->fill(0.6, 0.6, 0.6);
@@ -61,7 +61,7 @@ void Shop::setup() {
   // Coin Box
   lb.push_back(new Label);
   lb[2]->setup(SPACE_X_RESOLUTION - 200, SPACE_Y_RESOLUTION-100, 30*ratioX, 30*ratioY);
-  lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
+  lb[2]->setText(strCoins);
   lb[2]->setWidth(350);
   lb[2]->setHeight(70);
   lb[2]->fill(0.6, 0.6, 0.6);
@@ -199,7 +199,7 @@ void Shop::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           std::stringstream ss;
           ss << coins;
           std::string strCoins = "Coins: " + ss.str();
-          lb[2]->setText(strCoins.c_str(), strCoins.length() + 1);
+          lb[2]->setText(strCoins);
           numShips++;
           buttons[4]->enable();
           buttons[4]->setVisible(true);

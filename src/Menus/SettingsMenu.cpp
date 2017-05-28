@@ -29,71 +29,71 @@ void SettingsMenu::setup() {
   x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (1.0) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[0]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"Return");
+  buttons[0]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "Return");
   
   // Save Button
   x = SPACE_X_RESOLUTION/4*2.5 + BUTTONWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (1.0) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[1]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), (char*)"Apply");
+  buttons[1]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "Apply");
   
   // Fullscreen Left Arrow button 
   x = SPACE_X_RESOLUTION/4  * 3 - BUTTONWIDTH - ARROWWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[2]->setup(x, y,  ARROWWIDTH, BUTTONHEIGHT, (char*)"LeftArrow");
+  buttons[2]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "<");
   
   // Fullscreen Right Arrow button
   x = SPACE_X_RESOLUTION/4 * 3 - ARROWWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[3]->setup(x, y,  ARROWWIDTH, BUTTONHEIGHT, (char*)"RightArrow");
+  buttons[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), ">");
    
   // Fullscreen Label
   x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH*0.75;
   y = SPACE_Y_RESOLUTION/10 * (6.5) - BUTTONHEIGHT/2;
   lb.push_back(new Label);
-  lb[0]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Fullscreen");
+  lb[0]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "Fullscreen");
 
   // Fullscreen True - False Label
   x = SPACE_X_RESOLUTION/4 * 3 - BUTTONWIDTH/2 - ARROWWIDTH/2;
   lb.push_back(new Label);
   if(isFullscreen) {
-    lb[1]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"True");
+    lb[1]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "True");
   } else {
-    lb[1]->setup(x, y, BUTTONWIDTH, BUTTONHEIGHT, (char*)"False");
+    lb[1]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "False");
   }
   
   // Resolution Left Arrow button
   x = SPACE_X_RESOLUTION/4  * 3 - BUTTONWIDTH - ARROWWIDTH*2;
   y = SPACE_Y_RESOLUTION/10 * (5.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[4]->setup(x, y, ARROWWIDTH, BUTTONHEIGHT, (char*)"LeftArrow");
+  buttons[4]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "<");
   
   // Resolution Right Arrow button
   x = SPACE_X_RESOLUTION/4 * 3 - ARROWWIDTH/2;
   y = SPACE_Y_RESOLUTION/10 * (5.5) - BUTTONHEIGHT/2;
   buttons.push_back(new Button);
-  buttons[5]->setup(x, y, ARROWWIDTH, BUTTONHEIGHT, (char*)"RightArrow");
+  buttons[5]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), ">");
   
   // Resolution Label
   x = SPACE_X_RESOLUTION/4 + BUTTONWIDTH*0.75;
   y = SPACE_Y_RESOLUTION/10 * (5.5) - BUTTONHEIGHT/2;
   lb.push_back(new Label);
-  lb[2]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Resolution");
+  lb[2]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "Resolution:");
   
   // Resolution idicator Label
   x = SPACE_X_RESOLUTION/4 * 3 - BUTTONWIDTH/2 - ARROWWIDTH*1.25;
   lb.push_back(new Label);
   switch(crntResolution) {
     case 0:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"800x600");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "800x600");
       break;
     case 1:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"1280x720");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "1280x720");
       break;
     case 2:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"1920x1080");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "1920x1080");
   }
   
   if(isFullscreen) {
@@ -144,14 +144,14 @@ void SettingsMenu::update(float mouseX, float mouseY, float deltaTime, unsigned 
   
   if(buttons[2]->Clicked() || buttons[3]->Clicked()) {
     if(isFullscreen) {
-      lb[1]->setTexture((char*)"Textures/Menu/Misc/False.png"); 
+      lb[1]->setText("False"); 
       isFullscreen = false;
       lb[2]->enable();
       lb[3]->enable();
       buttons[4]->enable();
       buttons[5]->enable();
     } else {
-      lb[1]->setTexture((char*)"Textures/Menu/Misc/True.png"); 
+      lb[1]->setText("True"); 
       isFullscreen = true;
       lb[2]->disable();
       lb[3]->disable();
@@ -165,13 +165,13 @@ void SettingsMenu::update(float mouseX, float mouseY, float deltaTime, unsigned 
     if(crntResolution < 0) crntResolution = 2;
     switch(crntResolution) {
     case 0:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/800x600.png");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "800x600");
       break;
     case 1:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/1280x720.png");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "1280x720");
       break;
     case 2:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/1920x1080.png");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "1920x1080");
     }
   }
   // Right Arrow resolutions
@@ -180,13 +180,13 @@ void SettingsMenu::update(float mouseX, float mouseY, float deltaTime, unsigned 
     if(crntResolution > 2) crntResolution = 0;
     switch(crntResolution) {
         case 0:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/800x600.png");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "800x600");
       break;
     case 1:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/1280x720.png");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "1280x720");
       break;
     case 2:
-      lb[3]->setup(x, y, BUTTONWIDTH*1.5, BUTTONHEIGHT, (char*)"Textures/Menu/SettingsMenu/1920x1080.png");
+      lb[3]->setup(x, y, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "1920x1080");
     }
   }
 }

@@ -4,19 +4,19 @@ void HighscoreScreen::setStats(int coinsCollected, int numOfEnemiesKilled, int n
   std::stringstream ss;
   ss << coinsCollected;
   std::string str = "Coins Collected: " + ss.str();
-  lb[23]->setText(str.c_str(), str.length());
+  lb[23]->setText(str);
   lb[23]->setVisible(true);
   
   std::stringstream ss1;
   ss1 << numOfEnemiesKilled;
   str = "Enemies Killed: " + ss1.str();
-  lb[24]->setText(str.c_str(), str.length());
+  lb[24]->setText(str);
   lb[24]->setVisible(true);
   
   std::stringstream ss2;
   ss2 << numOfPowerups;
   str = "Powerups Collected: " + ss2.str();
-  lb[25]->setText(str.c_str(), str.length());
+  lb[25]->setText(str);
   lb[25]->setVisible(true);
   
 }
@@ -63,7 +63,7 @@ void HighscoreScreen::setup(std::string username) {
     std::string tempname = ss.str() + ". " + names[i/2]; 
     lb.push_back(new Label);
     lb[i]->setup(SPACE_X_RESOLUTION/4+BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i/2*0.5)) + 0.5) - height/2, 30*ratioX, 30*ratioY);
-    lb[i]->setText(tempname.c_str(), tempname.length());
+    lb[i]->setText(tempname);
     lb[i]->setColour(0.0, 1.0, 0.0);
     lb[i]->setVisible(false);
     // Score  
@@ -72,14 +72,14 @@ void HighscoreScreen::setup(std::string username) {
     std::string tempscore = ss1.str(); 
     lb.push_back(new Label);
     lb[i+1]->setup(SPACE_X_RESOLUTION/4*3 - BUTTONWIDTH, SPACE_Y_RESOLUTION/10 * ((7-(i/2*0.5)) + 0.5) - height/2, 30*ratioX, 30*ratioY);
-    lb[i+1]->setText(tempscore.c_str(), tempscore.length());
+    lb[i+1]->setText(tempscore);
     lb[i+1]->setColour(0.0, 1.0, 0.0);
     lb[i+1]->setVisible(false);
   }
   // New High score
   lb.push_back(new Label);
   lb[20]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 40*ratioX, 40*ratioY);
-  lb[20]->setText((char*)"New Highscore!!!", 16);
+  lb[20]->setText("New Highscore!!!");
   lb[20]->setColour(0.0, 1.0, 0.0);
   lb[20]->setVisible(false);
   
@@ -90,7 +90,7 @@ void HighscoreScreen::setup(std::string username) {
   
   // stats
   lb.push_back(new Label);
-  lb[22]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*3, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Textures/Menu/GameMenus/Stats.png");
+  lb[22]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*3, 1.5f, "Stats");
   lb[22]->setVisible(false);
   
   // CoinsCollected
@@ -124,14 +124,14 @@ void HighscoreScreen::update(float mouseX, float mouseY, float deltaTime, unsign
         lb[i]->setVisible(false);
       for(int i = 0; i < 5; ++i)
         lb[21+i]->setVisible(true);      
-      buttons[2]->setText((char*)"Highscore");
+      buttons[2]->setText("Highscore");
       showingHighscores = false;
     } else {    
       for(int i = 0; i < 20; ++i)
         lb[i]->setVisible(true);
       for(int i = 0; i < 5; ++i)
         lb[21+i]->setVisible(false);        
-      buttons[2]->setText((char*)"Stats");
+      buttons[2]->setText("Stats");
       showingHighscores = true;
     }
   } 
@@ -148,28 +148,28 @@ void HighscoreScreen::setScore(int score) {
       std::stringstream ss;
       ss << j+1;
       std::string str = ss.str() + ". " + names[j].c_str(); 
-      lb[j*2]->setText(str.c_str(), str.length());
+      lb[j*2]->setText(str);
       std::stringstream ss1;
       ss1 << highscores[j];
       std::string str1 = ss1.str();
-      lb[j*2+1]->setText(str1.c_str(), str1.length());      
+      lb[j*2+1]->setText(str1);      
     }
     names[i] = highscore->getHighscoreName();
     std::stringstream ss;
     ss << i+1;
     std::string str = ss.str() + ". " + names[i].c_str(); 
-    lb[i*2]->setText(str.c_str(), str.length());
+    lb[i*2]->setText(str);
     std::stringstream ss1;
     ss1 << highscore->getNewHighscore();
     std::string str1 = ss1.str();
-    lb[i*2+1]->setText(str1.c_str(), str1.length());
+    lb[i*2+1]->setText(str1);
     
     lb[20]->setVisible(true);
   }
   std::stringstream ss;
   ss << score;
   std::string strScore = "Your score: " + ss.str();
-  lb[21]->setText(strScore.c_str(), strScore.length());
+  lb[21]->setText(strScore);
   lb[21]->setVisible(true);
   lb[22]->setVisible(true);
 

@@ -32,7 +32,7 @@ class Menu: public DisplayManager {
     void draw(GraphicsHandler *graphics) {
       drawBackground(graphics);
       for(unsigned int i = 0; i < lb.size(); ++i) 
-        lb[i]->draw();
+        lb[i]->draw(graphics);
       for(unsigned int i = 0; i < buttons.size(); ++i)
         buttons[i]->draw(graphics);
       drawAfter(graphics);
@@ -41,6 +41,7 @@ class Menu: public DisplayManager {
   protected:
     virtual void drawBackground(GraphicsHandler *graphics) {
       // Background
+      graphics->useShader("basic");
       graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "MenuBackground");
       graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, (SPACE_Y_RESOLUTION/6) * 2), glm::vec2(SPACE_X_RESOLUTION/2,  (SPACE_Y_RESOLUTION/6) * 4), glm::vec3(0.5f, 0.5f, 0.5f), "MenuBackground");
 /*      glEnable(GL_TEXTURE_2D);

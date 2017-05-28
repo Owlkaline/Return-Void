@@ -24,7 +24,7 @@ void Game::draw(GraphicsHandler *graphics) {
     enemy[i]->draw(graphics);
   
   for(unsigned int i = 0; i < Ftext.size(); ++i)
-    Ftext[i]->draw();
+    Ftext[i]->draw(graphics);
     
   effect->draw();
   
@@ -35,10 +35,10 @@ void Game::draw(GraphicsHandler *graphics) {
   if(DRAWHITBOX)
     Collisions::drawHitBoxes(ship, enemy, powerups);
 
-  lbWave.draw();
-  lbWaveStatic.draw();
-  lbScore.draw();
-  lbCoins.draw();
+  lbWave.draw(graphics);
+  lbWaveStatic.draw(graphics);
+  lbScore.draw(graphics);
+  lbCoins.draw(graphics);
   if(paused)
     pMenu.draw(graphics);
 
@@ -89,24 +89,24 @@ void Game::setup() {
   
   //ship[0]->setup();
 
-  lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 50*ratioX, 50*ratioY, true);
+  lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1.5f, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
   
-  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-80, 30*ratioX, 30*ratioY, false);
+  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-80, 1.5f, false);
   lbWaveStatic.setColour(1.0, 1.0, 1.0);
 
-  lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 30*ratioX, 30*ratioY, false);
+  lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 1.5f, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
   
-  lbCoins.setup(SPACE_X_RESOLUTION-150, 30, 30*ratioX, 30*ratioY, false);
+  lbCoins.setup(SPACE_X_RESOLUTION-150, 30, 1.5f, false);
   lbCoins.setColour( 1.0,  1.0,  1.0);
   
   std::stringstream ss;
   ss << score;
   std::string strScore = "Score: " + ss.str();
-  lbScore.setText(strScore.c_str(), strScore.length() + 1);
+  lbScore.setText(strScore);
   
-  lbCoins.setText("Coins: ", 7);
+  lbCoins.setText("Coins: ");
  
   level = 1;
   isNew = true;
@@ -145,10 +145,10 @@ void Game::newWave() {
   std::stringstream ss;
   ss << wave;
   std::string str = "Wave " + ss.str();
-  lbWave.setText(str.c_str(), str.length() + 1);
+  lbWave.setText(str);
   lbWave.setTimer(100);
   
-  lbWaveStatic.setText(str.c_str(), str.length() + 1);
+  lbWaveStatic.setText(str);
   
   if(wave%10 == 0) {
     enemy.push_back(new AlphaOne);
@@ -251,13 +251,13 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           std::stringstream ss;
           ss << score;
           std::string str = "Score: " + ss.str();
-          lbScore.setText(str.c_str(), str.length() + 1);          
+          lbScore.setText(str);          
           
           std::stringstream sf;
           sf << enemy[i]->getScore();;
           std::string str1 = "+" + sf.str();
           Ftext.push_back(new FloatingText);
-          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), str1.length(), 20*ratioX, 20*ratioY);
+          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), 1.5f);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           bool nothing = false; 
@@ -307,7 +307,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           numOfPowerupsCollected++;
           std::string str = powerups[i]->getName();
           Ftext.push_back(new FloatingText);
-          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), str.length(), 20*ratioX, 20*ratioY);
+          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), 1.5f);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           powerups.erase(powerups.begin()+i);
@@ -350,7 +350,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
     std::stringstream ss;
     ss << coins;
     std::string str = "Coins: " + ss.str();
-    lbCoins.setText(str.c_str(), str.length());
+    lbCoins.setText(str);
   } else {
     if(keyState[ESC] == BUTTON_DOWN && prevKeyState[ESC] != BUTTON_DOWN) {
       prevKeyState[ESC] = keyState[ESC];

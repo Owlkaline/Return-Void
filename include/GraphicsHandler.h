@@ -35,7 +35,7 @@ class GraphicsHandler {
     ~GraphicsHandler();
     
     void init(int width, int height);
-    void initText(const char* fontname, std::string shadername);
+    void initText(const char* location, const char * vertex_file_path,const char * fragment_file_path, std::string referencename);
     void clean();
     
     // Call once per loop (At start), or anytime you switch shaders
@@ -48,7 +48,7 @@ class GraphicsHandler {
     void removeShader(std::string name);
     void removeTexture(std::string name);
     
-    void drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color);
+    void drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color, std::string referencename);
     
     // Draws object at position x/y, with specified size, rotated 0 degrees, full colour
     void drawObject(glm::vec2 position, glm::vec2 size, std::string texture);
@@ -66,7 +66,6 @@ class GraphicsHandler {
     GLuint getTexture(std::string texture);
     
     std::string crntShader;
-    std::string textShader;
     GLuint quadVAO;
     GLuint textVAO, textVBO;
     
@@ -74,6 +73,8 @@ class GraphicsHandler {
     
     std::map<std::string, GLuint> textures;
     std::map<std::string, GLuint> shaders;
+    
+    std::map<std::string, std::map<GLchar, Character>> Fonts;
     std::map<GLchar, Character> Characters;
     
     FT_Library ft;

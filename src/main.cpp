@@ -349,10 +349,11 @@ int main(int argc, char* args[]) {
   //mouseTexture = txt::LoadTexture("Textures/Game/Crosshair.png");
   GraphicsHandler graphics;
   graphics.loadShaders("./Shaders/shader.vert", "./Shaders/shader.frag", "basic");
-  graphics.loadShaders("./Shaders/font.vert", "./Shaders/font.frag", "text");
+  //graphics.loadShaders("./Shaders/font.vert", "./Shaders/font.frag", "text");
   graphics.useShader("basic");
   graphics.init(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION);
-  graphics.initText("DarkCrystal.ttf", "text");
+  graphics.initText("./fonts/DarkCrystalOutlineCustom.ttf", "./Shaders/font.vert", "./Shaders/font.frag", "DarkCrystal");
+  std::cout << "Fixed!\n";
   loadAllTextures(&graphics);
   
   //Initialize clear color
@@ -369,7 +370,7 @@ int main(int argc, char* args[]) {
     glfwPollEvents();
     graphics.useShader("basic");
     display(window, &graphics, deltaTime);  
-    //graphics.drawText("It Fucking works, ya cunt", glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), 1.5f, glm::vec3(0.5f, 0.5f, 1.0f));
+    //graphics.drawText("It Fucking works, ya cunt", glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), 1.5f, glm::vec3(0.5f, 0.5f, 1.0f), "DarkCrystal");
     glfwSwapBuffers(window);
   }
   clean();
