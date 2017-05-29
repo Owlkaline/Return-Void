@@ -315,10 +315,8 @@ void loadAllTextures(GraphicsHandler* graphics) {
   graphics->loadTexture("PowerupShield", "Textures/Game/Powerups/Shield.png");
   graphics->loadTexture("Boost", "Textures/Game/Misc/Boost.png");
   
-  // TOBEREMOVED
-  // Menu stuff - For now 
-  graphics->loadTexture("LeftArrow", "Textures/Menu/Misc/LeftArrow.png");
-  graphics->loadTexture("RightArrow", "Textures/Menu/Misc/RightArrow.png");
+  // Menu stuff 
+  graphics->loadTexture("PauseWindow", "./Textures/Menu/GameMenus/Window.png");
   
   // Extra
   graphics->loadTexture("Edge", "Textures/Game/Mounts/BasicMount2.png");
@@ -353,7 +351,6 @@ int main(int argc, char* args[]) {
   graphics.useShader("basic");
   graphics.init(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION);
   graphics.initText("./fonts/DarkCrystalOutlineCustom.ttf", "./Shaders/font.vert", "./Shaders/font.frag", "DarkCrystal");
-  std::cout << "Fixed!\n";
   loadAllTextures(&graphics);
   
   //Initialize clear color

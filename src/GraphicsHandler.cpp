@@ -78,7 +78,8 @@ void GraphicsHandler::initText(const char* location, const char * vertex_file_pa
   if (FT_New_Face(ft, location, 0, &face))
     std::runtime_error("ERROR::FREETYPE: Failed to load font");
   
-  FT_Set_Pixel_Sizes(face, 0, 48);
+  fontSize = 48;
+  FT_Set_Pixel_Sizes(face, 0, fontSize);
   
   if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
     std::runtime_error("ERROR::FREETYTPE: Failed to load Glyph");
@@ -140,12 +141,12 @@ void GraphicsHandler::initText(const char* location, const char * vertex_file_pa
   glBindVertexArray(0); 
 }
 
-void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color, std::string referencename) {
-  std::string previousShader = crntShader;
+void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec4 colour, std::string referencename) {
+ std::string previousShader = crntShader;
 
   useShader(referencename);
 
-  glUniform3f(glGetUniformLocation(getShader(referencename), "fragColour"), color.x, color.y, color.z);
+  glUniform4f(glGetUniformLocation(getShader(referencename), "fragColour"), colour.x, colour.y, colour.z, colour.w);
   glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(textVAO);
 
@@ -191,7 +192,31 @@ void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat sca
   glBindTexture(GL_TEXTURE_2D, 0);
   
   useShader(previousShader);
-  
+}
+
+void GraphicsHandler::drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 colour, std::string referencename) {
+  drawText(text, position, scale, glm::vec4(colour, 1.0f), referencename);
+}
+
+void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec4 colour, std::string name) {
+  transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
+                 size,
+                 rotate,
+                 colour);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, getTexture(name));
+  draw();
+}
+
+void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, glm::vec4 colour, std::string name) {
+  transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
+                 size,
+                 0.0f,
+                 colour);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, getTexture(name));
+
+  draw();
 }
 
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, std::string name) {
@@ -199,46 +224,33 @@ void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, std::string
   transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
                  size,
                  0.0f,
-                 glm::vec3(1.0f, 1.0f, 1.0f));
+                 glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, getTexture(name));
 
   draw();
 }
-
-void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, std::string name) {
-
+void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, GLfloat transparency, std::string name) {
   transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
                  size,
                  rotate,
-                 glm::vec3(1.0f, 1.0f, 1.0f));
+                 glm::vec4(1.0f, 1.0f, 1.0f, transparency));
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, getTexture(name));
 
   draw();
+}
+void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, std::string name) {
+  drawObject(position, size, rotate, 1.0f, name);
 }
 
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, glm::vec3 colour, std::string name) {
-
-  transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
-                 size,
-                 0.0f,
-                 glm::vec3(colour.x, colour.y, colour.z));
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, getTexture(name));
-
-  draw();
+  drawObject(position, size, glm::vec4(colour, 1.0f), name);
 }
 
 void GraphicsHandler::drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 colour, std::string name) {
-  transformModel(glm::vec3(position.x-size.x*0.5f, window.y-position.y-size.y*0.5f, 0.0f),
-                 size,
-                 rotate,
-                 glm::vec3(colour.x, colour.y, colour.z));
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, getTexture(name));
-  draw();
+  drawObject(position, size, rotate, glm::vec4(colour, 1.0f), name);
 }
 
 void GraphicsHandler::draw() {
@@ -249,7 +261,7 @@ void GraphicsHandler::draw() {
 }
 
 
-void GraphicsHandler::transformModel(glm::vec3 position, glm::vec2 size, GLfloat rotation, glm::vec3 colour) {
+void GraphicsHandler::transformModel(glm::vec3 position, glm::vec2 size, GLfloat rotation, glm::vec4 colour) {
   glm::mat4 model;
   model = glm::translate(model, position);
 
@@ -262,11 +274,12 @@ void GraphicsHandler::transformModel(glm::vec3 position, glm::vec2 size, GLfloat
   model = glm::scale(model, glm::vec3(size, 1.0f));
 
   glUniformMatrix4fv(glGetUniformLocation(getShader(crntShader), (const GLchar*)"model"), 1, GL_FALSE, glm::value_ptr(model));
-  glUniform3f(glGetUniformLocation(getShader(crntShader), "fragColour"), colour.x, colour.y, colour.z);
+  glUniform4f(glGetUniformLocation(getShader(crntShader), "fragColour"), colour.x, colour.y, colour.z, colour.w);
 }
 
 GLuint GraphicsHandler::getShader(std::string name) {
-  if(shaders[name] == 0) {
+ // if(shaders[name] == 0) {
+  if (shaders.find(name) == shaders.end()) {
     std::string err = "Attempting to use shader \"" + name + "\" that doesn't exist!";
     throw std::runtime_error(err);
   }
@@ -274,7 +287,8 @@ GLuint GraphicsHandler::getShader(std::string name) {
 }
 
 GLuint GraphicsHandler::getTexture(std::string name) {
-  if(textures[name] == 0) {
+  //if(textures[name] == 0) {
+  if (textures.find(name) == textures.end()) {
     std::string err = "Attempting to use texture \"" + name + "\" that doesn't exist!";
     throw std::runtime_error(err);
   }
@@ -282,21 +296,25 @@ GLuint GraphicsHandler::getTexture(std::string name) {
 }
 
 void GraphicsHandler::removeShader(std::string name) {
-  if(shaders[name] == 0) {
+  //if(shaders[name] == 0) {
+  if (shaders.find(name) == shaders.end()) {
     std::cout << "Attempting to remove \"" + name + "\" shader failed. It doesn't exist\n";
+    return;
   }
   shaders.erase(name);
 }
 
 void GraphicsHandler::removeTexture(std::string name) {
-  if(textures[name] == 0) {
+//  if(textures[name] == 0) {
+  if (textures.find(name) == textures.end()) {
     std::cout << "Attempting to remove \"" + name + "\" texture failed. It doesn't exist\n";
   }
   textures.erase(name);
 }
 
 void GraphicsHandler::loadTexture(std::string name, const char * filename){
-  if(textures[name] != 0) {
+  //if(textures[name] != 0) {
+  if (textures.find(name) != textures.end()) {
     std::string err = "Error texture name \"" + name + "\" has already been used";
     throw std::runtime_error(err);
   }
@@ -305,7 +323,8 @@ void GraphicsHandler::loadTexture(std::string name, const char * filename){
 
 void GraphicsHandler::loadShaders(const char * vertex_file_path,const char * fragment_file_path, std::string name){
   
-  if(shaders[name] != 0) {
+  //if(shaders[name] != 0) {
+  if (shaders.find(name) != shaders.end()) {
     std::string err = "Error creating shader, the name \"" + name + "\" has already been used";
     throw std::runtime_error(err); 
   }

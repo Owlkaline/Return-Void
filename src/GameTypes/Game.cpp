@@ -92,13 +92,13 @@ void Game::setup() {
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1.5f, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
   
-  lbWaveStatic.setup(80, SPACE_Y_RESOLUTION-80, 1.5f, false);
+  lbWaveStatic.setup(0, SPACE_Y_RESOLUTION, 1.0f, false);
   lbWaveStatic.setColour(1.0, 1.0, 1.0);
 
-  lbScore.setup(SPACE_X_RESOLUTION-200, SPACE_Y_RESOLUTION/20 * 19.2, 1.5f, false);
+  lbScore.setup(SPACE_X_RESOLUTION-300, SPACE_Y_RESOLUTION/20 * 19.2, 1.0f, false);
   lbScore.setColour( 1.0,  1.0,  1.0);
   
-  lbCoins.setup(SPACE_X_RESOLUTION-150, 30, 1.5f, false);
+  lbCoins.setup(SPACE_X_RESOLUTION-300, 30, 1.0f, false);
   lbCoins.setColour( 1.0,  1.0,  1.0);
   
   std::stringstream ss;
@@ -403,8 +403,8 @@ void Game::drawCrosshair(GraphicsHandler *graphics) {
 }
 
 void Game::drawBackground(GraphicsHandler *graphics) {
-  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION+offsetY), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
-  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2+offsetY), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
+  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION*0.5, SPACE_Y_RESOLUTION*1.5+offsetY), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
+  graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION*0.5, SPACE_Y_RESOLUTION*0.5+offsetY), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
   
     // Background
   /*  glEnable(GL_TEXTURE_2D);

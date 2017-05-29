@@ -17,7 +17,7 @@ SRCBULLETS =./src/Weapons/RedPlasma.cpp ./src/Weapons/BluePlasma.cpp  ./src/Weap
 SRCDROPS =./src/Drops/Coins.cpp ./src/Drops/Health.cpp ./src/Drops/Shield.cpp
 
 OS := $(shell uname)
-CC = g++ -O3 -g
+CC = g++ -O3 -g 
 
 COMPILER_FLAGS = -I./staticlibs/ -std=c++14
 

@@ -80,6 +80,7 @@ class Mount {
       dirX = directionX;
       dirY = directionY;
      
+      angle*=-1;
       tick(x, y, deltaTime, directionX, directionY, angle, isShooting);
 
       incrementTimers(isShooting, deltaTime);
@@ -160,39 +161,6 @@ class Mount {
 
       if(visible) {
         graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), angle, getTexture());
-        /*glPushMatrix();
-        glTranslatef(x, y, 0); // M1 - 2nd translation
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);
-        glTranslatef(-x, -y, 0); // M1 - 2nd translation
-
-        glEnable(GL_TEXTURE_2D);
-        setTexture();
-        //if(!isLeft) {
-          glBegin(GL_QUADS);
-            glTexCoord2f(0.0f, 1.0f);
-            glVertex3f(x-width/2, y+height/2, 0.0);
-            glTexCoord2f(1.0f, 1.0f);
-            glVertex3f(x+width/2, y+height/2, 0.0);
-            glTexCoord2f(1.0f, 0.0f);
-            glVertex3f(x+width/2, y-height/2, 0.0);
-            glTexCoord2f(0.0f, 0.0f);
-            glVertex3f(x-width/2, y-height/2, 0.0);
-          glEnd();
-       /* } else {
-          glBegin(GL_QUADS);
-            glTexCoord2f(1.0f, 1.0f);
-            glVertex3f(x-width/2, y+height/2, 0.0);
-            glTexCoord2f(0.0f, 1.0f);
-            glVertex3f(x+width/2, y+height/2, 0.0);
-            glTexCoord2f(0.0f, 0.0f);
-            glVertex3f(x+width/2, y-height/2, 0.0);
-            glTexCoord2f(1.0f, 0.0f);
-            glVertex3f(x-width/2, y-height/2, 0.0);
-          glEnd();
-        }
-        glDisable(GL_TEXTURE_2D);
-        glPopMatrix();
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f); */
       }
     }
     

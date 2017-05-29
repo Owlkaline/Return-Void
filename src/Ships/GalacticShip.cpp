@@ -94,6 +94,7 @@ void GalacticShip::update(float mouseX, float mouseY, float deltaTime, unsigned 
      angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
      angle = angle - 90.0f;
   }
+  angle*=-1;
   
   // Space bar
   if(keyState[32] == BUTTON_DOWN && prevKeyState[32] == BUTTON_UP) {

@@ -9,34 +9,19 @@ void PausedMenu::setup() {
 
   // Resume
   buttons.push_back(new Button);
-  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Resume");
+  buttons[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 3, 1.5f, "Resume");
   // Quit
   buttons.push_back(new Button);
-  buttons[1]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 2, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Quit");
+  buttons[1]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5 * 2, 1.5f, "Quit");
   
   lb.push_back(new Label);
-  lb[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Paused");
+  lb[0]->setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/5*4, 1.5f, "Paused");
 
-  Texture = "Window";
+  texture = "PauseWindow";
 }
 
 void PausedMenu::drawBackground(GraphicsHandler *graphics) {
-  graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), Texture);
-   /* glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, Texture);
-    glColor4f(1.0, 1.0, 1.0, 0.5);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex3f(x-width, y+height, 0.0);
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex3f(x+width, y+height, 0.0);
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex3f(x+width, y-height, 0.0);
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex3f(x-width, y-height, 0.0);
-    glEnd(); 
-    glDisable(GL_TEXTURE_2D);
-    glColor4f(1.0, 1.0, 1.0, 1.0);*/
+  graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), texture);
 }
 
 void PausedMenu::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned int* prevMouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {

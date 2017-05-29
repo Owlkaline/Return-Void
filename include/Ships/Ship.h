@@ -20,19 +20,6 @@ class Ship {
     virtual void specialDraw(GraphicsHandler *graphics) {
       int sSize = 32;
       for(int i = 0; i < specialsLeft; ++i) {
-        /*glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, specialIcon);
-        glBegin(GL_QUADS);
-          glTexCoord2f(0.0f, 1.0f);
-          glVertex3f(40 - sSize/2 + i*50, 40 - sSize/2, 0.0);
-          glTexCoord2f(1.0f, 1.0f);
-          glVertex3f(40 + sSize/2 + i*50, 40 - sSize/2, 0.0);
-          glTexCoord2f(1.0f, 0.0f);
-          glVertex3f(40 + sSize/2 + i*50, 40 + sSize/2, 0.0f);
-          glTexCoord2f(0.0f, 0.0f);
-          glVertex3f(40 - sSize/2 + i*50, 40 + sSize/2, 0.0);
-        glEnd();   
-      glDisable(GL_TEXTURE_2D);*/
       graphics->drawObject(glm::vec2(40 + i*50, 40), glm::vec2(sSize, sSize), "Boost");
     }
   }
@@ -65,44 +52,8 @@ class Ship {
     float getBulletDirectionX(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletDirectionX(bIndex); }
     float getBulletDirectionY(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletDirectionY(bIndex); }
     float getBulletWidth(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletWidth(bIndex); }
-    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }    
- 
-  /*  void setup() {    
-      maxNumWeapons = 0;
-      defaults();
-      x = SPACE_X_RESOLUTION/2;
-      y = 100;
-  
-      coins = 0;
-      angle = 0;
-  
-      extraSpeed = 0;
-      maxShield = shield;
-      maxHealth = health;
-      crntHealth = health;
-  
-      visible = true;
-      tookDamage = false;
-      shieldDamaged = false;
-      directionX = 1;
-      directionY = 1; 
-  
-      crntTexture = 0;
-  
-      healthBarTexture[0] = txt::LoadTexture("Textures/Game/Misc/HealthBarBase.png");
-      healthBarTexture[1] = txt::LoadTexture("Textures/Game/Misc/HealthBar.png");
-      healthBarTexture[2] = txt::LoadTexture("Textures/Game/Misc/ShieldBar.png");
-  
-      shieldTexture[0] = txt::LoadTexture("Textures/Game/Ships/Shield.png");
-      shieldTexture[1] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple1.png");
-      shieldTexture[2] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple2.png");
-      shieldTexture[3] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple3.png");
-      shieldTexture[4] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple4.png");
-      shieldTexture[5] = txt::LoadTexture("Textures/Game/Ships/ShieldRipple5.png");
-   
-      specialIcon = txt::LoadTexture("Textures/Game/Misc/Boost.png");
-    }*/
- 
+    float getBulletHeight(int mIndex, int bIndex) { return WeaponMount[mIndex]->getBulletHeight(bIndex); }
+    
     void draw(GraphicsHandler *graphics) {
       if(visible) {
         specialDraw(graphics);
@@ -112,17 +63,7 @@ class Ship {
           if(tick <= 0)
             tookDamage = false;
         }      
-       /* glTranslatef(x, y, 0); // M1 - 2nd translation
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-        glTranslatef(-x, -y, 0); // M1 - 2nd translation        
-        
-        glEnable(GL_TEXTURE_2D);
-        setTexture();
-        drawQuad(x, -width, y, height, UP);
-        glDisable(GL_TEXTURE_2D);
-        glPopMatrix();  
-        glColor4f(1.0, 1.0, 1.0, 1.0);      */
-        graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), getTexture());
+        graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), angle, getTexture());
       }
       
       for(unsigned int i = 0; i < WeaponMount.size(); ++i) 
@@ -145,7 +86,7 @@ class Ship {
       for(unsigned int i = 0; i < WeaponMount.size(); ++i)
         WeaponMount[i]->update(x, y, 1, 0, 0, 0, false);  
         
-      angle = 0;          
+      angle = 0;
     }
     
     void fire(float x, float y, float deltaTime, float directionX, float directionY, float angle, unsigned int* mouseBtnState) {
@@ -243,16 +184,7 @@ class Ship {
 //      glColor4f(1.0, 1.0, 1.0, 1.0);
     }
     
-    void drawShield(GraphicsHandler *graphics) {
-      glPushMatrix();
-
-      glTranslatef(x, y, 0); // M1 - 2nd translation
-      glRotatef(angle, 0.0f, 0.0f, 1.0f);  
-      glTranslatef(-x, -y, 0); // M1 - 2nd translation
-  
-      glEnable(GL_TEXTURE_2D);
-      glColor4f(1.0, 1.0, 1.0, 0.5);
-  
+    void drawShield(GraphicsHandler *graphics) {  
       std::string name = "Shield";
       if(shieldDamaged) {
         if(tick > 20) {
@@ -276,11 +208,7 @@ class Ship {
           shieldDamaged = false;
       } 
       
-      graphics->drawObject(glm::vec2(x, y), glm::vec2(width*1.3, height*1.3), name);
-      //drawQuad(x, -width*1.3, y, height*1.3, UP);
-     // glDisable(GL_TEXTURE_2D);
-//      glPopMatrix();  
-  //    glColor4f(1.0, 1.0, 1.0, 1.0);     
+      graphics->drawObject(glm::vec2(x, y), glm::vec2(width*1.3, height*1.3), angle, 0.5f, name);
     }
     
   protected:      

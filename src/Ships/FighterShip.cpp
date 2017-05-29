@@ -89,6 +89,8 @@ void FighterShip::update(float mouseX, float mouseY, float deltaTime, unsigned i
      angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
      angle = angle - 90.0f;
   }
+  angle*=-1;
+  
   // w
   if(keyState[87] == BUTTON_DOWN) {
     y+=speed*deltaTime;

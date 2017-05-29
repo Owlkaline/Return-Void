@@ -16,7 +16,7 @@ class PausedMenu: public Menu {
   
     float x, y, width, height;
    
-    std::string Texture;
+    std::string texture;
 };
 
 #endif

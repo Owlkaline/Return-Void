@@ -49,18 +49,22 @@ class GraphicsHandler {
     void removeTexture(std::string name);
     
     void drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec3 color, std::string referencename);
+    void drawText(std::string text, glm::vec2 position, GLfloat scale, glm::vec4 color, std::string referencename);
     
     // Draws object at position x/y, with specified size, rotated 0 degrees, full colour
     void drawObject(glm::vec2 position, glm::vec2 size, std::string texture);
-    // Draws object at position x/y, with specified size, rotated specified degrees, full colour
-    void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, std::string texture);
-    void drawObject(glm::vec2 position, glm::vec2 size, glm::vec3 colour, std::string name);
-    // Draws object at position x/y, with specified size, rotated specified degrees, With only colours specified drawn
-    void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 colour, std::string texture);
     
+    void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, std::string texture);
+    void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, GLfloat transparency, std::string texture);
+    
+    void drawObject(glm::vec2 position, glm::vec2 size, glm::vec3 colour, std::string name);
+    void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec3 colour, std::string texture);
+
+    void drawObject(glm::vec2 position, glm::vec2 size, glm::vec4 colour, std::string texture);
+    void drawObject(glm::vec2 position, glm::vec2 size, GLfloat rotate, glm::vec4 colour, std::string texture);
   protected:
     void draw();    
-    void transformModel(glm::vec3 position, glm::vec2 size, GLfloat rotation, glm::vec3 colour);
+    void transformModel(glm::vec3 position, glm::vec2 size, GLfloat rotation, glm::vec4 colour);
 
     GLuint getShader(std::string shader);
     GLuint getTexture(std::string texture);
@@ -78,6 +82,7 @@ class GraphicsHandler {
 
     FT_Library ft;
     FT_Face face;
+    float fontSize;
 };
 
 #endif

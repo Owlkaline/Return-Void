@@ -70,7 +70,7 @@ std::string CorruptedStarShip::getTexture() {
     str = "CStarShip2";
   }
       //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(3));
-  str = "CStarShip3";
+  return str;
 }
 
 void CorruptedStarShip::setX(float x) {
