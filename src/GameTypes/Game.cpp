@@ -257,7 +257,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           sf << enemy[i]->getScore();;
           std::string str1 = "+" + sf.str();
           Ftext.push_back(new FloatingText);
-          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), str1.c_str(), 1.5f);
+          Ftext[Ftext.size()-1]->setup(enemy[i]->getX(), enemy[i]->getY(), 1.5f, str1);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           bool nothing = false; 
@@ -307,7 +307,7 @@ void Game::update(float mouseX, float mouseY, float deltaTime, unsigned int* mou
           numOfPowerupsCollected++;
           std::string str = powerups[i]->getName();
           Ftext.push_back(new FloatingText);
-          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), str.c_str(), 1.5f);
+          Ftext[Ftext.size()-1]->setup(powerups[i]->getX(), powerups[i]->getY(), 1.5f, str);
           Ftext[Ftext.size()-1]->setColour(0.0, 1.0, 0.0);
           
           powerups.erase(powerups.begin()+i);
@@ -394,8 +394,9 @@ void Game::drawCrosshair(GraphicsHandler *graphics) {
     lastChY = ChY;
   }
   graphics->drawObject(glm::vec2(lastChX, lastChY), glm::vec2(ChRadius, ChRadius), ChTexture);
+  
   /*drawQuad(lastChX, ChRadius, lastChY, ChRadius, UP);
-
+  
   glColor3f(1.0, 1.0, 1.0f);
   glDisable(GL_TEXTURE_2D);*/
 

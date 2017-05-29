@@ -12,12 +12,13 @@ BasicMount::~BasicMount() {
 
 
 std::string BasicMount::getTexture() {
+  std::string str = "BasicMountBright";
   if(currentTexture == 1) {
     //glBindTexture(GL_TEXTURE_2D, getBasicMountBrightTexture());
-    return "BasicMount";
+    str = "BasicMount";
   } 
     //glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
-  return "BasicMountBright";
+  return str;
 }
 
 void BasicMount::defaults() {

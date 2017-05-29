@@ -8,6 +8,7 @@ MountType1::MountType1(float offsetX, float offsetY) {
     this->visible = true;
     this->tookDamage = false;
     this->automated = true; 
+    this->customDamage = false;
     
     this->angle = 0; 
     this->dirX = 0;
@@ -37,7 +38,9 @@ void MountType1::reset(float x, float y) {
 }
 
 std::string MountType1::getTexture() {
+  std::string str = "BasicMount";
   if(currentTexture == 0) {
-    return "BasicMount";//glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
+    str = "BasicMount";//glBindTexture(GL_TEXTURE_2D, getBasicMountTexture());
   } 
+  return str;
 }

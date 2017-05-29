@@ -16,7 +16,7 @@ void FloatingText::clean() {
 
 }
 
-void FloatingText::setup(float x, float y, float width, float height, char* filename) {
+void FloatingText::setup(float x, float y, float width, float height, std::string filename) {
   lb.setup(x, y, width, height, filename);
   this->x = x;
   this->y = y;
@@ -24,7 +24,7 @@ void FloatingText::setup(float x, float y, float width, float height, char* file
   visible = true;
 }
 
-void FloatingText::setup(float x, float y,  const char* str, float scale) {
+void FloatingText::setup(float x, float y, float scale, std::string str) {
   lb.setup(x, y, scale);
   lb.setText(str);
   this->x = x;
@@ -41,11 +41,11 @@ void FloatingText::update(float deltaTime) {
     visible = false;
 }
 
-void FloatingText::setTexture(char* filename) {
+void FloatingText::setTexture(std::string filename) {
   lb.setTexture(filename);
 }
 
-void FloatingText::setText(const char* str) {
+void FloatingText::setText(std::string str) {
   lb.setText(str);
 }
 

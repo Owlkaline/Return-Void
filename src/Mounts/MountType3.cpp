@@ -37,18 +37,19 @@ void MountType3::reset(float x, float y) {
 }
 
 std::string MountType3::getTexture() {
+  std::string str = "HeroMount1";
   if(bulletTicks > 60) {
     //currentTexture = 3;
-    return "HeroMount4";
+    str = "HeroMount4";
   } else if (bulletTicks > 40) {
     //currentTexture = 2;
-    return "HeroMount3";
+    str = "HeroMount3";
   } else if (bulletTicks > 20) {
     //currentTexture = 1;
-    return "HeroMount2";
+    str = "HeroMount2";
   } 
   //  currentTexture = 0;
-  return "HeroMount1";
+  return str;
 
   //glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(currentTexture));
     

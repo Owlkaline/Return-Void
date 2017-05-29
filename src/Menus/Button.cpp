@@ -56,8 +56,8 @@ void Button::setup(float x, float y, float scale, std::string text) {
   this->x = x;
   this->y = y;
   this->scale = scale;
-  this->width = -1;
-  this->height = -1;
+  this->width = 32*text.length()*scale;
+  this->height = 66*scale;
 }
 
 void Button::setup(float x, float y, float width, float height, std::string texture) {
@@ -96,8 +96,8 @@ void Button::setup(float x, float y, float scale, glm::vec3 colour, std::string 
   this->x = x;
   this->y = y;
   this->scale = scale;
-  this->width = -1;
-  this->height = -1;
+  this->width = 32*text.length()*scale;
+  this->height =  66*scale;
 }
 
 void Button::setup(float x, float y, float width, float height, float scale, glm::vec3 colour, std::string text, std::string texture) {
@@ -142,7 +142,8 @@ void Button::update(float mouseX, float mouseY, unsigned int* mouseBtnState, uns
   if(!disabled) {
     if(mouseBtnState[0] == 0)
       clicked = false;
-    if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
+//    if(mouseY > y-height/2 && mouseY < y+height/2 && mouseX > x-width/2 && mouseX < x+width/2) {
+    if(mouseY > y && mouseY < y+height/2 && mouseX > x-width/4 && mouseX < x+width/4*3) {
       if(mouseBtnState[0] == 1) {
         clicked = true;
       } 
@@ -165,6 +166,8 @@ void Button::setTexture(char* filename) {
 */
 void Button::setText(std::string str) {
   text = str;
+  this->width = 32*text.length()*scale;
+  this->height = 66*scale;
 }
 
 void Button::setColour(glm::vec3 colour) {

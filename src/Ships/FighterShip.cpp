@@ -52,14 +52,15 @@ std::string FighterShip::getTexture() {
   /*if(tookDamage)
     glColor3f(1.0, 0.0, 0.0);
   glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);*/
+  std::string str = "FighterShip1";
   if(crntTexture == 0) {
-    return "FighterShip1";
+    str = "FighterShip1";
   } else if (crntTexture == 1) {
-    return "FighterShip2";
+    str = "FighterShip2";
   } else if (crntTexture == 2) {
-    return "FighterShip3";
+    str = "FighterShip3";
   }
-  return "FighterShip1";
+  return str;
 }
 
 void FighterShip::update(float mouseX, float mouseY, float deltaTime, unsigned int* mouseBtnState, unsigned char* keyState, unsigned char* prevKeyState) {

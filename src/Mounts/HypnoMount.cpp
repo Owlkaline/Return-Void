@@ -12,9 +12,10 @@ HypnoMount::~HypnoMount() {
 
 std::string HypnoMount::getTexture() {
   //glBindTexture(GL_TEXTURE_2D, getHypnoMountTexture(isLeft));
+  std::string str = "HypnoMountRight";
   if(isLeft == 0)
-    return "HypnoMountLeft";
-  return "HypnoMountRight";
+    str = "HypnoMountLeft";
+  return str;
 }
 
 void HypnoMount::defaults() {

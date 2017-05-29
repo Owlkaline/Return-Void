@@ -65,5 +65,6 @@ std::string AlphaOne::getTexture() {
     //if(tookDamage)
     //  glColor3f(1.0, 0.0, 0.0);
     //glBindTexture(GL_TEXTURE_2D, getAlphaOneTexture());
-  return "AlphaOne";
+  std::string str = "AlphaOne";
+  return str;
 }

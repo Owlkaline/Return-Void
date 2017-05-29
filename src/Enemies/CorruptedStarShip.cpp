@@ -58,18 +58,19 @@ void CorruptedStarShip::reset() {
 }
 
 std::string CorruptedStarShip::getTexture() {
-    if(health > maxHealth/4.0 *3) {
-      //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(0));
-      return "CStarShip";
-    } else if(health > maxHealth/2) {
-      //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(1));
-      return "CStarShip1";
-    } else if(health > maxHealth/4) {
-      //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(2));
-      return "CStarShip2";
-    }
+  std::string str = "CStarShip3";
+  if(health > maxHealth/4.0 *3) {
+    //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(0));
+    str = "CStarShip";
+  } else if(health > maxHealth/2) {
+    //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(1));
+    str = "CStarShip1";
+  } else if(health > maxHealth/4) {
+    //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(2));
+    str = "CStarShip2";
+  }
       //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(3));
-  return "CStarShip3";
+  str = "CStarShip3";
 }
 
 void CorruptedStarShip::setX(float x) {

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <math.h>
+#include <string>
 
 #include "../Weapons/Spiral.h"
 #include "../Weapons/DotBullet.h"
@@ -24,7 +25,7 @@ class Mount {
     
     virtual void reset(float x, float y) { }
     virtual void defaults() {};
-    virtual std::string getTexture() = 0;  
+    virtual std::string getTexture() = 0;
       
     virtual void individualClean() {  }
     virtual void tick(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {  }

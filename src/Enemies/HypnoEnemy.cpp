@@ -72,7 +72,8 @@ void HypnoEnemy::reset() {
 
 std::string HypnoEnemy::getTexture() {
 //    glBindTexture(GL_TEXTURE_2D, getHypnoEnemyTexture());
-  return "HypnoEnemy";
+  std::string str = "HypnoEnemy";
+  return str;
 }
 
 void HypnoEnemy::setX(float x) {

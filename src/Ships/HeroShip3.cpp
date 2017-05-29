@@ -53,7 +53,8 @@ HeroShip3::~HeroShip3() {
 
 std::string HeroShip3::getTexture() {  
 //  glBindTexture(GL_TEXTURE_2D, textures[crntTexture]);
-  return "HeroShip";
+  std::string str = "HeroShip";
+  return str;
 }
 
 void HeroShip3::special() { 

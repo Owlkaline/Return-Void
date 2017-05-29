@@ -37,7 +37,9 @@ void MountType2::reset(float x, float y) {
 }
 
 std::string MountType2::getTexture() {
+  std::string str = "PurpleMount";
   if(currentTexture == 0) {
-    return "PurpleMount"; //glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
+    str = "PurpleMount"; //glBindTexture(GL_TEXTURE_2D, getPurpleMountTexture());
   } 
+  return str;
 }

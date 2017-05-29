@@ -75,8 +75,7 @@ class GraphicsHandler {
     std::map<std::string, GLuint> shaders;
     
     std::map<std::string, std::map<GLchar, Character>> Fonts;
-    std::map<GLchar, Character> Characters;
-    
+
     FT_Library ft;
     FT_Face face;
 };

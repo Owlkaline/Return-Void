@@ -12,7 +12,8 @@ TriangleMount::~TriangleMount() {
 
 std::string TriangleMount::getTexture() {
   //glBindTexture(GL_TEXTURE_2D, getHeroMountTexture(0));
-  return "HeroMount1";
+  std::string str = "HeroMount1";
+  return str;
 }
 
 void TriangleMount::defaults() {

@@ -22,24 +22,24 @@ void Shop::setup() {
   // Buttons
   // Return button
   buttons.push_back(new Button);
-  buttons[0]->setup(BUTTONWIDTH/2+50, 100, BUTTONWIDTH, BUTTONHEIGHT, (char*)"Return");
+  buttons[0]->setup(BUTTONWIDTH/2+50, 100, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "Return");
   buttons[0]->drawBorder(false);
   
   // Left Arrow button
   buttons.push_back(new Button);
-  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"LeftArrow");
+  buttons[1]->setup(267/3, (SPACE_Y_RESOLUTION/3*2), 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "<");
   buttons[1]->drawBorder(true);
   buttons[1]->disable();
   buttons[1]->setVisible(false);
   
   // Right Arrow button
   buttons.push_back(new Button);
-  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), ARROWWIDTH, 133, (char*)"RightArrow");
+  buttons[2]->setup(267*5, (SPACE_Y_RESOLUTION/3*2), 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), ">");
   buttons[2]->drawBorder(true);  
   
   // Top Left Shop Name Box
   lb.push_back(new Label);
-  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, 1.5f, "Shop");
+  lb[0]->setup(BUTTONWIDTH/4 * 3, SPACE_Y_RESOLUTION - 100, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "Shop");
   lb[0]->fill(0.0, 0.0, 1.0f);
   lb[0]->drawBorder(true);
   
@@ -69,7 +69,7 @@ void Shop::setup() {
   
   // Left Arrow button Selected Ship
   buttons.push_back(new Button);
-  buttons[3]->setup(1676-200+ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"LeftArrow");
+  buttons[3]->setup(1676-200+ARROWWIDTH, 390, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), "<");
   buttons[3]->drawBorder(true);
   if(selected == 0) {
     buttons[3]->disable();
@@ -78,7 +78,7 @@ void Shop::setup() {
   
   // Right Arrow button Selected Ship
   buttons.push_back(new Button);
-  buttons[4]->setup(1676+200-ARROWWIDTH, 390, ARROWWIDTH, 133, (char*)"RightArrow");
+  buttons[4]->setup(1676+200-ARROWWIDTH, 390, 1.5f, glm::vec3(TEXTR, TEXTG, TEXTB), ">");
   buttons[4]->drawBorder(true);  
 
   for(int i = 0; i < 6; ++i) {

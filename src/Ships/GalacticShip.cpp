@@ -51,7 +51,8 @@ GalacticShip::~GalacticShip() {
 
 std::string GalacticShip::getTexture() {  
 //  glBindTexture(GL_TEXTURE_2D, textures[0]);
-  return "GalacticShip";
+  std::string str = "GalacticShip";
+  return str;
 }
 
 void GalacticShip::special() { 
