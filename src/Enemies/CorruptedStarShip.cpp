@@ -29,10 +29,6 @@ CorruptedStarShip::~CorruptedStarShip() {
 
 void CorruptedStarShip::defaults() {
 
- // lbScore.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 0.2, true);
- // lbScore.setColour( 0.0,  1.0,  0.1);
-//  lbScore.setText("+30", 3);
-
 }
 
 void CorruptedStarShip::update(float Px, float Py, float deltaTime) {
@@ -60,16 +56,12 @@ void CorruptedStarShip::reset() {
 std::string CorruptedStarShip::getTexture() {
   std::string str = "CStarShip3";
   if(health > maxHealth/4.0 *3) {
-    //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(0));
     str = "CStarShip";
   } else if(health > maxHealth/2) {
-    //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(1));
     str = "CStarShip1";
   } else if(health > maxHealth/4) {
-    //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(2));
     str = "CStarShip2";
   }
-      //glBindTexture(GL_TEXTURE_2D, getCorruptedStarShipTexture(3));
   return str;
 }
 

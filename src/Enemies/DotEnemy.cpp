@@ -57,7 +57,8 @@ void DotEnemy::update(float Px, float Py, float deltaTime) {
      angle = (float)atan(diffy/diffx) * 180.0f / (float)M_PI ;
      angle = angle - 90.0f;
   }
-
+  angle*=-1;
+  
   for(unsigned int i = 0; i < WeaponMount.size(); ++i) {
     if(!visible)
       WeaponMount[i]->setVisible(false);

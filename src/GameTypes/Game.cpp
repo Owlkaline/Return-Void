@@ -92,7 +92,7 @@ void Game::setup() {
   lbWave.setup(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2, 1.5f, true);
   lbWave.setColour( 1.0,  0.0,  1.0);
   
-  lbWaveStatic.setup(0, SPACE_Y_RESOLUTION, 1.0f, false);
+  lbWaveStatic.setup(50, SPACE_Y_RESOLUTION-50, 1.0f, false);
   lbWaveStatic.setColour(1.0, 1.0, 1.0);
 
   lbScore.setup(SPACE_X_RESOLUTION-300, SPACE_Y_RESOLUTION/20 * 19.2, 1.0f, false);

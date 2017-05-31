@@ -33,21 +33,7 @@ void Label::draw(GraphicsHandler *graphics) {
     if(hasTexture) {  
     // if(disabled)
      //   glColor4f(1.0, 1.0, 1.0, 0.5);
-      /*
-      glEnable(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, Texture);
-      glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x-width/2, y+height/2, 0.0);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x+width/2, y+height/2, 0.0);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(x+width/2, y-height/2, 0.0);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x-width/2, y-height/2, 0.0);
-      glEnd();  
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glDisable(GL_TEXTURE_2D);*/
+
       graphics->drawObject(glm::vec2(x, y), glm::vec2(width, height), texture);
     } else {
       if(isTimed) {
@@ -55,8 +41,7 @@ void Label::draw(GraphicsHandler *graphics) {
           graphics->drawText(str, glm::vec2(x,y), scale, colour, "DarkCrystal");
       } else {
         //text.draw();
-        //drawChar();
-        graphics->drawText(str, glm::vec2(x,y), scale, colour, "DarkCrystal");
+        graphics->drawText(str, glm::vec2(x-width/4,y-height/4), scale, colour, "DarkCrystal");
       }
     }
     if(hasBorder)
@@ -141,6 +126,11 @@ void Label::setColour(float R, float G, float B) {
 
 void Label::drawBox(GraphicsHandler *graphics) {
   float border = 5;
+  if(height > width) {
+    border = width/10;
+  } else {
+    border = height/10;
+  }
   /*glColor3f(0.0, 0.0, 0.0);
   glBegin(GL_QUADS);
 
@@ -171,9 +161,9 @@ void Label::drawBox(GraphicsHandler *graphics) {
   glEnd();
   glColor3f(1.0, 1.0, 1.0);*/
   graphics->useShader("basic");
-  graphics->drawObject(glm::vec2(x+border/2, y), glm::vec2(width, height), "Edge");
-  graphics->drawObject(glm::vec2(x-border/2, y), glm::vec2(width, height), "Edge");
-  graphics->drawObject(glm::vec2(x, y-border/2), glm::vec2(width, height), "Edge");
-  graphics->drawObject(glm::vec2(x, y+border/2), glm::vec2(width, height), "Edge");
+  graphics->drawObject(glm::vec2(x-width/2, y), glm::vec2(border, height), "Edge");
+  graphics->drawObject(glm::vec2(x+width/2, y), glm::vec2(border, height), "Edge");
+  graphics->drawObject(glm::vec2(x, y-height/2), glm::vec2(width*4, border/4), "Edge");
+  graphics->drawObject(glm::vec2(x, y+height/2), glm::vec2(width*4, border/4), "Edge");
 }
 

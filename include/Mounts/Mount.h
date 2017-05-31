@@ -71,7 +71,8 @@ class Mount {
     virtual void update(float x, float y, float deltaTime, float directionX, float directionY, float angle, bool isShooting) {
       if(currentTexture == 1)
         currentTexture = 0;
-      float rad = angle* (float)M_PI / 180;
+
+      float rad = -angle* (float)M_PI / 180;
       float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
       float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
       this->x = x+newX;
@@ -80,7 +81,7 @@ class Mount {
       dirX = directionX;
       dirY = directionY;
      
-      angle*=-1;
+     // angle*=-1;
       tick(x, y, deltaTime, directionX, directionY, angle, isShooting);
 
       incrementTimers(isShooting, deltaTime);
@@ -97,7 +98,7 @@ class Mount {
       dirX = (diffx) / (distance);
       dirY = (diffy) / distance;
 
-      float rad = angle* (float)M_PI / 180;
+      float rad = -angle* (float)M_PI / 180;
       float newX = (offsetX)*cos(rad) - (offsetY)*sin(rad);
       float newY = (offsetX)*sin(rad) + (offsetY)*cos(rad);
       this->x = x+newX;

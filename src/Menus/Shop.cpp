@@ -45,8 +45,7 @@ void Shop::setup() {
   
   // Description Box
   lb.push_back(new Label);
-  lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 30*ratioX, 30*ratioY);
-  lb[1]->setText("Description");
+  lb[1]->setup(540, SPACE_Y_RESOLUTION/3, 1.0f, "Description");
   lb[1]->setWidth(1000);
   lb[1]->setHeight(300);
   lb[1]->fill(0.6, 0.6, 0.6);
@@ -60,8 +59,7 @@ void Shop::setup() {
   
   // Coin Box
   lb.push_back(new Label);
-  lb[2]->setup(SPACE_X_RESOLUTION - 200, SPACE_Y_RESOLUTION-100, 30*ratioX, 30*ratioY);
-  lb[2]->setText(strCoins);
+  lb[2]->setup(SPACE_X_RESOLUTION - 200, SPACE_Y_RESOLUTION-100, 1.0f, strCoins);
   lb[2]->setWidth(350);
   lb[2]->setHeight(70);
   lb[2]->fill(0.6, 0.6, 0.6);
@@ -151,21 +149,6 @@ void Shop::restart() {
 }
 
 void Shop::drawBackground(GraphicsHandler *graphics) {  
-/*  glColor3f(1.0f, 1.0f, 1.0f);
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, background);
-  glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(0, SPACE_Y_RESOLUTION, 0.0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, 0.0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(SPACE_X_RESOLUTION, 0, 0.0);   
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(0, 0, 0.0);
-  glEnd();
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glDisable(GL_TEXTURE_2D);*/
   graphics->drawObject(glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), glm::vec2(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION), "Background");
   for(unsigned int i = 0; i < box.size(); ++i)
     box[i]->draw(graphics);

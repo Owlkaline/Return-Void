@@ -180,39 +180,16 @@ bool Button::Clicked() {
 
 void Button::drawBox(GraphicsHandler *graphics) {
   float border = 5;
- /* glColor3f(0.0, 0.0, 0.0);
-  glBegin(GL_QUADS);
+  if(height > width) {
+    border = width/10;
+  } else {
+    border = height/10;
+  }
 
-    // Left
-    glVertex3f(x-width/2, y+height/2, 0.0);
-    glVertex3f(x-width/2+border, y+height/2, 0.0);
-    glVertex3f(x-width/2+border, y-height/2, 0.0);
-    glVertex3f(x-width/2, y-height/2, 0.0);
-
-    // Right
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glVertex3f(x+width/2-border, y+height/2, 0.0);
-    glVertex3f(x+width/2-border, y-height/2, 0.0);
-    glVertex3f(x+width/2, y-height/2, 0.0);
-
-    // top
-    glVertex3f(x+width/2, y+height/2, 0.0);
-    glVertex3f(x+width/2, y+height/2-border, 0.0);
-    glVertex3f(x-width/2, y+height/2-border, 0.0);
-    glVertex3f(x-width/2, y+height/2, 0.0);
-
-    // bottom
-    glVertex3f(x+width/2, y-height/2, 0.0);
-    glVertex3f(x+width/2, y-height/2+border, 0.0);
-    glVertex3f(x-width/2, y-height/2+border, 0.0);
-    glVertex3f(x-width/2, y-height/2, 0.0);
-
-  glEnd();
-  glColor3f(1.0, 1.0, 1.0);*/
-  
-  graphics->drawObject(glm::vec2(x+border/2, y), glm::vec2(width, height), "Edge");
-  graphics->drawObject(glm::vec2(x-border/2, y), glm::vec2(width, height), "Edge");
-  graphics->drawObject(glm::vec2(x, y-border/2), glm::vec2(width, height), "Edge");
-  graphics->drawObject(glm::vec2(x, y+border/2), glm::vec2(width, height), "Edge");
+  graphics->useShader("basic");
+  graphics->drawObject(glm::vec2(x-width/2, y), glm::vec2(border, height), "Edge");
+  graphics->drawObject(glm::vec2(x+width/2, y), glm::vec2(border, height), "Edge");
+  graphics->drawObject(glm::vec2(x, y-height/2), glm::vec2(width*4, border/4), "Edge");
+  graphics->drawObject(glm::vec2(x, y+height/2), glm::vec2(width*4, border/4), "Edge");
 }
 

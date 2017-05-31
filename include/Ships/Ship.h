@@ -157,50 +157,33 @@ class Ship {
       float hw = 500;
       float hh = 50;
       float hx = SPACE_X_RESOLUTION/2;
-      /*glEnable(GL_TEXTURE_2D);
-  
-      glBindTexture(GL_TEXTURE_2D, healthBarTexture[0]);
-  
-      glColor4f(1.0, 1.0, 1.0, 0.5f);
-      drawQuad(hx, -hw, hy, hh, UP);*/
+ 
       graphics->drawObject(glm::vec2(hx, hy), glm::vec2(hw, hh), "HealthBarBase");
   
       hw = hw/maxShield * shield;
       hx = SPACE_X_RESOLUTION/2;
   
       //Shield Bar
-//      glBindTexture(GL_TEXTURE_2D, healthBarTexture[2]);
-  //    drawQuad(hx, -hw, hy, hh, UP);
       graphics->drawObject(glm::vec2(hx, hy), glm::vec2(hw, hh), "ShieldBar");
     
       hw = 500/(float)maxHealth * crntHealth;
       hx = SPACE_X_RESOLUTION/2;
       //Health bar
-//      glBindTexture(GL_TEXTURE_2D, healthBarTexture[1]);
-  //    drawQuad(hx, -hw, hy, hh, UP);
       graphics->drawObject(glm::vec2(hx, hy), glm::vec2(hw, hh), "HealthBar");
-   
-//      glDisable(GL_TEXTURE_2D);
-//      glColor4f(1.0, 1.0, 1.0, 1.0);
     }
     
     void drawShield(GraphicsHandler *graphics) {  
       std::string name = "Shield";
       if(shieldDamaged) {
-        if(tick > 20) {
-          //glBindTexture(GL_TEXTURE_2D, shieldTexture[1]); 
+        if(tick > 20) { 
           name = "ShieldRipple1";
         } else if(tick > 15) {
-          //glBindTexture(GL_TEXTURE_2D, shieldTexture[2]);
           name = "ShieldRipple2";
         } else if(tick > 10) {
-          //glBindTexture(GL_TEXTURE_2D, shieldTexture[3]);
           name = "ShieldRipple3";
         } else if(tick > 5) {
-          //glBindTexture(GL_TEXTURE_2D, shieldTexture[4]);
           name = "ShieldRipple4";
         } else {
-          //glBindTexture(GL_TEXTURE_2D, shieldTexture[5]);
           name = "ShieldRipple5";
         }    
        // tick-=1*deltaTime;
@@ -211,13 +194,12 @@ class Ship {
       graphics->drawObject(glm::vec2(x, y), glm::vec2(width*1.3, height*1.3), angle, 0.5f, name);
     }
     
-  protected:      
-    
+  protected:
     virtual void special() {  }
     
-    int coins;    
+    int coins;
     int maxShield;
-    int maxHealth;     
+    int maxHealth;
     int extraSpeed;
     int crntTexture;
     int specialsLeft;
