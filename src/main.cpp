@@ -225,7 +225,7 @@ GLFWwindow* init() {
     screenResX = mode->width;
     screenResY = mode->height;
     
-    window = glfwCreateWindow(SPACE_X_RESOLUTION, SPACE_Y_RESOLUTION, "Return-Void", glfwGetPrimaryMonitor(), NULL);
+    window = glfwCreateWindow(screenResX, screenResY, "Return-Void", glfwGetPrimaryMonitor(), NULL);
 
     printf("Entering fullscreen mode\n");
     settings->setFullscreen(true); 
@@ -367,7 +367,6 @@ int main(int argc, char* args[]) {
     glfwPollEvents();
     graphics.useShader("basic");
     display(window, &graphics, deltaTime);  
-    //graphics.drawText("It Fucking works, ya cunt", glm::vec2(SPACE_X_RESOLUTION/2, SPACE_Y_RESOLUTION/2), 1.5f, glm::vec3(0.5f, 0.5f, 1.0f), "DarkCrystal");
     glfwSwapBuffers(window);
   }
   clean();
