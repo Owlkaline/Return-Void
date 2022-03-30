@@ -32,7 +32,7 @@
 #include <stdio.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include "../include/stb/stb_image.h"
 
 #include "../include/Menus/Shop.h"
 #include "../include/Menus/MainMenu.h"

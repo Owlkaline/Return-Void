@@ -1,6 +1,6 @@
 #include "../../include/Namespaces/LoadTexture.h"
 
-#include <stb_image.h>
+#include "../../include/stb/stb_image.h"
 
 GLuint txt::LoadTexture( const char * filename ) {
 stbi_set_flip_vertically_on_load(true);
